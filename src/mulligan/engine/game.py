@@ -692,6 +692,8 @@ class Game:
                 self.draw_card(state.active)
         elif step is Step.DECLARE_ATTACKERS:
             state.attackers_declared = []
+            state.blocks_declared = []
+            state.blockers_done = False
             state.pending = "attackers"
             state.decision_player = state.active
         elif step is Step.COMBAT_DAMAGE:
@@ -702,7 +704,11 @@ class Game:
         elif step is Step.CLEANUP:
             for obj in self.state.objects.values():
                 obj.reset_end_of_turn()
-            self._next_step()
+            if len(state.players[state.active].hand) > MAX_HAND_SIZE:
+                state.pending = "discard"
+                state.decision_player = state.active
+            else:
+                self._next_step()
 
     def _finish_attackers(self) -> None:
         state = self.state
@@ -721,6 +727,7 @@ class Game:
 
     def _finish_blockers(self) -> None:
         state = self.state
+        state.blockers_done = True
         for blocker_id, attacker_id in state.blocks_declared:
             blocker = state.obj(blocker_id)
             attacker = state.obj(attacker_id)
@@ -889,19 +896,17 @@ class Game:
             state.passes = 0
             state.priority = state.active
             return True
-        if state.step is Step.DECLARE_BLOCKERS and state.pending == "priority" \
-                and not state.blocks_declared and self._needs_block_decision():
-            state.pending = "blockers"
-            state.decision_player = 1 - state.active
-            return True
-        if state.step is Step.CLEANUP:
-            return False
         if state.pending == "discard":
             if len(state.players[state.decision_player].hand) <= MAX_HAND_SIZE:
                 state.pending = "priority"
                 self._next_step()
                 return True
             return False
+        if (state.step is Step.DECLARE_BLOCKERS and state.pending == "priority"
+                and not state.blockers_done and self._needs_block_decision()):
+            state.pending = "blockers"
+            state.decision_player = 1 - state.active
+            return True
         state.pending = "priority"
         state.decision_player = state.priority
         return False
