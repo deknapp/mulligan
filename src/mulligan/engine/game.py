@@ -97,6 +97,15 @@ class Game:
     def creatures_of(self, seat: int) -> list[GameObject]:
         return [o for o in self.state.zone_objects(seat, "battlefield") if o.spec.is_creature]
 
+    def has_summoning_sickness(self, obj: GameObject) -> bool:
+        """Whether a creature is restricted from attacking or using {T} costs.
+
+        Haste is checked here rather than cleared on entry, so it covers both
+        restrictions at once and a creature that loses haste is restricted
+        again, as the rules require.
+        """
+        return obj.spec.is_creature and obj.summoning_sick and not obj.has(Keyword.HASTE)
+
     def power_of(self, obj: GameObject) -> int:
         return max(0, (obj.spec.power or 0) + obj.temp_power + obj.counters)
 
@@ -223,7 +232,7 @@ class Game:
         obj.zone = "battlefield"
         obj.controller = seat
         obj.entered_turn = self.state.turn
-        obj.summoning_sick = obj.spec.is_creature and not obj.has(Keyword.HASTE)
+        obj.summoning_sick = obj.spec.is_creature
         obj.tapped = obj.spec.enters_tapped
         self.state.players[seat].battlefield.append(obj.id)
         self.state.record(f"{obj.name} enters the battlefield under {self.state.players[seat].name}")
@@ -242,7 +251,7 @@ class Game:
         for obj in self.state.zone_objects(seat, "battlefield"):
             if obj.tapped:
                 continue
-            if obj.spec.is_creature and obj.summoning_sick:
+            if self.has_summoning_sickness(obj):
                 continue  # a {T} cost needs the creature to have been around
             for index, ability in enumerate(obj.spec.abilities):
                 if not (ability.is_mana_ability and ability.tap_cost):
@@ -459,8 +468,7 @@ class Game:
                     continue  # the engine taps for mana; see docs/DESIGN.md
                 if ability.sorcery_speed and not sorcery_speed:
                     continue
-                if ability.tap_cost and (obj.tapped or
-                                         (obj.spec.is_creature and obj.summoning_sick)):
+                if ability.tap_cost and (obj.tapped or self.has_summoning_sickness(obj)):
                     continue
                 if not self.can_pay(seat, ability.mana_cost):
                     continue
@@ -473,7 +481,7 @@ class Game:
         for obj in self.creatures_of(seat):
             if obj.id in self.state.attackers_declared:
                 continue
-            if obj.tapped or obj.summoning_sick or obj.has(Keyword.DEFENDER):
+            if obj.tapped or self.has_summoning_sickness(obj) or obj.has(Keyword.DEFENDER):
                 continue
             options.append(act.DeclareAttacker(obj.id))
         return options
