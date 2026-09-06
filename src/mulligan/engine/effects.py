@@ -230,11 +230,19 @@ class CounterTargetSpell(Effect):
 
 @dataclass(frozen=True)
 class Fight(Effect):
-    """The source creature and the target creature deal damage to each other."""
+    """Two creatures deal damage equal to their power to each other.
+
+    With two targets the first fights the second (``Prey Upon``); with one, the
+    source creature fights it (a creature's own fight ability).
+    """
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        target = ctx.target()
-        source = game.object_by_id(ctx.source_id) if ctx.source_id is not None else None
+        if len(ctx.targets) >= 2:
+            first, target = ctx.targets[0], ctx.targets[1]
+            source = game.object_by_id(first.id) if first.kind == "object" else None
+        else:
+            target = ctx.target()
+            source = game.object_by_id(ctx.source_id) if ctx.source_id is not None else None
         if target is None or target.kind != "object" or source is None:
             return
         other = game.object_by_id(target.id)
@@ -247,6 +255,9 @@ class Fight(Effect):
 
     def describe(self) -> str:
         return "it fights target creature"
+
+    # A fight is two simultaneous damage events, not a sequence, which is why
+    # both powers are read before either is applied.
 
 
 @dataclass(frozen=True)

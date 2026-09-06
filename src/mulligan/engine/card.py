@@ -104,7 +104,7 @@ class GameObject:
     __slots__ = ("id", "spec", "owner", "controller", "zone", "tapped", "damage",
                  "summoning_sick", "attacking", "blocking", "blocked_by", "counters",
                  "temp_power", "temp_toughness", "granted_keywords", "is_token",
-                 "targets", "entered_turn")
+                 "targets", "entered_turn", "was_blocked", "deathtouched")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -125,6 +125,10 @@ class GameObject:
         self.is_token = is_token
         self.targets: tuple = ()
         self.entered_turn = -1
+        self.was_blocked = False
+        # Damage from a deathtouch source is lethal regardless of amount, so it
+        # has to be remembered rather than compared against toughness later.
+        self.deathtouched = False
 
     @property
     def name(self) -> str:
@@ -138,6 +142,7 @@ class GameObject:
 
     def reset_end_of_turn(self) -> None:
         self.damage = 0
+        self.deathtouched = False
         self.temp_power = 0
         self.temp_toughness = 0
         self.granted_keywords.clear()
@@ -146,6 +151,7 @@ class GameObject:
         self.attacking = False
         self.blocking = None
         self.blocked_by = []
+        self.was_blocked = False
 
     def __repr__(self) -> str:  # pragma: no cover - debugging aid
         return f"<{self.name}#{self.id} {self.zone}{' tapped' if self.tapped else ''}>"
