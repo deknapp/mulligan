@@ -92,7 +92,7 @@ class Game:
         if len(decks) != 2:
             raise ValueError("mulligan plays two-player games")
         self.max_turns = max_turns
-        self._next_id = itertools.count(1)
+        self._last_id = 0
         rng = random.Random(seed)
         players = [Player(i, names[i], starting_life) for i in range(2)]
         self.state = GameState(players=players, rng=rng, on_the_play=on_the_play)
@@ -120,7 +120,8 @@ class Game:
     # ------------------------------------------------------------------ objects
 
     def _new_object(self, spec: CardSpec, owner: int, is_token: bool = False) -> GameObject:
-        obj = GameObject(next(self._next_id), spec, owner, is_token=is_token)
+        self._last_id += 1
+        obj = GameObject(self._last_id, spec, owner, is_token=is_token)
         self.state.objects[obj.id] = obj
         return obj
 
@@ -2017,12 +2018,11 @@ __all__ = ["Game", "IllegalAction", "ARMY", "TREASURE"]
 def clone_game(game: Game) -> Game:
     """An independent copy of a game, for search. Card specs and effects are
     immutable and shared; everything mutable is copied. The log is not."""
-    import copy
     import dataclasses
 
     new = Game.__new__(Game)
     new.max_turns = game.max_turns
-    new._next_id = copy.copy(game._next_id)
+    new._last_id = game._last_id
     old = game.state
     objects = {}
     for obj_id, obj in old.objects.items():
