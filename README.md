@@ -52,9 +52,10 @@ $ mulligan validate --set hob --ratings hob.json
 - **General strategy is hard-coded.** A heuristic agent plays sound Limited
   (curve out, remove the biggest threat, attack when no block is free, block to
   trade up). It knows nothing about any particular set.
-- **The set's particulars are learned.** A small learned correction on top of
-  the heuristic, trained by self-play against a league of its own earlier
-  versions (`mulligan train --set hob`). Plain Python, no GPU.
+- **The set's particulars are meant to be learned.** A small learned correction
+  on top of the heuristic, trained by self-play against a league of its own
+  earlier versions (`mulligan train --set hob`). Plain Python, no GPU. It trains,
+  but has not yet beaten the heuristic — see Status.
 - **Cards are data.** A set is compiled once into a JSON vocabulary — the
   mechanical fields straight from Scryfall, the rules text by a language model —
   and committed, so running the simulator needs no API key. HOB: 176/193 cards
@@ -81,7 +82,7 @@ Python 3.11+. Dependencies: `typer`, `rich`. That's all.
 | `mulligan compare A B --set hob` | which deck is better: head to head, and against the set's field |
 | `mulligan rate --set hob` | card ratings from self-play |
 | `mulligan validate --set hob --ratings r.json` | check ratings against 17Lands |
-| `mulligan train --set hob` | train the learned agent for a set |
+| `mulligan train --set hob` | train the learned agent for a set (experimental; see Status) |
 | `mulligan agents A B --deck D` | which agent is better (seat-swapped mirror matches) |
 | `mulligan play A B --set hob` | watch one game |
 | `mulligan ingest <set>` | fetch a new set from Scryfall to compile it |
@@ -91,9 +92,23 @@ Decklists use the Arena export format (`2 Grizzly Bears`, set codes ignored).
 ## Status
 
 Working: the engine, HOB, sealed deckbuilding, deck comparison, simulated
-ratings and their validation. In progress: the learned agent (it trains; whether
-it beats the heuristic by a clear margin is not established yet), and compiling
-Reality Fracture (FRA) when it releases.
+ratings and their validation.
+
+Not working yet: learning. Two approaches were tried on HOB, each evaluated
+against the heuristic on the same deck pairings with seats swapped:
+
+| approach | result vs heuristic |
+|---|---|
+| policy-gradient correction, temperature 0.5 (12 iterations × 2000 games) | 47.3% at best checkpoint after 6 — exploration noise hurt |
+| policy-gradient correction, temperature 0.15 (12 × 2000) | 48.3–50.1%, no gain |
+| heuristic with card values from simulated ratings (3 strengths) | 49.0–50.3% (±2.2%), no gain |
+
+So far the heuristic's play is the ceiling. Next ideas are in the issue
+tracker notes: a per-decision credit signal (rollouts from determinized
+states) instead of whole-game win/loss, and fixing the heuristic's known
+blind spots (big bodies, amass synergy) directly.
+
+Also next: compiling Reality Fracture (FRA) when it releases on 2026-10-02.
 
 17Lands data is used under their public data terms; card data comes from
 [Scryfall](https://scryfall.com). Magic: The Gathering is © Wizards of the

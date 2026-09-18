@@ -129,8 +129,18 @@ def _side(ref: str) -> str:
 class HeuristicAgent(Agent):
     """Scores every legal action with general Limited heuristics."""
 
-    def __init__(self, name: str = "heuristic"):
+    def __init__(self, name: str = "heuristic", card_values: dict[str, float] | None = None):
+        """``card_values`` is an optional per-card adjustment learned for a set
+        (see ``learn_values``): points added to the general value of a card,
+        which steers casting order, removal targets, trades and blocks."""
         self.name = name
+        self.card_values = card_values or {}
+
+    def _pv(self, perm: PermanentView) -> float:
+        return max(0.5, permanent_value(perm) + self.card_values.get(perm.name, 0.0))
+
+    def _sv(self, spec: CardSpec) -> float:
+        return max(0.5, spec_value(spec) + self.card_values.get(spec.name, 0.0))
 
     def choose(self, view: PlayerView, options: list[act.Action]) -> act.Action:
         if view.pending == "attackers":
@@ -187,7 +197,7 @@ class HeuristicAgent(Agent):
             # Lands are worth a lot until there are enough of them.
             return 8.0 if lands_in_hand + lands_out <= 4 else 1.0
         castable_soon = card.spec.cost.mana_value <= lands_in_hand + lands_out + 1
-        return spec_value(card.spec) + (2.0 if castable_soon else 0.0)
+        return self._sv(card.spec) + (2.0 if castable_soon else 0.0)
 
     def _land_need(self, view: PlayerView, card_id: int) -> float:
         """Prefer the land that produces the color the hand is shortest on."""
@@ -228,7 +238,7 @@ class HeuristicAgent(Agent):
             etb = self._etb_value(view, spec)
             if etb < -5:
                 return -1.0
-            return 10.0 + spec_value(spec) + etb + mv + bonus
+            return 10.0 + self._sv(spec) + etb + mv + bonus
         value = self._effects_value(view, effects, targets, source_id=action.card_id)
         if value <= 0:
             return -1.0
@@ -258,7 +268,7 @@ class HeuristicAgent(Agent):
         if perm.controller == view.seat:
             return buff if buff > 0 and not lockdown else -1.0
         if lockdown or buff < 0:
-            return permanent_value(perm) * 0.8
+            return self._pv(perm) * 0.8
         return -1.0
 
     @staticmethod
@@ -317,7 +327,7 @@ class HeuristicAgent(Agent):
                     item = next((s for s in view.stack() if s.obj_id == t.id), None)
                     if item is None or item.controller == me:
                         return -10.0
-                    worth = spec_value(item.spec) if item.spec else 2.0
+                    worth = self._sv(item.spec) if item.spec else 2.0
                     if isinstance(effect, fx.CounterSpell) and effect.unless_pay:
                         worth *= 0.5
                     total += 2.0 + worth
@@ -330,9 +340,9 @@ class HeuristicAgent(Agent):
                 if a.controller != me or b.controller == me:
                     return -10.0
                 if a.power >= b.toughness - b.damage:
-                    total += permanent_value(b)
+                    total += self._pv(b)
                 if not effect.one_sided and b.power >= a.toughness - a.damage:
-                    total -= permanent_value(a)
+                    total -= self._pv(a)
                 continue
             to = getattr(effect, "to", "")
             if to.startswith("all:"):
@@ -384,7 +394,7 @@ class HeuristicAgent(Agent):
                     total -= 2.0
                 else:
                     theirs = view.creatures(opp)
-                    total += min((permanent_value(c) for c in theirs), default=-3.0)
+                    total += min((self._pv(c) for c in theirs), default=-3.0)
             elif isinstance(effect, fx.CreateToken):
                 t = effect.token
                 per = creature_value(t.power, t.toughness, t.keywords) if "Creature" in t.types \
@@ -437,7 +447,7 @@ class HeuristicAgent(Agent):
             card = view.card(t.id)  # a card in a graveyard, e.g. reanimation
             if card is None:
                 return 0.0
-            return spec_value(card.spec) if card.owner == me else 0.5
+            return self._sv(card.spec) if card.owner == me else 0.5
         mine = perm.controller == me
         harmful = isinstance(effect, REMOVAL) or isinstance(effect, fx.DealDamage) or (
             isinstance(effect, fx.Tap) and not effect.untap) or (
@@ -448,7 +458,7 @@ class HeuristicAgent(Agent):
                 return -10.0
             if self._removes(effect, perm):
                 bonus = 0.5 if isinstance(effect, fx.ReturnToHand) else 1.0
-                return bonus * permanent_value(perm)
+                return bonus * self._pv(perm)
             if isinstance(effect, fx.Tap):
                 return 0.5 if perm.is_creature and not perm.tapped else -1.0
             return 0.2
@@ -489,9 +499,9 @@ class HeuristicAgent(Agent):
             for perm in pool(seat):
                 if isinstance(effect, fx.DealDamage):
                     if self._amount(effect.amount) >= perm.toughness - perm.damage:
-                        total += permanent_value(perm)
+                        total += self._pv(perm)
                 elif isinstance(effect, REMOVAL):
-                    total += permanent_value(perm)
+                    total += self._pv(perm)
                 elif isinstance(effect, (fx.Pump, fx.AddCounters)):
                     power = getattr(effect, "power", getattr(effect, "count", 1))
                     total += 1.0 + (power if isinstance(power, int) else 1)
@@ -518,9 +528,9 @@ class HeuristicAgent(Agent):
         if ability.sacrifice:
             fodder = [p for p in view.battlefield(view.seat) if p.id != source.id
                       and not p.is_land]
-            cost += 1.0 + min((permanent_value(p) for p in fodder), default=3.0)
+            cost += 1.0 + min((self._pv(p) for p in fodder), default=3.0)
         if ability.sacrifice_self and getattr(source, "is_creature", False):
-            cost += permanent_value(source)
+            cost += self._pv(source)
         if ability.sacrifice_self and getattr(source, "is_land", False):
             cost += 2.0 if len(view.lands(view.seat)) < 6 else 0.5
         if (ability.tap_cost and getattr(source, "is_creature", False) and view.is_my_turn
@@ -546,7 +556,7 @@ class HeuristicAgent(Agent):
                 return -1.0
             if source.attached_to is not None:  # already on something: re-equip rarely
                 return -1.0
-            return 3.0 + permanent_value(target) * 0.1
+            return 3.0 + self._pv(target) * 0.1
         if any(isinstance(e, fx.Pump) and e.to == "self" for e in ability.effects):
             # Firebreathing: only while it is attacking unblocked or in a fight.
             attacking = getattr(source, "attacking", False)
@@ -600,7 +610,7 @@ class HeuristicAgent(Agent):
                 if att_dies and not blk_dies:
                     safe = False
                     break
-                if att_dies and blk_dies and permanent_value(blk) < permanent_value(att) - 1:
+                if att_dies and blk_dies and self._pv(blk) < self._pv(att) - 1:
                     safe = False
                     break
             if safe:
@@ -638,7 +648,7 @@ class HeuristicAgent(Agent):
             candidates = [b for b in pool if can_block(view, b, att)]
             good = [b for b in candidates if combat_outcome(att, b) == (True, False)]
             trade = [b for b in candidates if combat_outcome(att, b) == (True, True)
-                     and permanent_value(b) <= permanent_value(att)]
+                     and self._pv(b) <= self._pv(att)]
             safe = [b for b in candidates if combat_outcome(att, b) == (False, False)]
             choice = None
             for group in (good, trade, safe):

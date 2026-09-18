@@ -177,3 +177,61 @@ def train(set_code: str, iterations: int = 20, games: int = 2000, eval_games: in
             history.iterations.append(entry)
             log(entry)
     return history
+
+
+# ------------------------------------------------ per-card value learning
+
+
+def values_from_ratings(stats: dict, scale: float = 3.0, shrink: int = 400,
+                        exclude_lands: bool = True, set_code: str | None = None
+                        ) -> dict[str, float]:
+    """Per-card value adjustments from simulated games-in-hand win rates.
+
+    ``adjust = scale * z * n / (n + shrink)``: a card's win rate as a z-score
+    across the set, shrunk toward zero when few games back it. ``stats`` maps
+    name -> object with ``rate`` and ``games``.
+    """
+    data = load_set(set_code) if set_code else None
+    rows = {n: s for n, s in stats.items() if s.games > 0 and not (
+        exclude_lands and data is not None and data.playable[n].is_land)}
+    total = sum(s.games for s in rows.values())
+    mean = sum(s.rate * s.games for s in rows.values()) / total
+    var = sum(s.games * (s.rate - mean) ** 2 for s in rows.values()) / total
+    sd = math.sqrt(var) or 1.0
+    return {n: round(scale * (s.rate - mean) / sd * s.games / (s.games + shrink), 3)
+            for n, s in rows.items()}
+
+
+def _values_eval_chunk(set_code: str, decks: list[list[str]], values_a: dict, values_b: dict,
+                       games: list[tuple]) -> list[float]:
+    data = load_set(set_code)
+    built = [[data.playable[n] for n in names] for names in decks]
+    scores = []
+    for deck_a, deck_b, seed in games:
+        for a_deck in (0, 1):
+            a = HeuristicAgent("a", card_values=values_a)
+            b = HeuristicAgent("b", card_values=values_b)
+            agents = (a, b) if a_deck == 0 else (b, a)
+            result = play_game(agents, (built[deck_a], built[deck_b]), seed=seed,
+                               on_the_play=seed % 2)
+            scores.append(0.5 if result.winner is None else float(result.winner == a_deck))
+    return scores
+
+
+def compare_values(set_code: str, values_a: dict, values_b: dict, pairings: int = 1000,
+                   workers: int | None = None, seed: int = 0) -> tuple[float, float, float, int]:
+    """Agent A (values_a) vs agent B (values_b), each on both decks of every
+    pairing. Returns (A's score, CI low, CI high, games)."""
+    workers = workers if workers is not None else max(1, (os.cpu_count() or 2) - 1)
+    decks = _decks(set_code, 60, EVAL_POOL_SEED)
+    rng = random.Random(9000 + seed)
+    games = []
+    for k in range(pairings):
+        a, b = rng.sample(range(len(decks)), 2)
+        games.append((a, b, 8_000_000 + seed * 100_000 + k))
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        futures = [pool.submit(_values_eval_chunk, set_code, decks, values_a, values_b, part)
+                   for part in _split(games, workers * 3)]
+        scores = [s for f in futures for s in f.result()]
+    low, high = wilson(sum(scores), len(scores))
+    return sum(scores) / len(scores), low, high, len(scores)
