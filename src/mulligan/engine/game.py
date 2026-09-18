@@ -304,6 +304,9 @@ class Game:
         if head.startswith("count"):
             factor = int(head[6:]) if head.startswith("count*") else 1
             return factor * self.count(rest, ctx.controller, ctx.source_id)
+        if head == "mv":
+            objs = ctx.objects(self, rest)
+            return objs[0].spec.cost.mana_value if objs else 0
         if head in ("power", "toughness"):
             objs = ctx.objects(self, rest)
             if not objs:
@@ -798,6 +801,19 @@ class Game:
         order = sorted(range(len(sources)),
                        key=lambda i: (sources[i][3], self.is_creature(sources[i][0]),
                                       len(_unit_options(sources[i][2][0]))))
+        # Generic mana comes from the sources whose colors the rest of the hand
+        # needs least, so paying for one spell does not strand the next.
+        demand: Counter[str] = Counter()
+        for obj_id in self.state.players[seat].hand:
+            for symbol, n in self.state.objects[obj_id].spec.cost.pips:
+                for part in pip_options(symbol):
+                    demand[part] += n
+
+        def generic_rank(i: int):
+            colors = set().union(*(_unit_options(u) for u in sources[i][2]))
+            return (sources[i][3], self.is_creature(sources[i][0]),
+                    sum(demand[c] for c in colors) / max(1, len(colors)))
+        generic_order = sorted(order, key=generic_rank)
         pips: list[frozenset[str]] = []
         for symbol, count in cost.pips:
             pips.extend([frozenset(pip_options(symbol))] * count)
@@ -848,7 +864,7 @@ class Game:
                 spent[symbol] += take
                 floating[symbol] -= take
                 owed -= take
-        for i in order:
+        for i in generic_order:
             if owed <= 0:
                 break
             if i in used:
@@ -1178,17 +1194,30 @@ class Game:
         return True
 
     def _blocker_options(self, seat: int) -> list[act.Action]:
+        """Menace needs care in an incremental declaration: a first blocker on
+        a menace attacker is offered only if a second one is available, and a
+        half-made menace block must be completed before anything else is
+        declared. Otherwise a player could strand the declaration with no
+        legal way to finish it."""
         assigned = {b for b, _ in self.state.blocks_declared}
+        free = [b for b in self.creatures_of(seat) if not b.tapped and b.id not in assigned]
+        counts = Counter(a for _, a in self.state.blocks_declared)
+        half_done = [a for a in self.state.attackers_declared if counts[a] == 1
+                     and self.has_keyword(self.state.obj(a), Keyword.MENACE)]
         options: list[act.Action] = []
-        for blocker in self.creatures_of(seat):
-            if blocker.tapped or blocker.id in assigned:
-                continue
-            for attacker_id in self.state.attackers_declared:
+        for blocker in free:
+            for attacker_id in half_done or self.state.attackers_declared:
                 attacker = self.state.obj(attacker_id)
                 if attacker.zone != "battlefield":
                     continue
-                if self.can_block_attacker(blocker, attacker):
-                    options.append(act.DeclareBlocker(blocker.id, attacker_id))
+                if not self.can_block_attacker(blocker, attacker):
+                    continue
+                if (counts[attacker_id] == 0 and self.has_keyword(attacker, Keyword.MENACE)
+                        and not any(other is not blocker
+                                    and self.can_block_attacker(other, attacker)
+                                    for other in free)):
+                    continue
+                options.append(act.DeclareBlocker(blocker.id, attacker_id))
         if self._blocks_are_legal():
             options.append(act.FinishDeclaring())
         return options

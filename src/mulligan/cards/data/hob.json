@@ -1,0 +1,7193 @@
+{
+ "code": "hob",
+ "name": "The Hobbit",
+ "released": "2026-08-14",
+ "compiled_by": "Claude (Opus 5) in a Claude Code session, 2026-09-18; skeleton fields by mulligan.cards.compiler.skeleton",
+ "cards": [
+  {
+   "name": "Long-Bodied Grey Dog",
+   "cost": "{3}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dog"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "keywords": [
+    "flash",
+    "reach"
+   ],
+   "rarity": "common",
+   "collector_number": "1",
+   "arena_id": 103368,
+   "color_identity": [],
+   "oracle": "Flash\nReach\nWhen this creature enters, create a tapped Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure",
+       "tapped": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Old Thrush",
+   "cost": "{2}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird"
+   ],
+   "power": 1,
+   "toughness": 2,
+   "keywords": [
+    "flying"
+   ],
+   "rarity": "common",
+   "collector_number": "2",
+   "arena_id": 103369,
+   "color_identity": [],
+   "oracle": "Flying\nWhen this creature enters, you gain 2 life. You may search your library for a basic land card, reveal it, then shuffle and put that card on top.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "gain_life",
+       "amount": 2
+      },
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "top"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Troop of Ponies",
+   "cost": "{2}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Horse"
+   ],
+   "power": 2,
+   "toughness": 1,
+   "rarity": "uncommon",
+   "collector_number": "3",
+   "arena_id": 103370,
+   "color_identity": [],
+   "oracle": "{2}, {T}, Sacrifice this creature: Search your library for up to two basic land cards, reveal them, put one onto the battlefield tapped and the other into your hand, then shuffle.",
+   "abilities": [
+    {
+     "cost": "{2}",
+     "tap": true,
+     "sacrifice_self": true,
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "battlefield_tapped"
+      },
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "hand"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Belladonna Took",
+   "cost": "{1}{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Citizen"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "4",
+   "arena_id": 103371,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Whenever a token you control enters, you gain 1 life if this is the first time this ability has resolved this turn. If it's the second time, draw a card. If it's the third time, put a +1/+1 counter on each creature you control.",
+   "unsupported": "counts resolutions of its own trigger each turn"
+  },
+  {
+   "name": "Bilbo's Gambit",
+   "cost": "{1}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "rare",
+   "collector_number": "5",
+   "arena_id": 103372,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Gift a Treasure (You may promise an opponent a gift as you cast this spell. If you do, they create a Treasure token before its other effects. It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")\nReturn target spell to its owner's hand. If the gift was promised, players can't cast spells this turn.",
+   "targets": [
+    "spell"
+   ],
+   "effects": [
+    {
+     "op": "return_spell"
+    }
+   ],
+   "approximations": [
+    "the gift is omitted"
+   ]
+  },
+  {
+   "name": "Bofur, Reliable Guardian",
+   "cost": "{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Scout"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "keywords": [
+    "lifelink"
+   ],
+   "adventure": {
+    "name": "Concerted Care",
+    "cost": "{1}{W}",
+    "types": [
+     "Instant"
+    ],
+    "subtypes": [],
+    "targets": [
+     "artifact|creature:yours"
+    ],
+    "effects": [
+     {
+      "op": "pump",
+      "keywords": [
+       "hexproof",
+       "indestructible"
+      ]
+     }
+    ]
+   },
+   "rarity": "uncommon",
+   "collector_number": "6",
+   "arena_id": 103373,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "[Bofur, Reliable Guardian] Lifelink\n[Concerted Care] Target artifact or creature you control gains hexproof and indestructible until end of turn. (Then exile this card. You may cast the creature later from exile.)"
+  },
+  {
+   "name": "Celebrate the Mountain-king",
+   "cost": "{3}{W}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "7",
+   "arena_id": 103375,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "When this enchantment enters, for each opponent, exile up to one target nonland permanent that player controls until this enchantment leaves the battlefield.\nWhen this enchantment enters, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "exile",
+       "until_source_leaves": true
+      }
+     ],
+     "targets": [
+      {
+       "sel": "nonland:theirs",
+       "optional": true
+      }
+     ]
+    },
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dáin, Lord of the Iron Hills",
+   "cost": "{1}{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Noble"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "keywords": [
+    "vigilance"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "8",
+   "arena_id": 103376,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Vigilance\nStoried (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nAs long as you have an enduring story, creatures can't attack you unless their controller pays {1} for each of those creatures.",
+   "storied": true,
+   "approximations": [
+    "the enduring-story attack tax is omitted"
+   ]
+  },
+  {
+   "name": "Dwarven Provisioner",
+   "cost": "{1}{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Citizen"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "common",
+   "collector_number": "9",
+   "arena_id": 103377,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "{3}{W}: Creatures you control get +1/+1 until end of turn.",
+   "abilities": [
+    {
+     "cost": "{3}{W}",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "toughness": 1,
+       "to": "all:creature:yours"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dwarven Shortsword",
+   "cost": "{3}{W}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "common",
+   "collector_number": "10",
+   "arena_id": 103378,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "When this Equipment enters, create a 2/2 red Dwarf creature token, then attach this Equipment to it.\nEquipped creature gets +1/+2.\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 1,
+     "toughness": 2
+    }
+   ],
+   "equip": "{2}",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Dwarf",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Dwarf"
+        ],
+        "colors": [
+         "R"
+        ]
+       },
+       "attach_self": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Eagle of the Great Shelf",
+   "cost": "{4}{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird",
+    "Soldier"
+   ],
+   "power": 2,
+   "toughness": 5,
+   "keywords": [
+    "flying"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "11",
+   "arena_id": 103379,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Flying\nWhenever this creature attacks, it gets +1/+1 until end of turn for each other creature you control.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "pump",
+       "power": "count:creature:yours,other",
+       "toughness": "count:creature:yours,other",
+       "to": "self"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Eagles Are Coming!",
+   "cost": "{1}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "rare",
+   "collector_number": "12",
+   "arena_id": 103380,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Kicker {2}{W}{W} (You may pay an additional {2}{W}{W} as you cast this spell.)\nChoose target creature you own. If this spell was kicked, instead choose any number of target creatures you own. Return each chosen creature to your hand. At the beginning of the next upkeep, create a 4/4 white Bird Soldier creature token with flying for each creature returned to your hand this way.",
+   "unsupported": "variable targets with a delayed token count"
+  },
+  {
+   "name": "Esgaroth Garrison",
+   "cost": "{4}{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Soldier"
+   ],
+   "toughness": 5,
+   "rarity": "common",
+   "collector_number": "13",
+   "arena_id": 103381,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Esgaroth Garrison's power is equal to the number of creatures you control.\nWhen this creature enters, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "power_expr": "count:creature:yours",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fíli the Pathfinder",
+   "cost": "{3}{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Scout"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "14",
+   "arena_id": 103382,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Storied (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nAs long as you have an enduring story, creatures you control get +1/+1.\nWhenever Fíli or another nontoken Dwarf you control enters, create a 2/2 red Dwarf creature token.",
+   "storied": true,
+   "statics": [
+    {
+     "affects": "all:creature:yours",
+     "power": 1,
+     "toughness": 1,
+     "if": {
+      "kind": "enduring_story"
+     }
+    }
+   ],
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Dwarf",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Dwarf"
+        ],
+        "colors": [
+         "R"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Dwarf",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Dwarf"
+        ],
+        "colors": [
+         "R"
+        ]
+       }
+      }
+     ],
+     "filter": "creature:subtype=Dwarf,!token"
+    }
+   ]
+  },
+  {
+   "name": "Gleaming Splendor",
+   "cost": "{1}{W}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "mythic",
+   "collector_number": "15",
+   "arena_id": 103383,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Whenever an opponent draws their second card each turn, you create a Treasure token.\n{2}{W}: Two target players each draw a card.",
+   "triggers": [
+    {
+     "when": "opp_draw_second",
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{2}{W}",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1,
+       "who": "each_player"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Iron Hills Blacksmith",
+   "cost": "{1}{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Artificer"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "keywords": [
+    "double strike"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "16",
+   "arena_id": 103384,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Double strike\nWhen this creature enters, create a colorless Equipment artifact token named Axe with \"Equipped creature gets +1/+0\" and equip {2}.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Axe",
+        "types": [
+         "Artifact"
+        ],
+        "subtypes": [
+         "Equipment"
+        ],
+        "kind": "equipment",
+        "equip_cost": "{2}",
+        "equip_power": 1
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kíli the Resourceful",
+   "cost": "{1}{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Scout"
+   ],
+   "power": 1,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "17",
+   "arena_id": 103385,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Storied (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nAs long as you have an enduring story, you may pay {0} rather than pay the equip cost of the first equip ability you activate each turn.\nWhenever another Dwarf or Equipment you control enters, draw a card. This ability triggers only once each turn.",
+   "storied": true,
+   "triggers": [
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ],
+     "filter": "creature|artifact:subtype=Dwarf|Equipment",
+     "once_per_turn": true
+    }
+   ],
+   "approximations": [
+    "the free-equip ability is omitted"
+   ]
+  },
+  {
+   "name": "Lake-town Lookout",
+   "cost": "{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Scout"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "rarity": "common",
+   "collector_number": "18",
+   "arena_id": 103386,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "When this creature dies, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "triggers": [
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lake-town Toymaker",
+   "cost": "{3}{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Artificer"
+   ],
+   "power": 3,
+   "toughness": 4,
+   "rarity": "uncommon",
+   "collector_number": "19",
+   "arena_id": 103387,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "At the beginning of combat on your turn, if you've drawn two or more cards this turn, another target creature you control gets +3/+0 and gains first strike until end of turn.",
+   "triggers": [
+    {
+     "when": "begin_combat",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 3,
+       "keywords": [
+        "first strike"
+       ]
+      }
+     ],
+     "targets": [
+      "creature:yours,other"
+     ],
+     "if": {
+      "kind": "drawn_this_turn",
+      "n": 2
+     }
+    }
+   ]
+  },
+  {
+   "name": "Magnificent End",
+   "cost": "{4}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "20",
+   "arena_id": 103388,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "This spell costs {3} less to cast if it targets a tapped creature.\nMagnificent End deals 5 damage to target creature.",
+   "targets": [
+    "creature"
+   ],
+   "effects": [
+    {
+     "op": "damage",
+     "amount": 5
+    }
+   ],
+   "cost_reduction": 3,
+   "cost_reduction_if": {
+    "kind": "target_matches",
+    "filter": "creature:tapped"
+   }
+  },
+  {
+   "name": "Moment of Glory",
+   "cost": "{W}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "common",
+   "collector_number": "21",
+   "arena_id": 103389,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Put a +1/+1 counter on target creature you control. If this spell was cast from a graveyard, also put a +1/+1 counter on each other creature you control.\nFlashback {4}{W} (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
+   "targets": [
+    "creature:yours"
+   ],
+   "effects": [
+    {
+     "op": "counters",
+     "count": 1,
+     "to": "target"
+    },
+    {
+     "op": "if",
+     "cond": {
+      "kind": "cast_from_graveyard"
+     },
+     "then": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "all:creature:yours"
+      }
+     ]
+    }
+   ],
+   "flashback": "{4}{W}",
+   "approximations": [
+    "flashback also adds a second counter to the target"
+   ]
+  },
+  {
+   "name": "The Mountain-king's Return",
+   "cost": "{2}{W}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "22",
+   "arena_id": 103390,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\nI — Recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)\nII — Return target creature card with mana value 3 or less from your graveyard to the battlefield.\nIII — Put a +1/+1 counter on up to one target creature.",
+   "chapters": [
+    {
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    },
+    {
+     "targets": [
+      "creature:zone=graveyard,yours,mv<=3"
+     ],
+     "effects": [
+      {
+       "op": "reanimate"
+      }
+     ]
+    },
+    {
+     "targets": [
+      {
+       "sel": "creature",
+       "optional": true
+      }
+     ],
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ori, Keeper of Songs",
+   "cost": "{2}{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Bard"
+   ],
+   "power": 3,
+   "toughness": 3,
+   "rarity": "common",
+   "collector_number": "23",
+   "arena_id": 103391,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Storied (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nAs long as you have an enduring story, Ori gets +1/+0 and has vigilance.",
+   "storied": true,
+   "statics": [
+    {
+     "affects": "self",
+     "power": 1,
+     "keywords": [
+      "vigilance"
+     ],
+     "if": {
+      "kind": "enduring_story"
+     }
+    }
+   ]
+  },
+  {
+   "name": "The Queen of Dale",
+   "cost": "{1}{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Noble"
+   ],
+   "power": 2,
+   "toughness": 1,
+   "rarity": "mythic",
+   "collector_number": "24",
+   "arena_id": 103392,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Whenever an opponent casts their first noncreature spell each turn, you recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "triggers": [
+    {
+     "when": "opp_cast_noncreature",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ],
+     "once_per_turn": true
+    }
+   ]
+  },
+  {
+   "name": "Roads Go Ever, Ever On",
+   "cost": "{1}{W}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "rare",
+   "collector_number": "25",
+   "arena_id": 103393,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\nI — Search your library for up to two basic Plains cards, exile them, then shuffle. You gain 2 life.\nII, III — Put a card exiled with this Saga into its owner's hand.\nIV — Whenever you attack this turn, target creature you control gets +1/+1 until end of turn for each Plains you control.",
+   "unsupported": "tracks cards exiled with the Saga"
+  },
+  {
+   "name": "Settle the Wreckage",
+   "cost": "{2}{W}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "rare",
+   "collector_number": "26",
+   "arena_id": 103394,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Exile all attacking creatures target player controls. That player may search their library for that many basic land cards, put those cards onto the battlefield tapped, then shuffle.",
+   "targets": [
+    "opponent"
+   ],
+   "effects": [
+    {
+     "op": "exile",
+     "to": "all:creature:attacking,theirs"
+    }
+   ],
+   "approximations": [
+    "the opponent's basic-land search is omitted"
+   ]
+  },
+  {
+   "name": "Stone by Sunlight",
+   "cost": "{1}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "27",
+   "arena_id": 103395,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Choose one —\n• Destroy target creature with power 4 or greater.\n• Until end of turn, target creature becomes an artifact in addition to its other types and gains indestructible. (Damage and effects that say \"destroy\" don't destroy it.)",
+   "modes": [
+    {
+     "targets": [
+      "creature:power>=4"
+     ],
+     "effects": [
+      {
+       "op": "destroy"
+      }
+     ],
+     "text": "Destroy target creature with power 4 or greater."
+    },
+    {
+     "targets": [
+      "creature"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "keywords": [
+        "indestructible"
+       ]
+      }
+     ],
+     "text": "Target creature gains indestructible until end of turn."
+    }
+   ],
+   "approximations": [
+    "the becomes-an-artifact part of mode two is omitted"
+   ]
+  },
+  {
+   "name": "Thorin's Last Stand",
+   "cost": "{2}{W}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "28",
+   "arena_id": 103396,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Choose one —\n• Creatures you control get +2/+1 until end of turn.\n• Destroy target artifact or enchantment. You gain 2 life.",
+   "modes": [
+    {
+     "effects": [
+      {
+       "op": "pump",
+       "power": 2,
+       "toughness": 1,
+       "to": "all:creature:yours"
+      }
+     ],
+     "text": "Creatures you control get +2/+1 until end of turn."
+    },
+    {
+     "targets": [
+      "artifact|enchantment"
+     ],
+     "effects": [
+      {
+       "op": "destroy"
+      },
+      {
+       "op": "gain_life",
+       "amount": 2
+      }
+     ],
+     "text": "Destroy target artifact or enchantment. You gain 2 life."
+    }
+   ]
+  },
+  {
+   "name": "An Unexpected Party",
+   "cost": "{2}{W}{W}",
+   "types": [
+    "Enchantment"
+   ],
+   "adventure": {
+    "name": "At the Door",
+    "cost": "{X}{2}{W}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": []
+   },
+   "rarity": "rare",
+   "collector_number": "29",
+   "arena_id": 103397,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "[An Unexpected Party] As this enchantment enters, choose a creature type.\nCreatures you control of the chosen type get +2/+2.\n[At the Door] Create X 2/2 red Dwarf creature tokens. (Then exile this card. You may cast the enchantment later from exile.)",
+   "unsupported": "choose a creature type"
+  },
+  {
+   "name": "Velvetwing Butterflies",
+   "cost": "{2}{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Insect"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "keywords": [
+    "flying"
+   ],
+   "adventure": {
+    "name": "Gaze in Wonder",
+    "cost": "{1}{W}",
+    "types": [
+     "Instant"
+    ],
+    "subtypes": [],
+    "targets": [
+     "creature",
+     {
+      "sel": "creature",
+      "optional": true
+     }
+    ],
+    "effects": [
+     {
+      "op": "tap"
+     }
+    ]
+   },
+   "rarity": "common",
+   "collector_number": "30",
+   "arena_id": 103399,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "[Velvetwing Butterflies] Flying\n[Gaze in Wonder] Tap one or two target creatures. (Then exile this card. You may cast the creature later from exile.)"
+  },
+  {
+   "name": "Vow to Erebor",
+   "cost": "{1}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "31",
+   "arena_id": 103401,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Untap target creature you control. It gets +2/+2 until end of turn. If it's a Dwarf, you may attach an Equipment you control to it.",
+   "targets": [
+    "creature:yours"
+   ],
+   "effects": [
+    {
+     "op": "tap",
+     "untap": true
+    },
+    {
+     "op": "pump",
+     "power": 2,
+     "toughness": 2
+    }
+   ],
+   "approximations": [
+    "the optional Equipment attach for a Dwarf is omitted"
+   ]
+  },
+  {
+   "name": "Bilbo, Luckwearer",
+   "cost": "{1}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Rogue"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "rarity": "uncommon",
+   "collector_number": "32",
+   "arena_id": 103402,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "[Bilbo, Luckwearer] Bilbo can't be blocked.\nWhenever Bilbo deals combat damage to a player, draw a card, then discard a card.\n[Burglar's Plot] Exchange control of two target nonland permanents that share a card type. (Then exile this card. You may cast the creature later from exile.)",
+   "statics": [
+    {
+     "affects": "self",
+     "flags": [
+      "unblockable"
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "when": "combat_damage_player",
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 1,
+       "discard": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the Burglar's Plot adventure is omitted"
+   ]
+  },
+  {
+   "name": "Bilbo, Thief in the Night",
+   "cost": "{1}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Rogue"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "mythic",
+   "collector_number": "33",
+   "arena_id": 103404,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Spells you cast from anywhere other than your hand cost {1} less to cast.\nWhenever Bilbo attacks, you may cast an artifact, instant, or sorcery spell from your graveyard. If an instant or sorcery spell cast this way would be put into your graveyard, exile it instead.",
+   "unsupported": "casting from the graveyard on attack"
+  },
+  {
+   "name": "Bilbo Baggins, Burglar",
+   "cost": "{2}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Rogue"
+   ],
+   "power": 2,
+   "toughness": 1,
+   "adventure": {
+    "name": "Take a Glance",
+    "cost": "{U}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "scry",
+      "count": 2
+     }
+    ]
+   },
+   "rarity": "common",
+   "collector_number": "34",
+   "arena_id": 103405,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "[Bilbo Baggins, Burglar] When Bilbo Baggins enters, draw a card.\n[Take a Glance] Scry 2. (Then exile this card. You may cast the creature later from exile.)",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Confusticate and Bebother",
+   "cost": "{2}{U}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "35",
+   "arena_id": 103407,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Choose one —\n• Counter target spell unless its controller pays {4}.\n• Draw two cards, then discard a card.",
+   "modes": [
+    {
+     "targets": [
+      "spell"
+     ],
+     "effects": [
+      {
+       "op": "counter",
+       "unless_pay": 4
+      }
+     ],
+     "text": "Counter target spell unless its controller pays {4}."
+    },
+    {
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 2,
+       "discard": 1
+      }
+     ],
+     "text": "Draw two cards, then discard a card."
+    }
+   ]
+  },
+  {
+   "name": "Elrond, Moon-Reader",
+   "cost": "{2}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Noble"
+   ],
+   "power": 3,
+   "toughness": 3,
+   "rarity": "mythic",
+   "collector_number": "36",
+   "arena_id": 103408,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Whenever you activate an ability of a creature, draw a card. This ability triggers only once each turn.\n{5}{U}{U}: Exile up to two other target nonland permanents you control. Return those cards to the battlefield under their owner's control at the beginning of the next end step.",
+   "approximations": [
+    "both abilities are omitted"
+   ]
+  },
+  {
+   "name": "Elven Raft-Steerer",
+   "cost": "{2}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Pilot"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "rarity": "uncommon",
+   "collector_number": "37",
+   "arena_id": 103409,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Landfall — Whenever a land you control enters, choose one —\n• Tap target creature an opponent controls.\n• Untap target creature you control.",
+   "triggers": [
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "tap"
+      }
+     ],
+     "targets": [
+      "creature:theirs"
+     ]
+    }
+   ],
+   "approximations": [
+    "modal trigger: always taps an opposing creature"
+   ]
+  },
+  {
+   "name": "Elvenking's Harper",
+   "cost": "{1}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Bard"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "common",
+   "collector_number": "38",
+   "arena_id": 103410,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "{4}{U}: Target creature can't be blocked this turn.",
+   "abilities": [
+    {
+     "cost": "{4}{U}",
+     "targets": [
+      "creature"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "flags": [
+        "unblockable"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Enchanted River's Grasp",
+   "cost": "{2}{U}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "rarity": "common",
+   "collector_number": "39",
+   "arena_id": 103411,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Enchant creature\nWhen this Aura enters, tap enchanted creature and remove all counters from it.\nEnchanted creature loses all abilities and doesn't untap during its controller's untap step.",
+   "enchant": "creature",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "tap",
+       "to": "enchanted"
+      },
+      {
+       "op": "remove_counters",
+       "to": "enchanted"
+      }
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "enchanted",
+     "flags": [
+      "loses_abilities",
+      "doesnt_untap"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fateful Discovery",
+   "cost": "{3}{U}{U}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "mythic",
+   "collector_number": "40",
+   "arena_id": 103412,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Whenever an artifact you control enters, draw a card.",
+   "triggers": [
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ],
+     "filter": "artifact"
+    }
+   ]
+  },
+  {
+   "name": "Gandalf, Wandering Wizard",
+   "cost": "{4}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Avatar",
+    "Wizard"
+   ],
+   "power": 4,
+   "toughness": 5,
+   "ward": 3,
+   "rarity": "common",
+   "collector_number": "41",
+   "arena_id": 103413,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Ward {3} (Whenever this creature becomes the target of a spell or ability an opponent controls, counter it unless that player pays {3}.)\n{6}: Gandalf's owner shuffles him into their library and draws three cards.",
+   "abilities": [
+    {
+     "cost": "{6}",
+     "effects": [
+      {
+       "op": "shuffle_into_library",
+       "to": "self"
+      },
+      {
+       "op": "draw",
+       "count": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Great Gilded Boat",
+   "cost": "{2}{U}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Vehicle"
+   ],
+   "power": 4,
+   "toughness": 4,
+   "rarity": "rare",
+   "collector_number": "42",
+   "arena_id": 103414,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Whenever you attack, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)\nCrew 2 (Tap any number of creatures you control with total power 2 or more: This Vehicle becomes an artifact creature until end of turn.)",
+   "unsupported": "Vehicles (crew) are not modelled"
+  },
+  {
+   "name": "Lakeshore Apothecary",
+   "cost": "{1}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Cleric"
+   ],
+   "power": 1,
+   "toughness": 2,
+   "keywords": [
+    "vigilance"
+   ],
+   "rarity": "common",
+   "collector_number": "43",
+   "arena_id": 103415,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Vigilance\nWhenever you draw your second card each turn, put a +1/+1 counter on this creature.",
+   "triggers": [
+    {
+     "when": "draw_second",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "self"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lake-town Mariners",
+   "cost": "{4}{U}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Citizen"
+   ],
+   "power": 6,
+   "toughness": 5,
+   "keywords": [
+    "vigilance"
+   ],
+   "ward": 2,
+   "rarity": "uncommon",
+   "collector_number": "44",
+   "arena_id": 103416,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "[Lake-town Mariners] Vigilance\nWard {2} (Whenever this creature becomes the target of a spell or ability an opponent controls, counter it unless that player pays {2}.)\n[Gone Fishing] Exile two target creatures and/or lands you control, then return them to the battlefield under their owner's control.",
+   "approximations": [
+    "the Gone Fishing adventure is omitted"
+   ]
+  },
+  {
+   "name": "Long Lake Nuisance",
+   "cost": "{3}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird"
+   ],
+   "power": 3,
+   "toughness": 1,
+   "keywords": [
+    "flying"
+   ],
+   "rarity": "common",
+   "collector_number": "45",
+   "arena_id": 103418,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Flying\nWhen this creature enters, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Lord of the Eagles",
+   "cost": "{7}{U}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird",
+    "Noble"
+   ],
+   "power": 8,
+   "toughness": 8,
+   "keywords": [
+    "flash",
+    "flying"
+   ],
+   "rarity": "rare",
+   "collector_number": "46",
+   "arena_id": 103419,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Flash\nThis spell costs {X} less to cast, where X is the total power of creatures you control with flying.\nFlying",
+   "approximations": [
+    "the flier cost reduction is omitted"
+   ]
+  },
+  {
+   "name": "Master's Councillors",
+   "cost": "{1}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Advisor"
+   ],
+   "power": 1,
+   "toughness": 3,
+   "keywords": [
+    "vigilance"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "47",
+   "arena_id": 103420,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Vigilance\nThis creature gets +2/+0 for each graveyard with seven or more cards in it.\nWhenever you draw your second card each turn, target player mills three cards. (They put the top three cards of their library into their graveyard.)",
+   "triggers": [
+    {
+     "when": "draw_second",
+     "effects": [
+      {
+       "op": "mill",
+       "count": 3,
+       "who": "target_player"
+      }
+     ],
+     "targets": [
+      "opponent"
+     ]
+    }
+   ],
+   "approximations": [
+    "the seven-card-graveyard bonus is omitted"
+   ]
+  },
+  {
+   "name": "Mirkwood Meditator",
+   "cost": "{2}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Druid"
+   ],
+   "power": 2,
+   "toughness": 4,
+   "rarity": "common",
+   "collector_number": "48",
+   "arena_id": 103421,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Landfall — Whenever a land you control enters, you may have this creature's base power and toughness become 4/2 until end of turn.",
+   "triggers": [
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "set_base_pt",
+       "power": 4,
+       "toughness": 2
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the optional 4/2 switch always happens"
+   ]
+  },
+  {
+   "name": "Most Decrepit Old Bird",
+   "cost": "{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "keywords": [
+    "flying"
+   ],
+   "adventure": {
+    "name": "Speak Secrets",
+    "cost": "{1}{U}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "look",
+      "count": 4,
+      "filter": "card:type=instant|sorcery",
+      "take": 1,
+      "rest": "graveyard"
+     }
+    ]
+   },
+   "rarity": "rare",
+   "collector_number": "49",
+   "arena_id": 103422,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "[Most Decrepit Old Bird] Flying\nThreshold — This creature gets +1/+1 as long as there are seven or more cards in your graveyard.\n[Speak Secrets] Mill four cards, then put an instant or sorcery card from among them into your hand.",
+   "statics": [
+    {
+     "affects": "self",
+     "power": 1,
+     "toughness": 1,
+     "if": {
+      "kind": "graveyard",
+      "n": 7
+     }
+    }
+   ]
+  },
+  {
+   "name": "Old Fat Spider Can't See Me",
+   "cost": "{2}{U}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "50",
+   "arena_id": 103424,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\nI — Target creature you control gains hexproof for as long as this Saga remains on the battlefield.\nII — Prevent all damage that would be dealt by up to one target creature for as long as this Saga remains on the battlefield.\nIII, IV — Draw a card.",
+   "chapters": [
+    {
+     "targets": [
+      "creature:yours"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "keywords": [
+        "hexproof"
+       ]
+      }
+     ]
+    },
+    {
+     "effects": []
+    },
+    {
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "chapter I lasts one turn; chapter II's damage prevention is omitted"
+   ]
+  },
+  {
+   "name": "Plunder the Trollshaws",
+   "cost": "{1}{U}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "51",
+   "arena_id": 103425,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Draw a card. If this spell was cast from a graveyard, draw two cards instead.\nFlashback {3}{U} (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
+   "effects": [
+    {
+     "op": "if",
+     "cond": {
+      "kind": "cast_from_graveyard"
+     },
+     "then": [
+      {
+       "op": "draw",
+       "count": 2
+      }
+     ],
+     "otherwise": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "flashback": "{3}{U}"
+  },
+  {
+   "name": "Ravenhill Flock",
+   "cost": "{3}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird"
+   ],
+   "power": 1,
+   "toughness": 2,
+   "keywords": [
+    "flying"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "52",
+   "arena_id": 103426,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Flying\nWhenever you draw a card, put a +1/+1 counter on this creature.",
+   "triggers": [
+    {
+     "when": "draw",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "self"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Riddles in the Dark",
+   "cost": "{2}{U}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "rare",
+   "collector_number": "53",
+   "arena_id": 103427,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Look at the top four cards of your library and separate them into a face-down pile and a face-up pile. An opponent chooses one of the piles. Put that pile into your hand and the other into your graveyard.",
+   "effects": [
+    {
+     "op": "draw",
+     "count": 2
+    },
+    {
+     "op": "mill",
+     "count": 2
+    }
+   ],
+   "approximations": [
+    "the opponent-chooses-a-pile split is approximated as draw two, mill two"
+   ]
+  },
+  {
+   "name": "Roll-Roll-Roll-Roll",
+   "cost": "{2}{U}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "rare",
+   "collector_number": "54",
+   "arena_id": 103428,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\nI, II, III, IV — Exile up to one target creature or land you control. If you do, return it to the battlefield under its owner's control at the beginning of the next end step.",
+   "unsupported": "delayed flicker of your own permanents"
+  },
+  {
+   "name": "Sound the Trumpets",
+   "cost": "{1}{U}{U}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "55",
+   "arena_id": 103429,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Counter target spell. If that spell's mana value was 2 or less, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "targets": [
+    "spell"
+   ],
+   "effects": [
+    {
+     "op": "if",
+     "cond": {
+      "kind": "target_matches",
+      "filter": "card:mv<=2"
+     },
+     "then": [
+      {
+       "op": "recruit"
+      }
+     ]
+    },
+    {
+     "op": "counter"
+    }
+   ]
+  },
+  {
+   "name": "Thranduil's Decree",
+   "cost": "{4}{U}{U}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "56",
+   "arena_id": 103430,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Counter target spell. If a permanent spell is countered this way, exile it instead of putting it into its owner's graveyard. You may cast that card without paying its mana cost for as long as it remains exiled.",
+   "targets": [
+    "spell"
+   ],
+   "effects": [
+    {
+     "op": "counter"
+    }
+   ],
+   "approximations": [
+    "the exile-and-cast-for-free part is omitted"
+   ]
+  },
+  {
+   "name": "Uncover the Moon-Letters",
+   "cost": "{3}{U}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "rare",
+   "collector_number": "57",
+   "arena_id": 103431,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Whenever you cast a noncreature spell, you may draw X cards, where X is the amount of mana spent to cast that spell. If you do, discard two cards.",
+   "unsupported": "X draw from mana spent"
+  },
+  {
+   "name": "Uneasy Partings",
+   "cost": "{3}{U}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "58",
+   "arena_id": 103432,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "This spell costs {1} less to cast if it targets an attacking nontoken creature.\nTarget creature's owner puts it on their choice of the top or bottom of their library.",
+   "targets": [
+    "creature"
+   ],
+   "effects": [
+    {
+     "op": "put_on_library"
+    }
+   ],
+   "cost_reduction": 1,
+   "cost_reduction_if": {
+    "kind": "target_matches",
+    "filter": "creature:attacking,!token"
+   },
+   "approximations": [
+    "the owner always chooses the top of the library"
+   ]
+  },
+  {
+   "name": "Wizard's Staff",
+   "cost": "{1}{U}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "rare",
+   "collector_number": "59",
+   "arena_id": 103433,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "Equipped creature has prowess. (Whenever its controller casts a noncreature spell, that creature gets +1/+1 until end of turn.)\nIf a triggered ability of equipped creature triggers, that ability triggers an additional time.\nEquip Wizard {1}\nEquip {3}",
+   "unsupported": "prowess and trigger doubling"
+  },
+  {
+   "name": "Along the Crooked Way",
+   "cost": "{2}{B}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "rare",
+   "collector_number": "60",
+   "arena_id": 103434,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "When this enchantment enters, return target creature card from your graveyard to your hand.\nWhenever a creature card leaves your graveyard, amass Goblins 1.\n{1}{B}: Goblins and Orcs you control gain menace until end of turn.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "bounce"
+      }
+     ],
+     "targets": [
+      "creature:zone=graveyard,yours"
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{1}{B}",
+     "effects": [
+      {
+       "op": "pump",
+       "keywords": [
+        "menace"
+       ],
+       "to": "all:creature:yours,subtype=Goblin|Orc"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the leaves-graveyard amass trigger is omitted"
+   ]
+  },
+  {
+   "name": "Azog, Moria's Ruin",
+   "cost": "{2}{B}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 1,
+   "toughness": 3,
+   "rarity": "rare",
+   "collector_number": "61",
+   "arena_id": 103435,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "When Azog enters, destroy up to one other target creature. Its controller amasses Goblins X, where X is that creature's power. If you controlled that creature, draw a card. (To amass Goblins X, that player puts X +1/+1 counters on an Army they control. It's also a Goblin. If they don't control an Army, they create a 0/0 black Goblin Army creature token first.)",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "amass",
+       "count": "power:target0",
+       "who": "controller_of_target"
+      },
+      {
+       "op": "destroy",
+       "to": "target0"
+      }
+     ],
+     "targets": [
+      {
+       "sel": "creature:other",
+       "optional": true
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the draw if you controlled it is omitted"
+   ]
+  },
+  {
+   "name": "Bilbo's Deadly Slice",
+   "cost": "{1}{B}{B}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "62",
+   "arena_id": 103436,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Destroy target creature.",
+   "targets": [
+    "creature"
+   ],
+   "effects": [
+    {
+     "op": "destroy"
+    }
+   ]
+  },
+  {
+   "name": "Crude Bent Blade",
+   "cost": "{2}{B}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "common",
+   "collector_number": "63",
+   "arena_id": 103437,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "When this Equipment enters, target opponent sacrifices a creature of their choice.\nEquipped creature gets +2/+1.\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 2,
+     "toughness": 1
+    }
+   ],
+   "equip": "{2}",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "sacrifice",
+       "filter": "creature",
+       "who": "each_opponent"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Desolation Prowler",
+   "cost": "{1}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "uncommon",
+   "collector_number": "64",
+   "arena_id": 103438,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Pay 2 life: This creature gets +2/+2 until end of turn. Activate only once each turn.",
+   "abilities": [
+    {
+     "life": 2,
+     "once_per_turn": true,
+     "effects": [
+      {
+       "op": "pump",
+       "power": 2,
+       "toughness": 2,
+       "to": "self"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Down, Down to Goblin-town",
+   "cost": "{2}{B}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "65",
+   "arena_id": 103439,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\nI — Target opponent reveals their hand. You choose a nonland card from it. That player discards that card.\nII — Amass Goblins 1. (Put a +1/+1 counter on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)\nIII, IV — Target opponent loses 1 life and you gain 1 life.",
+   "chapters": [
+    {
+     "effects": [
+      {
+       "op": "discard",
+       "count": 1,
+       "who": "each_opponent"
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "amass",
+       "count": 1
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "lose_life",
+       "amount": 1,
+       "who": "each_opponent"
+      },
+      {
+       "op": "gain_life",
+       "amount": 1
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "lose_life",
+       "amount": 1,
+       "who": "each_opponent"
+      },
+      {
+       "op": "gain_life",
+       "amount": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "chapter I: the opponent picks the discard, not you"
+   ]
+  },
+  {
+   "name": "Dreaded Bat-Cloud",
+   "cost": "{4}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bat"
+   ],
+   "power": 4,
+   "toughness": 2,
+   "keywords": [
+    "deathtouch",
+    "flying"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "66",
+   "arena_id": 103440,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "This spell costs {3} less to cast if a creature died this turn.\nFlying, deathtouch",
+   "cost_reduction": 3,
+   "cost_reduction_if": {
+    "kind": "creature_died_this_turn"
+   }
+  },
+  {
+   "name": "Front Porch Sentries",
+   "cost": "{1}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "common",
+   "collector_number": "67",
+   "arena_id": 103441,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "When this creature dies, target creature an opponent controls gets -1/-1 until end of turn.",
+   "triggers": [
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "pump",
+       "power": -1,
+       "toughness": -1
+      }
+     ],
+     "targets": [
+      "creature:theirs"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gathering of Darkness",
+   "cost": "{3}{B}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "68",
+   "arena_id": 103442,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Return up to one target creature card from your graveyard to your hand.\nAmass Goblins 3. (Put three +1/+1 counters on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "targets": [
+    {
+     "sel": "creature:zone=graveyard,yours",
+     "optional": true
+    }
+   ],
+   "effects": [
+    {
+     "op": "bounce",
+     "to": "target0"
+    },
+    {
+     "op": "amass",
+     "count": 3
+    }
+   ]
+  },
+  {
+   "name": "Gnashing of Teeth",
+   "cost": "{1}{B}{B}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "69",
+   "arena_id": 103443,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Choose one —\n• Target creature gets -5/-5 until end of turn. If that creature would die this turn, exile it instead.\n• Creatures target player controls get -1/-1 until end of turn.",
+   "modes": [
+    {
+     "targets": [
+      "creature"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "power": -5,
+       "toughness": -5
+      }
+     ],
+     "text": "Target creature gets -5/-5 until end of turn."
+    },
+    {
+     "targets": [
+      "opponent"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "power": -1,
+       "toughness": -1,
+       "to": "all:creature:theirs"
+      }
+     ],
+     "text": "Creatures target opponent controls get -1/-1 until end of turn."
+    }
+   ],
+   "approximations": [
+    "the exile-instead rider is omitted"
+   ]
+  },
+  {
+   "name": "Gollum, Riddle Master",
+   "cost": "{1}{B}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Horror"
+   ],
+   "power": 3,
+   "toughness": 1,
+   "rarity": "mythic",
+   "collector_number": "70",
+   "arena_id": 103444,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "As Gollum enters, choose odd or even. (Zero is even.)\nWhenever an opponent casts a spell with mana value of the chosen quality, choose one that hasn't been chosen —\n• Put a +1/+1 counter on Gollum.\n• Each opponent loses 2 life and you gain 2 life.\n• Draw a card.",
+   "unsupported": "odd/even choice and one-time modes"
+  },
+  {
+   "name": "Gollum, Silent Slinker",
+   "cost": "{3}{B}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Horror"
+   ],
+   "power": 4,
+   "toughness": 3,
+   "keywords": [
+    "menace"
+   ],
+   "adventure": {
+    "name": "Meager Meal",
+    "cost": "{B}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "targets": [
+     {
+      "sel": "creature",
+      "optional": true
+     },
+     "player"
+    ],
+    "effects": [
+     {
+      "op": "counters",
+      "count": 1,
+      "to": "target0"
+     },
+     {
+      "op": "gain_life",
+      "amount": 2,
+      "who": "target1"
+     }
+    ]
+   },
+   "rarity": "common",
+   "collector_number": "71",
+   "arena_id": 103445,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "[Gollum, Silent Slinker] Menace (This creature can't be blocked except by two or more creatures.)\n[Meager Meal] Put a +1/+1 counter on up to one target creature. Target player gains 2 life. (Then exile this card. You may cast the creature later from exile.)"
+  },
+  {
+   "name": "Gollum the Abandoned",
+   "cost": "{1}{B}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Horror"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "uncommon",
+   "collector_number": "72",
+   "arena_id": 103447,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Gollum can't block.\nWhen Gollum enters, exile up to one target card from an opponent's graveyard. Each opponent loses 2 life.\n{2}, Sacrifice an artifact or creature: Return this card from your graveyard to your hand. Activate only as a sorcery.",
+   "statics": [
+    {
+     "affects": "self",
+     "flags": [
+      "cant_block"
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "exile",
+       "to": "target0"
+      },
+      {
+       "op": "lose_life",
+       "amount": 2,
+       "who": "each_opponent"
+      }
+     ],
+     "targets": [
+      {
+       "sel": "card:zone=graveyard,theirs",
+       "optional": true
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the return-from-graveyard ability is omitted"
+   ]
+  },
+  {
+   "name": "Great Fierce Bee",
+   "cost": "{2}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Insect"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "keywords": [
+    "flying"
+   ],
+   "rarity": "common",
+   "collector_number": "73",
+   "arena_id": 103448,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Flying\nWhenever one or more other creatures die, scry 1. (Look at the top card of your library. You may put that card on the bottom.)",
+   "triggers": [
+    {
+     "when": "any_dies",
+     "effects": [
+      {
+       "op": "scry",
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "triggers once per creature, not per batch"
+   ]
+  },
+  {
+   "name": "Great Ugly-Looking Goblin",
+   "cost": "{5}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 4,
+   "toughness": 4,
+   "adventure": {
+    "name": "Clap! Snap!",
+    "cost": "{1}{B}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "amass",
+      "count": 2
+     }
+    ]
+   },
+   "rarity": "uncommon",
+   "collector_number": "74",
+   "arena_id": 103449,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "[Great Ugly-Looking Goblin] Each creature you control with a +1/+1 counter on it has menace. (It can't be blocked except by two or more creatures.)\n[Clap! Snap!] Amass Goblins 2. (Then exile this card. You may cast the creature later from exile.)",
+   "statics": [
+    {
+     "affects": "all:creature:yours,counters",
+     "keywords": [
+      "menace"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Head of the Hunt",
+   "cost": "{2}{B}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 4,
+   "toughness": 3,
+   "keywords": [
+    "flash"
+   ],
+   "rarity": "rare",
+   "collector_number": "75",
+   "arena_id": 103451,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Flash\nIf a creature an opponent controls would die, exile it instead. When you do, create a 2/2 green Wolf creature token.",
+   "triggers": [
+    {
+     "when": "any_dies",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Wolf",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Wolf"
+        ],
+        "colors": [
+         "G"
+        ]
+       }
+      }
+     ],
+     "if": {
+      "kind": "it_matches",
+      "filter": "card:theirs"
+     }
+    }
+   ],
+   "approximations": [
+    "dying creatures are not exiled"
+   ]
+  },
+  {
+   "name": "Inside Information",
+   "cost": "{X}{B}{B}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "mythic",
+   "collector_number": "76",
+   "arena_id": 103452,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Exile the top X cards of target opponent's library. You may play those cards this turn. If you cast a spell this way, pay life equal to its mana value rather than pay its mana cost.",
+   "unsupported": "X spells"
+  },
+  {
+   "name": "The Master of Lake-town",
+   "cost": "{1}{B}{B}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Advisor"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "keywords": [
+    "deathtouch"
+   ],
+   "rarity": "rare",
+   "collector_number": "77",
+   "arena_id": 103453,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Deathtouch\nWhenever a player loses life, that player mills that many cards. (Damage causes loss of life.)\nWhen The Master of Lake-town dies, draw a card for each graveyard with seven or more cards in it.",
+   "approximations": [
+    "the mill and graveyard-draw triggers are omitted"
+   ]
+  },
+  {
+   "name": "Nighthowl Pursuer",
+   "cost": "{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "keywords": [
+    "menace"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "78",
+   "arena_id": 103454,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Menace (This creature can't be blocked except by two or more creatures.)\nFerocious — Whenever this creature attacks while you control a creature with power 4 or greater, this creature gets +2/+2 until end of turn.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 2,
+       "toughness": 2,
+       "to": "self"
+      }
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,power>=4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Rage into the Valley",
+   "cost": "{2}{B}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "common",
+   "collector_number": "79",
+   "arena_id": 103455,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "You draw a card and lose 1 life.\nAmass Goblins 2. (Put two +1/+1 counters on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "effects": [
+    {
+     "op": "draw",
+     "count": 1
+    },
+    {
+     "op": "lose_life",
+     "amount": 1
+    },
+    {
+     "op": "amass",
+     "count": 2
+    }
+   ]
+  },
+  {
+   "name": "Ravening Warg",
+   "cost": "{1}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "keywords": [
+    "deathtouch"
+   ],
+   "rarity": "common",
+   "collector_number": "80",
+   "arena_id": 103456,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Deathtouch\nFerocious — Whenever this creature attacks while you control a creature with power 4 or greater, you gain 2 life.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "gain_life",
+       "amount": 2
+      }
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,power>=4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Reverent Howl",
+   "cost": "{2}{B}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "81",
+   "arena_id": 103457,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Choose one —\n• Target player draws two cards and loses 2 life.\n• Target creature gets +2/+2 and gains lifelink until end of turn.",
+   "modes": [
+    {
+     "targets": [
+      "player"
+     ],
+     "effects": [
+      {
+       "op": "draw",
+       "count": 2,
+       "who": "target_player"
+      },
+      {
+       "op": "lose_life",
+       "amount": 2,
+       "who": "target_player"
+      }
+     ],
+     "text": "Target player draws two cards and loses 2 life."
+    },
+    {
+     "targets": [
+      "creature"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "power": 2,
+       "toughness": 2,
+       "keywords": [
+        "lifelink"
+       ]
+      }
+     ],
+     "text": "Target creature gets +2/+2 and gains lifelink until end of turn."
+    }
+   ]
+  },
+  {
+   "name": "Rhovanion Rampager",
+   "cost": "{2}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "82",
+   "arena_id": 103458,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Whenever this creature attacks, you may sacrifice another creature. If you do, put a number of +1/+1 counters on this creature equal to the sacrificed creature's power.\nWhen this creature dies, amass Goblins X, where X is this creature's power. (Put X +1/+1 counters on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "triggers": [
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "amass",
+       "count": "power:self"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the attack sacrifice is omitted"
+   ]
+  },
+  {
+   "name": "The Sackville-Bagginses",
+   "cost": "{1}{B}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Citizen"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "83",
+   "arena_id": 103459,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "When The Sackville-Bagginses enter, you may sacrifice another creature or artifact. If you do, draw a card and create a Treasure token.\nWhenever you sacrifice a token, target opponent loses 1 life.",
+   "approximations": [
+    "both triggered abilities are omitted"
+   ]
+  },
+  {
+   "name": "Stir Up Trouble",
+   "cost": "{B}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "common",
+   "collector_number": "84",
+   "arena_id": 103460,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "As an additional cost to cast this spell, sacrifice an artifact or creature or pay {4}.\nDestroy target creature.",
+   "targets": [
+    "creature"
+   ],
+   "effects": [
+    {
+     "op": "destroy"
+    }
+   ],
+   "additional_costs": [
+    {
+     "sacrifice": "artifact|creature"
+    },
+    {
+     "cost": "{4}"
+    }
+   ]
+  },
+  {
+   "name": "Stony-Voiced Goblins",
+   "cost": "{1}{B}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Bard"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "rarity": "common",
+   "collector_number": "85",
+   "arena_id": 103461,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "When this creature enters, each opponent discards a card.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "discard",
+       "count": 1,
+       "who": "each_opponent"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Supper for Spiders",
+   "cost": "{1}{B}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "rare",
+   "collector_number": "86",
+   "arena_id": 103462,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "Put onto the battlefield under your control all creature cards in your opponents' graveyards that were put there from the battlefield this turn. They are Food artifacts with \"{2}, {T}, Sacrifice this artifact: You gain 3 life.\" (They lose all other types and subtypes.)",
+   "unsupported": "steals creature cards as Food"
+  },
+  {
+   "name": "Balin, Loremaster",
+   "cost": "{3}{R}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Bard"
+   ],
+   "power": 4,
+   "toughness": 4,
+   "rarity": "rare",
+   "collector_number": "87",
+   "arena_id": 103463,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Storied (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nWhenever Balin or another Dwarf you control enters, you may discard your hand. Draw X cards, where X is the number of cards discarded this way. If you have an enduring story, Balin deals X damage to each opponent.",
+   "approximations": [
+    "the discard-and-draw trigger is omitted"
+   ]
+  },
+  {
+   "name": "Bombur, Gentle Dreamer",
+   "cost": "{2}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Bard"
+   ],
+   "power": 5,
+   "toughness": 3,
+   "rarity": "uncommon",
+   "collector_number": "88",
+   "arena_id": 103464,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Storied (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nBombur doesn't untap during your untap step unless you have an enduring story.",
+   "storied": true,
+   "statics": [
+    {
+     "affects": "self",
+     "flags": [
+      "doesnt_untap"
+     ],
+     "if": {
+      "kind": "enduring_story",
+      "negate": true
+     }
+    }
+   ]
+  },
+  {
+   "name": "Bothersome Noisemaker",
+   "cost": "{1}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Bard"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "uncommon",
+   "collector_number": "89",
+   "arena_id": 103465,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Whenever you cast a noncreature spell, amass Goblins 1. (Put a +1/+1 counter on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "triggers": [
+    {
+     "when": "cast_noncreature",
+     "effects": [
+      {
+       "op": "amass",
+       "count": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Burn, Burn, Tree and Fern",
+   "cost": "{3}{R}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "90",
+   "arena_id": 103466,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\nI — This Saga deals 6 damage to target creature an opponent controls.\nII — Destroy target artifact an opponent controls.\nIII, IV — Add {R}.",
+   "chapters": [
+    {
+     "targets": [
+      "creature:theirs"
+     ],
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 6
+      }
+     ]
+    },
+    {
+     "targets": [
+      "artifact:theirs"
+     ],
+     "effects": [
+      {
+       "op": "destroy"
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "add_mana",
+       "symbols": [
+        "R"
+       ]
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "add_mana",
+       "symbols": [
+        "R"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dáin Ironfoot",
+   "cost": "{2}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 1,
+   "toughness": 4,
+   "rarity": "rare",
+   "collector_number": "91",
+   "arena_id": 103467,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "When Dáin enters, create a colorless Equipment artifact token named Axe with \"Equipped creature gets +1/+0\" and equip {2}. When you do, attach it to target creature you control.\nWhenever Dáin attacks, each equipped attacking creature gains double strike until end of turn.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Axe",
+        "types": [
+         "Artifact"
+        ],
+        "subtypes": [
+         "Equipment"
+        ],
+        "kind": "equipment",
+        "equip_cost": "{2}",
+        "equip_power": 1
+       }
+      }
+     ]
+    },
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "pump",
+       "keywords": [
+        "double strike"
+       ],
+       "to": "all:creature:attacking,equipped"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the Axe is not attached on entry"
+   ]
+  },
+  {
+   "name": "Desert Were-Worm",
+   "cost": "{4}{R}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dragon",
+    "Wurm"
+   ],
+   "power": 0,
+   "toughness": 5,
+   "rarity": "rare",
+   "collector_number": "92",
+   "arena_id": 103468,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "This creature gets +2/+0 for each Mountain you control.\nWhenever you attack with creatures with total power 12 or greater for the first time each turn, untap all attacking creatures. After this phase, there is an additional combat phase.",
+   "statics": [
+    {
+     "affects": "self",
+     "power": "count*2:land:yours,subtype=Mountain"
+    }
+   ],
+   "approximations": [
+    "the extra combat is omitted"
+   ]
+  },
+  {
+   "name": "Desolation of Smaug",
+   "cost": "{2}{R}{R}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "rare",
+   "collector_number": "93",
+   "arena_id": 103469,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Desolation of Smaug deals 3 damage to each non-Dragon creature.\nAdd four mana in any combination of colors. Spend this mana only to cast Dragon spells.",
+   "effects": [
+    {
+     "op": "damage",
+     "amount": 3,
+     "to": "all:creature:!subtype=Dragon"
+    }
+   ],
+   "approximations": [
+    "the Dragon-only mana is omitted"
+   ]
+  },
+  {
+   "name": "Dori, Bearer of Friends",
+   "cost": "{2}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "keywords": [
+    "trample"
+   ],
+   "rarity": "common",
+   "collector_number": "94",
+   "arena_id": 103470,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Trample\nWhen Dori enters, create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dwarven Mauler",
+   "cost": "{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 2,
+   "toughness": 1,
+   "rarity": "uncommon",
+   "collector_number": "95",
+   "arena_id": 103471,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Equip abilities you activate that target this creature cost {2} less to activate.",
+   "approximations": [
+    "the equip discount is omitted"
+   ]
+  },
+  {
+   "name": "Gandalf, Goblins' Bane",
+   "cost": "{2}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Avatar",
+    "Wizard"
+   ],
+   "power": 2,
+   "toughness": 3,
+   "rarity": "mythic",
+   "collector_number": "96",
+   "arena_id": 103472,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "[Gandalf, Goblins' Bane] Whenever you cast a noncreature spell, Gandalf gets +1/+1 until end of turn and deals 1 damage to each opponent.\n[Flameshape] Look at the top two cards of your library and exile them face down. For as long as they remain exiled, you may play them if you control a Wizard.",
+   "triggers": [
+    {
+     "when": "cast_noncreature",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "toughness": 1,
+       "to": "self"
+      },
+      {
+       "op": "damage",
+       "amount": 1,
+       "to": "each_opponent"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the Flameshape adventure is omitted"
+   ]
+  },
+  {
+   "name": "Gandalf, Spark Starter",
+   "cost": "{4}{R}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Avatar",
+    "Wizard"
+   ],
+   "power": 4,
+   "toughness": 3,
+   "keywords": [
+    "reach"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "97",
+   "arena_id": 103474,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Reach\nWhen Gandalf enters, he deals 3 damage divided as you choose among one, two, or three targets.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 3
+      }
+     ],
+     "targets": [
+      "any_target"
+     ]
+    }
+   ],
+   "approximations": [
+    "3 damage to one target, not divided"
+   ]
+  },
+  {
+   "name": "Getaway Barrel",
+   "cost": "{3}{R}",
+   "types": [
+    "Artifact"
+   ],
+   "rarity": "rare",
+   "collector_number": "98",
+   "arena_id": 103475,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "When this artifact is put into a graveyard from the battlefield, reveal the top thirteen cards of your library. Put a random creature card from among them onto the battlefield. Put the rest on the bottom of your library in a random order.",
+   "unsupported": "random creature from the library"
+  },
+  {
+   "name": "Glóin the Mighty",
+   "cost": "{3}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 4,
+   "toughness": 3,
+   "adventure": {
+    "name": "Easy Pickings",
+    "cost": "{2}{R}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "damage",
+      "amount": 1,
+      "to": "all:creature:theirs"
+     }
+    ]
+   },
+   "rarity": "uncommon",
+   "collector_number": "99",
+   "arena_id": 103476,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "[Glóin the Mighty] At the beginning of your first main phase, add {R}{R}.\n[Easy Pickings] Easy Pickings deals 1 damage to each creature your opponents control. (Then exile this card. You may cast the creature later from exile.)",
+   "triggers": [
+    {
+     "when": "first_main",
+     "effects": [
+      {
+       "op": "add_mana",
+       "symbols": [
+        "R",
+        "R"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Goblin-town Flunkies",
+   "cost": "{1}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "keywords": [
+    "haste"
+   ],
+   "rarity": "common",
+   "collector_number": "100",
+   "arena_id": 103478,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Haste\nWhen this creature enters, amass Goblins 1. (Put a +1/+1 counter on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "amass",
+       "count": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gundabad Opportunist",
+   "cost": "{3}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Rogue"
+   ],
+   "power": 4,
+   "toughness": 2,
+   "rarity": "common",
+   "collector_number": "101",
+   "arena_id": 103479,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "When this creature enters, exile the top card of your library. Until the end of your next turn, you may play that card.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "impulse",
+       "count": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Iron Hills Stalwart",
+   "cost": "{4}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 4,
+   "toughness": 5,
+   "keywords": [
+    "reach",
+    "trample"
+   ],
+   "rarity": "common",
+   "collector_number": "102",
+   "arena_id": 103480,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Reach, trample\nWhen this creature enters, attach target Equipment you control to up to one target creature you control.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "attach",
+       "to": "target1",
+       "what": "target0"
+      }
+     ],
+     "targets": [
+      "artifact:yours,subtype=Equipment",
+      {
+       "sel": "creature:yours",
+       "optional": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Last Light of Durin's Day",
+   "cost": "{1}{R}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "rare",
+   "collector_number": "103",
+   "arena_id": 103481,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Whenever a Mountain you control enters, put a quest counter on this enchantment. If it has six or more quest counters on it, sacrifice it. If you do, search your hand and/or library for a Dragon card and put it onto the battlefield. If you search your library this way, shuffle.\nMountaincycling {2} ({2}, Discard this card: Search your library for a Mountain card, reveal it, put it into your hand, then shuffle.)",
+   "unsupported": "quest counters and Dragon tutoring"
+  },
+  {
+   "name": "The Misty Mountains Cold",
+   "cost": "{2}{R}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "rare",
+   "collector_number": "104",
+   "arena_id": 103482,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\nI, II, III, IV — Create a Treasure token. Then if you control four or more Treasures, sacrifice this Saga. If you do, create a 6/6 red Dragon creature token with flying. (A Treasure token is an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+   "chapters": [
+    {
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      },
+      {
+       "op": "if",
+       "cond": {
+        "kind": "control",
+        "n": 4,
+        "filter": "artifact:subtype=Treasure"
+       },
+       "then": [
+        {
+         "op": "sacrifice_self"
+        },
+        {
+         "op": "token",
+         "token": {
+          "name": "Dragon",
+          "power": 6,
+          "toughness": 6,
+          "subtypes": [
+           "Dragon"
+          ],
+          "colors": [
+           "R"
+          ],
+          "keywords": [
+           "flying"
+          ]
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      },
+      {
+       "op": "if",
+       "cond": {
+        "kind": "control",
+        "n": 4,
+        "filter": "artifact:subtype=Treasure"
+       },
+       "then": [
+        {
+         "op": "sacrifice_self"
+        },
+        {
+         "op": "token",
+         "token": {
+          "name": "Dragon",
+          "power": 6,
+          "toughness": 6,
+          "subtypes": [
+           "Dragon"
+          ],
+          "colors": [
+           "R"
+          ],
+          "keywords": [
+           "flying"
+          ]
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      },
+      {
+       "op": "if",
+       "cond": {
+        "kind": "control",
+        "n": 4,
+        "filter": "artifact:subtype=Treasure"
+       },
+       "then": [
+        {
+         "op": "sacrifice_self"
+        },
+        {
+         "op": "token",
+         "token": {
+          "name": "Dragon",
+          "power": 6,
+          "toughness": 6,
+          "subtypes": [
+           "Dragon"
+          ],
+          "colors": [
+           "R"
+          ],
+          "keywords": [
+           "flying"
+          ]
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      },
+      {
+       "op": "if",
+       "cond": {
+        "kind": "control",
+        "n": 4,
+        "filter": "artifact:subtype=Treasure"
+       },
+       "then": [
+        {
+         "op": "sacrifice_self"
+        },
+        {
+         "op": "token",
+         "token": {
+          "name": "Dragon",
+          "power": 6,
+          "toughness": 6,
+          "subtypes": [
+           "Dragon"
+          ],
+          "colors": [
+           "R"
+          ],
+          "keywords": [
+           "flying"
+          ]
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Misty Mountains Raider",
+   "cost": "{4}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 4,
+   "toughness": 4,
+   "rarity": "uncommon",
+   "collector_number": "105",
+   "arena_id": 103483,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Whenever you attack, amass Goblins 2. (Put two +1/+1 counters on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "triggers": [
+    {
+     "when": "you_attack",
+     "effects": [
+      {
+       "op": "amass",
+       "count": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Óin the Brave",
+   "cost": "{1}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 1,
+   "toughness": 3,
+   "rarity": "common",
+   "collector_number": "106",
+   "arena_id": 103484,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Storied (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nAs long as you have an enduring story, Óin gets +1/+0 and has haste.\n{1}, {T}, Discard a card: Draw a card.",
+   "storied": true,
+   "statics": [
+    {
+     "affects": "self",
+     "power": 1,
+     "keywords": [
+      "haste"
+     ],
+     "if": {
+      "kind": "enduring_story"
+     }
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{1}",
+     "tap": true,
+     "discard": 1,
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pinecone Strike",
+   "cost": "{1}{R}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "107",
+   "arena_id": 103485,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Choose one or both —\n• Pinecone Strike deals 3 damage to target creature. If that creature would die this turn, exile it instead.\n• Destroy target artifact token.",
+   "modes": [
+    {
+     "targets": [
+      "creature"
+     ],
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 3
+      }
+     ],
+     "text": "3 damage to target creature."
+    },
+    {
+     "targets": [
+      "artifact:token"
+     ],
+     "effects": [
+      {
+       "op": "destroy"
+      }
+     ],
+     "text": "Destroy target artifact token."
+    },
+    {
+     "targets": [
+      "creature",
+      "artifact:token"
+     ],
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 3,
+       "to": "target0"
+      },
+      {
+       "op": "destroy",
+       "to": "target1"
+      }
+     ],
+     "text": "Both."
+    }
+   ],
+   "approximations": [
+    "the exile-instead-of-dying rider is omitted"
+   ]
+  },
+  {
+   "name": "Ragged Short Spear",
+   "cost": "{1}{R}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "common",
+   "collector_number": "108",
+   "arena_id": 103486,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "When this Equipment enters, you may discard a card. If you do, draw two cards.\nEquipped creature gets +2/+0.\nEquip {3} ({3}: Attach to target creature you control. Equip only as a sorcery.)",
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 2,
+     "toughness": 0
+    }
+   ],
+   "equip": "{3}",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 2,
+       "discard": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Smaug, the Great Calamity",
+   "cost": "{5}{R}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dragon"
+   ],
+   "power": 5,
+   "toughness": 5,
+   "keywords": [
+    "flying"
+   ],
+   "adventure": {
+    "name": "Spew Flame",
+    "cost": "{4}{R}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "targets": [
+     "creature"
+    ],
+    "effects": [
+     {
+      "op": "damage",
+      "amount": 5
+     }
+    ]
+   },
+   "rarity": "common",
+   "collector_number": "109",
+   "arena_id": 103487,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "[Smaug, the Great Calamity] Flying\n[Spew Flame] Spew Flame deals 5 damage to target creature. (Then exile this card. You may cast the creature later from exile.)"
+  },
+  {
+   "name": "Smaug the Magnificent",
+   "cost": "{2}{R}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dragon"
+   ],
+   "power": 4,
+   "toughness": 3,
+   "keywords": [
+    "flying",
+    "haste"
+   ],
+   "rarity": "mythic",
+   "collector_number": "110",
+   "arena_id": 103489,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Flying, haste\nWhenever Smaug attacks, he deals damage equal to the number of Treasures you control to any target.\nAt the beginning of your upkeep, create a Treasure token.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "damage",
+       "amount": "count:artifact:yours,subtype=Treasure"
+      }
+     ],
+     "targets": [
+      "any_target"
+     ]
+    },
+    {
+     "when": "upkeep",
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Smaug's Fury",
+   "cost": "{1}{R}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "111",
+   "arena_id": 103490,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Target creature gets +3/+0 and gains reach and first strike until end of turn.",
+   "targets": [
+    "creature"
+   ],
+   "effects": [
+    {
+     "op": "pump",
+     "power": 3,
+     "keywords": [
+      "reach",
+      "first strike"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Snowslope Hunter",
+   "cost": "{2}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Ranger"
+   ],
+   "power": 2,
+   "toughness": 3,
+   "rarity": "uncommon",
+   "collector_number": "112",
+   "arena_id": 103491,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Sacrifice another creature or artifact: Exile the top card of your library. You may play it until the end of your next turn. Activate only during your turn and only once each turn.",
+   "abilities": [
+    {
+     "sacrifice": "creature|artifact",
+     "once_per_turn": true,
+     "sorcery": true,
+     "effects": [
+      {
+       "op": "impulse",
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "activation limited to sorcery timing"
+   ]
+  },
+  {
+   "name": "Stone-Giant of High Pass",
+   "cost": "{5}{R}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Giant"
+   ],
+   "power": 7,
+   "toughness": 7,
+   "rarity": "rare",
+   "collector_number": "113",
+   "arena_id": 103492,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Whenever this creature enters or attacks, create a 3/1 colorless Wall artifact creature token with defender named Stone Boulder.\n{2}{R}, Sacrifice an artifact: This creature deals 4 damage to any target.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Stone Boulder",
+        "power": 3,
+        "toughness": 1,
+        "types": [
+         "Artifact",
+         "Creature"
+        ],
+        "subtypes": [
+         "Wall"
+        ],
+        "keywords": [
+         "defender"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Stone Boulder",
+        "power": 3,
+        "toughness": 1,
+        "types": [
+         "Artifact",
+         "Creature"
+        ],
+        "subtypes": [
+         "Wall"
+        ],
+        "keywords": [
+         "defender"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{2}{R}",
+     "sacrifice": "artifact",
+     "targets": [
+      "any_target"
+     ],
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Thorin, Mountain-king",
+   "cost": "{3}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Noble"
+   ],
+   "power": 3,
+   "toughness": 4,
+   "keywords": [
+    "trample"
+   ],
+   "rarity": "mythic",
+   "collector_number": "114",
+   "arena_id": 103493,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Trample\nWhen Thorin enters, attach any number of target Equipment you control to target creature you control. When one or more Equipment become attached to that creature this way, that creature deals damage equal to its power to up to one target creature.",
+   "approximations": [
+    "the equipment-attach ETB is omitted"
+   ]
+  },
+  {
+   "name": "Tidings of War",
+   "cost": "{R}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "common",
+   "collector_number": "115",
+   "arena_id": 103494,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Amass Goblins 1. If this spell was cast from a graveyard, amass Goblins 3 instead. (To amass Goblins X, put X +1/+1 counters on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)\nFlashback {3}{R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
+   "effects": [
+    {
+     "op": "if",
+     "cond": {
+      "kind": "cast_from_graveyard"
+     },
+     "then": [
+      {
+       "op": "amass",
+       "count": 3
+      }
+     ],
+     "otherwise": [
+      {
+       "op": "amass",
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "flashback": "{3}{R}"
+  },
+  {
+   "name": "Attercop",
+   "cost": "{1}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Spider"
+   ],
+   "power": 2,
+   "toughness": 1,
+   "keywords": [
+    "deathtouch",
+    "reach"
+   ],
+   "rarity": "common",
+   "collector_number": "116",
+   "arena_id": 103495,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Reach, deathtouch\nLandfall — Whenever a land you control enters, this creature gets +1/+1 until end of turn.",
+   "triggers": [
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "toughness": 1,
+       "to": "self"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bejeweled Warg",
+   "cost": "{1}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "keywords": [
+    "trample"
+   ],
+   "rarity": "rare",
+   "collector_number": "117",
+   "arena_id": 103496,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Trample\nWhenever this creature deals combat damage to a player, choose one —\n• Put a +1/+1 counter on target Wolf you control.\n• Create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+   "triggers": [
+    {
+     "when": "combat_damage_player",
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "modal trigger: always makes a Treasure"
+   ]
+  },
+  {
+   "name": "Beorn, Reluctant Host",
+   "cost": "{4}{G}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Bear",
+    "Shapeshifter"
+   ],
+   "power": 5,
+   "toughness": 5,
+   "keywords": [
+    "trample"
+   ],
+   "adventure": {
+    "name": "Till and Tend",
+    "cost": "{1}{G}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "additional_land"
+     }
+    ]
+   },
+   "rarity": "common",
+   "collector_number": "118",
+   "arena_id": 103497,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "[Beorn, Reluctant Host] Trample\n[Till and Tend] You may play an additional land this turn. (Then exile this card. You may cast the creature later from exile.)"
+  },
+  {
+   "name": "Beorn the Fierce",
+   "cost": "{3}{G}{G}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bear",
+    "Shapeshifter",
+    "Warrior"
+   ],
+   "power": 6,
+   "toughness": 6,
+   "keywords": [
+    "trample"
+   ],
+   "rarity": "mythic",
+   "collector_number": "119",
+   "arena_id": 103499,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Trample\nOther Bears you control get +2/+2.\nAt the beginning of combat on your turn, put a trample counter on up to one target creature you control. It becomes a Bear in addition to its other types. Then if you control three or more Bears, draw two cards.",
+   "statics": [
+    {
+     "affects": "all:creature:yours,other,subtype=Bear",
+     "power": 2,
+     "toughness": 2
+    }
+   ],
+   "triggers": [
+    {
+     "when": "begin_combat",
+     "effects": [
+      {
+       "op": "pump",
+       "keywords": [
+        "trample"
+       ]
+      }
+     ],
+     "targets": [
+      {
+       "sel": "creature:yours",
+       "optional": true
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "trample counter lasts a turn; Bear and draw parts omitted"
+   ]
+  },
+  {
+   "name": "Beorn's Hospitality",
+   "cost": "{1}{G}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "120",
+   "arena_id": 103500,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Landfall — Whenever a land you control enters, put a +1/+1 counter on target creature you control.\n{5}{G}{G}: This enchantment becomes a Bear creature in addition to its other types and gains \"This creature's power and toughness are each equal to the number of lands you control.\" (This effect doesn't end.)",
+   "triggers": [
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1
+      }
+     ],
+     "targets": [
+      "creature:yours"
+     ]
+    }
+   ],
+   "approximations": [
+    "the become-a-Bear ability is omitted"
+   ]
+  },
+  {
+   "name": "Boughside Wanderers",
+   "cost": "{4}{G}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Scout"
+   ],
+   "power": 4,
+   "toughness": 4,
+   "rarity": "common",
+   "collector_number": "121",
+   "arena_id": 103501,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "When this creature enters, look at the top four cards of your library. You may reveal a permanent card from among them and put it into your hand. Put the rest on the bottom of your library in a random order.\nLandfall — Whenever a land you control enters, this creature gets +2/+2 until end of turn.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "look",
+       "count": 4,
+       "filter": "permanent",
+       "take": 1
+      }
+     ]
+    },
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 2,
+       "toughness": 2,
+       "to": "self"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cantankerous Keepers",
+   "cost": "{5}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Soldier"
+   ],
+   "power": 4,
+   "toughness": 3,
+   "rarity": "rare",
+   "collector_number": "122",
+   "arena_id": 103502,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Affinity for Elves (This spell costs {1} less to cast for each Elf you control.)\nWhen this creature enters, mill four cards, then put all Elf cards from among them into your hand.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "look",
+       "count": 4,
+       "filter": "card:subtype=Elf",
+       "take": 4,
+       "rest": "graveyard"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "affinity for Elves is omitted"
+   ]
+  },
+  {
+   "name": "Dancing from Dark to Dawn",
+   "cost": "{3}{G}{G}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "mythic",
+   "collector_number": "123",
+   "arena_id": 103503,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Whenever you cast a creature spell, put X +1/+1 counters on target creature you control, where X is that spell's mana value.\nLandfall — Whenever a land you control enters, create a 2/2 green Bear creature token.",
+   "triggers": [
+    {
+     "when": "cast_creature",
+     "effects": [
+      {
+       "op": "counters",
+       "count": "mv:it"
+      }
+     ],
+     "targets": [
+      "creature:yours"
+     ]
+    },
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Bear",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Bear"
+        ],
+        "colors": [
+         "G"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Down in the Valley",
+   "cost": "{2}{G}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Saga"
+   ],
+   "rarity": "rare",
+   "collector_number": "124",
+   "arena_id": 103504,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\nI — Search your library for a basic land card, reveal it, put it into your hand, then shuffle.\nII — This Saga gains \"Landfall — Whenever a land you control enters, create a 1/1 green Elf creature token.\"\nIII, IV — Elves you control get +1/+0 and gain vigilance until end of turn.",
+   "chapters": [
+    {
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "hand"
+      }
+     ]
+    },
+    {
+     "effects": []
+    },
+    {
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "keywords": [
+        "vigilance"
+       ],
+       "to": "all:creature:yours,subtype=Elf"
+      }
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "keywords": [
+        "vigilance"
+       ],
+       "to": "all:creature:yours,subtype=Elf"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "chapter II's landfall grant is omitted"
+   ]
+  },
+  {
+   "name": "Galion, Elvenking's Butler",
+   "cost": "{2}{G}{G}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Advisor"
+   ],
+   "power": 4,
+   "toughness": 4,
+   "rarity": "uncommon",
+   "collector_number": "125",
+   "arena_id": 103505,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Whenever Galion attacks, choose up to one other target creature you control. Its base power and toughness become equal to Galion's power and toughness until end of turn.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "set_base_pt",
+       "power": 4,
+       "toughness": 4,
+       "to": "target0"
+      }
+     ],
+     "targets": [
+      {
+       "sel": "creature:yours,other",
+       "optional": true
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "copies base 4/4, ignoring pumps"
+   ]
+  },
+  {
+   "name": "Gigantic Big Bear",
+   "cost": "{5}{G}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bear"
+   ],
+   "power": 10,
+   "toughness": 7,
+   "keywords": [
+    "haste",
+    "hexproof"
+   ],
+   "rarity": "rare",
+   "collector_number": "126",
+   "arena_id": 103506,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "This spell can't be countered.\nHexproof, haste"
+  },
+  {
+   "name": "Guardian of the Halls",
+   "cost": "{1}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Soldier"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "keywords": [
+    "trample"
+   ],
+   "rarity": "common",
+   "collector_number": "127",
+   "arena_id": 103507,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Trample\n{5}{G}{G}: Put three +1/+1 counters on this creature.",
+   "abilities": [
+    {
+     "cost": "{5}{G}{G}",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 3,
+       "to": "self"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Little Bear",
+   "cost": "{2}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bear"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "keywords": [
+    "flash"
+   ],
+   "rarity": "common",
+   "collector_number": "128",
+   "arena_id": 103508,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Flash\nWhen this creature enters, untap another target creature you control. If that creature is a Bear, put a +1/+1 counter on it.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "tap",
+       "untap": true
+      },
+      {
+       "op": "if",
+       "cond": {
+        "kind": "target_matches",
+        "filter": "creature:subtype=Bear"
+       },
+       "then": [
+        {
+         "op": "counters",
+         "count": 1,
+         "to": "target0"
+        }
+       ]
+      }
+     ],
+     "targets": [
+      "creature:yours,other"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mirkwood Pathmaker",
+   "cost": "{2}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Ranger"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "129",
+   "arena_id": 103509,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Mirkwood Pathmaker's power and toughness are each equal to the number of lands you control.",
+   "power_expr": "lands",
+   "toughness_expr": "lands"
+  },
+  {
+   "name": "Nasty Little Rabbit",
+   "cost": "{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Rabbit"
+   ],
+   "power": 1,
+   "toughness": 2,
+   "rarity": "uncommon",
+   "collector_number": "130",
+   "arena_id": 103510,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Ferocious — At the beginning of combat on your turn, if you control a creature with power 4 or greater, put a +1/+1 counter on this creature.",
+   "triggers": [
+    {
+     "when": "begin_combat",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "self"
+      }
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,power>=4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "The Notary Hobbits",
+   "cost": "{3}{G}{G}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Halfling",
+    "Advisor"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "rarity": "rare",
+   "collector_number": "131",
+   "arena_id": 103511,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "When The Notary Hobbits enter, if they're not a token, create two tokens that are copies of them, except the tokens aren't legendary.\n{T}: Add {C} for each Halfling you control.",
+   "unsupported": "token copies of itself"
+  },
+  {
+   "name": "Old Fat Spider",
+   "cost": "{4}{G}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Spider"
+   ],
+   "power": 6,
+   "toughness": 7,
+   "keywords": [
+    "reach"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "132",
+   "arena_id": 103512,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Reach\nThis creature can't be blocked by creatures with power 2 or less.\nWhenever this creature becomes the target of a spell or ability an opponent controls, draw a card.",
+   "statics": [
+    {
+     "affects": "self",
+     "flags": [
+      "cant_be_blocked_by:creature:power<=2"
+     ]
+    }
+   ],
+   "approximations": [
+    "the draw-when-targeted trigger is omitted"
+   ]
+  },
+  {
+   "name": "Ordinary Bear",
+   "cost": "{3}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bear"
+   ],
+   "power": 4,
+   "toughness": 5,
+   "rarity": "common",
+   "collector_number": "133",
+   "arena_id": 103513,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": ""
+  },
+  {
+   "name": "Part in Friendship",
+   "cost": "{4}{G}",
+   "types": [
+    "Enchantment"
+   ],
+   "rarity": "rare",
+   "collector_number": "134",
+   "arena_id": 103514,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Whenever a nontoken creature you control dies, reveal cards from the top of your library until you reveal a creature card. If its mana value is less than or equal to the number of lands you control, put it onto the battlefield. Otherwise, put it into your hand. Put the rest on the bottom of your library in a random order. This ability triggers only once each turn.",
+   "unsupported": "reveal-until and conditional put"
+  },
+  {
+   "name": "Quarrel",
+   "cost": "{1}{G}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "135",
+   "arena_id": 103515,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Target creature you control deals damage equal to its power to target creature an opponent controls.",
+   "targets": [
+    "creature:yours",
+    "creature:theirs"
+   ],
+   "effects": [
+    {
+     "op": "fight",
+     "one_sided": true
+    }
+   ]
+  },
+  {
+   "name": "Radagast of Rhosgobel",
+   "cost": "{2}{G}{G}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Avatar",
+    "Wizard"
+   ],
+   "power": 2,
+   "toughness": 5,
+   "rarity": "rare",
+   "collector_number": "136",
+   "arena_id": 103516,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "The first creature spell you cast each turn costs {2} less to cast and can be cast as though it had flash.",
+   "approximations": [
+    "the creature discount and flash are omitted"
+   ]
+  },
+  {
+   "name": "Through the Forest Gate",
+   "cost": "{6}{G}{G}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "rare",
+   "collector_number": "137",
+   "arena_id": 103517,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Look at the top twenty cards of your library, put any number of land cards from among them onto the battlefield tapped, then shuffle. You gain 8 life.",
+   "effects": [
+    {
+     "op": "search",
+     "filter": "land",
+     "dest": "battlefield_tapped",
+     "count": 20
+    },
+    {
+     "op": "gain_life",
+     "amount": 8
+    }
+   ],
+   "approximations": [
+    "searches the whole library, not the top 20"
+   ]
+  },
+  {
+   "name": "Troll Negotiations",
+   "cost": "{2}{G}{G}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "138",
+   "arena_id": 103518,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Put two +1/+1 counters on target creature you control. Then it fights target creature an opponent controls. (Each deals damage equal to its power to the other.)",
+   "targets": [
+    "creature:yours",
+    "creature:theirs"
+   ],
+   "effects": [
+    {
+     "op": "counters",
+     "count": 2,
+     "to": "target0"
+    },
+    {
+     "op": "fight"
+    }
+   ]
+  },
+  {
+   "name": "Warg Tactics",
+   "cost": "{1}{G}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "common",
+   "collector_number": "139",
+   "arena_id": 103519,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Choose one —\n• Destroy target creature with flying.\n• Put a +1/+1 counter on target creature you control. It gains trample and hexproof until end of turn. (It can't be the target of spells or abilities your opponents control.)",
+   "modes": [
+    {
+     "targets": [
+      "creature:kw=flying"
+     ],
+     "effects": [
+      {
+       "op": "destroy"
+      }
+     ],
+     "text": "Destroy target creature with flying."
+    },
+    {
+     "targets": [
+      "creature:yours"
+     ],
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1
+      },
+      {
+       "op": "pump",
+       "keywords": [
+        "trample",
+        "hexproof"
+       ]
+      }
+     ],
+     "text": "+1/+1 counter; trample and hexproof until end of turn."
+    }
+   ]
+  },
+  {
+   "name": "Wargling",
+   "cost": "{1}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "common",
+   "collector_number": "140",
+   "arena_id": 103520,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Ferocious — Whenever this creature attacks while you control a creature with power 4 or greater, until end of turn, this creature gets +1/+0 and creatures you control gain trample.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "to": "self"
+      },
+      {
+       "op": "pump",
+       "keywords": [
+        "trample"
+       ],
+       "to": "all:creature:yours"
+      }
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,power>=4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Wilderland Scrounger",
+   "cost": "{4}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 3,
+   "toughness": 6,
+   "rarity": "uncommon",
+   "collector_number": "141",
+   "arena_id": 103521,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Ferocious — Whenever this creature attacks while you control a creature with power 4 or greater, put a +1/+1 counter on each creature you control.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "all:creature:yours"
+      }
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,power>=4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Wood Elves",
+   "cost": "{2}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Scout"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "rarity": "common",
+   "collector_number": "142",
+   "arena_id": 103522,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "When this creature enters, search your library for a Forest card, put that card onto the battlefield, then shuffle.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:subtype=Forest",
+       "dest": "battlefield"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Woodland Weavemaster",
+   "cost": "{1}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Druid"
+   ],
+   "power": 1,
+   "toughness": 2,
+   "keywords": [
+    "vigilance"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "143",
+   "arena_id": 103523,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "Vigilance\nWhenever another Elf you control enters, this creature gets +1/+1 until end of turn.\n{T}: Add X mana of any one color, where X is this creature's power. Spend this mana only to cast Elf spells and activate abilities of Elf sources.",
+   "triggers": [
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "toughness": 1,
+       "to": "self"
+      }
+     ],
+     "filter": "creature:subtype=Elf"
+    }
+   ],
+   "approximations": [
+    "the Elf-only mana ability is omitted"
+   ]
+  },
+  {
+   "name": "Bard, King of Dale",
+   "cost": "{4}{W}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Noble",
+    "Archer"
+   ],
+   "power": 3,
+   "toughness": 5,
+   "keywords": [
+    "reach",
+    "vigilance"
+   ],
+   "rarity": "mythic",
+   "collector_number": "144",
+   "arena_id": 103524,
+   "color_identity": [
+    "U",
+    "W"
+   ],
+   "oracle": "Reach, vigilance\nIf you would draw a card except the first one you draw in each of your draw steps, draw two cards instead.\nIf one or more tokens would be created under your control, twice that many of those tokens are created instead.",
+   "approximations": [
+    "both replacement effects are omitted"
+   ]
+  },
+  {
+   "name": "Bard the Bowman",
+   "cost": "{1}{W}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Archer"
+   ],
+   "power": 1,
+   "toughness": 3,
+   "keywords": [
+    "reach"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "145",
+   "arena_id": 103525,
+   "color_identity": [
+    "U",
+    "W"
+   ],
+   "oracle": "Reach\nWhenever you draw your second card each turn, put a +1/+1 counter on target creature. It gains lifelink until end of turn.",
+   "triggers": [
+    {
+     "when": "draw_second",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1
+      },
+      {
+       "op": "pump",
+       "keywords": [
+        "lifelink"
+       ]
+      }
+     ],
+     "targets": [
+      "creature"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bard's Company",
+   "cost": "{2}{W}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Citizen"
+   ],
+   "power": 2,
+   "toughness": 3,
+   "rarity": "rare",
+   "collector_number": "146",
+   "arena_id": 103526,
+   "color_identity": [
+    "U",
+    "W"
+   ],
+   "oracle": "You may cast this spell as though it had flash if you control a Human.\nOther creatures you control get +1/+1.\nWhenever this creature enters or attacks, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "statics": [
+    {
+     "affects": "all:creature:yours,other",
+     "power": 1,
+     "toughness": 1
+    }
+   ],
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    },
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the conditional flash is omitted"
+   ]
+  },
+  {
+   "name": "Bifur, Melodic Rider",
+   "cost": "{4}{R/W}{R/W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Bard"
+   ],
+   "power": 4,
+   "toughness": 5,
+   "rarity": "uncommon",
+   "collector_number": "147",
+   "arena_id": 103527,
+   "color_identity": [
+    "R",
+    "W"
+   ],
+   "oracle": "Storied (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nWhenever Bifur enters or attacks, put a +1/+1 counter on target creature.\nAs long as you have an enduring story, if a triggered ability of a Dwarf you control triggers, that ability triggers an additional time.",
+   "storied": true,
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1
+      }
+     ],
+     "targets": [
+      "creature"
+     ]
+    },
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1
+      }
+     ],
+     "targets": [
+      "creature"
+     ]
+    }
+   ],
+   "approximations": [
+    "the Dwarf trigger doubling is omitted"
+   ]
+  },
+  {
+   "name": "Bolg of the North",
+   "cost": "{3}{B}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 5,
+   "toughness": 5,
+   "rarity": "uncommon",
+   "collector_number": "148",
+   "arena_id": 103528,
+   "color_identity": [
+    "B",
+    "R"
+   ],
+   "oracle": "When Bolg enters, you may sacrifice another creature. When you do, Bolg deals damage equal to that creature's power to another target creature. If excess damage was dealt this way, amass Goblins X, where X is that excess damage. (Put X +1/+1 counters on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "approximations": [
+    "the sacrifice-to-fling ETB is omitted"
+   ]
+  },
+  {
+   "name": "Bolg's Company",
+   "cost": "{B}{R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "149",
+   "arena_id": 103529,
+   "color_identity": [
+    "B",
+    "R"
+   ],
+   "oracle": "This creature has haste as long as you control another Goblin.\n{T}, Sacrifice another Goblin: Add {B}{R}.",
+   "statics": [
+    {
+     "affects": "self",
+     "keywords": [
+      "haste"
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,other,subtype=Goblin"
+     }
+    }
+   ],
+   "approximations": [
+    "the sacrifice-a-Goblin mana ability is omitted"
+   ]
+  },
+  {
+   "name": "The Chief Warg",
+   "cost": "{2}{B}{G}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 3,
+   "toughness": 3,
+   "keywords": [
+    "menace"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "150",
+   "arena_id": 103530,
+   "color_identity": [
+    "B",
+    "G"
+   ],
+   "oracle": "Menace (This creature can't be blocked except by two or more creatures.)\nFerocious — Whenever you attack while you control a creature with power 4 or greater, you draw a card and lose 1 life.",
+   "triggers": [
+    {
+     "when": "you_attack",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      },
+      {
+       "op": "lose_life",
+       "amount": 1
+      }
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,power>=4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Chief Warg's Company",
+   "cost": "{1}{B}{G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 5,
+   "toughness": 3,
+   "keywords": [
+    "trample"
+   ],
+   "rarity": "rare",
+   "collector_number": "151",
+   "arena_id": 103531,
+   "color_identity": [
+    "B",
+    "G"
+   ],
+   "oracle": "Trample\nThis creature can't attack unless you control two or more other Wolves.\nAt the beginning of your upkeep, create a 2/2 green Wolf creature token.",
+   "statics": [
+    {
+     "affects": "self",
+     "flags": [
+      "cant_attack"
+     ],
+     "if": {
+      "kind": "control",
+      "n": 2,
+      "negate": true,
+      "filter": "creature:yours,other,subtype=Wolf"
+     }
+    }
+   ],
+   "triggers": [
+    {
+     "when": "upkeep",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Wolf",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Wolf"
+        ],
+        "colors": [
+         "G"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dáin's Company",
+   "cost": "{R}{W}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "152",
+   "arena_id": 103532,
+   "color_identity": [
+    "R",
+    "W"
+   ],
+   "oracle": "This creature has lifelink as long as you control another Dwarf.\nWhen this creature enters, look at the top four cards of your library. You may reveal a Dwarf or Equipment card from among them and put it into your hand. Put the rest on the bottom of your library in a random order.",
+   "statics": [
+    {
+     "affects": "self",
+     "keywords": [
+      "lifelink"
+     ],
+     "if": {
+      "kind": "control",
+      "filter": "creature:yours,other,subtype=Dwarf"
+     }
+    }
+   ],
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "look",
+       "count": 4,
+       "filter": "card:subtype=Dwarf|Equipment",
+       "take": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Duskwatch Hunter",
+   "cost": "{2}{B/G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wolf"
+   ],
+   "power": 3,
+   "toughness": 1,
+   "rarity": "common",
+   "collector_number": "153",
+   "arena_id": 103533,
+   "color_identity": [
+    "B",
+    "G"
+   ],
+   "oracle": "This creature can't be blocked by tokens.\nWhen this creature enters, put a +1/+1 counter on target creature.",
+   "statics": [
+    {
+     "affects": "self",
+     "flags": [
+      "cant_be_blocked_by:creature:token"
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1
+      }
+     ],
+     "targets": [
+      "creature"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dwalin, Weaponmaster",
+   "cost": "{1}{R/W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Warrior"
+   ],
+   "power": 2,
+   "toughness": 1,
+   "keywords": [
+    "first strike"
+   ],
+   "rarity": "rare",
+   "collector_number": "154",
+   "arena_id": 103534,
+   "color_identity": [
+    "R",
+    "W"
+   ],
+   "oracle": "First strike\nWhenever Dwalin enters or attacks, put a hone counter on each Equipment you control. (Each hone counter on an Equipment grants +1/+0 to equipped creature.)",
+   "approximations": [
+    "hone counters are not modelled"
+   ]
+  },
+  {
+   "name": "Eagle's Rescue",
+   "cost": "{2}{W/U}{W/U}",
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "155",
+   "arena_id": 103535,
+   "color_identity": [
+    "U",
+    "W"
+   ],
+   "oracle": "Enchant creature\nEnchanted creature gets +2/+2 and has flying.\n{2}{W/U}{W/U}: Return this card from your graveyard to the battlefield attached to target creature you control with power 1 or less. Activate only as a sorcery.",
+   "enchant": "creature",
+   "statics": [
+    {
+     "affects": "enchanted",
+     "power": 2,
+     "toughness": 2,
+     "keywords": [
+      "flying"
+     ]
+    }
+   ],
+   "approximations": [
+    "the return-from-graveyard ability is omitted"
+   ]
+  },
+  {
+   "name": "Fearsome Goblin Pair",
+   "cost": "{2}{B/R}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Soldier"
+   ],
+   "power": 1,
+   "toughness": 1,
+   "rarity": "uncommon",
+   "collector_number": "156",
+   "arena_id": 103536,
+   "color_identity": [
+    "B",
+    "R"
+   ],
+   "oracle": "When this creature dies, amass Goblins 4. (Put four +1/+1 counters on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)",
+   "triggers": [
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "amass",
+       "count": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Goblin Plate Mail",
+   "cost": "{1}{B/R}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "common",
+   "collector_number": "157",
+   "arena_id": 103537,
+   "color_identity": [
+    "B",
+    "R"
+   ],
+   "oracle": "When this Equipment enters, amass Goblins 1, then attach this Equipment to the amassed Army. (To amass Goblins 1, put a +1/+1 counter on an Army you control. It's also a Goblin. If you don't control an Army, create a 0/0 black Goblin Army creature token first.)\nEquipped creature gets +1/+0 and has menace.\nEquip {4}",
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 1,
+     "toughness": 0,
+     "keywords": [
+      "menace"
+     ]
+    }
+   ],
+   "equip": "{4}",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "amass",
+       "count": 1,
+       "attach_self": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Great Goblin",
+   "cost": "{1}{B/R}{B/R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Goblin",
+    "Noble"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "rarity": "rare",
+   "collector_number": "158",
+   "arena_id": 103538,
+   "color_identity": [
+    "B",
+    "R"
+   ],
+   "oracle": "Whenever you put one or more counters on a Goblin, Orc, or Army you control, The Great Goblin deals 2 damage to target opponent.\nWhenever another Goblin, Orc, or Army you control dies, exile the top card of your library. You may play it until the end of your next turn.",
+   "triggers": [
+    {
+     "when": "counters_placed",
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 2,
+       "to": "each_opponent"
+      }
+     ],
+     "filter": "creature:subtype=Goblin|Orc|Army"
+    },
+    {
+     "when": "other_dies",
+     "effects": [
+      {
+       "op": "impulse",
+       "count": 1
+      }
+     ],
+     "filter": "creature:subtype=Goblin|Orc|Army"
+    }
+   ]
+  },
+  {
+   "name": "Large Bear",
+   "cost": "{3}{B/G}{B/G}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bear"
+   ],
+   "power": 5,
+   "toughness": 5,
+   "keywords": [
+    "haste",
+    "reach",
+    "trample"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "159",
+   "arena_id": 103539,
+   "color_identity": [
+    "B",
+    "G"
+   ],
+   "oracle": "Reach, trample, haste"
+  },
+  {
+   "name": "Mirkwood Nurturer",
+   "cost": "{2}{G/U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Ranger"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "rarity": "common",
+   "collector_number": "160",
+   "arena_id": 103540,
+   "color_identity": [
+    "G",
+    "U"
+   ],
+   "oracle": "When this creature enters, return up to one other target permanent you control to its owner's hand. If you do, put a +1/+1 counter on this creature.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "if",
+       "cond": {
+        "kind": "target_matches",
+        "filter": "permanent:yours"
+       },
+       "then": [
+        {
+         "op": "counters",
+         "count": 1,
+         "to": "self"
+        },
+        {
+         "op": "bounce",
+         "to": "target0"
+        }
+       ]
+      }
+     ],
+     "targets": [
+      {
+       "sel": "permanent:yours,other",
+       "optional": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Nori, Teller of Tales",
+   "cost": "{1}{R/W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Bard"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "rarity": "common",
+   "collector_number": "161",
+   "arena_id": 103541,
+   "color_identity": [
+    "R",
+    "W"
+   ],
+   "oracle": "Whenever Nori attacks, target attacking creature gains first strike until end of turn.",
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "pump",
+       "keywords": [
+        "first strike"
+       ]
+      }
+     ],
+     "targets": [
+      "creature:attacking"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Patient Instructor",
+   "cost": "{2}{W/U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Citizen"
+   ],
+   "power": 2,
+   "toughness": 2,
+   "keywords": [
+    "vigilance"
+   ],
+   "rarity": "common",
+   "collector_number": "162",
+   "arena_id": 103542,
+   "color_identity": [
+    "U",
+    "W"
+   ],
+   "oracle": "Vigilance\nWhen this creature enters, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "recruit"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Silvan Reveler",
+   "cost": "{2}{G}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Citizen"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "rarity": "uncommon",
+   "collector_number": "163",
+   "arena_id": 103543,
+   "color_identity": [
+    "G",
+    "U"
+   ],
+   "oracle": "When this creature enters, draw a card, then discard a card. If you discard a land card this way, put it from your graveyard onto the battlefield tapped.\nLandfall — Whenever a land you control enters, you may pay {1}{G}{U}. If you do, return this card from your graveyard to your hand.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 1,
+       "discard": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the discarded-land and graveyard-return parts are omitted"
+   ]
+  },
+  {
+   "name": "Smaug, Wicked Worm",
+   "cost": "{3}{B}{R}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dragon"
+   ],
+   "power": 5,
+   "toughness": 5,
+   "keywords": [
+    "flying"
+   ],
+   "rarity": "rare",
+   "collector_number": "164",
+   "arena_id": 103544,
+   "color_identity": [
+    "B",
+    "R"
+   ],
+   "oracle": "Flying\nWhen Smaug enters, create X tapped Treasure tokens, where X is the number of artifacts your opponents control.\nWhenever you cast a spell, if mana from a Treasure was spent to cast it, you draw a card and lose 1 life.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": "treasure",
+       "tapped": true,
+       "count": "count:artifact:theirs"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the Treasure-mana draw trigger is omitted"
+   ]
+  },
+  {
+   "name": "Thorin Oakenshield",
+   "cost": "{R}{W}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dwarf",
+    "Noble"
+   ],
+   "power": 3,
+   "toughness": 2,
+   "keywords": [
+    "trample"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "165",
+   "arena_id": 103545,
+   "color_identity": [
+    "R",
+    "W"
+   ],
+   "oracle": "Trample\nStoried (If you control three or more artifacts, legendaries, and/or Sagas, you have an enduring story for the rest of the game.)\nAs long as you have an enduring story, artifacts and creatures you control have ward {1}.",
+   "storied": true,
+   "statics": [
+    {
+     "affects": "all:artifact|creature:yours",
+     "ward": 1,
+     "if": {
+      "kind": "enduring_story"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Thranduil, Sindarin Liege",
+   "cost": "{2}{G/U}{G/U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Noble"
+   ],
+   "power": 2,
+   "toughness": 3,
+   "adventure": {
+    "name": "Silvan Rally",
+    "cost": "{1}{G/U}{G/U}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "look",
+      "count": 4,
+      "filter": "land",
+      "take": 2,
+      "rest": "graveyard"
+     }
+    ]
+   },
+   "rarity": "uncommon",
+   "collector_number": "166",
+   "arena_id": 103546,
+   "color_identity": [
+    "G",
+    "U"
+   ],
+   "oracle": "[Thranduil, Sindarin Liege] Other Elves you control get +1/+1.\nLandfall — Whenever a land you control enters, create a 1/1 green Elf creature token.\n[Silvan Rally] Mill four cards, then put up to two land cards from among them into your hand. (Then exile this card. You may cast the creature later from exile.)",
+   "statics": [
+    {
+     "affects": "all:creature:yours,other,subtype=Elf",
+     "power": 1,
+     "toughness": 1
+    }
+   ],
+   "triggers": [
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Elf",
+        "power": 1,
+        "toughness": 1,
+        "subtypes": [
+         "Elf"
+        ],
+        "colors": [
+         "G"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Thranduil, the Elvenking",
+   "cost": "{2}{B}{G}{U}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Noble"
+   ],
+   "power": 5,
+   "toughness": 6,
+   "rarity": "rare",
+   "collector_number": "167",
+   "arena_id": 103548,
+   "color_identity": [
+    "B",
+    "G",
+    "U"
+   ],
+   "oracle": "Thranduil has all activated abilities of all Elf cards in your graveyard.\nWhenever another legendary Elf you control enters, draw two cards, then discard a card.",
+   "triggers": [
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 2,
+       "discard": 1
+      }
+     ],
+     "filter": "creature:subtype=Elf,legendary"
+    }
+   ],
+   "approximations": [
+    "borrowing graveyard Elves' abilities is omitted"
+   ]
+  },
+  {
+   "name": "Thranduil's Company",
+   "cost": "{2}{G}{U}",
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Soldier"
+   ],
+   "power": 3,
+   "toughness": 4,
+   "rarity": "rare",
+   "collector_number": "168",
+   "arena_id": 103549,
+   "color_identity": [
+    "G",
+    "U"
+   ],
+   "oracle": "As long as you control another Elf, you may play an additional land on each of your turns.\nLandfall — Whenever a land you control enters, put two +1/+1 counters on target creature you control. It gains vigilance until end of turn.",
+   "triggers": [
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 2
+      },
+      {
+       "op": "pump",
+       "keywords": [
+        "vigilance"
+       ]
+      }
+     ],
+     "targets": [
+      "creature:yours"
+     ]
+    }
+   ],
+   "approximations": [
+    "the extra land drop is omitted"
+   ]
+  },
+  {
+   "name": "Tom, Bert, and William",
+   "cost": "{3}{B}{G}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Troll"
+   ],
+   "power": 5,
+   "toughness": 5,
+   "rarity": "rare",
+   "collector_number": "169",
+   "arena_id": 103550,
+   "color_identity": [
+    "B",
+    "G"
+   ],
+   "oracle": "{1}, Sacrifice another creature: Draw cards equal to the sacrificed creature's power, then discard a card.\nWhen Tom, Bert, and William die, if they were a creature, return them to the battlefield. They're an artifact. (They're no longer a creature.)",
+   "approximations": [
+    "both abilities are omitted"
+   ]
+  },
+  {
+   "name": "The Arkenstone",
+   "cost": "{5}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "adventure": {
+    "name": "Seek the Heart",
+    "cost": "{2}{W}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "search",
+      "filter": "card:type=creature,legendary",
+      "dest": "hand"
+     }
+    ]
+   },
+   "rarity": "mythic",
+   "collector_number": "170",
+   "arena_id": 103551,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "[The Arkenstone] Creatures you control get +1/+1.\nAt the beginning of your end step, draw a card.\n[Seek the Heart] Search your library for a legendary creature card, reveal it, put it into your hand, then shuffle. (Then exile this card. You may cast the artifact later from exile.)",
+   "statics": [
+    {
+     "affects": "all:creature:yours",
+     "power": 1,
+     "toughness": 1
+    }
+   ],
+   "triggers": [
+    {
+     "when": "end_step",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Black Arrow",
+   "cost": "{3}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "keywords": [
+    "flash"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "171",
+   "arena_id": 103553,
+   "color_identity": [],
+   "oracle": "Flash\nWhen The Black Arrow enters, it deals 1 damage to any target. If a Dragon is dealt damage this way, destroy it.\nEquipped creature gets +1/+1 and has reach.\nEquip {1} ({1}: Attach to target creature you control. Equip only as a sorcery.)",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 1
+      },
+      {
+       "op": "if",
+       "cond": {
+        "kind": "target_matches",
+        "filter": "creature:subtype=Dragon"
+       },
+       "then": [
+        {
+         "op": "destroy",
+         "to": "target0"
+        }
+       ]
+      }
+     ],
+     "targets": [
+      "any_target"
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 1,
+     "toughness": 1,
+     "keywords": [
+      "reach"
+     ]
+    }
+   ],
+   "equip": "{1}"
+  },
+  {
+   "name": "Dwarven Mattock",
+   "cost": "{2}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "172",
+   "arena_id": 103554,
+   "color_identity": [],
+   "oracle": "When this Equipment enters, attach it to target Dwarf you control.\nEquipped creature gets +2/+2 and has ward {1}. (Whenever equipped creature becomes the target of a spell or ability an opponent controls, counter it unless that player pays {1}.)\nEquip {3} ({3}: Attach to target creature you control. Equip only as a sorcery.)",
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 2,
+     "toughness": 2,
+     "ward": 1
+    }
+   ],
+   "equip": "{3}",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "attach",
+       "to": "target0"
+      }
+     ],
+     "targets": [
+      "creature:yours,subtype=Dwarf"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Giant's Boulder",
+   "cost": "{1}",
+   "types": [
+    "Artifact"
+   ],
+   "rarity": "common",
+   "collector_number": "173",
+   "arena_id": 103555,
+   "color_identity": [],
+   "oracle": "When this artifact enters, scry 2. (Look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.)\n{1}, {T}: Add one mana of any color.\n{7}, {T}, Sacrifice this artifact: Destroy target permanent.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "scry",
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{7}",
+     "tap": true,
+     "sacrifice_self": true,
+     "targets": [
+      "permanent"
+     ],
+     "effects": [
+      {
+       "op": "destroy"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the {1},{T}: add any color filter is omitted"
+   ]
+  },
+  {
+   "name": "Glamdring, Foe-hammer",
+   "cost": "{2}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "adventure": {
+    "name": "Gleam of Death",
+    "cost": "{3}{U}",
+    "types": [
+     "Sorcery"
+    ],
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "look",
+      "count": 6,
+      "filter": "card:type=instant|sorcery",
+      "take": 6,
+      "rest": "graveyard"
+     }
+    ]
+   },
+   "rarity": "rare",
+   "collector_number": "174",
+   "arena_id": 103556,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "[Glamdring, Foe-hammer] Instant and sorcery spells you cast cost {X} less to cast, where X is equipped creature's power.\nEquip {2}\n[Gleam of Death] Mill six cards, then put all instant and sorcery cards from among them into your hand. (Then exile this card. You may cast the artifact later from exile.)",
+   "equip": "{2}",
+   "approximations": [
+    "the spell discount is omitted"
+   ]
+  },
+  {
+   "name": "Key to the Side-Door",
+   "cost": "{1}",
+   "types": [
+    "Artifact"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "175",
+   "arena_id": 103558,
+   "color_identity": [],
+   "oracle": "{2}, {T}: Target creature can't be blocked this turn.\n{1}, {T}, Discard a legendary card with the same name as a legendary permanent you control: Draw two cards.",
+   "abilities": [
+    {
+     "cost": "{2}",
+     "tap": true,
+     "targets": [
+      "creature"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "flags": [
+        "unblockable"
+       ]
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the discard-a-legend draw ability is omitted"
+   ]
+  },
+  {
+   "name": "My Precious",
+   "cost": "{3}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "adventure": {
+    "name": "Allure of Power",
+    "cost": "{1}{B}",
+    "types": [
+     "Instant"
+    ],
+    "subtypes": [],
+    "additional_costs": [
+     {
+      "sacrifice": "creature"
+     }
+    ],
+    "effects": [
+     {
+      "op": "draw",
+      "count": 2
+     }
+    ]
+   },
+   "rarity": "rare",
+   "collector_number": "176",
+   "arena_id": 103559,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "[My Precious] Equipped creature has hexproof and can't be blocked.\nEquip—{2}, Pay 2 life.\n[Allure of Power] As an additional cost to cast this spell, sacrifice a creature.\nDraw two cards.",
+   "statics": [
+    {
+     "affects": "equipped",
+     "keywords": [
+      "hexproof"
+     ],
+     "flags": [
+      "unblockable"
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{2}",
+     "life": 2,
+     "sorcery": true,
+     "targets": [
+      "creature:yours"
+     ],
+     "effects": [
+      {
+       "op": "attach"
+      }
+     ],
+     "text": "Equip—{2}, Pay 2 life."
+    }
+   ]
+  },
+  {
+   "name": "Orcrist, Goblin-cleaver",
+   "cost": "{3}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "mythic",
+   "collector_number": "177",
+   "arena_id": 103561,
+   "color_identity": [],
+   "oracle": "Equipped creature gets +2/+2 and has trample.\nWhenever equipped creature deals combat damage to a player, choose a creature type. Create a Treasure token for each creature you control of that type.\nEquip {3}",
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 2,
+     "toughness": 2,
+     "keywords": [
+      "trample"
+     ]
+    }
+   ],
+   "equip": "{3}",
+   "approximations": [
+    "the combat-damage Treasure trigger is omitted"
+   ]
+  },
+  {
+   "name": "Sting, Bilbo's Sword",
+   "cost": "{2}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "keywords": [
+    "flash"
+   ],
+   "rarity": "rare",
+   "collector_number": "178",
+   "arena_id": 103562,
+   "color_identity": [],
+   "oracle": "Flash\nWhen Sting enters, put a hone counter on Sting for each creature target opponent controls. Attach Sting to up to one target creature you control. (Each hone counter on an Equipment grants +1/+0 to equipped creature.)\nEquip {3}",
+   "unsupported": "hone counters"
+  },
+  {
+   "name": "Thrór's Map",
+   "cost": "{2}",
+   "supertypes": [
+    "Legendary"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "179",
+   "arena_id": 103563,
+   "color_identity": [],
+   "oracle": "When Thrór's Map enters, search your library for a basic land card, reveal it, put it into your hand, then shuffle.\n{2}, {T}: Draw a card, then discard a card.",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "hand"
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{2}",
+     "tap": true,
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 1,
+       "discard": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Well-Worn Spatula",
+   "cost": "{1}",
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [
+    "Equipment"
+   ],
+   "rarity": "common",
+   "collector_number": "180",
+   "arena_id": 103564,
+   "color_identity": [],
+   "oracle": "When this Equipment enters, you gain 2 life.\nEquipped creature gets +1/+1.\nEquip {1} ({1}: Attach to target creature you control. Equip only as a sorcery.)",
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 1,
+     "toughness": 1
+    }
+   ],
+   "equip": "{1}",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "gain_life",
+       "amount": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Elven Passage",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "rarity": "rare",
+   "collector_number": "181",
+   "arena_id": 103565,
+   "color_identity": [],
+   "oracle": "{T}, Pay 1 life, Sacrifice this land: Search your library for a basic land card, put it onto the battlefield tapped, then shuffle. You may behold an Elf. If you do, untap that land. (To behold an Elf, choose an Elf you control or reveal an Elf card from your hand.)",
+   "abilities": [
+    {
+     "tap": true,
+     "life": 1,
+     "sacrifice_self": true,
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "battlefield_tapped"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "behold is omitted"
+   ]
+  },
+  {
+   "name": "Elvenking's Halls",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "rarity": "common",
+   "collector_number": "182",
+   "arena_id": 103566,
+   "color_identity": [
+    "G",
+    "U"
+   ],
+   "oracle": "This land enters tapped.\n{T}: Add {G} or {U}.\n{2}{G}{U}, {T}, Sacrifice this land: Put two +1/+1 counters on target Elf you control. Activate only as a sorcery.",
+   "enters_tapped": true,
+   "mana": [
+    "G/U"
+   ],
+   "abilities": [
+    {
+     "cost": "{2}{G}{U}",
+     "tap": true,
+     "sacrifice_self": true,
+     "sorcery": true,
+     "targets": [
+      "creature:yours,subtype=Elf"
+     ],
+     "effects": [
+      {
+       "op": "counters",
+       "count": 2,
+       "to": "target"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Goblin-town",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "rarity": "common",
+   "collector_number": "183",
+   "arena_id": 103567,
+   "color_identity": [
+    "B",
+    "R"
+   ],
+   "oracle": "This land enters tapped.\n{T}: Add {B} or {R}.\n{2}{B}{R}, {T}, Sacrifice this land: Put two +1/+1 counters on target Goblin or Orc you control. Activate only as a sorcery.",
+   "enters_tapped": true,
+   "mana": [
+    "B/R"
+   ],
+   "abilities": [
+    {
+     "cost": "{2}{B}{R}",
+     "tap": true,
+     "sacrifice_self": true,
+     "sorcery": true,
+     "targets": [
+      "creature:yours,subtype=Goblin|Orc"
+     ],
+     "effects": [
+      {
+       "op": "counters",
+       "count": 2,
+       "to": "target"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Hobbit Hole",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "rarity": "common",
+   "collector_number": "184",
+   "arena_id": 103568,
+   "color_identity": [],
+   "oracle": "{T}, Sacrifice this land: Search your library for a basic land card, put it onto the battlefield tapped, then shuffle.\nHalflingcycling {4} ({4}, Discard this card: Search your library for a Halfling card, reveal it, put it into your hand, then shuffle.)",
+   "abilities": [
+    {
+     "tap": true,
+     "sacrifice_self": true,
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "battlefield_tapped"
+      }
+     ]
+    },
+    {
+     "cost": "{4}",
+     "zone": "hand",
+     "discard_self": true,
+     "effects": [
+      {
+       "op": "search",
+       "filter": "card:subtype=Halfling",
+       "dest": "hand"
+      }
+     ],
+     "text": "Halflingcycling {4}"
+    }
+   ]
+  },
+  {
+   "name": "Iron Hills",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "rarity": "common",
+   "collector_number": "185",
+   "arena_id": 103569,
+   "color_identity": [
+    "R",
+    "W"
+   ],
+   "oracle": "This land enters tapped.\n{T}: Add {R} or {W}.\n{2}{R}{W}, {T}, Sacrifice this land: Put two +1/+1 counters on target Dwarf you control. Activate only as a sorcery.",
+   "enters_tapped": true,
+   "mana": [
+    "R/W"
+   ],
+   "abilities": [
+    {
+     "cost": "{2}{R}{W}",
+     "tap": true,
+     "sacrifice_self": true,
+     "sorcery": true,
+     "targets": [
+      "creature:yours,subtype=Dwarf"
+     ],
+     "effects": [
+      {
+       "op": "counters",
+       "count": 2,
+       "to": "target"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lake-town",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "rarity": "common",
+   "collector_number": "186",
+   "arena_id": 103570,
+   "color_identity": [
+    "U",
+    "W"
+   ],
+   "oracle": "This land enters tapped.\n{T}: Add {W} or {U}.\n{2}{W}{U}, {T}, Sacrifice this land: Put two +1/+1 counters on target Human you control. Activate only as a sorcery.",
+   "enters_tapped": true,
+   "mana": [
+    "W/U"
+   ],
+   "abilities": [
+    {
+     "cost": "{2}{W}{U}",
+     "tap": true,
+     "sacrifice_self": true,
+     "sorcery": true,
+     "targets": [
+      "creature:yours,subtype=Human"
+     ],
+     "effects": [
+      {
+       "op": "counters",
+       "count": 2,
+       "to": "target"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Lonely Mountain",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Mountain"
+   ],
+   "rarity": "rare",
+   "collector_number": "187",
+   "arena_id": 103571,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "({T}: Add {R}.)\nThis land enters tapped unless you control an Equipment.\n{4}{R}, {T}: Create a 2/2 red Dwarf creature token. This ability costs {1} less to activate for each Equipment you control. Activate only as a sorcery.",
+   "mana": [
+    "R"
+   ],
+   "abilities": [
+    {
+     "cost": "{4}{R}",
+     "tap": true,
+     "sorcery": true,
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Dwarf",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Dwarf"
+        ],
+        "colors": [
+         "R"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "always enters untapped; discount omitted"
+   ]
+  },
+  {
+   "name": "Mirkwood",
+   "cost": "",
+   "types": [
+    "Land"
+   ],
+   "rarity": "common",
+   "collector_number": "188",
+   "arena_id": 103572,
+   "color_identity": [
+    "B",
+    "G"
+   ],
+   "oracle": "This land enters tapped.\n{T}: Add {B} or {G}.\n{2}{B}{G}, {T}, Sacrifice this land: Put two +1/+1 counters on target Bear, Spider, or Wolf you control. Activate only as a sorcery.",
+   "enters_tapped": true,
+   "mana": [
+    "B/G"
+   ],
+   "abilities": [
+    {
+     "cost": "{2}{B}{G}",
+     "tap": true,
+     "sacrifice_self": true,
+     "sorcery": true,
+     "targets": [
+      "creature:yours,subtype=Bear|Spider|Wolf"
+     ],
+     "effects": [
+      {
+       "op": "counters",
+       "count": 2,
+       "to": "target"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Plains",
+   "cost": "",
+   "supertypes": [
+    "Basic"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Plains"
+   ],
+   "mana": [
+    "W"
+   ],
+   "rarity": "common",
+   "collector_number": "189",
+   "arena_id": 103578,
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "({T}: Add {W}.)"
+  },
+  {
+   "name": "Island",
+   "cost": "",
+   "supertypes": [
+    "Basic"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Island"
+   ],
+   "mana": [
+    "U"
+   ],
+   "rarity": "common",
+   "collector_number": "190",
+   "arena_id": 103579,
+   "color_identity": [
+    "U"
+   ],
+   "oracle": "({T}: Add {U}.)"
+  },
+  {
+   "name": "Swamp",
+   "cost": "",
+   "supertypes": [
+    "Basic"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Swamp"
+   ],
+   "mana": [
+    "B"
+   ],
+   "rarity": "common",
+   "collector_number": "191",
+   "arena_id": 103580,
+   "color_identity": [
+    "B"
+   ],
+   "oracle": "({T}: Add {B}.)"
+  },
+  {
+   "name": "Mountain",
+   "cost": "",
+   "supertypes": [
+    "Basic"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Mountain"
+   ],
+   "mana": [
+    "R"
+   ],
+   "rarity": "common",
+   "collector_number": "192",
+   "arena_id": 103581,
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "({T}: Add {R}.)"
+  },
+  {
+   "name": "Forest",
+   "cost": "",
+   "supertypes": [
+    "Basic"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Forest"
+   ],
+   "mana": [
+    "G"
+   ],
+   "rarity": "common",
+   "collector_number": "193",
+   "arena_id": 103582,
+   "color_identity": [
+    "G"
+   ],
+   "oracle": "({T}: Add {G}.)"
+  }
+ ]
+}
