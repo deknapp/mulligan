@@ -356,6 +356,7 @@ class Game:
             return
         obj_id = player.library.pop(0)
         player.hand.append(obj_id)
+        player.seen.add(obj_id)
         self.state.objects[obj_id].zone = "hand"
         if is_setup:
             return
@@ -1257,6 +1258,7 @@ class Game:
                 state.objects[obj_id].zone = "library"
             player.library = list(player.hand) + list(player.library)
             player.hand = []
+            player.seen.clear()
             state.rng.shuffle(player.library)
             state.mulligan_counts[seat] += 1
             for _ in range(MAX_HAND_SIZE):
@@ -1272,6 +1274,7 @@ class Game:
             player = state.players[seat]
             player.hand.remove(action.card_id)
             player.library.append(action.card_id)
+            player.seen.discard(action.card_id)  # a bottomed card was never really in hand
             state.objects[action.card_id].zone = "library"
             return
         if isinstance(action, act.Discard):

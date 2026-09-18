@@ -375,6 +375,9 @@ class Player:
         self.lost = False
         self.loss_reason = ""
         self.draws_this_turn = 0
+        # Every card that reached this hand by drawing (opening hand included):
+        # what "games in hand" win rates are computed over.
+        self.seen: set[int] = set()
         self.enduring_story = False
         self.spells_cast_this_turn = 0
 

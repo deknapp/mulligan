@@ -11,3 +11,4 @@ htmlcov/
 .env
 runs/
 data/raw/
+data/17lands/

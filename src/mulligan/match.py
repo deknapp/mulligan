@@ -22,6 +22,8 @@ class MatchResult:
     on_the_play: int
     agent_names: tuple[str, str]
     log: list[str] = field(default_factory=list)
+    # Names of the cards each seat had in hand at some point (opening hand or drawn).
+    seen: tuple[list[str], list[str]] = ((), ())
 
     @property
     def was_draw(self) -> bool:
@@ -52,6 +54,8 @@ def play_game(
         decisions=result["decisions"], life=result["life"], seed=seed,
         on_the_play=on_the_play, agent_names=(agents[0].name, agents[1].name),
         log=list(game.state.log) if keep_log else [],
+        seen=tuple([game.state.objects[i].name for i in p.seen]  # type: ignore[arg-type]
+                   for p in game.state.players),
     )
 
 

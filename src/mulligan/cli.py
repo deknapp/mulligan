@@ -137,6 +137,74 @@ def play_cmd(
     console.print(f"\n[bold]{result.reason}[/bold] after {result.turns} turns")
 
 
+@app.command("rate")
+def rate_cmd(
+    set_code: str = typer.Option(..., "--set"),
+    decks: int = typer.Option(200, help="Sealed decks in the simulated field."),
+    games: int = typer.Option(20000, help="Games to simulate."),
+    seed: int = typer.Option(0),
+    agent: str = typer.Option("heuristic"),
+    out: Path = typer.Option(None, help="Save ratings as JSON (name -> [GIH WR, games])."),
+    top: int = typer.Option(25, help="Rows to print from each end."),
+    workers: int = typer.Option(0),
+):
+    """Card ratings from self-play: each card's win rate in games where it was
+    drawn (the same statistic as 17Lands' GIH WR). Works on release day."""
+    import json
+
+    from .cards.sets import load_set
+    from .limited.simulate import simulate_ratings
+    start = time.time()
+    stats = simulate_ratings(set_code, n_decks=decks, n_games=games, seed=seed, agent=agent,
+                             workers=workers or None)
+    data = load_set(set_code)
+    rows = sorted(((s.rate, s.games, name) for name, s in stats.items()
+                   if not data.playable[name].is_land and s.games >= 100), reverse=True)
+    console.print(f"[bold]{data.name}: simulated games-in-hand win rate[/bold] "
+                  f"({games} games, {time.time() - start:.0f}s)")
+    shown = rows[:top] + ([None] if len(rows) > 2 * top else []) + rows[-top:] if len(
+        rows) > 2 * top else rows
+    for row in shown:
+        if row is None:
+            console.print("  ...")
+            continue
+        rate, n, name = row
+        console.print(f"  {rate:6.1%}  {n:6d}  {data.rarity(name)[0].upper()}  {name}",
+                      markup=False)
+    if out:
+        out.write_text(json.dumps({name: [round(s.rate, 4), s.games]
+                                   for name, s in stats.items()}, indent=0))
+        console.print(f"[dim]wrote {out}[/dim]")
+
+
+@app.command("validate")
+def validate_cmd(
+    set_code: str = typer.Option(..., "--set"),
+    ratings: Path = typer.Option(..., help="Simulated ratings JSON from `mulligan rate --out`."),
+    fmt: str = typer.Option("Sealed", help="17Lands format: Sealed, PremierDraft, ..."),
+    min_games: int = typer.Option(300, help="Minimum games in hand on each side."),
+):
+    """How well do simulated card ratings track real results (17Lands GIH WR)?"""
+    import json
+
+    from .cards.sets import load_set
+    from .validation.seventeen import correlate, game_data_ratings, spearman
+    data = load_set(set_code)
+    sim_raw = json.loads(ratings.read_text())
+    sim = {n: v[0] for n, v in sim_raw.items()
+           if v[1] >= min_games and n in data.playable and not data.playable[n].is_land}
+    real = game_data_ratings(set_code, fmt)
+    rho, r, n, rows = correlate(sim, real, min_real_games=min_games)
+    rank = {"common": 0, "uncommon": 1, "rare": 2, "mythic": 3}
+    base = spearman([rank.get(data.rarity(x[0]), 0) for x in rows], [x[2] for x in rows])
+    console.print(f"[bold]{data.name}: simulated vs 17Lands {fmt} GIH WR[/bold] "
+                  f"over {n} cards")
+    console.print(f"  Spearman {rho:+.3f}   Pearson {r:+.3f}   "
+                  f"(rarity-only baseline: Spearman {base:+.3f})")
+    console.print("  17Lands data: 17lands.com, used under their public data terms.",
+                  style="dim")
+
+
 @app.command("ingest")
 def ingest_cmd(set_code: str = typer.Argument(..., help="Scryfall set code, e.g. fra.")):
     """Fetch a set's cards from Scryfall, the input to compiling it."""
