@@ -37,7 +37,18 @@ def register_agent(name: str, factory) -> None:
     AGENTS[name] = factory
 
 
+_LEARNED_CACHE: dict[str, tuple[dict, dict]] = {}
+
+
 def make_agent(name: str, seed: int) -> Agent:
+    """Build an agent by name. ``learned:<set or path>`` loads a trained model."""
+    if name.startswith("learned:"):
+        from .agents.learned import LearnedAgent
+        ref = name.split(":", 1)[1]
+        if ref not in _LEARNED_CACHE:
+            _LEARNED_CACHE[ref] = LearnedAgent.load_weights(ref)
+        weights, value = _LEARNED_CACHE[ref]
+        return LearnedAgent(weights, name=name, value_weights=value)
     if name not in AGENTS:
         raise KeyError(f"unknown agent {name!r}; known: {', '.join(sorted(AGENTS))}")
     return AGENTS[name](seed)

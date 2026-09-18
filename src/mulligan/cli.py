@@ -5,6 +5,9 @@
     mulligan compare a.txt b.txt --set hob         which deck is better?
     mulligan agents heuristic random --deck ...    which agent is better?
     mulligan play a.txt b.txt --set hob            watch one game
+    mulligan rate --set hob --out r.json           card ratings from self-play
+    mulligan validate --set hob --ratings r.json   check them against 17Lands
+    mulligan train --set hob                       train the learned agent
     mulligan ingest hob                            fetch a set from Scryfall (to compile it)
 """
 
@@ -203,6 +206,37 @@ def validate_cmd(
                   f"(rarity-only baseline: Spearman {base:+.3f})")
     console.print("  17Lands data: 17lands.com, used under their public data terms.",
                   style="dim")
+
+
+@app.command("train")
+def train_cmd(
+    set_code: str = typer.Option(..., "--set"),
+    iterations: int = typer.Option(30),
+    games: int = typer.Option(2000, help="Self-play games per iteration."),
+    eval_games: int = typer.Option(1000, help="Games in each evaluation against the heuristic."),
+    eval_every: int = typer.Option(3),
+    lr: float = typer.Option(0.3),
+    temperature: float = typer.Option(0.15, help="Exploration: 0 is greedy."),
+    seed: int = typer.Option(0),
+    out: Path = typer.Option(None, help="Where to save (default: the set's shipped model)."),
+    workers: int = typer.Option(0),
+):
+    """Train the learned agent for a set by self-play. Saves the best model
+    (by paired evaluation against the heuristic) as it goes."""
+    from .learn import train
+
+    def log(entry: dict) -> None:
+        line = f"iter {entry['iteration']:3d}  train {entry['train_score']:.3f}"
+        if "eval_rate" in entry:
+            line += (f"  vs heuristic {entry['eval_rate']:.1%} "
+                     f"({entry['eval_low']:.1%}–{entry['eval_high']:.1%})")
+        console.print(line)
+
+    history = train(set_code, iterations=iterations, games=games, eval_games=eval_games,
+                    eval_every=eval_every, lr=lr, temperature=temperature, seed=seed, out=out,
+                    workers=workers or None, log=log)
+    low, high = history.best_interval
+    console.print(f"best vs heuristic: {history.best_rate:.1%} ({low:.1%}–{high:.1%})")
 
 
 @app.command("ingest")

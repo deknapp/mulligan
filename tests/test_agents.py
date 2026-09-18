@@ -98,3 +98,29 @@ def test_wilson_interval_is_sane():
     assert high - low < 0.21
     low, high = wilson(0, 10)
     assert low == 0.0 and high < 0.35
+
+
+def test_untrained_learned_agent_plays_exactly_like_the_heuristic():
+    """Zero weights: the correction is zero and squash is monotonic, so every
+    game is move-for-move identical. Training starts from the heuristic."""
+    from mulligan.agents.learned import LearnedAgent
+    from mulligan.match import play_game
+    for seed in range(6):
+        decks = (deck_by_name("gruul-midrange"), deck_by_name("azorius-skies"))
+        a = play_game((HeuristicAgent("x"), HeuristicAgent("y")), decks, seed=seed,
+                      keep_log=True)
+        b = play_game((LearnedAgent(name="x"), LearnedAgent(name="y")), decks, seed=seed,
+                      keep_log=True)
+        assert a.log == b.log
+
+
+def test_learned_features_only_use_the_view():
+    """Features are computed from the PlayerView alone (no hidden cards)."""
+    from mulligan.agents.features import action_features, situation
+    from mulligan.engine.game import Game
+    game = Game([deck_by_name("boros-aggro"), deck_by_name("dimir-control")], seed=2)
+    view = PlayerView(game, game.state.decision_player)
+    sit = situation(view)
+    for action in game.legal_actions():
+        feats = action_features(view, action, sit)
+        assert feats and all(isinstance(v, float) for v in feats.values())
