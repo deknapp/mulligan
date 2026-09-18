@@ -99,12 +99,11 @@ against the heuristic on the same deck pairings with seats swapped:
 
 | approach | result vs heuristic |
 |---|---|
-| policy-gradient correction, temperature 0.5 (12 iterations × 2000 games) | 47.3% at best checkpoint after 6 — exploration noise hurt |
-| policy-gradient correction, temperature 0.15 (12 × 2000) | 48.3–50.1%, no gain |
+| policy-gradient correction, temperature 0.5 (7 iterations × 2000 games) | 50.1% at iteration 3, 47.3% at 6 — exploration noise hurt |
+| policy-gradient correction, temperature 0.15 (12 × 2000) | 48.3–50.1% (±3%), no gain |
 | heuristic with card values from simulated ratings (3 strengths) | 49.0–50.3% (±2.2%), no gain |
 
-So far the heuristic's play is the ceiling. Next ideas are in the issue
-tracker notes: a per-decision credit signal (rollouts from determinized
+So far the heuristic's play is the ceiling. Next ideas: a per-decision credit signal (rollouts from determinized
 states) instead of whole-game win/loss, and fixing the heuristic's known
 blind spots (big bodies, amass synergy) directly.
 
