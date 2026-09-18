@@ -1,9 +1,10 @@
 """The agent interface, and the random baseline.
 
-An agent is handed the game and the list of actions the engine has already
-verified as legal. It returns one of them. It cannot do anything else — no
-mutating the state, no inventing moves — which is what makes a win by an agent
-mean something.
+An agent is handed a ``PlayerView`` — what its seat is allowed to know — and
+the list of actions the engine has already verified as legal. It returns one of
+them. It cannot do anything else — no mutating the state, no inventing moves,
+no peeking at the opponent's hand — which is what makes a win by an agent mean
+something.
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ from typing import TYPE_CHECKING
 from ..engine import actions as act
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
-    from ..engine.game import Game
+    from ..engine.view import PlayerView
 
 
 class Agent:
@@ -22,11 +23,12 @@ class Agent:
 
     name = "agent"
 
-    def choose(self, game: Game, options: list[act.Action], seat: int) -> act.Action:
+    def choose(self, view: PlayerView, options: list[act.Action]) -> act.Action:
         raise NotImplementedError  # pragma: no cover - abstract
 
-    def game_over(self, game: Game, seat: int) -> None:
-        """Optional hook, for agents that keep state across a game."""
+    def game_over(self, view: PlayerView, winner: int | None) -> None:
+        """Optional hook, for agents that learn from results. The view is still
+        the seat's own: the end of a game does not reveal the opponent's hand."""
 
 
 class RandomAgent(Agent):
@@ -42,5 +44,5 @@ class RandomAgent(Agent):
         self.rng = random.Random(seed)
         self.name = name
 
-    def choose(self, game: Game, options: list[act.Action], seat: int) -> act.Action:
+    def choose(self, view: PlayerView, options: list[act.Action]) -> act.Action:
         return self.rng.choice(options)

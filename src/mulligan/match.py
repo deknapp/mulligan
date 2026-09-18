@@ -8,6 +8,7 @@ from .agents.base import Agent
 from .cards.cube import DECKS
 from .engine.card import CardSpec
 from .engine.game import Game
+from .engine.view import PlayerView
 
 
 @dataclass
@@ -37,13 +38,14 @@ def play_game(
 ) -> MatchResult:
     game = Game(list(decks), names=(agents[0].name, agents[1].name), seed=seed,
                 max_turns=max_turns, on_the_play=on_the_play)
+    views = (PlayerView(game, 0), PlayerView(game, 1))
     while not game.is_over:
         options = game.legal_actions()
         seat = game.state.decision_player
-        choice = agents[seat].choose(game, options, seat)
+        choice = agents[seat].choose(views[seat], options)
         game.apply(choice)
     for seat, agent in enumerate(agents):
-        agent.game_over(game, seat)
+        agent.game_over(views[seat], game.state.winner)
     result = game.result()
     return MatchResult(
         winner=result["winner"], reason=result["reason"], turns=result["turns"],

@@ -7,6 +7,7 @@ import pytest
 from mulligan.agents import RandomAgent
 from mulligan.engine import actions as act
 from mulligan.engine.game import Game, IllegalAction
+from mulligan.engine.view import PlayerView
 from mulligan.match import deck_by_name, play_game
 
 DECK_NAMES = ["boros-aggro", "dimir-control", "gruul-midrange", "azorius-skies",
@@ -61,7 +62,7 @@ def test_never_offers_a_dead_choice(seed: int):
         options = game.legal_actions()
         assert options, "a running game must offer at least one action"
         assert len(set(options)) == len(options), "duplicate actions in the choice list"
-        game.apply(agent.choose(game, options, game.state.decision_player))
+        game.apply(agent.choose(PlayerView(game, game.state.decision_player), options))
 
 
 def test_life_totals_are_consistent_with_the_result():

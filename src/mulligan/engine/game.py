@@ -106,6 +106,20 @@ class Game:
         """
         return obj.spec.is_creature and obj.summoning_sick and not obj.has(Keyword.HASTE)
 
+    def is_creature(self, obj: GameObject) -> bool:
+        return obj.spec.is_creature
+
+    def keywords_of(self, obj: GameObject) -> frozenset[Keyword]:
+        return obj.keywords()
+
+    def may_block(self, obj: GameObject) -> bool:
+        """Whether a creature is able to block at all, ignoring what is attacking."""
+        return True
+
+    def mana_available(self, seat: int) -> int:
+        return (sum(len(symbols) for _, _, symbols in self._mana_sources(seat))
+                + self.state.players[seat].pool.total())
+
     def power_of(self, obj: GameObject) -> int:
         return max(0, (obj.spec.power or 0) + obj.temp_power + obj.counters)
 
@@ -929,6 +943,30 @@ class Game:
         if len(player.hand) > MAX_HAND_SIZE:
             state.pending = "discard"
             state.decision_player = state.active
+
+    def describe_action(self, action: act.Action) -> str:
+        """A one-line human-readable rendering, for logs, replays and prompts."""
+        name = lambda obj_id: self.describe_target(Target("object", obj_id))  # noqa: E731
+        targets = lambda ts: (" -> " + ", ".join(self.describe_target(t) for t in ts)  # noqa: E731
+                              if ts else "")
+        if isinstance(action, act.PlayLand):
+            return f"play {name(action.card_id)}"
+        if isinstance(action, act.CastSpell):
+            return f"cast {name(action.card_id)}{targets(action.targets)}"
+        if isinstance(action, act.ActivateAbility):
+            ability = self.state.obj(action.source_id).spec.abilities[action.index]
+            return f"activate {name(action.source_id)}: {ability.describe()}{targets(action.targets)}"
+        if isinstance(action, act.DeclareAttacker):
+            return f"attack with {name(action.creature_id)}"
+        if isinstance(action, act.DeclareBlocker):
+            return f"block {name(action.attacker_id)} with {name(action.blocker_id)}"
+        if isinstance(action, act.ChooseTargets):
+            return f"target{targets(action.targets)}"
+        if isinstance(action, (act.Discard, act.PutOnBottom)):
+            verb = "discard" if isinstance(action, act.Discard) else "bottom"
+            return f"{verb} {name(action.card_id)}"
+        return {act.Pass: "pass", act.FinishDeclaring: "done declaring",
+                act.Mulligan: "mulligan", act.KeepHand: "keep"}.get(type(action), repr(action))
 
     def describe_target(self, target: Target) -> str:
         if target.kind == "player":

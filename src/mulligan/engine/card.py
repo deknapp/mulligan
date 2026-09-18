@@ -104,7 +104,7 @@ class GameObject:
     __slots__ = ("id", "spec", "owner", "controller", "zone", "tapped", "damage",
                  "summoning_sick", "attacking", "blocking", "blocked_by", "counters",
                  "temp_power", "temp_toughness", "granted_keywords", "is_token",
-                 "targets", "entered_turn", "was_blocked", "deathtouched")
+                 "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -129,6 +129,8 @@ class GameObject:
         # Damage from a deathtouch source is lethal regardless of amount, so it
         # has to be remembered rather than compared against toughness later.
         self.deathtouched = False
+        # Id of the permanent an Aura or Equipment is attached to, or None.
+        self.attached_to: int | None = None
 
     @property
     def name(self) -> str:
