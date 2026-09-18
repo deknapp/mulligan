@@ -72,3 +72,39 @@ def test_life_totals_are_consistent_with_the_result():
                            seed=seed)
         if result.winner is not None:
             assert result.life[1 - result.winner] <= 0 or "empty library" in result.reason
+
+
+def test_a_cloned_game_is_independent_of_the_original():
+    from mulligan.engine.game import clone_game
+    game = Game([deck_by_name("boros-aggro"), deck_by_name("golgari-grind")], seed=4)
+    agent = RandomAgent(1)
+    for _ in range(60):
+        game.apply(agent.choose(PlayerView(game, game.state.decision_player),
+                                game.legal_actions()))
+    before = (game.state.turn, [p.life for p in game.state.players],
+              [list(p.hand) for p in game.state.players], game.legal_actions())
+    copy = clone_game(game)
+    for _ in range(40):
+        if copy.is_over:
+            break
+        copy.apply(agent.choose(PlayerView(copy, copy.state.decision_player),
+                                copy.legal_actions()))
+    after = (game.state.turn, [p.life for p in game.state.players],
+             [list(p.hand) for p in game.state.players], game.legal_actions())
+    assert before == after
+
+
+def test_determinize_only_reshuffles_what_the_viewer_cannot_see():
+    import random
+
+    from mulligan.engine.game import clone_game, determinize
+    game = Game([deck_by_name("boros-aggro"), deck_by_name("golgari-grind")], seed=9)
+    copy = clone_game(game)
+    determinize(copy, 0, random.Random(3))
+    mine, theirs = copy.state.players
+    assert mine.hand == game.state.players[0].hand
+    assert sorted(mine.library) == sorted(game.state.players[0].library)
+    assert len(theirs.hand) == len(game.state.players[1].hand)
+    assert sorted(theirs.hand + theirs.library) == sorted(
+        game.state.players[1].hand + game.state.players[1].library)
+    assert all(copy.state.objects[i].zone == "hand" for i in theirs.hand)

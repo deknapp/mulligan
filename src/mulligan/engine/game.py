@@ -2012,3 +2012,69 @@ def _token_card(token: TokenSpec) -> CardSpec:
 
 
 __all__ = ["Game", "IllegalAction", "ARMY", "TREASURE"]
+
+
+def clone_game(game: Game) -> Game:
+    """An independent copy of a game, for search. Card specs and effects are
+    immutable and shared; everything mutable is copied. The log is not."""
+    import copy
+    import dataclasses
+
+    new = Game.__new__(Game)
+    new.max_turns = game.max_turns
+    new._next_id = copy.copy(game._next_id)
+    old = game.state
+    objects = {}
+    for obj_id, obj in old.objects.items():
+        c = GameObject.__new__(GameObject)
+        for slot in GameObject.__slots__:
+            value = getattr(obj, slot)
+            if isinstance(value, (list, set, dict)):
+                value = type(value)(value)
+            setattr(c, slot, value)
+        objects[obj_id] = c
+    players = []
+    for p in old.players:
+        q = Player.__new__(Player)
+        q.__dict__.update(p.__dict__)
+        for name in ("library", "hand", "battlefield", "graveyard", "exile"):
+            setattr(q, name, list(getattr(p, name)))
+        q.pool = type(p.pool)(p.pool)
+        q.seen = set(p.seen)
+        players.append(q)
+
+    def item(it: StackItem | None) -> StackItem | None:
+        return None if it is None else dataclasses.replace(it, extra=dict(it.extra))
+
+    rng = random.Random()
+    rng.setstate(old.rng.getstate())
+    new.state = dataclasses.replace(
+        old, players=players, objects=objects, stack=[item(s) for s in old.stack], rng=rng,
+        log=[], mulligan_counts=list(old.mulligan_counts),
+        mulligan_decided=list(old.mulligan_decided), pending_trigger=item(old.pending_trigger),
+        attackers_declared=list(old.attackers_declared),
+        blocks_declared=list(old.blocks_declared))
+    new._trigger_queue = [item(t) for t in game._trigger_queue]
+    new._delayed = list(game._delayed)
+    new._static_sources = None
+    new._fired_once = set(game._fired_once)
+    new._legal_cache = None
+    return new
+
+
+def determinize(game: Game, viewer: int, rng: random.Random) -> None:
+    """Replace what ``viewer`` cannot see with a random guess consistent with
+    what it can: the opponent's hand and library are reshuffled together, and
+    the viewer's own library order is reshuffled."""
+    state = game.state
+    opp = state.players[1 - viewer]
+    unknown = opp.hand + opp.library
+    rng.shuffle(unknown)
+    n = len(opp.hand)
+    opp.hand, opp.library = unknown[:n], unknown[n:]
+    for obj_id in opp.hand:
+        state.objects[obj_id].zone = "hand"
+    for obj_id in opp.library:
+        state.objects[obj_id].zone = "library"
+    rng.shuffle(state.players[viewer].library)
+    game._legal_cache = None

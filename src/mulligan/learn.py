@@ -235,3 +235,80 @@ def compare_values(set_code: str, values_a: dict, values_b: dict, pairings: int 
         scores = [s for f in futures for s in f.result()]
     low, high = wilson(sum(scores), len(scores))
     return sum(scores) / len(scores), low, high, len(scores)
+
+
+# ------------------------------------------- expert iteration (distillation)
+
+
+def _search_chunk(set_code: str, decks: list[list[str]], games: list[tuple], rollouts: int,
+                  candidates: int):
+    """Games where a search agent plays the heuristic; returns the search
+    agent's recorded decisions (features, heuristic scores, chosen index)."""
+    from .agents.search import SearchAgent
+    data = load_set(set_code)
+    built = [[data.playable[n] for n in names] for names in decks]
+    examples = []
+    for deck_a, deck_b, seed, seat in games:
+        searcher = SearchAgent(rollouts, candidates, seed=seed, record=True)
+        agents = (searcher, HeuristicAgent()) if seat == 0 else (HeuristicAgent(), searcher)
+        play_game(agents, (built[deck_a], built[deck_b]), seed=seed, on_the_play=seed % 2)
+        examples.extend(searcher.trace)
+    return examples
+
+
+def generate_search_data(set_code: str, games: int = 400, rollouts: int = 4,
+                         candidates: int = 3, seed: int = 0, workers: int | None = None,
+                         n_decks: int = 150) -> list:
+    workers = workers if workers is not None else max(1, (os.cpu_count() or 2) - 1)
+    decks = _decks(set_code, n_decks, TRAIN_POOL_SEED)
+    rng = random.Random(seed)
+    jobs = [(*rng.sample(range(n_decks), 2), rng.randrange(1 << 30), rng.randrange(2))
+            for _ in range(games)]
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        futures = [pool.submit(_search_chunk, set_code, decks, part, rollouts, candidates)
+                   for part in _split(jobs, workers * 3)]
+        return [ex for f in futures for ex in f.result()]
+
+
+def distill(examples: list, epochs: int = 20, lr: float = 0.05, l2: float = 1e-3,
+            seed: int = 0) -> dict[str, float]:
+    """Fit the linear correction so that squash(heuristic) + w . f picks what
+    the search agent picked (softmax cross-entropy, plain SGD)."""
+    from .agents.learned import squash
+    w: dict[str, float] = {}
+    rng = random.Random(seed)
+    data = list(examples)
+    for _ in range(epochs):
+        rng.shuffle(data)
+        for feats, scores, chosen in data:
+            logits = [squash(h) + dot(w, f) for h, f in zip(scores, feats, strict=True)]
+            top = max(logits)
+            exps = [math.exp(x - top) for x in logits]
+            total = sum(exps)
+            grad: dict[str, float] = defaultdict(float)
+            for k, x in feats[chosen].items():
+                grad[k] += x
+            for e, f in zip(exps, feats, strict=True):
+                p = e / total
+                if p < 1e-4:
+                    continue
+                for k, x in f.items():
+                    grad[k] -= p * x
+            for k, g in grad.items():
+                w[k] = w.get(k, 0.0) * (1 - l2) + lr * g
+    return {k: v for k, v in w.items() if abs(v) > 1e-4}
+
+
+def evaluate_weights(set_code: str, w: dict, pairings: int = 1000,
+                     workers: int | None = None) -> tuple[float, float, float, int]:
+    """Greedy learned agent with weights ``w`` vs the heuristic, paired decks."""
+    workers = workers if workers is not None else max(1, (os.cpu_count() or 2) - 1)
+    decks = _decks(set_code, 60, EVAL_POOL_SEED)
+    rng = random.Random(4242)
+    games = [(*rng.sample(range(len(decks)), 2), 6_000_000 + k) for k in range(pairings)]
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        futures = [pool.submit(_eval_chunk, set_code, decks, w, part)
+                   for part in _split(games, workers * 3)]
+        scores = [s for f in futures for s in f.result()]
+    low, high = wilson(sum(scores), len(scores))
+    return sum(scores) / len(scores), low, high, len(scores)
