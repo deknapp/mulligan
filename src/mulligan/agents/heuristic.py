@@ -59,6 +59,16 @@ def permanent_value(perm: PermanentView) -> float:
     return 1.0 + perm.spec.cost.mana_value * 0.5
 
 
+def _produces(spec: CardSpec) -> set[str]:
+    colors: set[str] = set()
+    for ability in spec.abilities:
+        for effect in ability.effects:
+            if isinstance(effect, fx.AddMana):
+                for unit in effect.symbols:
+                    colors |= set("WUBRG") if unit == "*" else set(unit.split("/"))
+    return colors
+
+
 def spec_value(spec: CardSpec) -> float:
     if spec.is_creature:
         return creature_value(spec.power or 0, spec.toughness or 0, spec.keywords)
@@ -95,17 +105,29 @@ def can_block(blocker: PermanentView, attacker: PermanentView) -> bool:
 
 # ------------------------------------------------------------------ effects
 
-HARMFUL = (fx.DestroyTarget, fx.ExileTarget, fx.ReturnTargetToHand, fx.TapTarget,
-           fx.DealDamage, fx.Fight)
+REMOVAL = (fx.Destroy, fx.Exile, fx.ReturnToHand, fx.PutOnLibrary, fx.ShuffleIntoLibrary)
+HELPFUL_TO_OBJECT = (fx.AddCounters, fx.Attach)
+CARD_ADVANTAGE = {fx.Recruit: 2.0, fx.Scry: 0.4, fx.SearchLibrary: 1.2, fx.LookAtTop: 1.5,
+                  fx.Impulse: 1.5, fx.AdditionalLand: 0.3}
 
 
-def _removes(effect, perm: PermanentView) -> bool:
-    """Whether ``effect`` aimed at ``perm`` takes it off the battlefield."""
-    if isinstance(effect, (fx.DestroyTarget, fx.ExileTarget, fx.ReturnTargetToHand)):
-        return True
-    if isinstance(effect, fx.DealDamage):
-        return perm.is_creature and effect.amount >= perm.toughness - perm.damage
-    return False
+def _touched(ref: str, targets) -> list[int]:
+    """Indexes of ``targets`` that an effect's ``to`` reference touches."""
+    if ref == "target":
+        return list(range(len(targets)))
+    if ref.startswith("target") and ref[6:].isdigit():
+        index = int(ref[6:])
+        return [index] if index < len(targets) else []
+    return []
+
+
+def _side(ref: str) -> str:
+    """For an ``all:`` reference: whose permanents it hits."""
+    if "theirs" in ref:
+        return "theirs"
+    if "yours" in ref:
+        return "yours"
+    return "both"
 
 
 class HeuristicAgent(Agent):
@@ -136,7 +158,10 @@ class HeuristicAgent(Agent):
         if isinstance(action, act.ActivateAbility):
             return self._score_activation(view, action)
         if isinstance(action, act.ChooseTargets):
-            return self._score_trigger_targets(view, action)
+            trigger = view.pending_trigger()
+            effects = trigger.effects if trigger is not None else ()
+            return self._effects_value(view, effects, action.targets,
+                                       source_id=trigger.source_id if trigger else None)
         if isinstance(action, act.DeclareAttacker):
             return 1.0 if action.creature_id in self._plan else -1.0
         if isinstance(action, act.DeclareBlocker):
@@ -170,19 +195,16 @@ class HeuristicAgent(Agent):
 
     def _land_need(self, view: PlayerView, card_id: int) -> float:
         """Prefer the land that produces the color the hand is shortest on."""
-        land = next(c for c in view.hand() if c.id == card_id)
-        produced = {s for ab in land.spec.abilities for e in ab.effects
-                    if isinstance(e, fx.AddMana) for s in e.symbols}
+        land = next(c for c in view.hand() + view.exile(view.seat) if c.id == card_id)
+        produced = _produces(land.spec)
         have: Counter[str] = Counter()
         for perm in view.lands(view.seat):
-            for ab in perm.spec.abilities:
-                for e in ab.effects:
-                    if isinstance(e, fx.AddMana):
-                        have.update(e.symbols)
+            have.update(_produces(perm.spec))
         want: Counter[str] = Counter()
         for card in view.hand():
             for sym, n in card.spec.cost.pips:
-                want[sym] += n
+                for part in sym.split("/"):
+                    want[part] += n
         need = sum(max(0, want[s] - have[s]) for s in produced)
         return need - (5.0 if land.spec.enters_tapped else 0.0)
 
@@ -190,32 +212,74 @@ class HeuristicAgent(Agent):
 
     def _score_cast(self, view: PlayerView, action: act.CastSpell) -> float:
         card = view.card(action.card_id)
-        spec = card.spec
+        spec = card.spec.adventure if action.face == "adventure" else card.spec
         mv = spec.cost.mana_value
-        instant = CardType.INSTANT in spec.types
         main_phase = view.is_my_turn and view.step in (Step.PRECOMBAT_MAIN,
                                                        Step.POSTCOMBAT_MAIN)
-        if spec.is_permanent and not spec.targets:
-            if not main_phase and not instant:
+        if action.mode >= 0:
+            effects, targets = spec.modes[action.mode].effects, action.targets
+        else:
+            effects, targets = spec.on_resolve, action.targets
+        bonus = 0.5 if action.kicked else 0.0
+        if spec.is_permanent and action.face != "adventure":
+            if not main_phase and CardType.CREATURE in spec.types:
+                # Flash creatures: hold them for the opponent's end step.
+                if not (view.step == Step.END_STEP and not view.is_my_turn):
+                    return -1.0
+            if spec.enchant is not None:
+                aura = self._aura_value(view, spec, targets)
+                return 10.0 + aura + mv if aura > 0 else -1.0
+            etb = self._etb_value(view, spec)
+            if etb < -5:
                 return -1.0
-            return 10.0 + spec_value(spec) + mv
-        value = self._effects_value(view, spec.on_resolve, action.targets)
+            return 10.0 + spec_value(spec) + etb + mv + bonus
+        value = self._effects_value(view, effects, targets, source_id=action.card_id)
         if value <= 0:
             return -1.0
-        if self._is_trick(spec) and not self._trick_now(view, spec, action.targets):
+        if self._is_trick(effects) and not self._trick_now(view, effects, targets):
             return -1.0
-        # Sorceries and removal get used in the main phase; instants on the
-        # opponent's turn are only worth it when they answer something.
-        return 10.0 + value + 0.5 * mv
+        if action.face == "adventure":
+            value += 2.0  # the creature half stays available: casting the adventure is free value
+        return 10.0 + value + 0.5 * mv + bonus
 
-    def _is_trick(self, spec: CardSpec) -> bool:
-        return any(isinstance(e, fx.Pump) and not e.self_target for e in spec.on_resolve)
+    def _etb_value(self, view: PlayerView, spec: CardSpec) -> float:
+        """Untargeted ETB effects (targeted ones are valued when their targets
+        are chosen)."""
+        total = 0.0
+        for trigger in spec.triggers:
+            if trigger.when == "etb" and not trigger.targets:
+                total += self._effects_value(view, trigger.effects, ())
+        return total
 
-    def _trick_now(self, view: PlayerView, spec: CardSpec, targets) -> bool:
+    def _aura_value(self, view: PlayerView, spec: CardSpec, targets) -> float:
+        perm = view.permanent(targets[0].id) if targets and targets[0].kind == "object" else None
+        if perm is None:
+            return -1.0
+        buff = sum(self._static_amount(s.power) + self._static_amount(s.toughness)
+                   + len(s.keywords) for s in spec.statics if s.affects == "enchanted")
+        lockdown = any({"loses_abilities", "doesnt_untap", "cant_attack", "cant_block"}
+                       & set(s.flags) for s in spec.statics if s.affects == "enchanted")
+        if perm.controller == view.seat:
+            return buff if buff > 0 and not lockdown else -1.0
+        if lockdown or buff < 0:
+            return permanent_value(perm) * 0.8
+        return -1.0
+
+    @staticmethod
+    def _static_amount(value) -> int:
+        return value if isinstance(value, int) else 1
+
+    def _is_trick(self, effects) -> bool:
+        return any(isinstance(e, fx.Pump) and e.to.startswith("target")
+                   and (not isinstance(e.power, int) or e.power >= 0) for e in effects)
+
+    def _trick_now(self, view: PlayerView, effects, targets) -> bool:
         """A pump spell is worth casting only when it wins a combat right now."""
         if view.step != Step.DECLARE_BLOCKERS or not view.blocks():
             return False
-        pump = next(e for e in spec.on_resolve if isinstance(e, fx.Pump))
+        pump = next(e for e in effects if isinstance(e, fx.Pump))
+        power = pump.power if isinstance(pump.power, int) else 2
+        tough = pump.toughness if isinstance(pump.toughness, int) else 2
         for target in targets:
             perm = view.permanent(target.id) if target.kind == "object" else None
             if perm is None or perm.controller != view.seat:
@@ -229,134 +293,257 @@ class HeuristicAgent(Agent):
                 if other is None:
                     continue
                 dies_now = _lethal_to(other.power, perm, other.has(Keyword.DEATHTOUCH))
-                survives_after = other.power < perm.toughness + pump.toughness - perm.damage
-                kills_after = perm.power + pump.power >= other.toughness - other.damage
+                survives_after = other.power < perm.toughness + tough - perm.damage
+                kills_after = perm.power + power >= other.toughness - other.damage
                 if (dies_now and survives_after) or kills_after:
                     return True
         return False
 
-    def _effects_value(self, view: PlayerView, effects, targets) -> float:
-        """What resolving ``effects`` against ``targets`` is worth to the viewer."""
+    def _effects_value(self, view: PlayerView, effects, targets,
+                       source_id: int | None = None) -> float:
+        """What resolving ``effects`` against ``targets`` is worth to the viewer.
+
+        Every effect is classified as harmful or helpful to what it touches;
+        pointing a harmful effect at your own permanent (or a helpful one at an
+        opponent's) is heavily penalised, which is what keeps removal pointed
+        the right way on any set without per-card rules.
+        """
         me, opp = view.seat, view.opponent
         total = 0.0
         for effect in effects:
-            if isinstance(effect, fx.CounterTargetSpell):
+            if isinstance(effect, fx.If):
+                total += 0.7 * self._effects_value(view, effect.then, targets, source_id)
+                continue
+            if isinstance(effect, (fx.CounterSpell, fx.ReturnSpellToHand)):
                 for t in targets:
+                    if t.kind != "object":
+                        continue
                     item = next((s for s in view.stack() if s.obj_id == t.id), None)
                     if item is None or item.controller == me:
                         return -10.0
-                    total += 2.0 + (spec_value(item.spec) if item.spec else 2.0)
+                    worth = spec_value(item.spec) if item.spec else 2.0
+                    if isinstance(effect, fx.CounterSpell) and effect.unless_pay:
+                        worth *= 0.5
+                    total += 2.0 + worth
                 continue
-            if isinstance(effect, fx.Fight) and len(targets) == 2:
-                mine = view.permanent(targets[0].id)
-                theirs = view.permanent(targets[1].id)
-                if mine is None or theirs is None:
+            if isinstance(effect, fx.Fight):
+                a = self._target_perm(view, effect.a, targets)
+                b = self._target_perm(view, effect.b, targets)
+                if a is None or b is None:
                     continue
-                if mine.power >= theirs.toughness - theirs.damage:
-                    total += permanent_value(theirs)
-                if theirs.power >= mine.toughness - mine.damage:
-                    total -= permanent_value(mine)
+                if a.controller != me or b.controller == me:
+                    return -10.0
+                if a.power >= b.toughness - b.damage:
+                    total += permanent_value(b)
+                if not effect.one_sided and b.power >= a.toughness - a.damage:
+                    total -= permanent_value(a)
                 continue
-            if isinstance(effect, fx.DealDamage) and effect.scope != "targets":
-                total += self._sweep_value(view, effect)
+            to = getattr(effect, "to", "")
+            if to.startswith("all:"):
+                total += self._mass_value(view, effect, to)
                 continue
-            if isinstance(effect, fx.DestroyAll):
-                mine = sum(permanent_value(c) for c in view.creatures(me))
-                theirs = sum(permanent_value(c) for c in view.creatures(opp))
-                total += theirs - (0 if effect.only_opponents else mine) - 2.0
-                continue
-            if isinstance(effect, HARMFUL):
-                for t in targets:
-                    if t.kind == "player":
-                        if t.id == me:
-                            return -10.0
-                        amount = getattr(effect, "amount", 0)
-                        total += 100.0 if amount >= view.life(opp) else 0.4 * amount
-                        continue
-                    perm = view.permanent(t.id)
-                    if perm is None:
-                        continue
-                    if perm.controller == me:
+            touched = _touched(to, targets) if to else []
+            if isinstance(effect, (fx.DealDamage, fx.Pump, fx.Tap)) or isinstance(
+                    effect, REMOVAL) or isinstance(effect, HELPFUL_TO_OBJECT) or isinstance(
+                    effect, (fx.SetBasePT, fx.RemoveCounters)):
+                for index in touched:
+                    t = targets[index]
+                    value = self._target_effect_value(view, effect, t)
+                    if value <= -10:
                         return -10.0
-                    if _removes(effect, perm):
-                        bonus = 0.5 if isinstance(effect, fx.ReturnTargetToHand) else 1.0
-                        total += bonus * permanent_value(perm)
-                    elif isinstance(effect, fx.TapTarget):
-                        total += 0.5
-                    else:
-                        total += 0.2
-                continue
-            if isinstance(effect, fx.Pump):
-                for t in targets:
-                    perm = view.permanent(t.id) if t.kind == "object" else None
-                    if perm is None or perm.controller != me:
-                        return -10.0
-                    total += 1.0 + effect.power + effect.toughness
-                if effect.self_target:
+                    total += value
+                if not touched and to in ("self", "it"):
                     total += 0.5
+                if isinstance(effect, fx.DealDamage) and to in ("each_opponent",):
+                    amount = self._amount(effect.amount)
+                    total += 100.0 if amount >= view.life(opp) else 0.4 * amount
                 continue
             if isinstance(effect, fx.DrawCards):
-                total += 2.0 * effect.count
-            elif isinstance(effect, fx.GainLife):
-                total += 0.3 * effect.amount
-            elif isinstance(effect, fx.LoseLife):
-                if effect.who == "each_opponent":
-                    total += 100.0 if effect.amount >= view.life(opp) else 0.4 * effect.amount
+                count = self._amount(effect.count)
+                if effect.who in ("target_player", "target") and targets:
+                    seat = next((t.id for t in targets if t.kind == "player"), me)
+                    total += 2.0 * count if seat == me else -2.0 * count
                 else:
-                    for t in targets or ():
-                        sign = -1 if (t.kind == "player" and t.id == me) else 1
-                        total += sign * 0.3 * effect.amount
-                    if effect.who == "you":
-                        total -= 0.3 * effect.amount
+                    total += 2.0 * count if effect.who == "you" else -1.0 * count
+            elif isinstance(effect, fx.Loot):
+                total += 0.8 * effect.draw
+            elif type(effect) in CARD_ADVANTAGE:
+                total += CARD_ADVANTAGE[type(effect)]
+            elif isinstance(effect, fx.GainLife):
+                total += 0.3 * self._amount(effect.amount) * self._who_sign(view, effect.who,
+                                                                            targets)
+            elif isinstance(effect, fx.LoseLife):
+                amount = self._amount(effect.amount)
+                sign = -self._who_sign(view, effect.who, targets)
+                if sign > 0 and amount >= view.life(opp):
+                    total += 100.0
+                else:
+                    total += sign * 0.35 * amount
+            elif isinstance(effect, fx.Discard):
+                total += 1.5 * self._amount(effect.count) * (-1 if effect.who == "you" else 1)
+            elif isinstance(effect, fx.Mill):
+                total += 0.1 * self._amount(effect.count)
+            elif isinstance(effect, fx.Sacrifice):
+                if effect.who == "you":
+                    total -= 2.0
+                else:
+                    theirs = view.creatures(opp)
+                    total += min((permanent_value(c) for c in theirs), default=-3.0)
             elif isinstance(effect, fx.CreateToken):
-                total += effect.count * creature_value(effect.power, effect.toughness,
-                                                       effect.keywords)
+                t = effect.token
+                per = creature_value(t.power, t.toughness, t.keywords) if "Creature" in t.types \
+                    else 1.0
+                total += self._amount(effect.count) * per
+            elif isinstance(effect, fx.Amass):
+                total += 1.5 * self._amount(effect.count)
+            elif isinstance(effect, (fx.ReturnToBattlefield,)):
+                total += 4.0
+            elif isinstance(effect, (fx.SacrificeSelf,)):
+                total -= 1.0
             else:
-                total += 1.0  # an effect this heuristic does not model: assume mildly good
+                total += 0.5  # an effect this heuristic does not model: assume mildly good
         return total
 
-    def _sweep_value(self, view: PlayerView, effect: fx.DealDamage) -> float:
-        def killed(seat: int) -> float:
-            return sum(permanent_value(c) for c in view.creatures(seat)
-                       if effect.amount >= c.toughness - c.damage)
-        value = killed(view.opponent)
-        if effect.scope == "all_creatures":
-            value -= killed(view.seat)
-        if effect.scope == "each_opponent":
-            value = 100.0 if effect.amount >= view.life(view.opponent) else 0.4 * effect.amount
-        return value - 1.0
+    @staticmethod
+    def _amount(value) -> int:
+        return value if isinstance(value, int) else 2
+
+    def _who_sign(self, view: PlayerView, who: str, targets) -> float:
+        if who == "you":
+            return 1.0
+        if who in ("each_opponent",):
+            return -1.0
+        if who in ("target_player", "target"):
+            seat = next((t.id for t in targets if t.kind == "player"), view.seat)
+            return 1.0 if seat == view.seat else -1.0
+        return 0.0
+
+    def _target_perm(self, view: PlayerView, ref: str, targets) -> PermanentView | None:
+        index = _touched(ref, targets)
+        if len(index) != 1:
+            return None
+        t = targets[index[0]]
+        return view.permanent(t.id) if t.kind == "object" else None
+
+    def _target_effect_value(self, view: PlayerView, effect, t) -> float:
+        me, opp = view.seat, view.opponent
+        if t.kind == "none":
+            return 0.0
+        if t.kind == "player":
+            if isinstance(effect, fx.DealDamage):
+                if t.id == me:
+                    return -10.0
+                amount = self._amount(effect.amount)
+                return 100.0 if amount >= view.life(opp) else 0.4 * amount
+            return 0.0
+        perm = view.permanent(t.id)
+        if perm is None:
+            card = view.card(t.id)  # a card in a graveyard, e.g. reanimation
+            if card is None:
+                return 0.0
+            return spec_value(card.spec) if card.owner == me else 0.5
+        mine = perm.controller == me
+        harmful = isinstance(effect, REMOVAL) or isinstance(effect, fx.DealDamage) or (
+            isinstance(effect, fx.Tap) and not effect.untap) or (
+            isinstance(effect, fx.Pump) and isinstance(effect.toughness, int)
+            and effect.toughness < 0) or isinstance(effect, fx.RemoveCounters)
+        if harmful:
+            if mine:
+                return -10.0
+            if self._removes(effect, perm):
+                bonus = 0.5 if isinstance(effect, fx.ReturnToHand) else 1.0
+                return bonus * permanent_value(perm)
+            if isinstance(effect, fx.Tap):
+                return 0.5 if perm.is_creature and not perm.tapped else -1.0
+            return 0.2
+        # Helpful effects: pump, counters, untap, attach.
+        if not mine:
+            return -10.0
+        if isinstance(effect, fx.Pump):
+            p = effect.power if isinstance(effect.power, int) else 2
+            q = effect.toughness if isinstance(effect.toughness, int) else 2
+            return 1.0 + p + q + len(effect.keywords)
+        if isinstance(effect, fx.AddCounters):
+            return 1.5 * self._amount(effect.count) + (1.0 if perm.is_creature else -2.0)
+        if isinstance(effect, fx.Tap):
+            return 0.5 if perm.tapped else -0.5
+        return 1.0
+
+    @staticmethod
+    def _removes(effect, perm: PermanentView) -> bool:
+        if isinstance(effect, REMOVAL):
+            return True
+        if isinstance(effect, fx.DealDamage):
+            amount = effect.amount if isinstance(effect.amount, int) else 2
+            return perm.is_creature and amount >= perm.toughness - perm.damage
+        if isinstance(effect, fx.Pump) and isinstance(effect.toughness, int):
+            return perm.is_creature and perm.toughness + effect.toughness <= 0
+        return False
+
+    def _mass_value(self, view: PlayerView, effect, ref: str) -> float:
+        side = _side(ref)
+        creatures_only = "creature" in ref
+
+        def pool(seat: int):
+            perms = view.creatures(seat) if creatures_only else view.battlefield(seat)
+            return [p for p in perms if not p.is_land]
+
+        def worth(seat: int) -> float:
+            total = 0.0
+            for perm in pool(seat):
+                if isinstance(effect, fx.DealDamage):
+                    if self._amount(effect.amount) >= perm.toughness - perm.damage:
+                        total += permanent_value(perm)
+                elif isinstance(effect, REMOVAL):
+                    total += permanent_value(perm)
+                elif isinstance(effect, (fx.Pump, fx.AddCounters)):
+                    power = getattr(effect, "power", getattr(effect, "count", 1))
+                    total += 1.0 + (power if isinstance(power, int) else 1)
+                else:
+                    total += 0.5
+            return total
+
+        helpful = isinstance(effect, (fx.Pump, fx.AddCounters)) and not (
+            isinstance(effect, fx.Pump) and isinstance(effect.toughness, int)
+            and effect.toughness < 0)
+        mine, theirs = view.seat, view.opponent
+        if helpful:
+            if isinstance(effect, fx.Pump) and not effect.permanent and not (
+                    view.step == Step.DECLARE_BLOCKERS and view.attackers()):
+                return -1.0  # a team pump is a combat trick
+            return worth(mine) if side != "theirs" else -worth(theirs)
+        gain = worth(theirs) if side != "yours" else 0.0
+        loss = worth(mine) if side != "theirs" else 0.0
+        return gain - loss - 1.0
 
     def _score_activation(self, view: PlayerView, action: act.ActivateAbility) -> float:
-        source = view.permanent(action.source_id)
+        source = view.card(action.source_id)
         ability = source.spec.abilities[action.index]
-        value = self._effects_value(view, ability.effects, action.targets)
-        if any(isinstance(e, fx.Pump) and e.self_target for e in ability.effects):
+        if ability.is_equip:
+            target = view.permanent(action.targets[0].id) if action.targets else None
+            if target is None or target.controller != view.seat:
+                return -1.0
+            if source.attached_to is not None:  # already on something: re-equip rarely
+                return -1.0
+            return 3.0 + permanent_value(target) * 0.1
+        if any(isinstance(e, fx.Pump) and e.to == "self" for e in ability.effects):
             # Firebreathing: only while it is attacking unblocked or in a fight.
-            return 1.0 if (source.attacking and view.step == Step.DECLARE_BLOCKERS) else -1.0
-        return value - 0.5 if value > 0 else -1.0
-
-    def _score_trigger_targets(self, view: PlayerView, action: act.ChooseTargets) -> float:
-        # The trigger's effects are not in the view directly; score the targets
-        # by whether they belong to us, using the triggering card's spec when a
-        # permanent's ETB is what is being targeted.
-        score = 0.0
-        for t in action.targets:
-            if t.kind == "player":
-                score += 1.0 if t.id == view.opponent else -1.0
-                continue
-            perm = view.permanent(t.id)
-            if perm is None:
-                continue
-            sign = -1.0 if perm.controller == view.seat else 1.0
-            score += sign * permanent_value(perm)
-        return score * self._trigger_polarity(view)
-
-    def _trigger_polarity(self, view: PlayerView) -> float:
-        pending = view.pending_trigger()
-        if pending is None:
+            attacking = getattr(source, "attacking", False)
+            return 1.0 if (attacking and view.step == Step.DECLARE_BLOCKERS) else -1.0
+        value = self._effects_value(view, ability.effects, action.targets,
+                                    source_id=action.source_id)
+        if ability.sacrifice_self and getattr(source, "is_creature", False):
+            value -= permanent_value(source)
+        if ability.sacrifice_self and getattr(source, "is_land", False):
+            value -= 2.0 if len(view.lands(view.seat)) < 6 else 0.5
+        if ability.discard_self:  # cycling: only when the card is dead weight
+            lands = len(view.lands(view.seat))
+            if source.spec.is_land and lands < 5:
+                return -1.0
+            if not source.spec.is_land and source.spec.cost.mana_value <= lands + 1:
+                return -1.0
             return 1.0
-        helpful = any(isinstance(e, fx.Pump) for e in pending.effects)
-        return -1.0 if helpful else 1.0
+        return value - 0.5 if value > 0.5 else -1.0
 
     # ---------------------------------------------------------------- combat
 

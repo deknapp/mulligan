@@ -7,9 +7,9 @@ out of these.
 from __future__ import annotations
 
 from collections import Counter
+from collections.abc import Iterable
 from dataclasses import dataclass
 from enum import Enum
-from typing import Iterable
 
 
 class Color(str, Enum):
@@ -79,36 +79,59 @@ class Keyword(str, Enum):
     DOUBLE_STRIKE = "double strike"
     MENACE = "menace"
     DEFENDER = "defender"
+    FLASH = "flash"
+    HEXPROOF = "hexproof"
+    INDESTRUCTIBLE = "indestructible"
 
 
 @dataclass(frozen=True)
 class ManaCost:
     """A mana cost: some generic, plus colored pips.
 
-    ``ManaCost.parse("3UU")`` is three generic and two blue. ``"0"`` is free.
+    ``ManaCost.parse("3UU")`` is three generic and two blue; Scryfall's brace
+    form ``"{3}{U}{U}"`` parses the same. A hybrid pip is written ``"B/G"`` and
+    can be paid with either color. ``"0"`` or ``""`` is free. ``{X}`` is kept as
+    ``has_x`` and costs nothing extra: cards that scale with X are not
+    supported by the engine, and the set compiler marks them so.
     """
 
     generic: int = 0
     pips: tuple[tuple[str, int], ...] = ()
+    has_x: bool = False
 
     @staticmethod
     def parse(text: str) -> ManaCost:
-        generic = 0
-        counts: Counter[str] = Counter()
-        digits = ""
-        for ch in text.strip().upper():
-            if ch.isdigit():
-                digits += ch
-            elif ch in MANA_SYMBOLS:
+        text = (text or "").strip().upper()
+        if "{" in text:
+            symbols = [part for part in text.replace("}", "").split("{") if part]
+        else:
+            symbols = []
+            digits = ""
+            for ch in text:
+                if ch.isdigit():
+                    digits += ch
+                    continue
                 if digits:
-                    generic += int(digits)
+                    symbols.append(digits)
                     digits = ""
-                counts[ch] += 1
+                symbols.append(ch)
+            if digits:
+                symbols.append(digits)
+        generic = 0
+        has_x = False
+        counts: Counter[str] = Counter()
+        for sym in symbols:
+            if sym.isdigit():
+                generic += int(sym)
+            elif sym == "X":
+                has_x = True
+            elif sym in MANA_SYMBOLS:
+                counts[sym] += 1
+            elif "/" in sym and all(part in MANA_SYMBOLS for part in sym.split("/")):
+                counts["/".join(sorted(sym.split("/"), key=MANA_SYMBOLS.index))] += 1
             else:
-                raise ValueError(f"unparseable mana symbol {ch!r} in {text!r}")
-        if digits:
-            generic += int(digits)
-        return ManaCost(generic=generic, pips=tuple(sorted(counts.items())))
+                raise ValueError(f"unparseable mana symbol {sym!r} in {text!r}")
+        return ManaCost(generic=generic, pips=tuple(sorted(counts.items())), has_x=has_x)
 
     @property
     def mana_value(self) -> int:
@@ -117,14 +140,31 @@ class ManaCost:
 
     @property
     def colors(self) -> frozenset[Color]:
-        return frozenset(Color(sym) for sym, _ in self.pips if sym != COLORLESS)
+        return frozenset(Color(part) for sym, _ in self.pips for part in sym.split("/")
+                         if part != COLORLESS)
+
+    def reduced(self, amount: int) -> ManaCost:
+        """This cost with up to ``amount`` generic mana taken off."""
+        return ManaCost(max(0, self.generic - amount), self.pips, self.has_x)
+
+    def plus(self, other: ManaCost) -> ManaCost:
+        merged: Counter[str] = Counter(dict(self.pips))
+        merged.update(dict(other.pips))
+        return ManaCost(self.generic + other.generic, tuple(sorted(merged.items())),
+                        self.has_x or other.has_x)
 
     def __str__(self) -> str:
-        if self.mana_value == 0:
+        if self.mana_value == 0 and not self.has_x:
             return "{0}"
-        head = f"{{{self.generic}}}" if self.generic else ""
+        head = "{X}" if self.has_x else ""
+        head += f"{{{self.generic}}}" if self.generic else ""
         tail = "".join(f"{{{sym}}}" * n for sym, n in self.pips)
         return head + tail
+
+
+def pip_options(pip: str) -> tuple[str, ...]:
+    """The mana symbols that can pay one pip (two for a hybrid)."""
+    return tuple(pip.split("/"))
 
 
 class ManaPool(Counter):
@@ -137,47 +177,6 @@ class ManaPool(Counter):
 
     def total(self) -> int:
         return sum(self.values())
-
-    def can_pay(self, cost: ManaCost) -> bool:
-        return self._pay(cost, commit=False) is not None
-
-    def pay(self, cost: ManaCost) -> None:
-        """Spend ``cost`` from this pool. Raises if it cannot be paid."""
-        spent = self._pay(cost, commit=True)
-        if spent is None:
-            raise ValueError(f"cannot pay {cost} from {dict(self)}")
-
-    def _pay(self, cost: ManaCost, commit: bool) -> ManaPool | None:
-        """Pay coloured pips first, then generic from whatever is left over.
-
-        Colored pips have exactly one source each, so paying them first is not a
-        heuristic — it is forced. Only the generic remainder involves a choice,
-        and any mana pays it, so which units are spent cannot change whether the
-        cost is payable.
-        """
-        pool = ManaPool(self)
-        for sym, n in cost.pips:
-            if pool[sym] < n:
-                return None
-            pool[sym] -= n
-        if pool.total() < cost.generic:
-            return None
-        owed = cost.generic
-        # Spend colorless before colored, and otherwise the most plentiful
-        # color: this leaves the pool as flexible as possible for later costs
-        # in the same priority window.
-        for sym in sorted(MANA_SYMBOLS, key=lambda s: (s != COLORLESS, -pool[s])):
-            if owed == 0:
-                break
-            take = min(owed, pool[sym])
-            pool[sym] -= take
-            owed -= take
-        if owed:
-            return None
-        if commit:
-            self.clear()
-            self.update({k: v for k, v in pool.items() if v})
-        return pool
 
 
 @dataclass(frozen=True)
@@ -205,19 +204,28 @@ def object_target(obj_id: int) -> Target:
 
 @dataclass(frozen=True)
 class TargetSpec:
-    """What a spell or ability demands of each of its targets.
+    """What a spell or ability demands of one of its targets.
 
-    ``selector`` names a predicate implemented in ``engine.game``; keeping the
-    predicate out of the card data means card definitions stay declarative and
-    comparable, and there is exactly one place where "what is a legal target"
-    is decided.
+    ``selector`` is ``any_target``, ``player``, ``opponent``, ``spell`` (or
+    ``spell:<filter>``), or a filter string (see ``engine.filters``) naming a
+    permanent or a card in a graveyard. Keeping the predicate out of the card
+    data means card definitions stay declarative and comparable, and there is
+    exactly one place where "what is a legal target" is decided.
+
+    ``optional`` is "up to one target": choosing nothing is legal.
     """
 
     selector: str
     description: str = ""
+    optional: bool = False
 
     def label(self) -> str:
         return self.description or self.selector.replace("_", " ")
+
+
+NO_TARGET = Target("none", 0)
+"""Fills the slot of an optional target that was not chosen, or of a target
+that became illegal before resolution, so later targets keep their positions."""
 
 
 def dedupe(items: Iterable[str]) -> list[str]:

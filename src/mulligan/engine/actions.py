@@ -31,8 +31,16 @@ class PlayLand(Action):
 
 @dataclass(frozen=True)
 class CastSpell(Action):
+    """Cast a card. ``face`` is ``""`` for the card itself, ``"adventure"`` for
+    its Adventure half, or ``"flashback"``. ``mode`` indexes a modal spell's
+    modes; ``extra`` indexes its additional-cost options."""
+
     card_id: int
     targets: tuple[Target, ...] = ()
+    mode: int = -1
+    face: str = ""
+    kicked: bool = False
+    extra: int = -1
 
 
 @dataclass(frozen=True)

@@ -4,6 +4,27 @@ An effect is a small, declarative object with a ``resolve`` method. Cards are
 built by listing effects, so a card definition stays data rather than code, and
 every rules interaction lives in exactly one place instead of being reimplemented
 per card.
+
+Most effects say what they act on with ``to`` (objects) or ``who`` (players),
+using the references in ``Context.objects`` / ``Context.players``:
+
+    "target"              every target of the spell or ability
+    "target0", "target1"  one target, by position
+    "self"                the source (the permanent whose ability this is)
+    "it"                  the object the triggering event was about
+    "enchanted", "equipped"  what the source is attached to
+    "all:<filter>"        every object matching a filter (see ``filters``)
+
+    "you", "each_opponent", "target_player", "each_player"
+
+Amounts are an int or a small expression (see ``Game.amount``), such as
+``"count:creature:yours"`` or ``"power:self"``.
+
+Some choices inside an effect — which card to discard, what to scry to the
+bottom, which basic land to fetch — are made by the engine with a fixed,
+documented policy (``Game.auto_*``) rather than asked of the agent. Asking
+would multiply the decision count for little strategic content; the list of
+automated choices is in docs/DESIGN.md.
 """
 
 from __future__ import annotations
@@ -14,7 +35,10 @@ from typing import TYPE_CHECKING
 from .types import Keyword, Target
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
+    from .card import GameObject
     from .game import Game
+
+Amount = int | str
 
 
 @dataclass(frozen=True)
@@ -25,9 +49,55 @@ class Context:
     targets: tuple[Target, ...] = ()
     source_id: int | None = None
     source_name: str = ""
+    event_id: int | None = None
+    cast_from: str = "hand"
+    kicked: bool = False
+    event_amount: int = 0
 
     def target(self, index: int = 0) -> Target | None:
         return self.targets[index] if index < len(self.targets) else None
+
+    def objects(self, game: Game, ref: str) -> list[GameObject]:
+        """The game objects ``ref`` names, skipping any that are gone."""
+        found: list[GameObject] = []
+        if ref == "target":
+            ids = [t.id for t in self.targets if t.kind == "object"]
+        elif ref.startswith("target") and ref[6:].isdigit():
+            t = self.target(int(ref[6:]))
+            ids = [t.id] if t is not None and t.kind == "object" else []
+        elif ref == "self":
+            ids = [self.source_id] if self.source_id is not None else []
+        elif ref == "it":
+            ids = [self.event_id] if self.event_id is not None else []
+        elif ref in ("enchanted", "equipped"):
+            source = game.object_by_id(self.source_id)
+            ids = [source.attached_to] if source is not None and source.attached_to else []
+        elif ref.startswith("all:"):
+            return game.find(ref[4:], self.controller, self.source_id)
+        else:
+            raise ValueError(f"unknown object reference {ref!r}")
+        for obj_id in ids:
+            obj = game.object_by_id(obj_id)
+            if obj is not None:
+                found.append(obj)
+        return found
+
+    def players(self, game: Game, ref: str) -> list[int]:
+        if ref == "you":
+            return [self.controller]
+        if ref == "each_opponent":
+            return game.opponents_of(self.controller)
+        if ref == "each_player":
+            return [0, 1]
+        if ref in ("target_player", "target"):
+            return [t.id for t in self.targets if t.kind == "player"]
+        if ref.startswith("target") and ref[6:].isdigit():
+            t = self.target(int(ref[6:]))
+            return [t.id] if t is not None and t.kind == "player" else []
+        if ref in ("controller_of_target", "controller_of_it"):
+            objs = self.objects(game, "target0" if ref == "controller_of_target" else "it")
+            return [o.controller for o in objs]
+        raise ValueError(f"unknown player reference {ref!r}")
 
 
 class Effect:
@@ -40,254 +110,632 @@ class Effect:
         return type(self).__name__
 
 
+def _on_battlefield(objs):
+    return [o for o in objs if o.zone == "battlefield"]
+
+
+# ------------------------------------------------------------------- mana
+
+
 @dataclass(frozen=True)
 class AddMana(Effect):
-    """Mana abilities. ``symbols`` is one entry per unit of mana produced."""
+    """Mana abilities. ``symbols`` has one entry per unit of mana produced; an
+    entry may offer a choice (``"W/U"``) or be ``"*"`` for any color."""
 
     symbols: tuple[str, ...]
 
     def resolve(self, game: Game, ctx: Context) -> None:
         for symbol in self.symbols:
-            game.state.players[ctx.controller].pool.add(symbol)
+            game.state.players[ctx.controller].pool.add(game.pick_mana_color(ctx.controller,
+                                                                             symbol))
 
     def describe(self) -> str:
         return "add " + "".join(f"{{{s}}}" for s in self.symbols)
 
 
+# ------------------------------------------------------------ damage & life
+
+
 @dataclass(frozen=True)
 class DealDamage(Effect):
-    """Damage to the effect's targets, or to a whole class of objects.
+    """Damage to objects and/or players. ``to`` is an object reference or a
+    player reference; ``"target"`` covers both (for "any target")."""
 
-    ``scope`` is ``"targets"``, ``"each_opponent"``, ``"all_creatures"``, or
-    ``"creatures_opponents_control"``.
-    """
-
-    amount: int
-    scope: str = "targets"
+    amount: Amount
+    to: str = "target"
+    source: str = "self"
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        if self.scope == "targets":
-            for target in ctx.targets:
-                game.deal_damage(target, self.amount, source_id=ctx.source_id)
-            return
-        if self.scope == "each_opponent":
-            for seat in game.opponents_of(ctx.controller):
-                game.deal_damage(Target("player", seat), self.amount, source_id=ctx.source_id)
-            return
-        for perm in list(game.all_creatures()):
-            if self.scope == "creatures_opponents_control" and perm.controller == ctx.controller:
-                continue
-            game.deal_damage(Target("object", perm.id), self.amount, source_id=ctx.source_id)
+        amount = game.amount(self.amount, ctx)
+        source_id = ctx.source_id
+        if self.source != "self":
+            objs = ctx.objects(game, self.source)
+            source_id = objs[0].id if objs else None
+        if self.to in ("target", "each_opponent", "each_player", "you", "target_player") or (
+                self.to.startswith("target") and self.to[6:].isdigit()):
+            for seat in ctx.players(game, self.to):
+                game.deal_damage(Target("player", seat), amount, source_id=source_id)
+            if self.to in ("each_opponent", "each_player", "you", "target_player"):
+                return
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            game.deal_damage(Target("object", obj.id), amount, source_id=source_id)
 
     def describe(self) -> str:
-        where = {"targets": "target", "each_opponent": "each opponent"}.get(self.scope, self.scope)
-        return f"deal {self.amount} damage to {where}"
+        return f"deal {self.amount} damage to {self.to.replace('all:', 'each ')}"
 
 
 @dataclass(frozen=True)
 class GainLife(Effect):
-    amount: int
-    who: str = "you"  # "you" | "target"
+    amount: Amount
+    who: str = "you"
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        if self.who == "you":
-            game.gain_life(ctx.controller, self.amount)
-        else:
-            for target in ctx.targets:
-                if target.kind == "player":
-                    game.gain_life(target.id, self.amount)
+        for seat in ctx.players(game, self.who):
+            game.gain_life(seat, game.amount(self.amount, ctx))
 
     def describe(self) -> str:
-        return f"gain {self.amount} life"
+        return f"{self.who} gain {self.amount} life"
 
 
 @dataclass(frozen=True)
 class LoseLife(Effect):
-    amount: int
-    who: str = "you"  # "you" | "target" | "each_opponent"
+    amount: Amount
+    who: str = "you"
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        if self.who == "you":
-            game.lose_life(ctx.controller, self.amount)
-        elif self.who == "each_opponent":
-            for seat in game.opponents_of(ctx.controller):
-                game.lose_life(seat, self.amount)
-        else:
-            for target in ctx.targets:
-                if target.kind == "player":
-                    game.lose_life(target.id, self.amount)
+        for seat in ctx.players(game, self.who):
+            game.lose_life(seat, game.amount(self.amount, ctx))
 
     def describe(self) -> str:
-        subject = {"you": "you", "each_opponent": "each opponent"}.get(self.who, "target player")
-        return f"{subject} lose{'' if self.who != 'you' else ''} {self.amount} life"
+        return f"{self.who} lose {self.amount} life"
+
+
+# ------------------------------------------------------------------ cards
 
 
 @dataclass(frozen=True)
 class DrawCards(Effect):
-    count: int
+    count: Amount
     who: str = "you"
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        seat = ctx.controller
-        if self.who == "target":
-            target = ctx.target()
-            if target is None or target.kind != "player":
-                return
-            seat = target.id
-        for _ in range(self.count):
-            game.draw_card(seat)
+        for seat in ctx.players(game, self.who):
+            for _ in range(game.amount(self.count, ctx)):
+                game.draw_card(seat)
 
     def describe(self) -> str:
-        return f"draw {self.count} card" + ("s" if self.count != 1 else "")
+        return f"{self.who} draw {self.count} card(s)"
 
 
 @dataclass(frozen=True)
-class DestroyTarget(Effect):
-    """Destruction, which regeneration would replace — nothing in the current
-    card pool regenerates, but the distinction from exile is kept because
-    graveyard contents are observable."""
+class Discard(Effect):
+    """The player discards; which card is the engine's automated choice."""
+
+    count: Amount = 1
+    who: str = "you"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for seat in ctx.players(game, self.who):
+            for _ in range(game.amount(self.count, ctx)):
+                game.auto_discard(seat)
+
+    def describe(self) -> str:
+        return f"{self.who} discard {self.count}"
+
+
+@dataclass(frozen=True)
+class Recruit(Effect):
+    """HOB's recruit: draw, then discard; a nonland discard makes a 1/1 white
+    Human Soldier."""
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.draw_card(ctx.controller)
+        discarded = game.auto_discard(ctx.controller, prefer_nonland=True)
+        if discarded is not None and not discarded.spec.is_land:
+            game.create_token(ctx.controller, SOLDIER)
+
+    def describe(self) -> str:
+        return "recruit"
+
+
+@dataclass(frozen=True)
+class Loot(Effect):
+    """Draw ``draw``, then discard ``discard``."""
+
+    draw: int = 1
+    discard: int = 1
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for _ in range(self.draw):
+            game.draw_card(ctx.controller)
+        for _ in range(self.discard):
+            game.auto_discard(ctx.controller)
+
+    def describe(self) -> str:
+        return f"draw {self.draw}, then discard {self.discard}"
+
+
+@dataclass(frozen=True)
+class Mill(Effect):
+    count: Amount
+    who: str = "you"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for seat in ctx.players(game, self.who):
+            game.mill(seat, game.amount(self.count, ctx))
+
+    def describe(self) -> str:
+        return f"{self.who} mill {self.count}"
+
+
+@dataclass(frozen=True)
+class Scry(Effect):
+    count: int
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.auto_scry(ctx.controller, self.count)
+
+    def describe(self) -> str:
+        return f"scry {self.count}"
+
+
+@dataclass(frozen=True)
+class SearchLibrary(Effect):
+    """Search for a card matching ``filter`` and put it ``dest``: ``hand``,
+    ``battlefield``, ``battlefield_tapped`` or ``top``."""
+
+    filter: str = "land:basic"
+    dest: str = "hand"
+    count: int = 1
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.auto_search(ctx.controller, self.filter, self.dest, self.count)
+
+    def describe(self) -> str:
+        return f"search for {self.filter} to {self.dest}"
+
+
+@dataclass(frozen=True)
+class LookAtTop(Effect):
+    """Look at the top ``count``; put up to ``take`` matching cards into hand
+    (the engine picks the best), the rest on the bottom (or into the graveyard
+    when ``rest`` is ``graveyard``, i.e. a mill)."""
+
+    count: int
+    filter: str = "card"
+    take: int = 1
+    rest: str = "bottom"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.auto_look(ctx.controller, self.count, self.filter, self.take, self.rest)
+
+    def describe(self) -> str:
+        return f"look at the top {self.count}, take {self.take} {self.filter}"
+
+
+@dataclass(frozen=True)
+class Impulse(Effect):
+    """Exile the top ``count`` cards; they may be played until the end of your
+    next turn."""
+
+    count: int = 1
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.impulse(ctx.controller, self.count)
+
+    def describe(self) -> str:
+        return f"exile the top {self.count}; you may play it until your next end step"
+
+
+@dataclass(frozen=True)
+class AdditionalLand(Effect):
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.state.players[ctx.controller].extra_land_drops += 1
+
+    def describe(self) -> str:
+        return "you may play an additional land this turn"
+
+
+# -------------------------------------------------------------- removal
+
+
+@dataclass(frozen=True)
+class Destroy(Effect):
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            game.destroy(obj.id)
+
+    def describe(self) -> str:
+        return f"destroy {self.to}"
+
+
+@dataclass(frozen=True)
+class Exile(Effect):
+    """Exile. With ``until_source_leaves``, the card comes back when the source
+    leaves the battlefield (the "Oblivion Ring" pattern)."""
+
+    to: str = "target"
+    until_source_leaves: bool = False
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in ctx.objects(game, self.to):
+            if obj.zone in ("battlefield", "graveyard", "hand"):
+                game.exile(obj.id, linked_to=ctx.source_id if self.until_source_leaves else None)
+
+    def describe(self) -> str:
+        return f"exile {self.to}"
+
+
+@dataclass(frozen=True)
+class ReturnToHand(Effect):
+    """Return to its owner's hand, from the battlefield or a graveyard."""
+
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in ctx.objects(game, self.to):
+            if obj.zone in ("battlefield", "graveyard"):
+                game.move_to_zone(obj.id, "hand")
+
+    def describe(self) -> str:
+        return f"return {self.to} to hand"
+
+
+@dataclass(frozen=True)
+class ReturnToBattlefield(Effect):
+    """Put a card from a graveyard onto the battlefield under your control."""
+
+    to: str = "target"
+    tapped: bool = False
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in ctx.objects(game, self.to):
+            if obj.zone == "graveyard":
+                game.put_onto_battlefield(obj, ctx.controller, from_zone="graveyard",
+                                          tapped=self.tapped)
+
+    def describe(self) -> str:
+        return f"return {self.to} to the battlefield"
+
+
+@dataclass(frozen=True)
+class PutOnLibrary(Effect):
+    """Put on top or bottom of its owner's library (the owner's choice where
+    the card says so: the engine picks top, the usual right answer)."""
+
+    to: str = "target"
+    position: str = "top"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            game.put_on_library(obj.id, self.position)
+
+    def describe(self) -> str:
+        return f"put {self.to} on the {self.position} of its owner's library"
+
+
+@dataclass(frozen=True)
+class ShuffleIntoLibrary(Effect):
+    to: str = "self"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in ctx.objects(game, self.to):
+            game.put_on_library(obj.id, "top")
+            game.state.rng.shuffle(game.state.players[obj.owner].library)
+
+    def describe(self) -> str:
+        return f"shuffle {self.to} into its owner's library"
+
+
+@dataclass(frozen=True)
+class Sacrifice(Effect):
+    """``who`` sacrifices ``count`` permanents matching ``filter``, choosing
+    the least valuable (an automated choice)."""
+
+    filter: str = "creature"
+    who: str = "each_opponent"
+    count: int = 1
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for seat in ctx.players(game, self.who):
+            for _ in range(self.count):
+                game.auto_sacrifice(seat, self.filter)
+
+    def describe(self) -> str:
+        return f"{self.who} sacrifices a {self.filter}"
+
+
+@dataclass(frozen=True)
+class SacrificeSelf(Effect):
+    def resolve(self, game: Game, ctx: Context) -> None:
+        source = game.object_by_id(ctx.source_id)
+        if source is not None and source.zone == "battlefield":
+            game.sacrifice(source.id)
+
+    def describe(self) -> str:
+        return "sacrifice it"
+
+
+@dataclass(frozen=True)
+class CounterSpell(Effect):
+    """Counter target spell, optionally "unless its controller pays N" (the
+    engine pays automatically when it can)."""
+
+    to: str = "target"
+    unless_pay: int = 0
 
     def resolve(self, game: Game, ctx: Context) -> None:
         for target in ctx.targets:
-            if target.kind == "object":
-                game.destroy(target.id)
-
-    def describe(self) -> str:
-        return "destroy target"
-
-
-@dataclass(frozen=True)
-class ExileTarget(Effect):
-    def resolve(self, game: Game, ctx: Context) -> None:
-        for target in ctx.targets:
-            if target.kind == "object":
-                game.move_to_zone(target.id, "exile")
-
-    def describe(self) -> str:
-        return "exile target"
-
-
-@dataclass(frozen=True)
-class DestroyAll(Effect):
-    """Board wipe. ``only_opponents`` is False for symmetric sweepers."""
-
-    only_opponents: bool = False
-
-    def resolve(self, game: Game, ctx: Context) -> None:
-        for perm in list(game.all_creatures()):
-            if self.only_opponents and perm.controller == ctx.controller:
+            if target.kind != "object":
                 continue
-            game.destroy(perm.id)
+            item = next((s for s in game.state.stack if s.obj_id == target.id), None)
+            if item is None:
+                continue
+            if self.unless_pay and game.try_pay_generic(item.controller, self.unless_pay):
+                game.state.record(f"{item.name}'s controller pays {self.unless_pay}")
+                continue
+            game.counter_spell(target.id)
 
     def describe(self) -> str:
-        return "destroy all creatures" + (" your opponents control" if self.only_opponents else "")
+        tail = f" unless its controller pays {{{self.unless_pay}}}" if self.unless_pay else ""
+        return "counter target spell" + tail
 
 
 @dataclass(frozen=True)
-class ReturnTargetToHand(Effect):
+class ReturnSpellToHand(Effect):
     def resolve(self, game: Game, ctx: Context) -> None:
         for target in ctx.targets:
             if target.kind == "object":
-                game.move_to_zone(target.id, "hand")
+                game.counter_spell(target.id, to_zone="hand")
 
     def describe(self) -> str:
-        return "return target to its owner's hand"
+        return "return target spell to its owner's hand"
+
+
+# ------------------------------------------------------- creature changes
 
 
 @dataclass(frozen=True)
 class Pump(Effect):
-    """A temporary or permanent stat change, optionally granting keywords."""
+    """A stat change and/or keywords, until end of turn unless ``permanent``."""
 
-    power: int = 0
-    toughness: int = 0
+    power: Amount = 0
+    toughness: Amount = 0
     keywords: frozenset[Keyword] = field(default_factory=frozenset)
-    until_end_of_turn: bool = True
-    self_target: bool = False
+    to: str = "target"
+    flags: frozenset[str] = field(default_factory=frozenset)
+    permanent: bool = False
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        ids = [ctx.source_id] if self.self_target else [t.id for t in ctx.targets if t.kind == "object"]
-        for obj_id in ids:
-            if obj_id is not None:
-                game.pump(obj_id, self.power, self.toughness, self.keywords, self.until_end_of_turn)
+        power = game.amount(self.power, ctx)
+        toughness = game.amount(self.toughness, ctx)
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            game.pump(obj.id, power, toughness, self.keywords, self.flags,
+                      until_end_of_turn=not self.permanent)
 
     def describe(self) -> str:
-        stat = f"{self.power:+d}/{self.toughness:+d}"
-        kw = "".join(f" and gains {k.value}" for k in sorted(self.keywords, key=lambda k: k.value))
-        who = "it" if self.self_target else "target creature"
-        return f"{who} gets {stat}{kw}" + (" until end of turn" if self.until_end_of_turn else "")
+        kw = "".join(f", gains {k.value}" for k in sorted(self.keywords, key=lambda k: k.value))
+        fl = "".join(f", {f.replace('_', ' ')}" for f in sorted(self.flags))
+        return f"{self.to} gets {self.power:+}/{self.toughness:+}{kw}{fl}" if isinstance(
+            self.power, int) and isinstance(self.toughness, int) else f"{self.to} pumped{kw}{fl}"
 
 
 @dataclass(frozen=True)
-class CounterTargetSpell(Effect):
+class SetBasePT(Effect):
+    power: int
+    toughness: int
+    to: str = "self"
+
     def resolve(self, game: Game, ctx: Context) -> None:
-        for target in ctx.targets:
-            if target.kind == "object":
-                game.counter_spell(target.id)
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            obj.base_override = (self.power, self.toughness)
 
     def describe(self) -> str:
-        return "counter target spell"
+        return f"{self.to} has base power and toughness {self.power}/{self.toughness}"
+
+
+@dataclass(frozen=True)
+class AddCounters(Effect):
+    """+1/+1 counters."""
+
+    count: Amount = 1
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        n = game.amount(self.count, ctx)
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            game.add_counters(obj.id, n)
+
+    def describe(self) -> str:
+        return f"put {self.count} +1/+1 counter(s) on {self.to}"
+
+
+@dataclass(frozen=True)
+class RemoveCounters(Effect):
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            obj.counters = 0
+
+    def describe(self) -> str:
+        return f"remove all counters from {self.to}"
+
+
+@dataclass(frozen=True)
+class Tap(Effect):
+    to: str = "target"
+    untap: bool = False
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            obj.tapped = not self.untap
+
+    def describe(self) -> str:
+        return f"{'untap' if self.untap else 'tap'} {self.to}"
 
 
 @dataclass(frozen=True)
 class Fight(Effect):
-    """Two creatures deal damage equal to their power to each other.
+    """``a`` and ``b`` deal damage equal to their power to each other. With
+    ``one_sided`` only ``a`` deals damage (a "bite")."""
 
-    With two targets the first fights the second (``Prey Upon``); with one, the
-    source creature fights it (a creature's own fight ability).
-    """
+    a: str = "target0"
+    b: str = "target1"
+    one_sided: bool = False
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        if len(ctx.targets) >= 2:
-            first, target = ctx.targets[0], ctx.targets[1]
-            source = game.object_by_id(first.id) if first.kind == "object" else None
-        else:
-            target = ctx.target()
-            source = game.object_by_id(ctx.source_id) if ctx.source_id is not None else None
-        if target is None or target.kind != "object" or source is None:
+        first = _on_battlefield(ctx.objects(game, self.a))
+        second = _on_battlefield(ctx.objects(game, self.b))
+        if not first or not second:
             return
-        other = game.object_by_id(target.id)
-        if other is None or source.zone != "battlefield" or other.zone != "battlefield":
-            return
-        # Both hits are simultaneous: a creature that dies still deals its damage.
-        source_power, other_power = game.power_of(source), game.power_of(other)
-        game.deal_damage(Target("object", other.id), source_power, source_id=source.id)
-        game.deal_damage(Target("object", source.id), other_power, source_id=other.id)
+        x, y = first[0], second[0]
+        # Simultaneous: read both powers before either hit lands.
+        x_power, y_power = game.power_of(x), game.power_of(y)
+        game.deal_damage(Target("object", y.id), x_power, source_id=x.id)
+        if not self.one_sided:
+            game.deal_damage(Target("object", x.id), y_power, source_id=y.id)
 
     def describe(self) -> str:
-        return "it fights target creature"
+        verb = "deals damage equal to its power to" if self.one_sided else "fights"
+        return f"{self.a} {verb} {self.b}"
 
-    # A fight is two simultaneous damage events, not a sequence, which is why
-    # both powers are read before either is applied.
+
+@dataclass(frozen=True)
+class Attach(Effect):
+    """Attach the source Equipment (or ``what``) to ``to``."""
+
+    to: str = "target"
+    what: str = "self"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        creatures = [o for o in _on_battlefield(ctx.objects(game, self.to))
+                     if game.is_creature(o)]
+        for equipment in _on_battlefield(ctx.objects(game, self.what)):
+            if creatures:
+                game.attach(equipment.id, creatures[0].id)
+
+    def describe(self) -> str:
+        return f"attach {self.what} to {self.to}"
+
+
+# ----------------------------------------------------------------- tokens
+
+
+@dataclass(frozen=True)
+class TokenSpec:
+    name: str
+    power: int = 0
+    toughness: int = 0
+    types: tuple[str, ...] = ("Creature",)
+    subtypes: tuple[str, ...] = ()
+    colors: tuple[str, ...] = ()
+    keywords: frozenset[Keyword] = field(default_factory=frozenset)
+    kind: str = ""  # "treasure", "food", "equipment" — tokens with rules text
+    equip_cost: str = ""
+    equip_power: int = 0
+    equip_toughness: int = 0
+
+
+SOLDIER = TokenSpec("Human Soldier", 1, 1, subtypes=("Human", "Soldier"), colors=("W",))
+TREASURE = TokenSpec("Treasure", types=("Artifact",), subtypes=("Treasure",), kind="treasure")
+ARMY = TokenSpec("Army", 0, 0, subtypes=("Army",), colors=("B",))
 
 
 @dataclass(frozen=True)
 class CreateToken(Effect):
-    name: str
-    power: int
-    toughness: int
-    subtypes: tuple[str, ...] = ()
-    keywords: frozenset[Keyword] = field(default_factory=frozenset)
-    count: int = 1
+    token: TokenSpec
+    count: Amount = 1
+    tapped: bool = False
+    attach_self: bool = False
+    who: str = "you"
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        for _ in range(self.count):
-            game.create_token(ctx.controller, self)
+        for seat in ctx.players(game, self.who):
+            for _ in range(game.amount(self.count, ctx)):
+                obj = game.create_token(seat, self.token, tapped=self.tapped)
+                if self.attach_self and ctx.source_id is not None:
+                    game.attach(ctx.source_id, obj.id)
 
     def describe(self) -> str:
-        plural = "s" if self.count != 1 else ""
-        return f"create {self.count} {self.power}/{self.toughness} {self.name} token{plural}"
+        t = self.token
+        body = f"{t.power}/{t.toughness} {t.name}" if "Creature" in t.types else t.name
+        return f"create {self.count} {body} token(s)"
 
 
 @dataclass(frozen=True)
-class TapTarget(Effect):
-    untap: bool = False
+class Amass(Effect):
+    """Amass <subtype> N: counters on your Army, making a 0/0 one first if
+    needed. ``attach_self`` attaches the source Equipment to the Army."""
+
+    count: Amount = 1
+    subtype: str = "Goblins"
+    who: str = "you"
+    attach_self: bool = False
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        for target in ctx.targets:
-            if target.kind == "object":
-                perm = game.object_by_id(target.id)
-                if perm is not None and perm.zone == "battlefield":
-                    perm.tapped = not self.untap
+        for seat in ctx.players(game, self.who):
+            army = game.amass(seat, game.amount(self.count, ctx), self.subtype.rstrip("s"))
+            if self.attach_self and army is not None and ctx.source_id is not None:
+                game.attach(ctx.source_id, army.id)
 
     def describe(self) -> str:
-        return "untap target" if self.untap else "tap target"
+        return f"amass {self.subtype} {self.count}"
+
+
+# ------------------------------------------------------------- structure
+
+
+@dataclass(frozen=True)
+class Condition:
+    """A yes/no question about the game, evaluated at resolution.
+
+    ``kind``: ``control`` (you control at least ``n`` of ``filter``),
+    ``opponent_controls``, ``graveyard`` (at least ``n`` cards in your
+    graveyard), ``enduring_story``, ``cast_from_graveyard``, ``kicked``,
+    ``drawn_this_turn`` (at least ``n``), ``creature_died_this_turn``,
+    ``your_turn``, ``it_matches`` (the event object matches ``filter``),
+    ``target_matches`` (target 0 matches ``filter``).
+    """
+
+    kind: str
+    n: int = 1
+    filter: str = ""
+    negate: bool = False
+
+    def holds(self, game: Game, ctx: Context) -> bool:
+        return game.condition(self, ctx) != self.negate
+
+
+@dataclass(frozen=True)
+class If(Effect):
+    condition: Condition
+    then: tuple[Effect, ...] = ()
+    otherwise: tuple[Effect, ...] = ()
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for effect in (self.then if self.condition.holds(game, ctx) else self.otherwise):
+            effect.resolve(game, ctx)
+
+    def describe(self) -> str:
+        body = ", ".join(e.describe() for e in self.then)
+        other = ", ".join(e.describe() for e in self.otherwise)
+        return f"if {self.condition.kind}: {body}" + (f"; otherwise {other}" if other else "")
+
+
+@dataclass(frozen=True)
+class Delayed(Effect):
+    """Set up a delayed trigger: ``effects`` happen at ``when``
+    (``next_upkeep`` or ``next_end_step``)."""
+
+    when: str
+    effects: tuple[Effect, ...] = ()
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.add_delayed(self.when, self.effects, ctx)
+
+    def describe(self) -> str:
+        return f"at the {self.when.replace('_', ' ')}, " + ", ".join(
+            e.describe() for e in self.effects)

@@ -48,6 +48,7 @@ class GameState:
     # forever.
     blockers_done: bool = False
     decisions: int = 0
+    creature_died_this_turn: bool = False
 
     def opponent(self, seat: int) -> int:
         return 1 - seat

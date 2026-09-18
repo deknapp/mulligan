@@ -11,20 +11,20 @@ would need a rules feature the engine lacks is left out rather than approximated
 
 from __future__ import annotations
 
-from ..engine.card import ActivatedAbility, CardSpec
+from ..engine.card import ActivatedAbility, CardSpec, Trigger
 from ..engine.effects import (
     AddMana,
-    CounterTargetSpell,
+    CounterSpell,
     CreateToken,
     DealDamage,
-    DestroyAll,
-    DestroyTarget,
+    Destroy,
     DrawCards,
     Fight,
     GainLife,
     LoseLife,
     Pump,
-    ReturnTargetToHand,
+    ReturnToHand,
+    TokenSpec,
 )
 from ..engine.types import CardType, Keyword, ManaCost, TargetSpec
 
@@ -47,7 +47,12 @@ def _mana_ability(symbol: str) -> ActivatedAbility:
 
 
 def basic_land(name: str, symbol: str) -> CardSpec:
-    return CardSpec(name=name, types=LAND, subtypes=(name,), abilities=(_mana_ability(symbol),))
+    return CardSpec(name=name, types=LAND, subtypes=(name,), supertypes=frozenset({"Basic"}),
+                    abilities=(_mana_ability(symbol),))
+
+
+def _etb(*effects, targets=()) -> tuple[Trigger, ...]:
+    return (Trigger("etb", tuple(effects), targets=tuple(targets)),)
 
 
 PLAINS = basic_land("Plains", "W")
@@ -72,14 +77,15 @@ SUNTAIL_HAWK = _creature("Suntail Hawk", "W", 1, 1, ("Bird",), frozenset({Keywor
 SERRA_ANGEL = _creature("Serra Angel", "3WW", 4, 4, ("Angel",),
                         frozenset({Keyword.FLYING, Keyword.VIGILANCE}))
 ANGEL_OF_MERCY = _creature("Angel of Mercy", "4W", 3, 3, ("Angel",), frozenset({Keyword.FLYING}),
-                           on_etb=(GainLife(3),))
+                           triggers=_etb(GainLife(3)))
 WRATH_OF_GOD = CardSpec(name="Wrath of God", cost=ManaCost.parse("2WW"), types=SORCERY,
-                        on_resolve=(DestroyAll(),))
+                        on_resolve=(Destroy("all:creature"),))
 SMITE_THE_MONSTROUS = CardSpec(name="Smite the Monstrous", cost=ManaCost.parse("3W"),
-                               types=INSTANT, targets=(BIG,), on_resolve=(DestroyTarget(),))
+                               types=INSTANT, targets=(BIG,), on_resolve=(Destroy(),))
 RAISE_THE_ALARM = CardSpec(
     name="Raise the Alarm", cost=ManaCost.parse("1W"), types=INSTANT,
-    on_resolve=(CreateToken("Soldier", 1, 1, ("Soldier",), count=2),))
+    on_resolve=(CreateToken(TokenSpec("Soldier", 1, 1, subtypes=("Soldier",), colors=("W",)),
+                            count=2),))
 
 # ---------------------------------------------------------------------- blue
 
@@ -89,13 +95,13 @@ AIR_ELEMENTAL = _creature("Air Elemental", "3UU", 4, 4, ("Elemental",),
                           frozenset({Keyword.FLYING}))
 MAHAMOTI_DJINN = _creature("Mahamoti Djinn", "4UU", 5, 6, ("Djinn",), frozenset({Keyword.FLYING}))
 MAN_O_WAR = _creature("Man-o'-War", "2U", 2, 2, ("Jellyfish",),
-                      etb_targets=(CREATURE_TARGET,), on_etb=(ReturnTargetToHand(),))
+                      triggers=_etb(ReturnToHand(), targets=(CREATURE_TARGET,)))
 COUNTERSPELL = CardSpec(name="Counterspell", cost=ManaCost.parse("UU"), types=INSTANT,
-                        targets=(SPELL,), on_resolve=(CounterTargetSpell(),))
+                        targets=(SPELL,), on_resolve=(CounterSpell(),))
 DIVINATION = CardSpec(name="Divination", cost=ManaCost.parse("2U"), types=SORCERY,
                       on_resolve=(DrawCards(2),))
 UNSUMMON = CardSpec(name="Unsummon", cost=ManaCost.parse("U"), types=INSTANT,
-                    targets=(CREATURE_TARGET,), on_resolve=(ReturnTargetToHand(),))
+                    targets=(CREATURE_TARGET,), on_resolve=(ReturnToHand(),))
 
 # --------------------------------------------------------------------- black
 
@@ -104,20 +110,21 @@ VAMPIRE_NIGHTHAWK = _creature("Vampire Nighthawk", "1BB", 2, 3, ("Vampire",),
                               frozenset({Keyword.FLYING, Keyword.DEATHTOUCH, Keyword.LIFELINK}))
 ZOMBIE_GOLIATH = _creature("Zombie Goliath", "4B", 5, 3, ("Zombie",))
 MURDER = CardSpec(name="Murder", cost=ManaCost.parse("1BB"), types=INSTANT,
-                  targets=(CREATURE_TARGET,), on_resolve=(DestroyTarget(),))
+                  targets=(CREATURE_TARGET,), on_resolve=(Destroy(),))
 SIGN_IN_BLOOD = CardSpec(name="Sign in Blood", cost=ManaCost.parse("BB"), types=SORCERY,
                          targets=(PLAYER,),
-                         on_resolve=(DrawCards(2, who="target"), LoseLife(2, who="target")))
+                         on_resolve=(DrawCards(2, who="target_player"),
+                                     LoseLife(2, who="target_player")))
 
 # ----------------------------------------------------------------------- red
 
 RAGING_GOBLIN = _creature("Raging Goblin", "R", 1, 1, ("Goblin",), frozenset({Keyword.HASTE}))
 GOBLIN_PIKER = _creature("Goblin Piker", "1R", 2, 1, ("Goblin",))
 FLAMETONGUE_KAVU = _creature("Flametongue Kavu", "3R", 4, 2, ("Kavu",),
-                             etb_targets=(CREATURE_TARGET,), on_etb=(DealDamage(4),))
+                             triggers=_etb(DealDamage(4), targets=(CREATURE_TARGET,)))
 SHIVAN_DRAGON = _creature(
     "Shivan Dragon", "4RR", 5, 5, ("Dragon",), frozenset({Keyword.FLYING}),
-    abilities=(ActivatedAbility(effects=(Pump(power=1, self_target=True),),
+    abilities=(ActivatedAbility(effects=(Pump(power=1, to="self"),),
                                 mana_cost=ManaCost.parse("R"), text="{R}: it gets +1/+0."),))
 SHOCK = CardSpec(name="Shock", cost=ManaCost.parse("R"), types=INSTANT, targets=(ANY,),
                  on_resolve=(DealDamage(2),))
@@ -126,14 +133,14 @@ LIGHTNING_BOLT = CardSpec(name="Lightning Bolt", cost=ManaCost.parse("R"), types
 VOLCANIC_HAMMER = CardSpec(name="Volcanic Hammer", cost=ManaCost.parse("1R"), types=SORCERY,
                            targets=(ANY,), on_resolve=(DealDamage(3),))
 PYROCLASM = CardSpec(name="Pyroclasm", cost=ManaCost.parse("1R"), types=SORCERY,
-                     on_resolve=(DealDamage(2, scope="all_creatures"),))
+                     on_resolve=(DealDamage(2, to="all:creature"),))
 
 # --------------------------------------------------------------------- green
 
 LLANOWAR_ELVES = _creature("Llanowar Elves", "G", 1, 1, ("Elf", "Druid"),
                            abilities=(_mana_ability("G"),))
 GRIZZLY_BEARS = _creature("Grizzly Bears", "1G", 2, 2, ("Bear",))
-ELVISH_VISIONARY = _creature("Elvish Visionary", "1G", 1, 1, ("Elf",), on_etb=(DrawCards(1),))
+ELVISH_VISIONARY = _creature("Elvish Visionary", "1G", 1, 1, ("Elf",), triggers=_etb(DrawCards(1)))
 GIANT_SPIDER = _creature("Giant Spider", "3G", 2, 4, ("Spider",), frozenset({Keyword.REACH}))
 CRAW_WURM = _creature("Craw Wurm", "4GG", 6, 4, ("Wurm",))
 COLOSSAL_DREADMAW = _creature("Colossal Dreadmaw", "5G", 6, 6, ("Dinosaur",),

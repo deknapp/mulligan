@@ -1,11 +1,69 @@
-"""Card definitions (immutable) and the game objects made from them (mutable)."""
+"""Card definitions (immutable) and the game objects made from them (mutable).
+
+A ``CardSpec`` is pure data: costs, types, and lists of declarative abilities
+built from ``effects``. Everything a real set needs is expressed with a handful
+of shapes:
+
+* ``Trigger``   — "When/Whenever/At ... , do ..." (``when`` names the event)
+* ``Static``    — "Creatures you control get +1/+1", "Equipped creature has
+  menace", "As long as ..., this has vigilance"
+* ``ActivatedAbility`` — "cost: effect", including equip and cycling
+* ``Mode``      — one choice of a modal spell ("Choose one —")
+* ``chapters``  — a Saga's numbered abilities
+
+The event names a ``Trigger`` can use are listed in ``TRIGGER_EVENTS``; the
+engine raises them in ``Game._fire``.
+"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .effects import Effect
+from .effects import Condition, Effect
 from .types import CardType, Keyword, ManaCost, ManaPool, TargetSpec
+
+TRIGGER_EVENTS = {
+    "etb": "this permanent enters",
+    "other_etb": "another permanent matching ``filter`` enters under your control",
+    "landfall": "a land enters under your control",
+    "dies": "this permanent is put into a graveyard from the battlefield",
+    "other_dies": "another creature matching ``filter`` you control dies",
+    "any_dies": "another creature (any controller) dies",
+    "attacks": "this creature attacks",
+    "you_attack": "you attack with one or more creatures",
+    "combat_damage_player": "this creature deals combat damage to a player",
+    "upkeep": "the beginning of your upkeep",
+    "begin_combat": "the beginning of combat on your turn",
+    "first_main": "the beginning of your precombat main phase",
+    "end_step": "the beginning of your end step",
+    "cast_noncreature": "you cast a noncreature spell",
+    "cast_creature": "you cast a creature spell",
+    "cast_spell": "you cast a spell",
+    "opp_cast_noncreature": "an opponent casts a noncreature spell",
+    "draw_second": "you draw your second card each turn",
+    "opp_draw_second": "an opponent draws their second card each turn",
+    "draw": "you draw a card",
+    "counters_placed": "you put +1/+1 counters on a permanent matching ``filter``",
+}
+
+
+@dataclass(frozen=True)
+class Cost:
+    """Everything that can be paid to cast or activate something."""
+
+    mana: ManaCost = ManaCost()
+    tap: bool = False
+    sacrifice_self: bool = False
+    sacrifice: str = ""      # a filter: sacrifice one matching permanent (the engine picks)
+    discard: int = 0         # discard this many cards (the engine picks)
+    discard_self: bool = False
+    life: int = 0
+
+    @property
+    def is_free(self) -> bool:
+        return (self.mana.mana_value == 0 and not (self.tap or self.sacrifice_self
+                                                   or self.sacrifice or self.discard
+                                                   or self.discard_self or self.life))
 
 
 @dataclass(frozen=True)
@@ -16,6 +74,9 @@ class ActivatedAbility:
     which is why ``is_mana_ability`` exists rather than being inferred: an
     ability that produces mana *and* does something else is not a mana ability,
     and getting that wrong would silently change what can be responded to.
+
+    ``zone`` is where the ability works from: ``battlefield``, or ``hand`` for
+    cycling-style abilities, or ``graveyard``.
     """
 
     effects: tuple[Effect, ...]
@@ -25,17 +86,81 @@ class ActivatedAbility:
     is_mana_ability: bool = False
     sorcery_speed: bool = False
     text: str = ""
+    sacrifice_self: bool = False
+    sacrifice: str = ""
+    discard: int = 0
+    discard_self: bool = False
+    life: int = 0
+    zone: str = "battlefield"
+    once_per_turn: bool = False
+    is_equip: bool = False
+
+    @property
+    def cost(self) -> Cost:
+        return Cost(self.mana_cost, self.tap_cost, self.sacrifice_self, self.sacrifice,
+                    self.discard, self.discard_self, self.life)
 
     def describe(self) -> str:
         if self.text:
             return self.text
         cost_parts = []
+        if self.mana_cost.mana_value:
+            cost_parts.append(str(self.mana_cost))
         if self.tap_cost:
             cost_parts.append("{T}")
-        if self.mana_cost.mana_value:
-            cost_parts.insert(0, str(self.mana_cost))
-        cost = "".join(cost_parts) or "{0}"
+        if self.sacrifice_self:
+            cost_parts.append("sacrifice it")
+        if self.sacrifice:
+            cost_parts.append(f"sacrifice a {self.sacrifice}")
+        if self.life:
+            cost_parts.append(f"pay {self.life} life")
+        cost = ", ".join(cost_parts) or "{0}"
         return f"{cost}: " + ", ".join(e.describe() for e in self.effects) + "."
+
+
+@dataclass(frozen=True)
+class Trigger:
+    when: str
+    effects: tuple[Effect, ...]
+    targets: tuple[TargetSpec, ...] = ()
+    filter: str = ""
+    condition: Condition | None = None
+    once_per_turn: bool = False
+    text: str = ""
+
+    def describe(self) -> str:
+        return self.text or (f"{TRIGGER_EVENTS.get(self.when, self.when)}: "
+                             + ", ".join(e.describe() for e in self.effects))
+
+
+@dataclass(frozen=True)
+class Static:
+    """A continuous effect. ``affects`` is ``self``, ``equipped``,
+    ``enchanted``, or ``all:<filter>``. ``flags`` are rules restrictions such as
+    ``cant_block``, ``cant_attack``, ``unblockable``, ``doesnt_untap``,
+    ``loses_abilities``, ``cant_be_blocked_by:<filter>``."""
+
+    affects: str = "self"
+    power: int | str = 0
+    toughness: int | str = 0
+    keywords: frozenset[Keyword] = frozenset()
+    flags: frozenset[str] = frozenset()
+    ward: int = 0
+    condition: Condition | None = None
+    text: str = ""
+
+
+@dataclass(frozen=True)
+class Mode:
+    effects: tuple[Effect, ...]
+    targets: tuple[TargetSpec, ...] = ()
+    text: str = ""
+
+
+@dataclass(frozen=True)
+class Chapter:
+    effects: tuple[Effect, ...]
+    targets: tuple[TargetSpec, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -46,16 +171,37 @@ class CardSpec:
     cost: ManaCost = ManaCost()
     types: frozenset[CardType] = frozenset()
     subtypes: tuple[str, ...] = ()
+    supertypes: frozenset[str] = frozenset()
     power: int | None = None
     toughness: int | None = None
+    # "*" stats: an amount expression evaluated continuously (see Game.amount).
+    power_expr: str = ""
+    toughness_expr: str = ""
     keywords: frozenset[Keyword] = frozenset()
+    colors: frozenset[str] | None = None  # None: derived from the mana cost
+    # Instants and sorceries: targets + on_resolve, or a list of modes.
     targets: tuple[TargetSpec, ...] = ()
     on_resolve: tuple[Effect, ...] = ()
-    etb_targets: tuple[TargetSpec, ...] = ()
-    on_etb: tuple[Effect, ...] = ()
+    modes: tuple[Mode, ...] = ()
+    triggers: tuple[Trigger, ...] = ()
+    statics: tuple[Static, ...] = ()
     abilities: tuple[ActivatedAbility, ...] = ()
     enters_tapped: bool = False
+    ward: int = 0
+    # Auras: what they enchant (the target chosen on cast).
+    enchant: TargetSpec | None = None
+    # Alternative and additional casting.
+    flashback: ManaCost | None = None
+    kicker: ManaCost | None = None
+    additional_costs: tuple[Cost, ...] = ()   # choose one of these, if any
+    cost_reduction: int = 0
+    cost_reduction_if: Condition | None = None
+    adventure: CardSpec | None = None
+    chapters: tuple[Chapter, ...] = ()
+    storied: bool = False
     flavor_note: str = ""
+    # For the set compiler's coverage report: what (if anything) was left out.
+    approximations: tuple[str, ...] = ()
 
     @property
     def is_permanent(self) -> bool:
@@ -71,10 +217,25 @@ class CardSpec:
         return CardType.LAND in self.types
 
     @property
+    def is_instant(self) -> bool:
+        return CardType.INSTANT in self.types or Keyword.FLASH in self.keywords
+
+    @property
+    def color_set(self) -> frozenset[str]:
+        if self.colors is not None:
+            return self.colors
+        return frozenset(c.value for c in self.cost.colors)
+
+    @property
+    def etb_effects(self) -> tuple[Effect, ...]:
+        return tuple(e for t in self.triggers if t.when == "etb" for e in t.effects)
+
+    @property
     def type_line(self) -> str:
         order = [CardType.LAND, CardType.ARTIFACT, CardType.ENCHANTMENT, CardType.CREATURE,
                  CardType.INSTANT, CardType.SORCERY]
         line = " ".join(t.value for t in order if t in self.types)
+        line = " ".join(sorted(self.supertypes)) + (" " if self.supertypes else "") + line
         return f"{line} — {' '.join(self.subtypes)}" if self.subtypes else line
 
     def oracle_text(self) -> str:
@@ -88,13 +249,27 @@ class CardSpec:
         if self.keywords:
             lines.append(", ".join(k.value.capitalize() for k in
                                    sorted(self.keywords, key=lambda k: k.value)))
+        if self.ward:
+            lines.append(f"Ward {{{self.ward}}}")
+        for static in self.statics:
+            lines.append(static.text or f"static: {static.affects} {static.power}/"
+                         f"{static.toughness} {sorted(k.value for k in static.keywords)}"
+                         f" {sorted(static.flags)}")
+        for trigger in self.triggers:
+            lines.append(trigger.describe())
         for ability in self.abilities:
             lines.append(ability.describe())
-        if self.on_etb:
-            body = ", ".join(e.describe() for e in self.on_etb)
-            lines.append(f"When {self.name} enters the battlefield, {body}.")
         if self.on_resolve:
             lines.append(", ".join(e.describe() for e in self.on_resolve).capitalize() + ".")
+        for mode in self.modes:
+            lines.append("• " + (mode.text or ", ".join(e.describe() for e in mode.effects)))
+        for index, chapter in enumerate(self.chapters, 1):
+            lines.append(f"{index} — " + ", ".join(e.describe() for e in chapter.effects))
+        if self.flashback:
+            lines.append(f"Flashback {self.flashback}")
+        if self.adventure:
+            lines.append(f"Adventure — {self.adventure.name} {self.adventure.cost}: "
+                         + self.adventure.oracle_text().replace("\n", " "))
         return "\n".join(lines)
 
 
@@ -104,7 +279,9 @@ class GameObject:
     __slots__ = ("id", "spec", "owner", "controller", "zone", "tapped", "damage",
                  "summoning_sick", "attacking", "blocking", "blocked_by", "counters",
                  "temp_power", "temp_toughness", "granted_keywords", "is_token",
-                 "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to")
+                 "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to",
+                 "temp_flags", "base_override", "lore", "on_adventure", "playable_until",
+                 "linked_to", "activations", "cast_face")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -131,6 +308,19 @@ class GameObject:
         self.deathtouched = False
         # Id of the permanent an Aura or Equipment is attached to, or None.
         self.attached_to: int | None = None
+        self.temp_flags: set[str] = set()
+        self.base_override: tuple[int, int] | None = None
+        self.lore = 0
+        # An Adventure card in exile that may now be cast as its creature.
+        self.on_adventure = False
+        # An impulse-exiled card: playable until this turn number's end.
+        self.playable_until: int | None = None
+        # Exiled "until X leaves the battlefield": the id of X.
+        self.linked_to: int | None = None
+        # Activations this turn, by ability index (for "only once each turn").
+        self.activations: dict[int, int] = {}
+        # Which face is on the stack: "" (the card) or "adventure".
+        self.cast_face = ""
 
     @property
     def name(self) -> str:
@@ -148,6 +338,8 @@ class GameObject:
         self.temp_power = 0
         self.temp_toughness = 0
         self.granted_keywords.clear()
+        self.temp_flags.clear()
+        self.base_override = None
 
     def clear_combat(self) -> None:
         self.attacking = False
@@ -173,9 +365,13 @@ class Player:
         self.exile: list[int] = []
         self.pool = ManaPool()
         self.lands_played = 0
+        self.extra_land_drops = 0
         self.mulligans = 0
         self.lost = False
         self.loss_reason = ""
+        self.draws_this_turn = 0
+        self.enduring_story = False
+        self.spells_cast_this_turn = 0
 
     def zone(self, name: str) -> list[int]:
         return getattr(self, name)
