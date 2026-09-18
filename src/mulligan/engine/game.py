@@ -767,12 +767,13 @@ class Game:
 
     # ------------------------------------------------------------------ mana
 
-    def _mana_sources(self, seat: int):
+    def _mana_sources(self, seat: int, exclude: int | None = None):
         """Untapped permanents that can be tapped for mana right now:
-        ``(object, ability index, units, sacrifices)``."""
+        ``(object, ability index, units, sacrifices)``. ``exclude`` leaves out
+        a permanent that is about to be tapped for some other cost."""
         found = []
         for obj in self.state.zone_objects(seat, "battlefield"):
-            if obj.tapped or not obj.spec.abilities:
+            if obj.tapped or not obj.spec.abilities or obj.id == exclude:
                 continue
             if self.has_summoning_sickness(obj):
                 continue  # a {T} cost needs the creature to have been around
@@ -787,7 +788,7 @@ class Game:
                     found.append((obj, index, units, ability.sacrifice_self))
         return found
 
-    def _solve_payment(self, seat: int, cost: ManaCost):
+    def _solve_payment(self, seat: int, cost: ManaCost, exclude: int | None = None):
         """Find sources to tap (and floating mana to spend) that pay ``cost``.
 
         Pips are matched by search, fewest-options first; the generic remainder
@@ -797,7 +798,7 @@ class Game:
         ``(sources, floating spent)`` or None.
         """
         pool = self.state.players[seat].pool
-        sources = self._mana_sources(seat)
+        sources = self._mana_sources(seat, exclude)
         order = sorted(range(len(sources)),
                        key=lambda i: (sources[i][3], self.is_creature(sources[i][0]),
                                       len(_unit_options(sources[i][2][0]))))
@@ -875,10 +876,10 @@ class Game:
             return None
         return [(sources[i][0], sources[i][1], sources[i][3]) for i in used], spent
 
-    def can_pay(self, seat: int, cost: ManaCost) -> bool:
+    def can_pay(self, seat: int, cost: ManaCost, exclude: int | None = None) -> bool:
         if cost.mana_value == 0:
             return True
-        return self._solve_payment(seat, cost) is not None
+        return self._solve_payment(seat, cost, exclude) is not None
 
     def _pay_mana(self, seat: int, cost: ManaCost) -> None:
         if cost.mana_value == 0:
@@ -1101,7 +1102,7 @@ class Game:
                 tax = self._ward_tax(combo, seat)
                 if tax:
                     cost = cost.plus(ManaCost(generic=tax))
-                if not self.can_pay(seat, cost):
+                if not self.can_pay(seat, cost, exclude=obj.id if ability.tap_cost else None):
                     continue
                 options.append(act.ActivateAbility(obj.id, index, combo))
         return options

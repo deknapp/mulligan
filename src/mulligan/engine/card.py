@@ -217,6 +217,11 @@ class CardSpec:
         return CardType.LAND in self.types
 
     @property
+    def equip_like(self) -> bool:
+        """An Equipment or Aura: its value is what it grants."""
+        return any(a.is_equip for a in self.abilities) or self.enchant is not None
+
+    @property
     def is_instant(self) -> bool:
         return CardType.INSTANT in self.types or Keyword.FLASH in self.keywords
 

@@ -168,3 +168,91 @@ def compare(a: Entry, b: Entry, games: int = 1000, seed: int = 0,
         for future in futures:
             total.merge(future.result())
     return total
+
+
+# ------------------------------------------------------------------ gauntlet
+
+
+@dataclass
+class GauntletResult:
+    """Several candidate decks, each played against the same field."""
+
+    labels: list[str]
+    games: list[int]
+    wins: list[float]
+    # outcomes[i][k]: candidate i's score in the k-th game slot. Slot k is the
+    # same field deck, seed and seat for every candidate, which is what makes
+    # the paired comparison valid.
+    outcomes: list[list[float]]
+
+    def rate(self, i: int) -> float:
+        return self.wins[i] / self.games[i] if self.games[i] else 0.0
+
+    def interval(self, i: int) -> tuple[float, float]:
+        return wilson(self.wins[i], self.games[i])
+
+    def paired_difference(self, i: int, j: int) -> tuple[float, float, float]:
+        """Mean of (i's score - j's score) over shared slots, with a 95% CI."""
+        diffs = [a - b for a, b in zip(self.outcomes[i], self.outcomes[j], strict=True)]
+        n = len(diffs)
+        mean = sum(diffs) / n
+        var = sum((d - mean) ** 2 for d in diffs) / max(1, n - 1)
+        half = 1.96 * math.sqrt(var / n)
+        return mean, mean - half, mean + half
+
+    def summary(self) -> str:
+        lines = []
+        for i, label in enumerate(self.labels):
+            low, high = self.interval(i)
+            lines.append(f"  {label}: {self.rate(i):.1%} vs the field "
+                         f"(95% CI {low:.1%}–{high:.1%}, {self.games[i]} games)")
+        if len(self.labels) >= 2:
+            mean, low, high = self.paired_difference(0, 1)
+            if low > 0:
+                verdict = f"{self.labels[0]} is better"
+            elif high < 0:
+                verdict = f"{self.labels[1]} is better"
+            else:
+                verdict = "no clear difference yet (more games would narrow it)"
+            lines.append(f"  difference {self.labels[0]} − {self.labels[1]}: {mean:+.1%} "
+                         f"(95% CI {low:+.1%} to {high:+.1%})  → {verdict}")
+        return "\n".join(lines)
+
+
+def _gauntlet_block(candidate: Entry, field: list[Entry], seeds: list[int],
+                    max_turns: int) -> list[float]:
+    scores = []
+    for opponent in field:
+        for seed in seeds:
+            for seat in (0, 1):
+                entries = (candidate, opponent) if seat == 0 else (opponent, candidate)
+                agents = (make_agent(entries[0].agent, seed * 2),
+                          make_agent(entries[1].agent, seed * 2 + 1))
+                game = play_game(agents, (list(entries[0].deck), list(entries[1].deck)),
+                                 seed=seed, on_the_play=seed % 2, max_turns=max_turns)
+                scores.append(0.5 if game.winner is None else float(game.winner == seat))
+    return scores
+
+
+def gauntlet(candidates: list[Entry], field: list[Entry], games_per_opponent: int = 10,
+             seed: int = 0, workers: int | None = None, max_turns: int = 60) -> GauntletResult:
+    """Every candidate plays every field deck ``games_per_opponent`` times
+    (rounded up to even, seats swapped), on shared seeds."""
+    seeds = list(range(seed, seed + max(1, math.ceil(games_per_opponent / 2))))
+    workers = workers if workers is not None else max(1, (os.cpu_count() or 2) - 1)
+    jobs = [(i, j) for i in range(len(candidates)) for j in range(len(field))]
+    results: dict[tuple[int, int], list[float]] = {}
+    if workers <= 1:
+        for i, j in jobs:
+            results[(i, j)] = _gauntlet_block(candidates[i], [field[j]], seeds, max_turns)
+    else:
+        with ProcessPoolExecutor(max_workers=workers) as pool:
+            futures = {(i, j): pool.submit(_gauntlet_block, candidates[i], [field[j]], seeds,
+                                           max_turns) for i, j in jobs}
+            for key, future in futures.items():
+                results[key] = future.result()
+    outcomes = [[s for j in range(len(field)) for s in results[(i, j)]]
+                for i in range(len(candidates))]
+    return GauntletResult(labels=[c.label for c in candidates],
+                          games=[len(o) for o in outcomes],
+                          wins=[sum(o) for o in outcomes], outcomes=outcomes)

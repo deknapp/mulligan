@@ -280,3 +280,13 @@ def test_menace_blocks_can_always_be_completed(seed):
             break
         seat = game.state.decision_player
         game.apply(agent.choose(PlayerView(game, seat), game.legal_actions()))
+
+
+def test_a_land_cannot_tap_for_its_own_tap_ability():
+    """Goblin-town's {2}{B}{R}, {T}: the land itself is not one of the four sources."""
+    game = scene(Side(battlefield=["Goblin-town", "Goblin-town Flunkies"], lands={"B": 2,
+                                                                                   "R": 1}))
+    assert not options(game, act.ActivateAbility)
+    game2 = scene(Side(battlefield=["Goblin-town", "Goblin-town Flunkies"], lands={"B": 2,
+                                                                                    "R": 2}))
+    assert options(game2, act.ActivateAbility)

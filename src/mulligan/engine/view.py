@@ -242,6 +242,12 @@ class PlayerView:
             return None
         return CardView(obj)
 
+    def could_block(self, blocker: PermanentView, attacker: PermanentView) -> bool:
+        """Whether ``blocker`` may legally block ``attacker`` (flying, reach,
+        menace aside, "can't be blocked", "can't block", ...). Rules are public."""
+        return (not blocker.tapped
+                and self._game.can_block_attacker(blocker._obj, attacker._obj))
+
     def mana_available(self, seat: int | None = None) -> int:
         """Untapped mana sources plus floating mana. Public for both players:
         which lands are untapped is visible across the table."""

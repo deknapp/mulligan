@@ -95,12 +95,8 @@ def combat_outcome(attacker: PermanentView, blocker: PermanentView) -> tuple[boo
     return b_kills, a_kills
 
 
-def can_block(blocker: PermanentView, attacker: PermanentView) -> bool:
-    if not blocker.can_block:
-        return False
-    if attacker.has(Keyword.FLYING):
-        return blocker.has(Keyword.FLYING) or blocker.has(Keyword.REACH)
-    return True
+def can_block(view: PlayerView, blocker: PermanentView, attacker: PermanentView) -> bool:
+    return view.could_block(blocker, attacker)
 
 
 # ------------------------------------------------------------------ effects
@@ -516,6 +512,31 @@ class HeuristicAgent(Agent):
         loss = worth(mine) if side != "theirs" else 0.0
         return gain - loss - 1.0
 
+    def _activation_cost(self, view: PlayerView, ability, source) -> float:
+        """What paying an ability's non-mana costs gives up."""
+        cost = 1.8 * ability.discard + 0.3 * ability.life
+        if ability.sacrifice:
+            fodder = [p for p in view.battlefield(view.seat) if p.id != source.id
+                      and not p.is_land]
+            cost += 1.0 + min((permanent_value(p) for p in fodder), default=3.0)
+        if ability.sacrifice_self and getattr(source, "is_creature", False):
+            cost += permanent_value(source)
+        if ability.sacrifice_self and getattr(source, "is_land", False):
+            cost += 2.0 if len(view.lands(view.seat)) < 6 else 0.5
+        if (ability.tap_cost and getattr(source, "is_creature", False) and view.is_my_turn
+                and view.step in (Step.UPKEEP, Step.DRAW, Step.PRECOMBAT_MAIN,
+                                  Step.BEGIN_COMBAT)):
+            cost += 1.0 + 0.3 * getattr(source, "power", 0)  # it could have attacked
+        return cost
+
+    @staticmethod
+    def _utility_window(view: PlayerView) -> bool:
+        """Own second main phase, or the opponent's end step: mana that is
+        still up then would otherwise be wasted."""
+        if view.is_my_turn:
+            return view.step == Step.POSTCOMBAT_MAIN
+        return view.step == Step.END_STEP
+
     def _score_activation(self, view: PlayerView, action: act.ActivateAbility) -> float:
         source = view.card(action.source_id)
         ability = source.spec.abilities[action.index]
@@ -530,12 +551,6 @@ class HeuristicAgent(Agent):
             # Firebreathing: only while it is attacking unblocked or in a fight.
             attacking = getattr(source, "attacking", False)
             return 1.0 if (attacking and view.step == Step.DECLARE_BLOCKERS) else -1.0
-        value = self._effects_value(view, ability.effects, action.targets,
-                                    source_id=action.source_id)
-        if ability.sacrifice_self and getattr(source, "is_creature", False):
-            value -= permanent_value(source)
-        if ability.sacrifice_self and getattr(source, "is_land", False):
-            value -= 2.0 if len(view.lands(view.seat)) < 6 else 0.5
         if ability.discard_self:  # cycling: only when the card is dead weight
             lands = len(view.lands(view.seat))
             if source.spec.is_land and lands < 5:
@@ -543,6 +558,11 @@ class HeuristicAgent(Agent):
             if not source.spec.is_land and source.spec.cost.mana_value <= lands + 1:
                 return -1.0
             return 1.0
+        value = self._effects_value(view, ability.effects, action.targets,
+                                    source_id=action.source_id)
+        value -= self._activation_cost(view, ability, source)
+        if not action.targets and not self._utility_window(view):
+            return -1.0  # card-flow abilities wait until the mana would otherwise go unused
         return value - 0.5 if value > 0.5 else -1.0
 
     # ---------------------------------------------------------------- combat
@@ -555,7 +575,7 @@ class HeuristicAgent(Agent):
         opp_life = view.life(opp)
 
         def blockable_by(att: PermanentView) -> list[PermanentView]:
-            found = [b for b in blockers if can_block(b, att)]
+            found = [b for b in blockers if can_block(view, b, att)]
             return found if not att.has(Keyword.MENACE) or len(found) >= 2 else []
 
         # Alpha strike when the unblockable damage alone is lethal, or when the
@@ -615,7 +635,7 @@ class HeuristicAgent(Agent):
         for att in attackers:
             if att.id in blocked or att.has(Keyword.MENACE):
                 continue
-            candidates = [b for b in pool if can_block(b, att)]
+            candidates = [b for b in pool if can_block(view, b, att)]
             good = [b for b in candidates if combat_outcome(att, b) == (True, False)]
             trade = [b for b in candidates if combat_outcome(att, b) == (True, True)
                      and permanent_value(b) <= permanent_value(att)]
@@ -639,7 +659,7 @@ class HeuristicAgent(Agent):
                 break
             if att.id in blocked:
                 continue
-            candidates = [b for b in pool if can_block(b, att)]
+            candidates = [b for b in pool if can_block(view, b, att)]
             need = 2 if att.has(Keyword.MENACE) else 1
             if len(candidates) < need:
                 continue
