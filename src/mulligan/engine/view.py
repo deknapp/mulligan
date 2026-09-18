@@ -108,7 +108,8 @@ class PermanentView:
 
 
 class StackView:
-    __slots__ = ("name", "controller", "kind", "spec", "targets", "obj_id", "source_id")
+    __slots__ = ("name", "controller", "kind", "spec", "targets", "obj_id", "source_id",
+                 "effects")
 
     def __init__(self, item, game: Game):
         self.name = item.name
@@ -119,6 +120,8 @@ class StackView:
         source = game.object_by_id(item.obj_id if item.obj_id is not None else item.source_id)
         self.spec = source.spec if source is not None else None
         self.targets = tuple(item.targets)
+        # What it will do. Always public: it is printed on a card everyone can see.
+        self.effects = tuple(item.effects)
 
 
 class PlayerView:
@@ -199,6 +202,11 @@ class PlayerView:
     def stack(self) -> list[StackView]:
         """Bottom first; the last item resolves next."""
         return [StackView(item, self._game) for item in self._game.state.stack]
+
+    def pending_trigger(self) -> StackView | None:
+        """The triggered ability whose targets are being chosen, if any."""
+        trigger = self._game.state.pending_trigger
+        return StackView(trigger, self._game) if trigger is not None else None
 
     def attackers(self) -> list[PermanentView]:
         state = self._game.state
