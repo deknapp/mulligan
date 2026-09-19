@@ -183,6 +183,7 @@ class HeuristicAgent(Agent):
 
     # The whole policy. A learned agent adds a correction to this number.
     def score(self, view: PlayerView, action: act.Action) -> float:
+        self._life_gained = view.life_gained_this_turn
         if isinstance(action, act.KeepHand):
             return 1.0 if self._keepable(view) else -1.0
         if isinstance(action, act.Mulligan):
@@ -265,6 +266,8 @@ class HeuristicAgent(Agent):
         else:
             effects, targets = spec.on_resolve, action.targets
         bonus = 0.5 if action.kicked else 0.0
+        if view.is_my_turn and view.step in (Step.UPKEEP, Step.DRAW) and not view.stack():
+            return -1.0  # nothing is urgent yet: the land drop and the draw come first
         if spec.is_permanent and action.face not in ("adventure", "prepared"):
             if "Legendary" in spec.supertypes and any(
                     p.name == spec.name for p in view.battlefield(view.seat)):
@@ -281,8 +284,6 @@ class HeuristicAgent(Agent):
                 return -1.0
             return (10.0 + self._sv(spec) + etb + mv + bonus + 1.2 * action.x
                     - self._extra_cost(view, spec, action))
-        if view.is_my_turn and view.step in (Step.UPKEEP, Step.DRAW) and not view.stack():
-            return -1.0  # nothing is urgent yet: the land drop and the draw come first
         untargeted = not any(t.kind in ("object", "player") for t in targets)
         if (CardType.INSTANT in spec.types and untargeted
                 and not (not view.is_my_turn and view.step == Step.END_STEP)):
@@ -325,8 +326,10 @@ class HeuristicAgent(Agent):
         perm = view.permanent(targets[0].id) if targets and targets[0].kind == "object" else None
         if perm is None:
             return -1.0
+        # A keyword the creature already has (a second deathtouch aura) adds nothing.
         buff = sum(self._static_amount(s.power) + self._static_amount(s.toughness)
-                   + len(s.keywords) for s in spec.statics if s.affects == "enchanted")
+                   + len(set(s.keywords) - perm.keywords)
+                   for s in spec.statics if s.affects == "enchanted")
         for s in spec.statics:
             if s.affects == "enchanted" and "Creature" in s.add_types and not perm.is_creature:
                 buff += creature_value(s.base_power or 0, s.base_toughness or 0, s.keywords)
@@ -493,10 +496,13 @@ class HeuristicAgent(Agent):
         return total
 
     _x = 0
+    _life_gained = 0
 
     def _amount(self, value) -> int:
         if value == "x":
             return self._x
+        if value == "life_gained":
+            return self._life_gained
         return value if isinstance(value, int) else 2
 
     def _who_sign(self, view: PlayerView, who: str, targets) -> float:
@@ -593,6 +599,11 @@ class HeuristicAgent(Agent):
                         total += self._pv(perm)
                 elif isinstance(effect, REMOVAL):
                     total += self._pv(perm)
+                elif (isinstance(effect, fx.Pump) and isinstance(effect.toughness, int)
+                      and effect.toughness < 0):
+                    # A -X/-X sweep: what it kills counts, a survivor barely does.
+                    dies = perm.toughness - perm.damage + effect.toughness <= 0
+                    total += self._pv(perm) if dies else 0.3
                 elif isinstance(effect, (fx.Pump, fx.AddCounters)):
                     power = getattr(effect, "power", getattr(effect, "count", 1))
                     total += 1.0 + (power if isinstance(power, int) else 1)

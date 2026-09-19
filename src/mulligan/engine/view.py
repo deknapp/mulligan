@@ -171,6 +171,11 @@ class PlayerView:
         return self._game.state.pending
 
     @property
+    def life_gained_this_turn(self) -> int:
+        """Life this seat has gained this turn (public information)."""
+        return self._game.state.players[self.seat].life_gained_this_turn
+
+    @property
     def on_the_play(self) -> bool:
         return self._game.state.on_the_play == self.seat
 
