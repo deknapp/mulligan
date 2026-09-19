@@ -159,15 +159,12 @@ def _side(ref: str) -> str:
 class HeuristicAgent(Agent):
     """Scores every legal action with general Limited heuristics."""
 
-    def __init__(self, name: str = "heuristic", card_values: dict[str, float] | None = None,
-                 greedy_attacks: bool = True, hold_removal: bool = False):
+    def __init__(self, name: str = "heuristic", card_values: dict[str, float] | None = None):
         """``card_values`` is an optional per-card adjustment learned for a set
         (see ``learn_values``): points added to the general value of a card,
         which steers casting order, removal targets, trades and blocks."""
         self.name = name
         self.card_values = card_values or {}
-        self.greedy_attacks = greedy_attacks
-        self.hold_removal = hold_removal
 
     def _pv(self, perm: PermanentView) -> float:
         if isinstance(perm, Combatant):
@@ -287,31 +284,9 @@ class HeuristicAgent(Agent):
             return -1.0
         if self._is_trick(effects) and not self._trick_now(view, effects, targets):
             return -1.0
-        if self.hold_removal and self._wasteful_removal(view, effects, targets):
-            return -1.0
         if action.face == "adventure":
             value += 2.0  # the creature half stays available: casting the adventure is free value
         return 10.0 + value + 0.5 * mv + bonus
-
-    HOLD_BELOW = 6.0  # a 2/2 is 5.0, a 3/3 7.5, a 2/1 flier 5.5
-
-    def _wasteful_removal(self, view: PlayerView, effects, targets) -> bool:
-        """Unconditional removal pointed at a small creature, while nothing
-        forces it: save it for a threat, as a Limited player would."""
-        if view.life(view.seat) <= 10:
-            return False
-        if view.hand_size(view.opponent) <= 1:
-            return False
-        for effect in effects:
-            if not isinstance(effect, (fx.Destroy, fx.Exile)):
-                continue
-            for index in _touched(getattr(effect, "to", ""), targets):
-                t = targets[index]
-                perm = view.permanent(t.id) if t.kind == "object" else None
-                if perm is not None and perm.is_creature and perm.controller != view.seat \
-                        and self._pv(perm) < self.HOLD_BELOW:
-                    return True
-        return False
 
     def _extra_cost(self, view: PlayerView, spec: CardSpec, action: act.CastSpell) -> float:
         """What an additional cost gives up: a sacrifice costs the cheapest
@@ -728,10 +703,7 @@ class HeuristicAgent(Agent):
             if sum(by_power[len(blockers):]) >= opp_life:
                 return {c.id for c in mine}
 
-        if self.greedy_attacks:
-            plan = self._greedy_attackers(view, mine, blockers)
-        else:
-            plan = self._safe_attackers(mine, blockable_by)
+        plan = self._safe_attackers(mine, blockable_by)
 
         # Keep back enough to survive the crack-back.
         threat = sum(c.power for c in view.creatures(opp))
@@ -765,55 +737,7 @@ class HeuristicAgent(Agent):
                     break
             if safe:
                 plan.add(att.id)
-
         return plan
-
-    def _greedy_attackers(self, view: PlayerView, mine, blockers) -> set[int]:
-        """Add attackers one at a time while the predicted combat improves.
-
-        The defender's blocks are predicted with this agent's own blocking
-        policy, so an attack is judged as a whole: two attackers into one
-        good blocker means one of them gets through."""
-        opp_life = view.life(view.opponent)
-        chosen: list[PermanentView] = []
-        best = 0.0
-        rest = list(mine)
-        while rest:
-            scored = [(self._attack_value(view, chosen + [c], blockers, opp_life), c)
-                      for c in rest]
-            value, pick = max(scored, key=lambda x: x[0])
-            if value <= best:
-                break
-            best = value
-            chosen.append(pick)
-            rest.remove(pick)
-        return {c.id for c in chosen}
-
-    def _attack_value(self, view: PlayerView, attack, blockers, opp_life: int) -> float:
-        """Material swing plus damage for ``attack`` against predicted blocks."""
-        blocks = self._choose_blocks(view, attack, list(blockers), opp_life)
-        by_id = {b.id: b for b in blockers}
-        value = 0.0
-        damage = 0
-        for att in attack:
-            mult = 2 if att.has(Keyword.DOUBLE_STRIKE) else 1
-            bs = [by_id[b] for b, a in blocks if a == att.id]
-            if not bs:
-                damage += att.power * mult
-                continue
-            if len(bs) == 1:
-                att_dies, blk_dies = combat_outcome(att, bs[0])
-                if att.has(Keyword.TRAMPLE):
-                    damage += max(0, att.power - (bs[0].toughness - bs[0].damage))
-            else:  # a chump pair on a menace attacker
-                att_dies, blk_dies = False, True
-            if att_dies:
-                value -= self._pv(att)
-            if blk_dies:
-                value += sum(self._pv(b) for b in bs[:1])
-        if damage >= opp_life:
-            return 1000.0
-        return value + damage * (0.5 + 3.0 / max(opp_life, 1))
 
     def _assign_targets(self, view: PlayerView, attackers: set[int]) -> dict[int, int]:
         """Everyone attacks the player, except that the smallest attacker able

@@ -99,13 +99,12 @@ def draft_pod(data: SetData, ratings: dict[str, float], seed: int,
                 total = packs * size
                 done = round_ * size + pick
 
-                def score(name: str) -> float:
+                for name in pack:
                     if name not in colors_of:
                         colors_of[name] = card_colors(data, name)
-                    r = ratings.get(name, -5.0)  # unplayable cards: last picks
-                    return bot.value(name, colors_of[name], r, done, total)
-
-                choice = max(pack, key=score)
+                # Unplayable cards rate -5: last picks.
+                choice = max(pack, key=lambda n: bot.value(  # noqa: B023 (used at once)
+                    n, colors_of[n], ratings.get(n, -5.0), done, total))
                 pack.remove(choice)
                 bot.take(choice, colors_of[choice], ratings.get(choice, -5.0))
                 taken_at[choice].append(pick + 1)
