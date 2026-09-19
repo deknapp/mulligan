@@ -18,6 +18,8 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .paths import cache_dir
+
 LOG_DIRS = [
     "~/Library/Logs/Wizards Of The Coast/MTGA",                              # macOS
     "~/AppData/LocalLow/Wizards Of The Coast/MTGA",                          # Windows
@@ -149,7 +151,7 @@ def resolve(deck: LoggedDeck, id_to_name: dict[int, str]) -> LoggedDeck:
     return deck
 
 
-ID_CACHE = Path("data/arena_ids.json")
+ID_CACHE = cache_dir("arena_ids.json")
 
 
 def arena_names(ids: list[int], cache: Path = ID_CACHE, fetch: bool = True) -> dict[int, str]:

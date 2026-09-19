@@ -17,8 +17,10 @@ import time
 import urllib.request
 from pathlib import Path
 
+from ..paths import cache_dir
+
 URL = "https://www.17lands.com/card_ratings/data?expansion={set}&format={fmt}"
-CACHE_DIR = Path("data/17lands")
+CACHE_DIR = cache_dir("17lands")
 HEADERS = {"User-Agent": "mulligan/0.1 (github.com/deknapp/mulligan)"}
 
 

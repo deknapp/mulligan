@@ -14,6 +14,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from ..paths import cache_dir
+
 SEARCH_URL = "https://api.scryfall.com/cards/search"
 HEADERS = {"User-Agent": "mulligan/0.1 (github.com/deknapp/mulligan)",
            "Accept": "application/json"}
@@ -21,7 +23,7 @@ KEEP = ("name", "mana_cost", "type_line", "oracle_text", "power", "toughness", "
         "colors", "color_identity", "keywords", "collector_number", "arena_id", "layout",
         "produced_mana")
 FACE_KEEP = ("name", "mana_cost", "type_line", "oracle_text", "power", "toughness")
-RAW_DIR = Path("data/raw")
+RAW_DIR = cache_dir("raw")
 
 
 def fetch_set(code: str) -> list[dict]:

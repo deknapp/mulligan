@@ -33,10 +33,11 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 
+from .paths import cache_dir
 from .validation.seventeen import HEADERS, S3_URL
 
 MODEL_DIR = Path(__file__).resolve().parent / "models"
-RAW_DIR = Path("data/17lands")
+RAW_DIR = cache_dir("17lands")
 
 
 def _sigmoid(x: float) -> float:

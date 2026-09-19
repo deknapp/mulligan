@@ -21,7 +21,13 @@ $ mulligan build log:2                 # the best build of the 42 cards you draf
     ...
 
 $ mulligan versus log:2 clipboard      # vs a deck copied with Arena's Export button
+$ mulligan build log:2 --simulate      # also play both builds against 40 real HOB decks
+  difference suggested − played: +7.9% (95% CI +2.3% to +13.5%)  → suggested is better
 ```
+
+When the two decks given to `versus` share 30+ cards, they are treated as two
+builds of one deck: both play the same field of 40 real HOB decks on the same
+shuffles (the setup the build validation below tests), rather than each other.
 
 ## What to trust, and for what
 
@@ -108,9 +114,11 @@ uv sync            # or: pip install -e .
 uv run mulligan decks
 ```
 
-Python 3.11+. Dependencies: `typer`, `rich`. The deck models ship in the repo
-(`src/mulligan/models/`, ~50 KB per format); refitting downloads 17Lands'
-public game data (~20 MB for HOB).
+Python 3.11+. Dependencies: `typer`, `rich`. The deck models and a field of
+real decks ship in the package (`src/mulligan/models/`, ~150 KB for HOB).
+Downloads (17Lands game data for refitting, ~20 MB for HOB; Arena id lookups)
+are cached in `~/.cache/mulligan` (or `$MULLIGAN_CACHE`), never the current
+directory.
 
 ## How the simulator plays, and what did not work
 
