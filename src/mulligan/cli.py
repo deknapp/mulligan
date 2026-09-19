@@ -135,6 +135,8 @@ def versus_cmd(
     fmt: str = typer.Option(None, "--format",
                             help="17Lands data model: PremierDraft or Sealed (default: "
                                  "Sealed for sealed events in your log, else PremierDraft)."),
+    field_games: int = typer.Option(12, help="Games per field deck when comparing two "
+                                             "builds of one deck."),
     seed: int = typer.Option(0),
     workers: int = typer.Option(0),
 ):
@@ -195,7 +197,7 @@ def versus_cmd(
     shared = sum(min(a.names.get(n, 0), b.names.get(n, 0)) for n in (a.names or {})) if (
         a.names and b.names) else 0
     if shared >= 30 and a.set_code:
-        _simulate_builds(a, b, fmt, agent, workers, seed)
+        _simulate_builds(a, b, fmt, agent, workers, seed, field_games)
         console.print(f"[dim]{time.time() - start:.1f}s[/dim]")
         return
     result = compare(Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent, tuple(b.cards)),
