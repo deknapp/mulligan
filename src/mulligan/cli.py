@@ -472,6 +472,7 @@ def draft_cmd(
             "cards": {n: [stats.card_wins[n], stats.card_games[n],
                           round(stats.ata(n), 2), len(stats.taken_at.get(n, []))]
                       for n in set(stats.card_games) | set(stats.taken_at)},
+            "pair_cards": {f"{n}|{pair}": rec for (n, pair), rec in stats.pair_cards.items()},
         }))
         console.print(f"[dim]wrote {out}[/dim]")
 
