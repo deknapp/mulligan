@@ -130,6 +130,8 @@ def _predicate(game: Game, obj: GameObject, pred: Predicate, controller: int,
         return any(TYPE_NAMES[v.lower()] in types for v in value.split("|"))
     if key == "kw":
         return Keyword(value) in game.keywords_of(obj)
+    if key == "color":
+        return bool(obj.spec.color_set & set(value.split("|")))
     if key == "name":
         return obj.spec.name == value
     if key == "equipped":
@@ -140,6 +142,9 @@ def _predicate(game: Game, obj: GameObject, pred: Predicate, controller: int,
     if key in ("power>=", "power<="):
         power = game.power_of(obj)
         return power >= int(value) if key == "power>=" else power <= int(value)
+    if key in ("toughness>=", "toughness<="):
+        tough = game.toughness_of(obj)
+        return tough >= int(value) if key == "toughness>=" else tough <= int(value)
     if key in ("mv>=", "mv<="):
         mv = obj.spec.cost.mana_value
         return mv >= int(value) if key == "mv>=" else mv <= int(value)
@@ -153,7 +158,8 @@ def _controller(obj: GameObject) -> int:
 
 PREDICATES = {"yours", "theirs", "other", "token", "tapped", "legendary", "basic",
               "attacking", "blocking", "attacking|blocking", "subtype", "type", "kw",
-              "name", "equipped", "counters", "power>=", "power<=", "mv>=", "mv<="}
+              "name", "equipped", "counters", "power>=", "power<=", "mv>=", "mv<=",
+              "toughness>=", "toughness<=", "color"}
 
 
 def matches(game: Game, text: str, obj: GameObject, controller: int,

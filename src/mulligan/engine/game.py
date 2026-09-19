@@ -107,6 +107,7 @@ class Game:
         self._static_sources: list[GameObject] | None = None
         self._fired_once: set[tuple[int, int]] = set()
         self._legal_cache: list[act.Action] | None = None
+        self._resolving_statics: set[int] = set()
 
         for seat, deck in enumerate(decks):
             for spec in deck:
@@ -193,18 +194,28 @@ class Game:
         return True
 
     def statics_on(self, obj: GameObject) -> list[tuple[GameObject, Static]]:
-        found = []
-        own_lost = None
-        for src in self._statics():
-            for static in src.spec.statics:
-                if src.id == obj.id:
-                    if own_lost is None:
-                        own_lost = self._lost_abilities(obj)
-                    if own_lost and "loses_abilities" not in static.flags:
-                        continue
-                if self._static_applies(src, static, obj):
-                    found.append((src, static))
-        return found
+        """Static abilities that apply to ``obj``. While they are being worked
+        out, a filter that asks for ``obj``'s power or toughness sees its value
+        before statics (a lean stand-in for the layer system), so "creatures
+        with power 1 or less have ..." cannot recurse into itself."""
+        if obj.id in self._resolving_statics:
+            return []
+        self._resolving_statics.add(obj.id)
+        try:
+            found = []
+            own_lost = None
+            for src in self._statics():
+                for static in src.spec.statics:
+                    if src.id == obj.id:
+                        if own_lost is None:
+                            own_lost = self._lost_abilities(obj)
+                        if own_lost and "loses_abilities" not in static.flags:
+                            continue
+                    if self._static_applies(src, static, obj):
+                        found.append((src, static))
+            return found
+        finally:
+            self._resolving_statics.discard(obj.id)
 
     def abilities_of(self, obj: GameObject) -> tuple[ActivatedAbility, ...]:
         """Printed activated abilities plus any granted by statics
@@ -354,6 +365,8 @@ class Game:
             return player.draws_this_turn >= cond.n
         if kind == "creature_died_this_turn":
             return self.state.creature_died_this_turn
+        if kind == "cast_this_turn":
+            return player.spells_cast_this_turn >= cond.n
         if kind == "surveilled_this_turn":
             return player.surveilled_this_turn
         if kind == "prepared":
@@ -1325,7 +1338,9 @@ class Game:
                 continue
             if obj.tapped or self.has_summoning_sickness(obj):
                 continue
-            if self.has_keyword(obj, Keyword.DEFENDER) or "cant_attack" in self.flags_of(obj):
+            flags = self.flags_of(obj)
+            if "cant_attack" in flags or (self.has_keyword(obj, Keyword.DEFENDER)
+                                          and "attacks_despite_defender" not in flags):
                 continue
             options.append(act.DeclareAttacker(obj.id))
             for walker in self.state.zone_objects(1 - seat, "battlefield"):
@@ -1730,7 +1745,8 @@ class Game:
         if when in ("you_attack", "upkeep", "begin_combat", "first_main", "end_step",
                     "cast_noncreature", "cast_creature", "cast_spell", "draw_second",
                     "opp_draw_second", "opp_cast_noncreature", "draw",
-                    "creature_leaves_graveyard"):
+                    "creature_leaves_graveyard", "gain_life", "scry_or_surveil",
+                    "loyalty_counters"):
             return event == when and mine
         return False
 
@@ -2305,6 +2321,7 @@ def clone_game(game: Game) -> Game:
     new._static_sources = None
     new._fired_once = set(game._fired_once)
     new._legal_cache = None
+    new._resolving_statics = set()
     return new
 
 
