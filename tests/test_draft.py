@@ -43,3 +43,5 @@ def test_simulate_draft_small():
     assert len(stats.decks) == 8
     assert sum(n for _, n in stats.records.values()) == 32
     assert any(stats.gih(n) > 0 for n in stats.card_games)
+    assert sum(g for _, g in stats.deck_records) == 32
+    assert stats.play_records[1] == 16 and 0 <= stats.play_records[0] <= 16

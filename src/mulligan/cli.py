@@ -467,6 +467,8 @@ def draft_cmd(
             "set": set_code, "pods": pods, "games": games, "seed": seed,
             "records": stats.records,
             "decks": stats.decks,
+            "deck_records": stats.deck_records,
+            "on_the_play": stats.play_records,
             "cards": {n: [stats.card_wins[n], stats.card_games[n],
                           round(stats.ata(n), 2), len(stats.taken_at.get(n, []))]
                       for n in set(stats.card_games) | set(stats.taken_at)},
