@@ -750,6 +750,14 @@ class Game:
         self.state.record(f"{player.name} discards {choice.name}")
         return choice
 
+    def random_discard(self, seat: int) -> None:
+        hand = self.state.players[seat].hand
+        if hand:
+            choice = self.state.obj(self.state.rng.choice(hand))
+            self.move_to_zone(choice.id, "graveyard")
+            self.state.record(f"{self.state.players[seat].name} discards {choice.name} "
+                              "at random")
+
     def _want_on_top(self, seat: int, obj: GameObject) -> bool:
         lands = self._lands_total(seat)
         if obj.spec.is_land:

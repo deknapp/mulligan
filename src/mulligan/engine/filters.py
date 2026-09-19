@@ -130,6 +130,8 @@ def _predicate(game: Game, obj: GameObject, pred: Predicate, controller: int,
         return any(TYPE_NAMES[v.lower()] in types for v in value.split("|"))
     if key == "kw":
         return Keyword(value) in game.keywords_of(obj)
+    if key == "entered_this_turn":
+        return obj.zone == "battlefield" and obj.entered_turn == game.state.turn
     if key == "color":
         return bool(obj.spec.color_set & set(value.split("|")))
     if key == "name":
@@ -159,7 +161,7 @@ def _controller(obj: GameObject) -> int:
 PREDICATES = {"yours", "theirs", "other", "token", "tapped", "legendary", "basic",
               "attacking", "blocking", "attacking|blocking", "subtype", "type", "kw",
               "name", "equipped", "counters", "power>=", "power<=", "mv>=", "mv<=",
-              "toughness>=", "toughness<=", "color"}
+              "toughness>=", "toughness<=", "color", "entered_this_turn"}
 
 
 def matches(game: Game, text: str, obj: GameObject, controller: int,

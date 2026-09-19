@@ -218,11 +218,15 @@ class Discard(Effect):
 
     count: Amount = 1
     who: str = "you"
+    random: bool = False  # "discard a card at random"
 
     def resolve(self, game: Game, ctx: Context) -> None:
         for seat in ctx.players(game, self.who):
             for _ in range(game.amount(self.count, ctx)):
-                game.auto_discard(seat)
+                if self.random:
+                    game.random_discard(seat)
+                else:
+                    game.auto_discard(seat)
 
     def describe(self) -> str:
         return f"{self.who} discard {self.count}"
@@ -610,10 +614,11 @@ class AddCounters(Effect):
 @dataclass(frozen=True)
 class RemoveCounters(Effect):
     to: str = "target"
+    count: int = 0  # 0: all of them
 
     def resolve(self, game: Game, ctx: Context) -> None:
         for obj in _on_battlefield(ctx.objects(game, self.to)):
-            obj.counters = 0
+            obj.counters = max(0, obj.counters - self.count) if self.count else 0
 
     def describe(self) -> str:
         return f"remove all counters from {self.to}"

@@ -2533,13 +2533,11 @@
       },
       {
        "op": "discard",
-       "count": 1
+       "count": 1,
+       "random": true
       }
      ]
     }
-   ],
-   "approximations": [
-    "the discard is chosen, not random"
    ]
   },
   {
@@ -7950,7 +7948,8 @@
      "when": "etb",
      "effects": [
       {
-       "op": "remove_counters"
+       "op": "remove_counters",
+       "count": 3
       }
      ],
      "targets": [
@@ -7962,7 +7961,7 @@
     }
    ],
    "approximations": [
-    "removes all counters, not up to three"
+    "removes +1/+1 or loyalty counters only"
    ]
   },
   {
@@ -8447,7 +8446,7 @@
      "cost": "{1}{R}",
      "tap": true,
      "targets": [
-      "creature"
+      "creature:entered_this_turn"
      ],
      "effects": [
       {
@@ -8456,9 +8455,6 @@
       }
      ]
     }
-   ],
-   "approximations": [
-    "may target any creature, not just ones that entered this turn"
    ]
   },
   {
