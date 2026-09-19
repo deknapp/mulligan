@@ -70,10 +70,26 @@ it rates decks against an average opponent and so misses specific matchups.
 | rank correlation, deck score vs actual win rate (2,627 decks, ≥5 games) | +0.20 (pilot skill alone: +0.35) |
 | the 4–3 deck above | predicted 47% vs an average opponent |
 
-The two answers are complementary: the data model is the better number once a
-set has data; the simulator works on release day, sees matchups, and lets you
-watch why. Where they disagree, the gap points at the cards the engine
-simplifies.
+### Which answer to trust (tested)
+
+The real test of a deck tool is whether it ranks *real* decks the way their
+real results do. `validation/decks.py` takes held-out real HOB decks with at
+least 5 games each and scores them every way:
+
+| predictor | Spearman vs the decks' actual win rates |
+|---|---|
+| pilot skill alone (not a deck property) | +0.30 to +0.35 |
+| **17Lands deck model** | **+0.16 to +0.26** |
+| average real 17Lands GIH WR of the deck's cards | +0.20 |
+| **simulator** (each deck vs 30–100 other real decks) | **−0.01 to −0.02** |
+| average *simulated* card rating (release-day proxy) | +0.06 |
+
+So for deck decisions on a set with data, **use the deck model**. The
+simulator's card ratings track reality (+0.62 above), but its deck-vs-deck
+verdicts on human-built decks currently do not: the heuristic pilots
+exaggerate differences between decks (simulated win rates spread 21–73%) and
+rank them by what bots are good at. Better pilots may change that; until they
+are shown to, `versus` leads with the data model.
 
 ## Does it mean anything?
 
