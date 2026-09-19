@@ -218,13 +218,25 @@ def build_cmd(
     out: Path = typer.Option(None, help="Write the suggested decklist here."),
     simulate: bool = typer.Option(False, help="Also play both builds against a field of "
                                               "real decks (about a minute)."),
+    sealed: int = typer.Option(None, help="Instead of your log, open generated sealed pool "
+                                          "#N of --set (to try a set before you play it)."),
+    set_code: str = typer.Option(None, "--set", help="Set for --sealed."),
 ):
-    """The best build of the pool you drafted or opened, by real 17Lands results,
-    compared with the deck you played."""
+    """The best build of the pool you drafted or opened, compared with the deck
+    you played. Uses the real-game deck model when the set has 17Lands data;
+    before that (release day), simulated ratings plus a paired simulation."""
     from .arena_log import arena_names, read_decks, resolve
     from .cards.sets import available_sets, load_set
     from .deckmodel import DeckModel
     from .limited.advise import best_build
+    if sealed is not None:
+        if not set_code:
+            console.print("[red]error:[/red] --sealed needs --set")
+            raise typer.Exit(1)
+        from .limited.pools import sealed_pool
+        data = load_set(set_code)
+        _release_day(sealed_pool(data, sealed), data, f"generated sealed pool #{sealed}", out)
+        return
     if not deck.startswith("log:"):
         console.print("[red]error:[/red] build needs a deck from your Arena log (log:N)")
         raise typer.Exit(1)
@@ -244,7 +256,11 @@ def build_cmd(
     resolve(logged, ids)
     pool = [ids[g] for g in logged.pool if g in ids]
     fmt = fmt or ("Sealed" if "sealed" in logged.event.lower() else "PremierDraft")
-    model = DeckModel.load(logged.set_code, fmt)
+    try:
+        model = DeckModel.load(logged.set_code, fmt)
+    except FileNotFoundError:
+        _release_day(pool, data, logged.event, out, played=logged.names)
+        return
     advice = best_build(pool, data, model, colors)
     played = logged.names
     console.print(f"[bold]{logged.event}[/bold]: pool of {len(pool)} cards")
@@ -282,6 +298,32 @@ def build_cmd(
                                  advice.best),
                          DeckRef("played", logged.set_code, played_cards, [], 0, played),
                          fmt, "heuristic", 0, 0)
+
+
+def _release_day(pool: list[str], data, label: str, out: Path | None,
+                 played: dict[str, int] | None = None) -> None:
+    """Build advice with no real data: simulated ratings propose, paired
+    simulation disposes (see limited/release_day.py)."""
+    from .limited.release_day import release_day_build
+    console.print(f"[bold]{label}[/bold]: pool of {len(pool)} cards. No 17Lands data for "
+                  f"{data.code.upper()} yet, so this is release-day mode: builds rated by "
+                  "simulated card ratings.")
+    advice = release_day_build(pool, data)
+    result = advice.result
+    for i, deck in enumerate(advice.candidates):
+        low, high = result.interval(i)
+        mark = "  ← recommended" if deck is advice.best else ""
+        console.print(f"  {deck.colors:4s} rating score {deck.score:6.1f}; simulated "
+                      f"{result.rate(i):.1%} vs the field (95% CI {low:.1%}–{high:.1%}){mark}",
+                      highlight=False)
+    console.print(advice.best.decklist(), markup=False, highlight=False)
+    console.print("[dim]Measured on HOB against real-game data: this recommendation 55.9%, "
+                  "the plain builder 53.2%, the real-data model's own pick 65.0%. The "
+                  "simulated win rates are shown for information; letting them pick did "
+                  "not help. Treat it as a first draft.[/dim]")
+    if out:
+        out.write_text(advice.best.decklist())
+        console.print(f"[dim]wrote {out}[/dim]")
 
 
 def _simulate_builds(a, b, fmt: str, agent: str, workers: int, seed: int,

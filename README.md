@@ -97,7 +97,17 @@ Reality Fracture (FRA): 263/283 cards playable (93%), 110 with noted approximati
 $ mulligan update-set fra        # pull newly spoiled cards (added as 'not compiled yet')
 $ mulligan sealed --set fra      # a sealed pool from the cards spoiled so far
 $ mulligan rate --set fra        # release-day card ratings from self-play
+$ mulligan build --sealed 3 --set fra   # a build from a generated pool (or log:N once you play)
 ```
+
+`build` on a set without 17Lands data switches to release-day mode: the
+top-rated two-color build by simulated card ratings (shipped as
+`models/fra_sim_ratings.json`). Measured on HOB against real-game data over 20
+sealed pools: 55.9% for this recommendation, 53.2% for the plain builder, 65.0%
+for what real data picks once it exists. Letting simulated games choose between
+builds did not help (bots handle three colors better than people, so the
+simulation leans toward splashes real results punish), so those numbers are
+shown for information only.
 
 The engine gained what the set is built on: planeswalkers (loyalty
 abilities, attacking them, abilities granted to them), Empower Jace, prepare

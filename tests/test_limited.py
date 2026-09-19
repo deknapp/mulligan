@@ -72,3 +72,10 @@ def test_shipped_real_field_is_real_forty_card_decks():
         assert all(40 <= sum(d.values()) <= 41 for d in field)
         assert all(set(d) <= set(HOB.entries) | {"Plains", "Island", "Swamp", "Mountain",
                                                  "Forest"} for d in field)
+
+
+def test_release_day_build_is_a_full_two_color_deck():
+    from mulligan.limited.release_day import release_day_build
+    advice = release_day_build(sealed_pool(HOB, 7), HOB, simulate=False)
+    assert len(advice.best.cards) == 40 and len(advice.best.colors) == 2
+    assert advice.result is None
