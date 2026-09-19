@@ -354,3 +354,21 @@ def test_graveyard_activated_abilities_work():
     resolve(game)
     assert "Gollum the Abandoned" in [game.state.obj(i).name
                                       for i in game.state.players[0].hand]
+
+
+def test_notary_hobbits_copy_themselves_and_tap_for_each_halfling():
+    game = scene(Side(hand=["The Notary Hobbits"], lands={"G": 5}))
+    cast(game, "The Notary Hobbits")
+    resolve(game)
+    hobbits = named(game, "The Notary Hobbits")
+    assert len(hobbits) == 3, "the legend rule must not eat the non-legendary copies"
+    assert sum(1 for h in hobbits if h.is_token) == 2
+
+
+def test_part_in_friendship_finds_a_creature_when_one_dies():
+    game = scene(Side(battlefield=["Part in Friendship", "Lake-town Lookout"],
+                      hand=["Bilbo's Deadly Slice"], lands={"B": 3, "G": 3},
+                      library=["Forest", "Ordinary Bear", "Forest"]))
+    cast(game, "Bilbo's Deadly Slice", target="Lake-town Lookout")
+    resolve(game)
+    assert named(game, "Ordinary Bear", 0), "mana value 4 <= 6 lands: onto the battlefield"

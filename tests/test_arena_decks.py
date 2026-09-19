@@ -72,10 +72,10 @@ def test_export_text_loads_with_its_set_and_skips_the_sideboard(tmp_path):
 
 def test_unplayable_cards_are_replaced_and_reported(tmp_path):
     path = tmp_path / "deck.txt"
-    path.write_text("Deck\n1 The Notary Hobbits (HOB) 1\n22 Ordinary Bear (HOB) 170\n"
+    path.write_text("Deck\n1 Belladonna Took (HOB) 1\n22 Ordinary Bear (HOB) 170\n"
                     "17 Forest (HOB) 280\n")
     ref = load_ref(str(path))
     assert len(ref.cards) == 40
-    assert ref.replaced == 1 and "The Notary Hobbits" in ref.warnings[0]
+    assert ref.replaced == 1 and "Belladonna Took" in ref.warnings[0]
     exact, approx, replaced = ref.fidelity()
     assert (exact, replaced) == (22, 1)

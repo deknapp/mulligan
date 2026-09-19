@@ -41,10 +41,21 @@ fidelity: log:2: 12 of 23 spells modelled exactly, 9 approximated, 2 replaced �
 than a quarter of this deck is simplified, so treat its result as unreliable
 ```
 
-That warning is earned. The deck above went 4–3 in a real Premier Draft; the
-simulator gives it about 30% against a typical field, because a third of its
-cards each lose one ability in the compiled data (Woodland Weavemaster's mana,
-Silvan Reveler's land recursion, Thranduil's borrowed abilities, ...).
+That warning is earned. The deck above went 4–3 in a real Premier Draft. How
+the simulator's view of it changed as the engine improved (against the same
+field of 24 sealed decks):
+
+| engine state | deck vs field |
+|---|---|
+| a third of its cards missing one ability, 2 cards replaced by Forests | 29.8% |
+| Woodland Weavemaster's Elf mana, Silvan Reveler's land recursion, modal and graveyard triggers restored | 35.4% |
+| The Notary Hobbits and Part in Friendship playable instead of Forests | 23.5% |
+
+The last step made it *worse*, and the 17Lands model says it should not have
+(those two cards are roughly average in real games). The rules are right; the
+pilot is not: The Notary Hobbits is a ramp card (each Halfling taps for mana)
+and the heuristic never taps creatures for mana it does not need that moment.
+Better rules exposed the next bottleneck, which is play skill on unusual cards.
 
 So `versus` also answers from **real games**, when 17Lands has data for the set:
 a logistic regression of win/loss on the full decklist, the pilot's skill and

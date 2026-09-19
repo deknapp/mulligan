@@ -4945,7 +4945,33 @@
     "G"
    ],
    "oracle": "When The Notary Hobbits enter, if they're not a token, create two tokens that are copies of them, except the tokens aren't legendary.\n{T}: Add {C} for each Halfling you control.",
-   "unsupported": "token copies of itself"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "copy_self",
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "tap": true,
+     "mana": true,
+     "effects": [
+      {
+       "op": "add_mana",
+       "symbols": [
+        "C"
+       ],
+       "amount": "count:creature:yours,subtype=Halfling"
+      }
+     ],
+     "text": "{T}: Add {C} for each Halfling you control."
+    }
+   ]
   },
   {
    "name": "Old Fat Spider",
@@ -5012,7 +5038,20 @@
     "G"
    ],
    "oracle": "Whenever a nontoken creature you control dies, reveal cards from the top of your library until you reveal a creature card. If its mana value is less than or equal to the number of lands you control, put it onto the battlefield. Otherwise, put it into your hand. Put the rest on the bottom of your library in a random order. This ability triggers only once each turn.",
-   "unsupported": "reveal-until and conditional put"
+   "triggers": [
+    {
+     "when": "other_dies",
+     "filter": "creature:!token",
+     "once_per_turn": true,
+     "effects": [
+      {
+       "op": "reveal_until",
+       "filter": "creature",
+       "battlefield_if_mv_at_most": "lands"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Quarrel",

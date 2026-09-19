@@ -679,6 +679,42 @@ class CreateToken(Effect):
 
 
 @dataclass(frozen=True)
+class CopySelf(Effect):
+    """Create ``count`` tokens that are copies of the source (unless the source
+    is itself a token), optionally without the legendary supertype."""
+
+    count: int = 1
+    nonlegendary: bool = True
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        source = game.object_by_id(ctx.source_id)
+        if source is None or source.is_token:
+            return
+        for _ in range(self.count):
+            game.create_token_copy(ctx.controller, source.spec, self.nonlegendary)
+
+    def describe(self) -> str:
+        return f"create {self.count} token copies of it"
+
+
+@dataclass(frozen=True)
+class RevealUntil(Effect):
+    """Reveal from the top until a card matching ``filter``; it goes onto the
+    battlefield if its mana value is at most ``battlefield_if_mv_at_most`` (an
+    amount), otherwise into your hand. The rest go to the bottom at random."""
+
+    filter: str = "creature"
+    battlefield_if_mv_at_most: Amount = -1
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.reveal_until(ctx.controller, self.filter,
+                          game.amount(self.battlefield_if_mv_at_most, ctx))
+
+    def describe(self) -> str:
+        return f"reveal until a {self.filter}"
+
+
+@dataclass(frozen=True)
 class Amass(Effect):
     """Amass <subtype> N: counters on your Army, making a 0/0 one first if
     needed. ``attach_self`` attaches the source Equipment to the Army."""

@@ -550,6 +550,34 @@ class Game:
         self.put_onto_battlefield(obj, seat, tapped=tapped)
         return obj
 
+    def create_token_copy(self, seat: int, spec: CardSpec, nonlegendary: bool) -> GameObject:
+        import dataclasses
+        if nonlegendary:
+            spec = dataclasses.replace(spec, supertypes=spec.supertypes - {"Legendary"})
+        obj = self._new_object(spec, seat, is_token=True)
+        self.put_onto_battlefield(obj, seat)
+        return obj
+
+    def reveal_until(self, seat: int, filter_text: str, max_mv_to_battlefield: int) -> None:
+        player = self.state.players[seat]
+        flt = filters.parse(filter_text)
+        revealed = []
+        while player.library:
+            obj = self.state.objects[player.library.pop(0)]
+            if _card_matches(self, flt, obj, seat):
+                if obj.spec.cost.mana_value <= max_mv_to_battlefield:
+                    obj.zone = "library"
+                    player.library.insert(0, obj.id)
+                    self.put_onto_battlefield(obj, seat, from_zone="library")
+                else:
+                    player.hand.append(obj.id)
+                    obj.zone = "hand"
+                self.state.record(f"{player.name} reveals {obj.name}")
+                break
+            revealed.append(obj.id)
+        self.state.rng.shuffle(revealed)
+        player.library.extend(revealed)
+
     def amass(self, seat: int, n: int, subtype: str) -> GameObject | None:
         armies = [o for o in self.state.zone_objects(seat, "battlefield")
                   if "Army" in o.spec.subtypes]
