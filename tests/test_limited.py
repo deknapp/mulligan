@@ -62,3 +62,13 @@ def test_correlations():
     assert abs(spearman([1, 2, 3, 4], [10, 20, 30, 40]) - 1) < 1e-9
     assert abs(spearman([1, 2, 3, 4], [4, 3, 2, 1]) + 1) < 1e-9
     assert abs(pearson([1, 2, 3], [2, 4, 6]) - 1) < 1e-9
+
+
+def test_shipped_real_field_is_real_forty_card_decks():
+    from mulligan.limited.field import real_field
+    for fmt in ("PremierDraft", "Sealed"):
+        field = real_field("hob", fmt)
+        assert len(field) == 40
+        assert all(40 <= sum(d.values()) <= 41 for d in field)
+        assert all(set(d) <= set(HOB.entries) | {"Plains", "Island", "Swamp", "Mountain",
+                                                 "Forest"} for d in field)

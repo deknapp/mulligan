@@ -192,6 +192,12 @@ def versus_cmd(
                     console.print(f"    {what} in {side}: {verb} {side} by "
                                   f"{abs(effect):.1f} pts", highlight=False)
     start = time.time()
+    shared = sum(min(a.names.get(n, 0), b.names.get(n, 0)) for n in (a.names or {})) if (
+        a.names and b.names) else 0
+    if shared >= 30 and a.set_code:
+        _simulate_builds(a, b, fmt, agent, workers, seed)
+        console.print(f"[dim]{time.time() - start:.1f}s[/dim]")
+        return
     result = compare(Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent, tuple(b.cards)),
                      games=games, seed=seed, workers=workers or None)
     console.print("\n[bold]Simulated[/bold] (both decks piloted by the "
@@ -208,6 +214,8 @@ def build_cmd(
                             help="PremierDraft or Sealed model (default: from the event)."),
     colors: str = typer.Option(None, help="Force a color pair, e.g. BG."),
     out: Path = typer.Option(None, help="Write the suggested decklist here."),
+    simulate: bool = typer.Option(False, help="Also play both builds against a field of "
+                                              "real decks (about a minute)."),
 ):
     """The best build of the pool you drafted or opened, by real 17Lands results,
     compared with the deck you played."""
@@ -264,6 +272,38 @@ def build_cmd(
         console.print(f"[dim]wrote {out}[/dim]")
     console.print("[dim]Card values come from 17Lands games; they rate each card against an "
                   "average opponent and ignore synergies between your cards.[/dim]")
+    if simulate:
+        from .decks import DeckRef, _substitute
+        suggested_cards, _, _ = _substitute(advice.best, data.playable, "suggested")
+        played_cards, _, _ = _substitute(played, data.playable, "played")
+        _simulate_builds(DeckRef("suggested", logged.set_code, suggested_cards, [], 0,
+                                 advice.best),
+                         DeckRef("played", logged.set_code, played_cards, [], 0, played),
+                         fmt, "heuristic", 0, 0)
+
+
+def _simulate_builds(a, b, fmt: str, agent: str, workers: int, seed: int,
+                     games_per_opponent: int = 12) -> None:
+    """Two versions of one deck: both play the same field of real decks on the
+    same seeds, the setup validated in validation/swaps.py."""
+    from .cards.sets import load_set
+    from .decks import _substitute
+    from .limited.field import real_field
+    field = real_field(a.set_code, fmt)
+    if not field:
+        console.print("[yellow]note:[/yellow] no real-deck field shipped for this set")
+        return
+    playable = load_set(a.set_code).playable
+    opponents = [Entry(f"real{i}", agent, tuple(_substitute(d, playable, f"real{i}")[0]))
+                 for i, d in enumerate(field)]
+    console.print(f"\n[bold]Simulated[/bold]: these are two builds of one deck, so both play "
+                  f"the same {len(field)} real {a.set_code.upper()} {fmt} decks on the same "
+                  f"shuffles (validated: agrees with real-game values on 77% of build changes)")
+    result = gauntlet([Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent,
+                                                                    tuple(b.cards))],
+                      opponents, games_per_opponent=games_per_opponent, seed=seed,
+                      workers=workers or None)
+    console.print(result.summary(), markup=False)
 
 
 @app.command("agents")

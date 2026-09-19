@@ -20,3 +20,14 @@ def sealed_field(data: SetData, size: int = 24, seed: int = 0,
                  ratings: dict[str, float] | None = None) -> list[Deck]:
     return [build_deck(sealed_pool(data, FIELD_SEED_BASE + seed + i), data, ratings)
             for i in range(size)]
+
+
+def real_field(set_code: str, fmt: str = "PremierDraft") -> list[dict[str, int]]:
+    """Real decks from 17Lands for a set and format, shipped with the package:
+    the field a deck actually meets on Arena."""
+    import json
+    from pathlib import Path
+    path = Path(__file__).resolve().parent.parent / "models" / f"{set_code.lower()}_field.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text()).get(fmt, [])
