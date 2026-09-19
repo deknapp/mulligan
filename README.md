@@ -7,6 +7,11 @@ drafted or opened, and can play any two decks against each other. Runs on a
 laptop CPU in seconds. Sets: **The Hobbit (HOB)**, and **Reality Fracture
 (FRA)** from its partial spoiler (release 2026-10-02).
 
+**Findings blog:** [deknapp.github.io/mulligan](https://deknapp.github.io/mulligan/):
+dated posts on what simulated drafts turn up about a set before anyone has
+played it. First post: [Reality Fracture, drafted 480 times before
+release](https://deknapp.github.io/mulligan/posts/2026-09-18-reality-fracture-first-drafts.html).
+
 ```
 $ mulligan decks                       # your event decks, from the Arena log
   log:2  PremierDraft_HOB_20260811  40 cards  2026-09-06 09:48
@@ -89,14 +94,15 @@ release-day case it exists for. From the 285 cards spoiled by 2026-09-18:
 
 ```
 $ mulligan sets
-Reality Fracture (FRA): 269/283 cards playable (95%), 104 with noted approximations
+Reality Fracture (FRA): 268/283 cards playable (95%), 103 with noted approximations
   common     85/85  (100%)
   uncommon  104/108 (96%)
-  rare       57/64  (89%)
+  rare       56/64  (88%)
   mythic     23/26  (88%)
 $ mulligan update-set fra        # pull newly spoiled cards (added as 'not compiled yet')
 $ mulligan sealed --set fra      # a sealed pool from the cards spoiled so far
 $ mulligan rate --set fra        # release-day card ratings from self-play
+$ mulligan draft --set fra       # 8-bot draft pods: archetype records, card win rates, picks
 $ mulligan build --sealed 3 --set fra   # a build from a generated pool (or log:N once you play)
 ```
 
@@ -131,7 +137,9 @@ then 41.8%).
 | `mulligan fit --set hob` | refit the deck model from 17Lands' public games |
 | `mulligan sealed --set hob --seed N` | open a random sealed pool and build it |
 | `mulligan compare A B --set hob` | simulate two decks head to head and against a field |
-| `mulligan rate --set hob` | card ratings from self-play |
+| `mulligan rate --set hob` | card ratings from self-play (sealed pools) |
+| `mulligan draft --set fra` | simulated 8-bot drafts: color-pair records, card win rates, average pick |
+| `mulligan site` | render the findings blog (`blog/` → `site/`; needs `uv sync --extra site`) |
 | `mulligan validate --set hob --ratings r.json` | check card ratings against 17Lands |
 | `mulligan play A B --set hob` | watch one simulated game |
 | `mulligan sets` | how much of each compiled set the engine plays |

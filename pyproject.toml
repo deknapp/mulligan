@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "mulligan"
 version = "0.1.0"
-description = "A rules-strict Magic: The Gathering engine and a benchmark for LLM agents that have to play it"
+description = "MTG Arena Limited deck decisions from real games and simulation: a rules engine where bots draft, build and play a set"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
