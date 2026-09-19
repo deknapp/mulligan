@@ -921,10 +921,12 @@ class Game:
                 self.put_onto_battlefield(choice, seat, from_zone="library",
                                           tapped=dest == "battlefield_tapped")
             elif dest == "top":
+                # "shuffle and put that card on top": the shuffle comes first.
                 player.library.remove(choice.id)
                 self.state.rng.shuffle(player.library)
                 player.library.insert(0, choice.id)
-                continue
+                self.state.record(f"{player.name} searches for a card and puts it on top")
+                return
             else:
                 player.library.remove(choice.id)
                 player.hand.append(choice.id)

@@ -124,3 +124,12 @@ def test_learned_features_only_use_the_view():
     for action in game.legal_actions():
         feats = action_features(view, action, sit)
         assert feats and all(isinstance(v, float) for v in feats.values())
+
+
+def test_search_to_top_keeps_the_card_on_top():
+    from mulligan.cards.cube import BASICS
+    from mulligan.engine.game import Game
+    game = Game([[BASICS["W"]] * 39 + [BASICS["U"]], [BASICS["W"]] * 40], seed=3)
+    game.auto_search(0, "land:subtype=Island", "top")
+    top = game.state.obj(game.state.players[0].library[0])
+    assert top.name == "Island"

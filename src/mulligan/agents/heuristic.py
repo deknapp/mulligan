@@ -522,7 +522,9 @@ class HeuristicAgent(Agent):
         harmful = isinstance(effect, REMOVAL) or isinstance(effect, fx.DealDamage) or (
             isinstance(effect, fx.Tap) and not effect.untap) or (
             isinstance(effect, fx.Pump) and isinstance(effect.toughness, int)
-            and effect.toughness < 0) or isinstance(effect, fx.RemoveCounters)
+            and effect.toughness < 0) or isinstance(effect, fx.RemoveCounters) or (
+            isinstance(effect, fx.SetBasePT) and perm.is_creature
+            and effect.power + effect.toughness < perm.power + perm.toughness)
         if harmful:
             if mine:
                 return -10.0
@@ -555,6 +557,9 @@ class HeuristicAgent(Agent):
             return perm.is_creature and amount >= perm.toughness - perm.damage
         if isinstance(effect, fx.Pump) and isinstance(effect.toughness, int):
             return perm.is_creature and perm.toughness + effect.toughness <= 0
+        if isinstance(effect, fx.SetBasePT):
+            # Counters and pumps still apply on top of the new base.
+            return perm.is_creature and effect.toughness + perm.counters <= 0
         return False
 
     def _mass_value(self, view: PlayerView, effect, ref: str) -> float:

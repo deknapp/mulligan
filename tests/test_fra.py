@@ -395,3 +395,18 @@ def test_way_of_the_cryomancer_copies_the_next_instant_or_sorcery():
     game.apply(burn)
     resolve(game)
     assert game.state.players[1].life == 14, "3 damage, copied"
+
+
+def test_bot_points_multiply_by_zero_at_the_opponent():
+    """"Base power and toughness 0/0" is removal. The heuristic once read it
+    as a buff and killed its own creatures with it."""
+    from mulligan.agents.heuristic import HeuristicAgent
+    from mulligan.engine.view import PlayerView
+    game = scene(Side(hand=["Multiply by Zero"], battlefield=["Konstrari Improviser"],
+                      lands={"B": 2}),
+                 Side(battlefield=["Konstrari Improviser"]))
+    view = PlayerView(game, 0)
+    casts = [o for o in options(game, act.CastSpell)
+             if game.state.obj(o.card_id).name == "Multiply by Zero"]
+    best = max(casts, key=lambda a: HeuristicAgent().score(view, a))
+    assert game.object_by_id(best.targets[0].id).controller == 1
