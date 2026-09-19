@@ -45,3 +45,12 @@ def test_simulate_draft_small():
     assert any(stats.gih(n) > 0 for n in stats.card_games)
     assert sum(g for _, g in stats.deck_records) == 32
     assert stats.play_records[1] == 16 and 0 <= stats.play_records[0] <= 16
+
+
+def test_land_counts_small():
+    from mulligan.limited.lands import land_counts
+    data = load_set("fra")
+    ratings = rating_points(data, sim_ratings("fra"))
+    res = land_counts("fra", ratings, decks=2, opponents=3, games_per_opponent=2, workers=1)
+    assert res.decks == 2 and set(res.win) == {16, 17, 18}
+    assert res.diff[17] == (0.0, 0.0, 0.0)
