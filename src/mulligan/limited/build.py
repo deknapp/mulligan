@@ -103,7 +103,8 @@ def build_deck(pool: list[str], data: SetData, ratings: dict[str, float] | None 
     scored = sorted(((best_for(set(p)), p) for p in pairs), key=lambda x: x[0][0],
                     reverse=True)
     (score, chosen), pair = scored[0]
-    deck_lands = _manabase(chosen, set(pair), nonbasic_lands, lands)
+    # Short of playables (a thin draft pool): make up the 40 with lands.
+    deck_lands = _manabase(chosen, set(pair), nonbasic_lands, 40 - len(chosen))
     notes = [f"{p}: {s:.1f}" for (s, _), p in scored[:3]]
     return Deck(colors=pair, spells=chosen, lands=deck_lands, score=round(score, 2),
                 notes=notes)

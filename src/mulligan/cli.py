@@ -425,6 +425,54 @@ def rate_cmd(
         console.print(f"[dim]wrote {out}[/dim]")
 
 
+@app.command("draft")
+def draft_cmd(
+    set_code: str = typer.Option(..., "--set"),
+    pods: int = typer.Option(25, help="Pods of eight bots to draft."),
+    games: int = typer.Option(20000, help="Games to simulate between drafted decks."),
+    seed: int = typer.Option(0),
+    out: Path = typer.Option(None, help="Save the results as JSON."),
+    top: int = typer.Option(15, help="Cards to print from each end."),
+    workers: int = typer.Option(0),
+):
+    """Simulated drafts: bots draft pods, build, and play. Prints records by
+    color pair and each card's games-in-hand win rate and average pick."""
+    import json
+
+    from .cards.sets import load_set
+    from .limited.draft import simulate_draft
+    start = time.time()
+    stats = simulate_draft(set_code, pods=pods, games=games, seed=seed,
+                           workers=workers or None)
+    data = load_set(set_code)
+    console.print(f"[bold]{data.name}: {pods} simulated pods, {games} games[/bold] "
+                  f"({time.time() - start:.0f}s)")
+    for pair, (wins, n) in sorted(stats.records.items(), key=lambda kv: -kv[1][0] / kv[1][1]):
+        decks = sum(1 for c, _ in stats.decks if c == pair)
+        console.print(f"  {pair}  {wins / n:6.1%}  {n:6d} games  {decks:3d} decks")
+    rows = sorted(((stats.gih(n), stats.card_games[n], stats.ata(n), n)
+                   for n in stats.card_games if stats.card_games[n] >= 100
+                   and not data.playable[n].is_land), reverse=True)
+    shown = rows[:top] + [None] + rows[-top:] if len(rows) > 2 * top else rows
+    console.print("  GIH WR   games   ATA  card")
+    for row in shown:
+        if row is None:
+            console.print("  ...")
+            continue
+        rate, n, ata, name = row
+        console.print(f"  {rate:6.1%}  {n:6d}  {ata:4.1f}  {name}", markup=False)
+    if out:
+        out.write_text(json.dumps({
+            "set": set_code, "pods": pods, "games": games, "seed": seed,
+            "records": stats.records,
+            "decks": stats.decks,
+            "cards": {n: [stats.card_wins[n], stats.card_games[n],
+                          round(stats.ata(n), 2), len(stats.taken_at.get(n, []))]
+                      for n in set(stats.card_games) | set(stats.taken_at)},
+        }))
+        console.print(f"[dim]wrote {out}[/dim]")
+
+
 @app.command("validate")
 def validate_cmd(
     set_code: str = typer.Option(..., "--set"),
