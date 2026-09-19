@@ -160,13 +160,14 @@ class HeuristicAgent(Agent):
     """Scores every legal action with general Limited heuristics."""
 
     def __init__(self, name: str = "heuristic", card_values: dict[str, float] | None = None,
-                 greedy_attacks: bool = True):
+                 greedy_attacks: bool = True, hold_removal: bool = False):
         """``card_values`` is an optional per-card adjustment learned for a set
         (see ``learn_values``): points added to the general value of a card,
         which steers casting order, removal targets, trades and blocks."""
         self.name = name
         self.card_values = card_values or {}
         self.greedy_attacks = greedy_attacks
+        self.hold_removal = hold_removal
 
     def _pv(self, perm: PermanentView) -> float:
         if isinstance(perm, Combatant):
@@ -286,9 +287,31 @@ class HeuristicAgent(Agent):
             return -1.0
         if self._is_trick(effects) and not self._trick_now(view, effects, targets):
             return -1.0
+        if self.hold_removal and self._wasteful_removal(view, effects, targets):
+            return -1.0
         if action.face == "adventure":
             value += 2.0  # the creature half stays available: casting the adventure is free value
         return 10.0 + value + 0.5 * mv + bonus
+
+    HOLD_BELOW = 6.0  # a 2/2 is 5.0, a 3/3 7.5, a 2/1 flier 5.5
+
+    def _wasteful_removal(self, view: PlayerView, effects, targets) -> bool:
+        """Unconditional removal pointed at a small creature, while nothing
+        forces it: save it for a threat, as a Limited player would."""
+        if view.life(view.seat) <= 10:
+            return False
+        if view.hand_size(view.opponent) <= 1:
+            return False
+        for effect in effects:
+            if not isinstance(effect, (fx.Destroy, fx.Exile)):
+                continue
+            for index in _touched(getattr(effect, "to", ""), targets):
+                t = targets[index]
+                perm = view.permanent(t.id) if t.kind == "object" else None
+                if perm is not None and perm.is_creature and perm.controller != view.seat \
+                        and self._pv(perm) < self.HOLD_BELOW:
+                    return True
+        return False
 
     def _extra_cost(self, view: PlayerView, spec: CardSpec, action: act.CastSpell) -> float:
         """What an additional cost gives up: a sacrifice costs the cheapest
