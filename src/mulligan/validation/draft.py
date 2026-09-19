@@ -24,7 +24,7 @@ from itertools import combinations
 from pathlib import Path
 
 from ..paths import cache_dir
-from .seventeen import HEADERS, S3_URL, fetch_ratings, game_data_ratings, spearman
+from .seventeen import HEADERS, S3_URL, game_data_ratings, spearman
 
 PAIRS = {"".join(p) for p in combinations("WUBRG", 2)}
 
@@ -97,10 +97,21 @@ def validate_draft(run_path: Path, min_games: int = 200,
         spearman([s for _, s, _ in pairs], [r for _, _, r in pairs]), pairs)
 
 
-def _ata(set_code: str) -> dict[str, float]:
-    """17Lands' average pick per card, from its card-ratings endpoint."""
-    fetch_ratings(set_code)   # populates the cache
-    path = cache_dir("17lands") / f"{set_code.upper()}_PremierDraft.json"
-    rows = json.loads(path.read_text())
+def _ata(set_code: str, start: str = "2020-01-01") -> dict[str, float]:
+    """17Lands' average pick per card over the set's whole history (the
+    endpoint's default window is recent weeks only, which leaves most cards
+    with too few picks)."""
+    import datetime
+    path = cache_dir("17lands") / f"{set_code.upper()}_PremierDraft_alltime.json"
+    if path.exists():
+        rows = json.loads(path.read_text())
+    else:
+        url = ("https://www.17lands.com/card_ratings/data?expansion={}&format=PremierDraft"
+               "&start_date={}&end_date={}").format(set_code.upper(), start,
+                                                     datetime.date.today().isoformat())
+        with urllib.request.urlopen(urllib.request.Request(url, headers=HEADERS),
+                                    timeout=60) as response:
+            rows = json.load(response)
+        path.write_text(json.dumps(rows))
     return {r["name"].split(" // ")[0]: r["avg_pick"] for r in rows
             if r.get("avg_pick") and (r.get("pick_count") or 0) >= 50}
