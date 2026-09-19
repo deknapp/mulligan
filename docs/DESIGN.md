@@ -1,9 +1,38 @@
 # Design
 
-mulligan is a Magic: The Gathering simulator for Limited. It reads in a set,
-builds sealed decks from it, and has agents play those decks against each other
-to answer questions like *which of these two decks is better?* and *how good is
-this card?* It is meant to run on an ordinary laptop, on the CPU, in minutes.
+mulligan helps MTG Arena Limited players make deck decisions. It has two
+engines that answer the same questions from different evidence:
+
+1. **The deck model** (`deckmodel.py`): a logistic regression fitted to
+   17Lands' public game logs — every card's value plus a few deck-shape
+   effects, controlling for pilot skill and play/draw, with bootstrap
+   uncertainty. Needs real data; cannot see synergies or specific matchups.
+2. **The simulator** (everything below): a rules engine where agents play
+   decks against each other. Needs no data; sees matchups; its bots are
+   weaker than people.
+
+What each is good for was measured, not assumed (`validation/`, HOB):
+
+| question | deck model | simulator |
+|---|---|---|
+| which card is better (card ratings vs real GIH WR) | n/a (it is fitted to them) | Spearman +0.62 |
+| which build of one deck is better (3-card swaps) | the reference | agrees on direction 77% (66/86), Spearman +0.34 |
+| which of two different decks is better (real decks' records) | Spearman +0.20 | ≈ 0 |
+
+Attempts that did *not* make the simulator rank different decks better: a turn
+mana planner, rating-derived card values, and card values from the deck model
+itself (all Spearman ≈ 0 on 300 real decks). Search play beats the heuristic
+63% but is ~100× slower; a linear model distilled from it played worse. The
+likely bottleneck is tactical play, not card valuation.
+
+Arena integration (`arena_log.py`): event decks and card pools are read from
+`Player.log` by Arena id; Export text and the clipboard are also accepted.
+`build` searches two- and three-color builds of a pool with the deck model;
+`versus` compares two decks, and when they are builds of one deck (30+ shared
+cards) simulates both against a shipped field of real decks — the validated
+mode.
+
+The rest of this document describes the simulator.
 
 ## The three layers
 
