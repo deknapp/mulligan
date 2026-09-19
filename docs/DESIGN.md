@@ -70,8 +70,8 @@ Each card is either exact, approximate (with a list of what it leaves out), or
 unsupported (with a reason). `mulligan sets` reports the coverage. The compiled
 file is committed, so nobody else needs an API key.
 
-HOB (The Hobbit) was compiled in a Claude Code session: 176/193 cards playable,
-100% of commons and uncommons, 66 with noted approximations, 17 unsupported.
+HOB (The Hobbit) was compiled in a Claude Code session: 178/193 cards playable,
+100% of commons and uncommons, 56 with noted approximations, 15 unsupported.
 
 ## Engine vocabulary
 
@@ -82,11 +82,13 @@ HOB (The Hobbit) was compiled in a Claude Code session: 176/193 cards playable,
 - **Effects** (`engine/effects.py`): damage, destroy, exile, bounce, pump,
   counters, tokens (incl. Treasure, Food, equipment tokens), amass, draw, loot,
   recruit, mill, scry, search, look-at-top, impulse draw, sacrifice, counter,
-  fight/bite, attach, tap/untap, conditionals, delayed triggers.
+  fight/bite, attach, tap/untap, flicker, token copies of itself, reveal-until,
+  optional payments, conditionals, delayed triggers.
 - **Triggers**: etb, dies, other_etb, landfall, attacks, you_attack, combat
   damage to a player, upkeep, beginning of combat, first main, end step, cast
   (creature / noncreature / any, yours or an opponent's), draw, second draw,
-  counters placed.
+  counters placed, a creature card leaving your graveyard. Triggers can be
+  modal ("choose one") and can work from the graveyard.
 - **Statics**: stat changes, keywords, restriction flags (`cant_block`,
   `unblockable`, `doesnt_untap`, `loses_abilities`, `cant_be_blocked_by:<f>`),
   ward; on self, the equipped/enchanted creature, or everything matching a
@@ -109,9 +111,11 @@ the colors the rest of the hand needs.
 
 ## Not modelled
 
-Vehicles, planeswalkers, X costs, copying, "choose a creature type", damage
-prevention, replacement effects, extra combats, control-changing, casting from
-graveyards other than flashback. Cards that need these are unsupported or list
+Vehicles, planeswalkers, X costs, copying other cards (a card copying itself is
+supported), "choose a creature type", damage prevention, replacement effects,
+extra combats, control-changing, casting spells from a graveyard other than by
+flashback (activated and triggered abilities that work from the graveyard are
+supported). Cards that need these are unsupported or list
 the omission as an approximation.
 
 ## Information
