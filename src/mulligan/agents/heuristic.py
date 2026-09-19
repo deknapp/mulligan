@@ -343,8 +343,14 @@ class HeuristicAgent(Agent):
         return value if isinstance(value, int) else 1
 
     def _is_trick(self, effects) -> bool:
+        """A combat trick: a temporary stat boost on a target. Granting only a
+        keyword (Tam's Resistance's vigilance next to a lasting counter) isn't
+        one, and holding such a card for combat meant never casting it."""
+        def boosts(value) -> bool:
+            return not isinstance(value, int) or value > 0
         return any(isinstance(e, fx.Pump) and e.to.startswith("target")
-                   and (not isinstance(e.power, int) or e.power >= 0) for e in effects)
+                   and (not isinstance(e.power, int) or e.power >= 0)
+                   and (boosts(e.power) or boosts(e.toughness)) for e in effects)
 
     def _trick_now(self, view: PlayerView, effects, targets) -> bool:
         """A pump spell is worth casting only when it wins a combat right now."""

@@ -410,3 +410,15 @@ def test_bot_points_multiply_by_zero_at_the_opponent():
              if game.state.obj(o.card_id).name == "Multiply by Zero"]
     best = max(casts, key=lambda a: HeuristicAgent().score(view, a))
     assert game.object_by_id(best.targets[0].id).controller == 1
+
+
+def test_bot_casts_tams_resistance_outside_combat():
+    """A keyword-only pump next to a lasting counter isn't a combat trick."""
+    from mulligan.agents.heuristic import HeuristicAgent
+    from mulligan.engine.view import PlayerView
+    game = scene(Side(hand=["Tam's Resistance"], battlefield=["Konstrari Improviser"],
+                      lands={"G": 3}))
+    view = PlayerView(game, 0)
+    casts = [o for o in options(game, act.CastSpell)
+             if game.state.obj(o.card_id).name == "Tam's Resistance"]
+    assert max(HeuristicAgent().score(view, a) for a in casts) > 0
