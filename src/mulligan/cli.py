@@ -182,7 +182,11 @@ def versus_cmd(
                     side = "A" if delta > 0 else "B"
                     good = (effect > 0) == (side == "A")
                     verb = "helps" if good else "hurts"
-                    console.print(f"    {abs(delta)}× {name} in {side}: {verb} {side} by "
+                    what = (name[len("deck shape: "):] if name.startswith("deck shape: ")
+                            else f"{abs(delta)}× {name}")
+                    from .deckmodel import SHAPE_TEXT
+                    what = SHAPE_TEXT.get(what, what)
+                    console.print(f"    {what} in {side}: {verb} {side} by "
                                   f"{abs(effect):.1f} pts", highlight=False)
     start = time.time()
     result = compare(Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent, tuple(b.cards)),
@@ -242,10 +246,14 @@ def build_cmd(
     cuts = [(n, d, e) for n, d, e in diffs if d < 0]
     if adds or cuts:
         console.print("  changes (from real-game card values):")
-        for name, d, e in adds[:8]:
-            console.print(f"    + {d}× {name}  ({e:+.1f} pts)", highlight=False)
-        for name, d, e in cuts[:8]:
-            console.print(f"    − {-d}× {name}  ({e:+.1f} pts)", highlight=False)
+        from .deckmodel import describe_change
+        shape = [(n, d, e) for n, d, e in diffs if n.startswith("deck shape: ")]
+        for name, d, e in shape:
+            console.print(f"    {describe_change(name, d)}  ({e:+.1f} pts)", highlight=False)
+        for name, d, e in [x for x in adds if x not in shape][:8]:
+            console.print(f"    + {describe_change(name, d)}  ({e:+.1f} pts)", highlight=False)
+        for name, d, e in [x for x in cuts if x not in shape][:8]:
+            console.print(f"    − {describe_change(name, d)}  ({e:+.1f} pts)", highlight=False)
     if out:
         out.write_text("Deck\n" + "".join(f"{n} {name}\n" for name, n in advice.best.items()))
         console.print(f"[dim]wrote {out}[/dim]")

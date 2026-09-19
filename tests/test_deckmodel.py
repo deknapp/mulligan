@@ -57,3 +57,14 @@ def test_best_build_is_always_a_full_deck():
         spells = sum(n for name, n in advice.best.items()
                      if "Land" not in data.entries.get(name, {}).get("types", ["Land"]))
         assert spells == 23
+
+
+def test_hybrid_pips_do_not_add_a_color():
+    from mulligan.deckmodel import _card_info, structure
+    info = _card_info("hob")
+    # Duskwatch Hunter is {2}{B/G}: in a blue-green deck it needs no third color.
+    ug = {"Duskwatch Hunter": 2, "Mirkwood Nurturer": 2, "Ordinary Bear": 19, "Forest": 9,
+          "Island": 8}
+    assert "shape:colors>=3" not in structure(ug, info)
+    ugb = {**ug, "Bilbo's Deadly Slice": 1}
+    assert "shape:colors>=3" in structure(ugb, info)

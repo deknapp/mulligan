@@ -54,7 +54,7 @@ def real_decks(set_code: str = "hob", fmt: str = "PremierDraft", min_games: int 
         d[0] += r.won
         d[1] += 1
         d[2] += r.skill
-        d[3] = {names[j]: int(x) for j, x in r.cards}
+        d[3] = {names[j]: int(x) for j, x in r.cards if not names[j].startswith("shape:")}
     return [RealDeck(d[3], d[0], d[1], d[2] / d[1]) for d in decks.values()
             if d[1] >= min_games and 38 <= sum(d[3].values()) <= 42]
 

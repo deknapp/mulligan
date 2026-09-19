@@ -30,6 +30,7 @@ import math
 import random
 import urllib.request
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 
 from .validation.seventeen import HEADERS, S3_URL
@@ -54,6 +55,73 @@ def _download(set_code: str, fmt: str, raw_dir: Path = RAW_DIR) -> Path:
     return path
 
 
+@lru_cache(maxsize=8)
+def _card_info(set_code: str) -> dict[str, tuple[bool, bool, int, frozenset]]:
+    """name -> (is land, is creature, mana value, pips), from the compiled set
+    (every card has these, including ones the engine cannot play). ``pips`` is
+    a frozenset of option-sets: a hybrid pip is one set with two colors."""
+    from .cards.sets import load_set
+    from .engine.types import ManaCost
+    info = {}
+    for name, entry in load_set(set_code).entries.items():
+        types = entry.get("types", [])
+        cost = ManaCost.parse(entry.get("cost", "") or "")
+        pips = frozenset(frozenset(symbol.split("/")) for symbol, _ in cost.pips
+                         if symbol != "C")
+        info[name] = ("Land" in types, "Creature" in types, cost.mana_value, pips)
+    for basic in ("Plains", "Island", "Swamp", "Mountain", "Forest"):
+        info.setdefault(basic, (True, False, 0, frozenset()))
+    return info
+
+
+STRUCTURE = ["lands<=15", "lands=16", "lands=18", "lands>=19", "colors=1", "colors>=3",
+             "creatures<=11", "creatures>=17", "two_drops<=2", "five_plus>=6"]
+"""Deck-shape features, each an indicator measured against a typical deck
+(17 lands, two colors, 12-16 creatures): the questions players actually ask
+about a build — land count, splashing, creature count, curve."""
+
+
+SHAPE_TEXT = {"lands<=15": "15 or fewer lands", "lands=16": "16 lands", "lands=18": "18 lands",
+              "lands>=19": "19+ lands", "colors=1": "one color", "colors>=3": "3+ colors",
+              "creatures<=11": "11 or fewer creatures", "creatures>=17": "17+ creatures",
+              "two_drops<=2": "2 or fewer cards costing 1-2",
+              "five_plus>=6": "6+ cards costing 5+"}
+
+
+def describe_change(name: str, delta: int) -> str:
+    """'2× Forest' for a card; 'now 16 lands' / 'no longer 3+ colors' for a shape."""
+    if name.startswith("deck shape: "):
+        text = SHAPE_TEXT.get(name[len("deck shape: "):], name)
+        return ("now " if delta > 0 else "no longer ") + text
+    return f"{abs(delta)}× {name}"
+
+
+def structure(deck: dict[str, int], info: dict) -> dict[str, float]:
+    lands = creatures = two = five = 0
+    single: set = set()
+    hybrid: list = []
+    for name, n in deck.items():
+        is_land, is_creature, mv, pips = info.get(name, (False, False, 0, frozenset()))
+        if is_land:
+            lands += n
+            continue
+        for options in pips:
+            (single.update(options) if len(options) == 1 else hybrid.append(options))
+        creatures += n if is_creature else 0
+        two += n if mv <= 2 else 0
+        five += n if mv >= 5 else 0
+    # A hybrid pip needs a new color only if the deck has neither of its colors.
+    colors = set(single)
+    for options in hybrid:
+        if not options & colors:
+            colors.add(min(options))
+    out = {"lands<=15": lands <= 15, "lands=16": lands == 16, "lands=18": lands == 18,
+           "lands>=19": lands >= 19, "colors=1": len(colors) == 1, "colors>=3": len(colors) >= 3,
+           "creatures<=11": creatures <= 11, "creatures>=17": creatures >= 17,
+           "two_drops<=2": two <= 2, "five_plus>=6": five >= 6}
+    return {f"shape:{k}": 1.0 for k, v in out.items() if v}
+
+
 @dataclass
 class Row:
     group: str               # draft_id: games from one deck stay on one side of the split
@@ -71,13 +139,19 @@ def load_games(set_code: str, fmt: str = "PremierDraft") -> tuple[list[str], lis
     deck_cols = [(i, name[5:].split(" // ")[0]) for i, name in enumerate(header)
                  if name.startswith("deck_")]
     names = [name for _, name in deck_cols]
+    info = _card_info(set_code)
+    shape_index = {f"shape:{k}": len(names) + i for i, k in enumerate(STRUCTURE)}
+    names = names + list(shape_index)
     rows = []
     for raw in reader:
         cards = []
-        for j, (i, _) in enumerate(deck_cols):
+        deck: dict[str, int] = {}
+        for j, (i, name) in enumerate(deck_cols):
             value = raw[i]
             if value not in ("0", "", "0.0"):
                 cards.append((j, float(value)))
+                deck[name] = int(float(value))
+        cards.extend((shape_index[k], v) for k, v in structure(deck, info).items())
         bucket = raw[col["user_game_win_rate_bucket"]]
         skill = (float(bucket) - 0.55) * 10 if bucket not in ("", "None") else 0.0
         rows.append(Row(raw[col["draft_id"]], cards,
@@ -98,9 +172,17 @@ class DeckModel:
     # Card weights refitted on resampled drafts: the spread is the uncertainty.
     bootstrap: list[dict[str, float]] = field(default_factory=list)
 
+    def features(self, deck: dict[str, int]) -> dict[str, float]:
+        """Card counts plus the deck-shape indicators (land count, colors,
+        creatures, curve)."""
+        feats = {name: float(n) for name, n in deck.items()}
+        if any(k.startswith("shape:") for k in self.weights):
+            feats.update(structure(deck, _card_info(self.set_code)))
+        return feats
+
     def score(self, deck: dict[str, int]) -> float:
-        """The deck's card contribution, in log-odds against an average deck."""
-        return sum(self.weights.get(name, 0.0) * n for name, n in deck.items())
+        """The deck's contribution, in log-odds against an average deck."""
+        return sum(self.weights.get(name, 0.0) * x for name, x in self.features(deck).items())
 
     def unknown(self, deck: dict[str, int]) -> list[str]:
         return sorted(n for n in deck if n not in self.weights)
@@ -117,10 +199,11 @@ class DeckModel:
         """A 90% interval for ``head_to_head`` from the bootstrap refits."""
         if len(self.bootstrap) < 3:
             return 0.0, 1.0
+        fa, fb = self.features(a), self.features(b)
         diffs = []
         for w in self.bootstrap:
-            diffs.append(sum(w.get(n, 0.0) * c for n, c in a.items())
-                         - sum(w.get(n, 0.0) * c for n, c in b.items()))
+            diffs.append(sum(w.get(n, 0.0) * c for n, c in fa.items())
+                         - sum(w.get(n, 0.0) * c for n, c in fb.items()))
         mean = sum(diffs) / len(diffs)
         sd = math.sqrt(sum((d - mean) ** 2 for d in diffs) / (len(diffs) - 1))
         center = self.score(a) - self.score(b)
@@ -131,11 +214,12 @@ class DeckModel:
         in B, effect on A's win rate against B in percentage points), biggest
         effect first."""
         rows = []
-        for name in set(a) | set(b):
-            delta = a.get(name, 0) - b.get(name, 0)
+        fa, fb = self.features(a), self.features(b)
+        for name in set(fa) | set(fb):
+            delta = fa.get(name, 0) - fb.get(name, 0)
             if delta:
                 effect = 100 * (_sigmoid(delta * self.weights.get(name, 0.0)) - 0.5)
-                rows.append((name, delta, effect))
+                rows.append((name.replace("shape:", "deck shape: "), int(delta), effect))
         return sorted(rows, key=lambda r: -abs(r[2]))
 
     def save(self, path: Path | None = None) -> Path:
