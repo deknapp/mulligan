@@ -72,8 +72,8 @@ your cards; the output says so.
 
 A rules engine that plays real games: shuffles, mulligans, the stack,
 triggers, combat, state-based actions. The rules are hard-coded, cards are
-data, and agents only ever choose among legal actions. HOB: 178 of 193 cards
-playable (all commons and uncommons), 56 with a listed simplification.
+data, and agents only ever choose among legal actions. HOB: 180 of 193 cards
+playable (all commons and uncommons), 57 with a listed simplification.
 
 Your decks' fidelity is reported with every simulated result, and it matters:
 the 4–3 deck above lost simulated games partly because its cards were
@@ -89,10 +89,10 @@ release-day case it exists for. From the 285 cards spoiled by 2026-09-18:
 
 ```
 $ mulligan sets
-Reality Fracture (FRA): 263/283 cards playable (93%), 110 with noted approximations
+Reality Fracture (FRA): 269/283 cards playable (95%), 104 with noted approximations
   common     85/85  (100%)
-  uncommon  103/108 (95%)
-  rare       52/64  (81%)
+  uncommon  104/108 (96%)
+  rare       57/64  (89%)
   mythic     23/26  (88%)
 $ mulligan update-set fra        # pull newly spoiled cards (added as 'not compiled yet')
 $ mulligan sealed --set fra      # a sealed pool from the cards spoiled so far
@@ -112,7 +112,9 @@ shown for information only.
 The engine gained what the set is built on: planeswalkers (loyalty
 abilities, attacking them, abilities granted to them), Empower Jace, prepare
 (a creature that carries a castable spell), surveil, prowess and stun
-counters. Two cautions for FRA ratings: pools are built only from spoiled
+counters — plus mechanics that recur across sets and are likely among FRA's
+unrevealed cards: X costs, convoke, exhaust, vehicles (crew), spell copying,
+spell taxes and discounts, finality counters, "choose a creature type". Two cautions for FRA ratings: pools are built only from spoiled
 cards, and on HOB the same method tracked real results at Spearman +0.62, not
 1.0. A compiled card's simplification is only ever allowed to make it weaker
 than printed, never stronger (a stronger one inflates its rating: Proft,
