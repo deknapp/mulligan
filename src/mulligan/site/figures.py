@@ -236,3 +236,50 @@ def card_intervals(run: DraftRun, names: list[str], label: str) -> str:
     rows.sort(key=lambda r: -r[1])
     return charts.interval_bars(rows, label, reference=run.mean_gih(),
                                 fmt=lambda v: f"{v:.0%}", left=190)
+
+
+def sim_vs_real_cards(run_path: Path, label: str) -> tuple[str, float]:
+    """Scatter of simulated against real games-in-hand win rate for a set with
+    17Lands data, colored by card color. Returns the SVG and Spearman."""
+    from ..validation.seventeen import game_data_ratings, spearman
+    run = DraftRun(run_path)
+    real = game_data_ratings(run.raw["set"], "PremierDraft")
+    points = [(n, real[n][0], r, charts.color_key(_colors(run.data, n)))
+              for n, r, g, _ in run.rated(200) if n in real and real[n][1] >= 500]
+    rho = spearman([p[1] for p in points], [p[2] for p in points])
+    svg = charts.scatter(points, label, "Real win rate when drawn (17Lands)",
+                         "Simulated win rate when drawn", x_fmt=lambda v: f"{v:.0%}")
+    return svg, rho
+
+
+def sim_vs_real_pairs(run_paths: dict[str, Path]) -> str:
+    """Per color pair: simulated win rate in each run against the real one."""
+    from ..validation.draft import real_pair_records
+    runs = {k: DraftRun(p) for k, p in run_paths.items()}
+    set_code = next(iter(runs.values())).raw["set"]
+    real = real_pair_records(set_code)
+    order = sorted(real, key=lambda p: -real[p][0] / real[p][1])
+    rows = []
+    for pair in order:
+        rows.append((f"{pair} real", real[pair][0] / real[pair][1],
+                     *wilson(*real[pair]), pair))
+        for key, run in runs.items():
+            w, g = run.records.get(pair, (0, 0))
+            if g:
+                rows.append((f"{pair} {key}", w / g, *wilson(w, int(g)), pair))
+    return charts.interval_bars(rows, "Color-pair win rates, simulated and real", left=150)
+
+
+def compare_pairs(run_paths: dict[str, Path], label: str) -> str:
+    """Color-pair win rates from several runs of one set, side by side,
+    ordered by the last run."""
+    runs = {k: DraftRun(p) for k, p in run_paths.items()}
+    last = list(runs.values())[-1]
+    order = sorted(last.records, key=lambda p: -last.records[p][0] / last.records[p][1])
+    rows = []
+    for pair in order:
+        for key, run in runs.items():
+            w, g = run.records.get(pair, (0, 0))
+            if g:
+                rows.append((f"{pair} {key}", w / g, *wilson(w, int(g)), pair))
+    return charts.interval_bars(rows, label, left=150)

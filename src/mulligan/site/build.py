@@ -36,6 +36,7 @@ class Post:
     title: str
     summary: str
     body: str
+    order: int = 0   # breaks ties between posts on the same day: higher is newer
 
 
 def load_posts(blog: Path = BLOG) -> list[Post]:
@@ -47,11 +48,11 @@ def load_posts(blog: Path = BLOG) -> list[Post]:
             head, text = text[3:].split("\n---", 1)
             for line in head.strip().splitlines():
                 key, _, value = line.partition(":")
-                meta[key.strip()] = value.strip()
+                meta[key.strip()] = value.strip().strip('"')
         date = path.stem[:10]
         posts.append(Post(path.stem, date, meta.get("title", path.stem),
-                          meta.get("summary", ""), text.strip()))
-    return sorted(posts, key=lambda p: p.slug, reverse=True)
+                          meta.get("summary", ""), text.strip(), int(meta.get("order", 0))))
+    return sorted(posts, key=lambda p: (p.date, p.order, p.slug), reverse=True)
 
 
 def _render(post: Post, figures: Path) -> str:

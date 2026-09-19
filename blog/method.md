@@ -31,19 +31,24 @@ The simulator was checked against a set that humans have played: **The Hobbit
 
 | Question | How the simulator did |
 |---|---|
-| Does its card ranking match real players' results? | Yes, moderately: Spearman correlation **+0.62** with real win rate when drawn (a rarity-only guess gets +0.31) |
+| Does its card ranking match real players' results? | Yes, moderately: Spearman correlation **+0.64** with real win rate when drawn (a rarity-only guess gets +0.29) |
+| In simulated drafts, do card win rates match real drafts? | Moderately: **+0.50** over about 170 cards |
+| Do color pairs finish in the real order? | Roughly: **+0.52** over the ten pairs |
+| Do bots take cards in the real pick order? | Weakly: **+0.31** over 52 cards |
 | Is being on the play worth about the same? | Yes: **55.5%** on the play in simulation; real HOB games work out to about 55% |
 | Given two builds of one deck, does it pick the better one? | Usually: it agrees with a model fitted to real games on **77%** of three-card swaps |
-| Can it rank *different* decks by how they really did? | Barely: Spearman **+0.10** over 1,000 real decks (a model fitted to real games gets +0.20, and pilot skill alone +0.34) |
+| Can it rank *different* decks by how they really did? | Barely: Spearman **+0.11** over 1,000 real decks (a model fitted to real games gets +0.20, and pilot skill alone +0.34) |
 
 It also has known biases, measured on HOB, that you should apply to every post:
 
-- **It overrates big, high-toughness creatures** and decks full of them.
-- **It underrates blue**, especially small value creatures and instants. Bots
-  get less out of card advantage, tricks and counterspells than people do.
-
-These biases survived two rounds of smarter bot tactics, so they are more
-likely about what bots can't see than about any one play they make.
+- **It overrates high-toughness creatures** and decks full of them. Bots don't
+  punish a wall with tricks, evasion or going wide the way people do.
+- **It still underrates blue,** though by about half as much since a bot fix on
+  September 18 (see [the correction](posts/2026-09-18-bots-cast-card-draw-in-their-own-upkeep.html)).
+  Real blue pairs won 52–56% in HOB; simulated ones 45–49%.
+- **Cards with a few hundred games are noisy.** A card win rate moves several
+  points between runs. Posts only call out a card when its 95% interval clears
+  the set's average.
 
 ## What the numbers are for
 

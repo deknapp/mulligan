@@ -51,7 +51,19 @@
 <tbody>
 <tr>
 <td>Does its card ranking match real players' results?</td>
-<td>Yes, moderately: Spearman correlation <strong>+0.62</strong> with real win rate when drawn (a rarity-only guess gets +0.31)</td>
+<td>Yes, moderately: Spearman correlation <strong>+0.64</strong> with real win rate when drawn (a rarity-only guess gets +0.29)</td>
+</tr>
+<tr>
+<td>In simulated drafts, do card win rates match real drafts?</td>
+<td>Moderately: <strong>+0.50</strong> over about 170 cards</td>
+</tr>
+<tr>
+<td>Do color pairs finish in the real order?</td>
+<td>Roughly: <strong>+0.52</strong> over the ten pairs</td>
+</tr>
+<tr>
+<td>Do bots take cards in the real pick order?</td>
+<td>Weakly: <strong>+0.31</strong> over 52 cards</td>
 </tr>
 <tr>
 <td>Is being on the play worth about the same?</td>
@@ -63,18 +75,21 @@
 </tr>
 <tr>
 <td>Can it rank <em>different</em> decks by how they really did?</td>
-<td>Barely: Spearman <strong>+0.10</strong> over 1,000 real decks (a model fitted to real games gets +0.20, and pilot skill alone +0.34)</td>
+<td>Barely: Spearman <strong>+0.11</strong> over 1,000 real decks (a model fitted to real games gets +0.20, and pilot skill alone +0.34)</td>
 </tr>
 </tbody>
 </table>
 <p>It also has known biases, measured on HOB, that you should apply to every post:</p>
 <ul>
-<li><strong>It overrates big, high-toughness creatures</strong> and decks full of them.</li>
-<li><strong>It underrates blue</strong>, especially small value creatures and instants. Bots
-  get less out of card advantage, tricks and counterspells than people do.</li>
+<li><strong>It overrates high-toughness creatures</strong> and decks full of them. Bots don't
+  punish a wall with tricks, evasion or going wide the way people do.</li>
+<li><strong>It still underrates blue,</strong> though by about half as much since a bot fix on
+  September 18 (see <a href="posts/2026-09-18-bots-cast-card-draw-in-their-own-upkeep.html">the correction</a>).
+  Real blue pairs won 52–56% in HOB; simulated ones 45–49%.</li>
+<li><strong>Cards with a few hundred games are noisy.</strong> A card win rate moves several
+  points between runs. Posts only call out a card when its 95% interval clears
+  the set's average.</li>
 </ul>
-<p>These biases survived two rounds of smarter bot tactics, so they are more
-likely about what bots can't see than about any one play they make.</p>
 <h2>What the numbers are for</h2>
 <p>Card win rates and archetype records here are <strong>predictions for a format
 nobody has played yet</strong>. They're a hypothesis for your first drafts, not a
