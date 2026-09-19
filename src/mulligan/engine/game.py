@@ -2119,6 +2119,7 @@ class Game:
                 continue
             remaining = power
             deathtouch = self.has_keyword(attacker, Keyword.DEATHTOUCH)
+            blockers = self._damage_order(blockers, power, deathtouch)
             for blocker in blockers:
                 if remaining <= 0:
                     break
@@ -2144,6 +2145,25 @@ class Game:
 
         for target, amount, source_id in assignments:
             self.deal_damage(target, amount, source_id=source_id, combat=True)
+
+    def _damage_order(self, blockers: list[GameObject], power: int,
+                      deathtouch: bool) -> list[GameObject]:
+        """The attacking player divides combat damage among its blockers (an
+        automated choice): the order that kills the most valuable of them."""
+        if len(blockers) <= 1 or len(blockers) > 4:
+            return blockers
+
+        def killed(order) -> float:
+            left, total = power, 0.0
+            for b in order:
+                need = 1 if deathtouch else max(1, self.toughness_of(b) - b.damage)
+                if left < need:
+                    break
+                left -= need
+                total += self.card_value(b.spec)
+            return total
+
+        return list(max(itertools.permutations(blockers), key=killed))
 
     # ------------------------------------------------------ state-based actions
 
