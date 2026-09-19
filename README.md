@@ -27,7 +27,15 @@ Against the field (24 sealed decks of HOB, 20 games each)
 $ mulligan decks                      # event decks found in your MTG Arena log
   log:2  PremierDraft_HOB_20260811  40 cards  2026-09-06 09:48
 $ mulligan versus log:2 clipboard     # vs a deck copied with Arena's Export button
+$ mulligan build log:2                # the best build of the pool you drafted
 ```
+
+`build` reads the whole pool you drafted or opened from the log and searches
+two- and three-color builds using real-game card values. For the 4–3 deck
+below it suggests dropping the black splash for a two-color blue-green build
+(model: 55% head to head against the deck played, 90% interval 51–58%). The
+card values rate each card against an average opponent and cannot see
+synergies between your cards, and the output says so.
 
 Decks come from Arena's `Player.log` (turn on Options → Account → "Detailed
 Logs (Plugin Support)") or from Export text (a file, or `clipboard`). The log
@@ -148,6 +156,7 @@ Python 3.11+. Dependencies: `typer`, `rich`. That's all.
 | command | what it does |
 |---|---|
 | `mulligan decks` | your event decks from the MTG Arena log |
+| `mulligan build log:N` | the best build of your drafted/opened pool, by real-game card values, vs what you played |
 | `mulligan versus A B` | which of two Arena decks would win (`log:N`, `clipboard`, or a file): from real 17Lands games and by simulation |
 | `mulligan fit --set hob` | fit the deck model to 17Lands' public games for a set |
 | `mulligan sets` | compiled sets and how much of each the engine can play |

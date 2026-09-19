@@ -79,3 +79,15 @@ def test_unplayable_cards_are_replaced_and_reported(tmp_path):
     assert ref.replaced == 1 and "Belladonna Took" in ref.warnings[0]
     exact, approx, replaced = ref.fidelity()
     assert (exact, replaced) == (22, 1)
+
+
+def test_the_pool_is_read_from_its_own_course_record():
+    """A course lists its CardPool after its deck; the previous course's pool
+    must not be picked up."""
+    ids = _deck_ids()
+    first = _record("PremierDraft_HOB_20260811", ids).replace(
+        '"Sideboard":[]}', '"Sideboard":[]},"CardPool":[1,2,3]')
+    second = _record("PremierDraft_HOB_20260812", {**ids, next(iter(ids)): 2}).replace(
+        '"Sideboard":[]}', '"Sideboard":[]},"CardPool":[' + ",".join(["7"] * 42) + "]")
+    decks = parse_log(first + second)
+    assert [len(d.pool) for d in decks] == [3, 42]

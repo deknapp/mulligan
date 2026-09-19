@@ -43,3 +43,17 @@ def test_differences_and_interval():
     assert "Filler" not in diffs
     low, high = m.head_to_head_interval(a, b)
     assert low < m.head_to_head(a, b) < high and low > 0.5
+
+
+def test_best_build_is_always_a_full_deck():
+    from mulligan.cards.sets import load_set
+    from mulligan.limited.advise import best_build
+    from mulligan.limited.pools import sealed_pool
+    data = load_set("hob")
+    model = DeckModel.load("hob")
+    for seed in range(3):
+        advice = best_build(sealed_pool(data, seed), data, model)
+        assert sum(advice.best.values()) == 40
+        spells = sum(n for name, n in advice.best.items()
+                     if "Land" not in data.entries.get(name, {}).get("types", ["Land"]))
+        assert spells == 23

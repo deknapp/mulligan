@@ -194,6 +194,65 @@ def versus_cmd(
     console.print(f"[dim]{result.games} games in {time.time() - start:.1f}s[/dim]")
 
 
+@app.command("build")
+def build_cmd(
+    deck: str = typer.Argument("log:latest", help="A deck from your Arena log (log:N)."),
+    fmt: str = typer.Option("PremierDraft", "--format", help="PremierDraft or Sealed model."),
+    colors: str = typer.Option(None, help="Force a color pair, e.g. BG."),
+    out: Path = typer.Option(None, help="Write the suggested decklist here."),
+):
+    """The best build of the pool you drafted or opened, by real 17Lands results,
+    compared with the deck you played."""
+    from .arena_log import arena_names, read_decks, resolve
+    from .cards.sets import available_sets, load_set
+    from .deckmodel import DeckModel
+    from .limited.advise import best_build
+    if not deck.startswith("log:"):
+        console.print("[red]error:[/red] build needs a deck from your Arena log (log:N)")
+        raise typer.Exit(1)
+    decks = read_decks()
+    index = len(decks) - 1 if deck == "log:latest" else int(deck[4:])
+    logged = decks[index]
+    if logged.set_code not in available_sets():
+        console.print(f"[red]error:[/red] {logged.event}: set not compiled")
+        raise typer.Exit(1)
+    if not logged.pool:
+        console.print("[red]error:[/red] the log has no card pool for this event")
+        raise typer.Exit(1)
+    data = load_set(logged.set_code)
+    ids = {int(e["arena_id"]): n for n, e in data.entries.items() if e.get("arena_id")}
+    missing = [g for g in set(logged.pool) | set(logged.cards) if g not in ids]
+    ids.update(arena_names(missing))
+    resolve(logged, ids)
+    pool = [ids[g] for g in logged.pool if g in ids]
+    model = DeckModel.load(logged.set_code, fmt)
+    advice = best_build(pool, data, model, colors)
+    played = logged.names
+    console.print(f"[bold]{logged.event}[/bold]: pool of {len(pool)} cards")
+    console.print(f"  the deck you played: {model.vs_field(played):.1%} vs an average opponent")
+    console.print(f"  best build found ({advice.colors}): {model.vs_field(advice.best):.1%}")
+    for pair, rate in advice.alternatives:
+        console.print(f"    next best: {pair} {rate:.1%}")
+    p = model.head_to_head(advice.best, played)
+    low, high = model.head_to_head_interval(advice.best, played)
+    console.print(f"  suggested vs played, head to head: {p:.0%} "
+                  f"(90% interval {low:.0%}–{high:.0%})")
+    diffs = model.differences(advice.best, played)
+    adds = [(n, d, e) for n, d, e in diffs if d > 0]
+    cuts = [(n, d, e) for n, d, e in diffs if d < 0]
+    if adds or cuts:
+        console.print("  changes (from real-game card values):")
+        for name, d, e in adds[:8]:
+            console.print(f"    + {d}× {name}  ({e:+.1f} pts)", highlight=False)
+        for name, d, e in cuts[:8]:
+            console.print(f"    − {-d}× {name}  ({e:+.1f} pts)", highlight=False)
+    if out:
+        out.write_text("Deck\n" + "".join(f"{n} {name}\n" for name, n in advice.best.items()))
+        console.print(f"[dim]wrote {out}[/dim]")
+    console.print("[dim]Card values come from 17Lands games; they rate each card against an "
+                  "average opponent and ignore synergies between your cards.[/dim]")
+
+
 @app.command("agents")
 def agents_cmd(
     agent_a: str = typer.Argument(..., help="First agent."),

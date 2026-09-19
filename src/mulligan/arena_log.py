@@ -27,6 +27,7 @@ LOG_DIRS = [
 LOG_NAMES = ("Player.log", "Player-prev.log")
 
 EVENT_RE = re.compile(r'"InternalEventName"\s*:\s*"([^"]+)"')
+POOL_RE = re.compile(r'"CardPool"\s*:\s*\[([0-9,\s]*)\]')
 COURSE_DECK_RE = re.compile(r'"CourseDeck"\s*:\s*\{\s*"MainDeck"\s*:\s*(\[[^\]]*\])')
 UPDATED_RE = re.compile(r'LastUpdated","value":"\\?"([0-9T:\-.]+)')
 SET_RE = re.compile(r"_([A-Z0-9]{3,5})_")
@@ -46,6 +47,7 @@ class LoggedDeck:
     source: str = ""
     names: dict[str, int] = field(default_factory=dict)   # filled by resolve()
     unresolved: dict[int, int] = field(default_factory=dict)
+    pool: list[int] = field(default_factory=list)          # every card drafted/opened
 
     @property
     def size(self) -> int:
@@ -103,8 +105,13 @@ def parse_log(text: str, source: str = "") -> list[LoggedDeck]:
                 entry.get("quantity", 1))
         if sum(cards.values()) < 20:
             continue  # an empty or half-built deck
+        # A course record lists its CardPool *after* its deck; stop at the next course.
+        after = text[match.end():match.end() + 20000]
+        cut = after.find('"CourseId"')
+        found = POOL_RE.search(after[:cut] if cut >= 0 else after)
+        pool = [int(x) for x in found.group(1).split(",") if x.strip()] if found else []
         decks.append(LoggedDeck(event, _set_code(event), cards,
-                                updated[-1] if updated else "", source))
+                                updated[-1] if updated else "", source, pool=pool))
     unique: dict[tuple, LoggedDeck] = {}
     for deck in decks:
         unique.pop(deck.key(), None)
