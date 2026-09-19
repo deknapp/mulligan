@@ -133,7 +133,23 @@
     "W"
    ],
    "oracle": "Lifelink\nAt the beginning of your end step, if you gained life this turn, surveil 1. If you put a card with mana value less than or equal to the amount of life you gained this turn into your graveyard this way, put that card into your hand.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "end_step",
+     "effects": [
+      {
+       "op": "surveil",
+       "count": 1
+      }
+     ],
+     "if": {
+      "kind": "life_gained_this_turn"
+     }
+    }
+   ],
+   "approximations": [
+    "the surveil-to-hand part is omitted"
+   ]
   },
   {
    "name": "Fateshaper Aspirant",
@@ -209,7 +225,22 @@
     "W"
    ],
    "oracle": "Whenever you cast a creature spell, exile up to one other target creature you control, then return that card to the battlefield under its owner's control.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "cast_creature",
+     "effects": [
+      {
+       "op": "flicker"
+      }
+     ],
+     "targets": [
+      {
+       "sel": "creature:yours,other",
+       "optional": true
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Generous Revival",
@@ -249,7 +280,13 @@
     "W"
    ],
    "oracle": "Create X 2/2 colorless Wizard Soldier creature tokens named Cadet, where X is the amount of life you gained this turn.",
-   "unsupported": "not compiled yet"
+   "effects": [
+    {
+     "op": "token",
+     "token": "cadet",
+     "count": "life_gained"
+    }
+   ]
   },
   {
    "name": "Graft Surgeon",
@@ -318,7 +355,7 @@
     "W"
    ],
    "oracle": "This creature enters with X +1/+1 counters on it.\nAt the beginning of combat on your turn, you may remove a +1/+1 counter from this creature. If you do, put a +1/+1 counter on each other creature you control.",
-   "unsupported": "not compiled yet"
+   "unsupported": "X cost"
   },
   {
    "name": "Hexhaven Battalion",
@@ -371,7 +408,7 @@
     "W"
    ],
    "oracle": "Choose a creature type. Destroy all creatures that aren't of the chosen type.",
-   "unsupported": "not compiled yet"
+   "unsupported": "choose a creature type"
   },
   {
    "name": "Loyal Tutor",
@@ -385,7 +422,13 @@
     "W"
    ],
    "oracle": "Search your library for a planeswalker card, reveal it, then shuffle and put that card on top.",
-   "unsupported": "not compiled yet"
+   "effects": [
+    {
+     "op": "search",
+     "filter": "card:type=planeswalker",
+     "dest": "top"
+    }
+   ]
   },
   {
    "name": "Memory Trap",
@@ -519,7 +562,17 @@
     "W"
    ],
    "oracle": "Whenever this creature attacks, empower Jace X, where X is the number of creatures you control. (Put that many loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "empower_jace",
+       "count": "count:creature:yours"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Shatterwing Pegasus",
@@ -675,7 +728,7 @@
     "U"
    ],
    "oracle": "Draw X cards, where X is the number of cards that were put into target player's graveyard from their library this turn.",
-   "unsupported": "not compiled yet"
+   "unsupported": "counts cards milled this turn"
   },
   {
    "name": "Cryotheory Adept",
@@ -736,6 +789,18 @@
     "cost": "{1}{U}",
     "types": [
      "Sorcery"
+    ],
+    "targets": [
+     "creature:theirs,mv<=3"
+    ],
+    "effects": [
+     {
+      "op": "bounce"
+     },
+     {
+      "op": "surveil",
+      "count": 1
+     }
     ]
    },
    "rarity": "rare",
@@ -744,7 +809,20 @@
     "U"
    ],
    "oracle": "[Diviner of Victory] This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\nWhenever you scry or surveil, this creature gets +1/+1 until end of turn.\n[Unwind History] Return target creature an opponent controls with mana value 3 or less to its owner's hand. Surveil 1.",
-   "unsupported": "not compiled yet"
+   "enters_prepared": true,
+   "triggers": [
+    {
+     "when": "scry_or_surveil",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "toughness": 1,
+       "to": "self"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Divining Duelist",
@@ -905,7 +983,15 @@
     "U"
    ],
    "oracle": "Until end of turn, you may activate loyalty abilities of Jace planeswalkers you control on any player's turn any time you could cast an instant.\nEmpower Jace 8. (Put eight loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")",
-   "unsupported": "not compiled yet"
+   "effects": [
+    {
+     "op": "empower_jace",
+     "count": 8
+    }
+   ],
+   "approximations": [
+    "instant-speed loyalty abilities are omitted"
+   ]
   },
   {
    "name": "Mindseeker Oculus",
@@ -1133,7 +1219,21 @@
     "U"
    ],
    "oracle": "Flash\nFlying\nWhenever this creature attacks, draw a card, then discard a card.\nWhen this creature dies, if it isn't a token, create a token that's a copy of it.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "attacks",
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 1,
+       "discard": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the token-copy-on-death is omitted"
+   ]
   },
   {
    "name": "Sphinx's Approach",
@@ -1222,7 +1322,51 @@
     "U"
    ],
    "oracle": "At the beginning of each opponent's draw step, you draw a card.\n+1: Create a 1/1 blue Illusion creature token.\n−2: For each opponent, return up to one target artifact or creature that player controls to its owner's hand.\n−6: Draw three cards. Then put X +1/+1 counters on each creature you control, where X is the number of cards in your hand.",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": 1,
+     "effects": [
+      {
+       "op": "token",
+       "token": "illusion"
+      }
+     ],
+     "text": "+1: Create a 1/1 Illusion."
+    },
+    {
+     "loyalty": -2,
+     "effects": [
+      {
+       "op": "bounce"
+      }
+     ],
+     "text": "-2: Return up to one opponent's artifact or creature.",
+     "targets": [
+      {
+       "sel": "artifact|creature:theirs",
+       "optional": true
+      }
+     ]
+    },
+    {
+     "loyalty": -6,
+     "effects": [
+      {
+       "op": "draw",
+       "count": 3
+      },
+      {
+       "op": "counters",
+       "count": "hand",
+       "to": "all:creature:yours"
+      }
+     ],
+     "text": "-6: Draw three; +X counters on your creatures."
+    }
+   ],
+   "approximations": [
+    "the opponent's-draw-step draw is omitted"
+   ]
   },
   {
    "name": "Theorist's Proxy",
@@ -1244,7 +1388,20 @@
     "U"
    ],
    "oracle": "Flash\nWhen this creature enters, empower Jace 3. (Put three loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")\n{U}, Sacrifice this creature: The next spell you cast this turn can't be countered.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "empower_jace",
+       "count": 3
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the can't-be-countered ability is omitted"
+   ]
   },
   {
    "name": "Undulating Witness",
@@ -1335,6 +1492,13 @@
     "cost": "{2}{U}",
     "types": [
      "Sorcery"
+    ],
+    "effects": [
+     {
+      "op": "loot",
+      "draw": 7,
+      "discard": 0
+     }
     ]
    },
    "rarity": "rare",
@@ -1343,7 +1507,10 @@
     "U"
    ],
    "oracle": "[Variable Chaser] Flying, prowess\nThis creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n[Arc of Fortune] Each player may discard their hand and draw seven cards.",
-   "unsupported": "not compiled yet"
+   "enters_prepared": true,
+   "approximations": [
+    "Arc of Fortune: only you draw seven, nobody discards"
+   ]
   },
   {
    "name": "Apex Witchstalker",
@@ -1418,6 +1585,21 @@
     "cost": "{B}",
     "types": [
      "Instant"
+    ],
+    "targets": [
+     "player"
+    ],
+    "effects": [
+     {
+      "op": "draw",
+      "count": 3,
+      "who": "target_player"
+     },
+     {
+      "op": "lose_life",
+      "amount": 3,
+      "who": "target_player"
+     }
     ]
    },
    "rarity": "mythic",
@@ -1426,7 +1608,22 @@
     "B"
    ],
    "oracle": "[Bloodline Recollector] At the beginning of each end step, if three or more creatures died this turn, this creature becomes prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n[Ancestral Craving] Target player draws three cards and loses 3 life.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "end_step",
+     "effects": [
+      {
+       "op": "set_prepared"
+      }
+     ],
+     "if": {
+      "kind": "creature_died_this_turn"
+     }
+    }
+   ],
+   "approximations": [
+    "prepares if any creature died, not three; only at your end step"
+   ]
   },
   {
    "name": "Break Under Pressure",
@@ -1497,7 +1694,30 @@
     "B"
    ],
    "oracle": "When this creature enters, mill three cards.\nThis creature gets +2/+0 for every seven cards in your graveyard.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "mill",
+       "count": 3
+      }
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "self",
+     "power": 2,
+     "if": {
+      "kind": "graveyard",
+      "n": 7
+     }
+    }
+   ],
+   "approximations": [
+    "+2/+0 once at seven cards, not per seven"
+   ]
   },
   {
    "name": "Extended Absence",
@@ -1541,7 +1761,7 @@
     "B"
    ],
    "oracle": "You may reveal exactly two cards you own with different names from outside the game. An opponent chooses one of them. You put that card into your hand.",
-   "unsupported": "not compiled yet"
+   "unsupported": "cards from outside the game"
   },
   {
    "name": "Last Gasp",
@@ -1581,7 +1801,36 @@
     "B"
    ],
    "oracle": "When this Equipment enters, you may pay {2}. When you do, for each opponent, destroy up to one target creature or planeswalker that player controls.\nEquipped creature gets +2/+1.\nEquip {2}",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "may_pay",
+       "cost": "{2}",
+       "then": [
+        {
+         "op": "destroy"
+        }
+       ]
+      }
+     ],
+     "targets": [
+      {
+       "sel": "creature|planeswalker:theirs",
+       "optional": true
+      }
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "equipped",
+     "power": 2,
+     "toughness": 1
+    }
+   ],
+   "equip": "{2}"
   },
   {
    "name": "Multiply by Zero",
@@ -1619,7 +1868,16 @@
     "B"
    ],
    "oracle": "Exile all creatures. Empower Jace X, where X is the number of creatures exiled this way. (Put that many loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")",
-   "unsupported": "not compiled yet"
+   "effects": [
+    {
+     "op": "empower_jace",
+     "count": "count:creature"
+    },
+    {
+     "op": "exile",
+     "to": "all:creature"
+    }
+   ]
   },
   {
    "name": "Rampart Hunter",
@@ -1728,7 +1986,35 @@
     "B"
    ],
    "oracle": "Choose one —\n• Draw cards equal to the greatest power among creatures you control. You lose life equal to the number of cards drawn this way.\n• All creatures get -3/-3 until end of turn.",
-   "unsupported": "not compiled yet"
+   "modes": [
+    {
+     "effects": [
+      {
+       "op": "draw",
+       "count": 3
+      },
+      {
+       "op": "lose_life",
+       "amount": 3
+      }
+     ],
+     "text": "Draw (greatest power) cards, lose that much life."
+    },
+    {
+     "effects": [
+      {
+       "op": "pump",
+       "power": -3,
+       "toughness": -3,
+       "to": "all:creature"
+      }
+     ],
+     "text": "All creatures get -3/-3."
+    }
+   ],
+   "approximations": [
+    "the draw mode uses 3 instead of your greatest power"
+   ]
   },
   {
    "name": "Sanctum Lurker",
@@ -1747,7 +2033,42 @@
     "B"
    ],
    "oracle": "When this creature enters, empower Jace 1.\nPlaneswalkers you control aren't put into their owners' graveyards for having 0 loyalty.\nPlaneswalkers you control have \"[+2]: This planeswalker deals 1 damage to each opponent and you gain 1 life.\"",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "empower_jace",
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "all:planeswalker:yours",
+     "abilities": [
+      {
+       "loyalty": 2,
+       "effects": [
+        {
+         "op": "damage",
+         "amount": 1,
+         "to": "each_opponent"
+        },
+        {
+         "op": "gain_life",
+         "amount": 1
+        }
+       ],
+       "text": "[+2]: 1 damage to each opponent; you gain 1 life."
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "planeswalkers still die at 0 loyalty"
+   ]
   },
   {
    "name": "Screeching Soulbreaker",
@@ -1959,7 +2280,36 @@
     "B"
    ],
    "oracle": "Choose one —\n• You lose 2 life. Destroy target creature or planeswalker.\n• You lose 2 life. Empower Jace 6. (Put six loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")",
-   "unsupported": "not compiled yet"
+   "modes": [
+    {
+     "effects": [
+      {
+       "op": "lose_life",
+       "amount": 2
+      },
+      {
+       "op": "destroy"
+      }
+     ],
+     "text": "Lose 2 life. Destroy target creature or planeswalker.",
+     "targets": [
+      "creature|planeswalker"
+     ]
+    },
+    {
+     "effects": [
+      {
+       "op": "lose_life",
+       "amount": 2
+      },
+      {
+       "op": "empower_jace",
+       "count": 6
+      }
+     ],
+     "text": "Lose 2 life. Empower Jace 6."
+    }
+   ]
   },
   {
    "name": "Ajani's Anguish",
@@ -1973,7 +2323,7 @@
     "R"
    ],
    "oracle": "When this enchantment enters, it deals X damage to any target.\nCreatures you control have trample.",
-   "unsupported": "not compiled yet"
+   "unsupported": "X cost"
   },
   {
    "name": "Awaken the Inferno",
@@ -2132,7 +2482,21 @@
     "R"
    ],
    "oracle": "Haste\nWhen this creature enters, creatures you control gain trample and get +X/+0 until end of turn, where X is the number of artifacts you control.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "pump",
+       "power": "count:artifact:yours",
+       "keywords": [
+        "trample"
+       ],
+       "to": "all:creature:yours"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Curse-Marred Demon",
@@ -2155,7 +2519,25 @@
     "R"
    ],
    "oracle": "Flying, trample\nWhen this creature enters, search your library for a card, put it into your hand, shuffle, then discard a card at random.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "search",
+       "filter": "card",
+       "dest": "hand"
+      },
+      {
+       "op": "discard",
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the discard is chosen, not random"
+   ]
   },
   {
    "name": "Draconic Visitor",
@@ -2177,7 +2559,9 @@
     "R"
    ],
    "oracle": "Flying\nIf one or more artifact tokens would be created under your control, that many 5/5 red Dragon creature tokens with flying are created instead.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the artifact-token replacement is omitted"
+   ]
   },
   {
    "name": "Eardrum Rattler",
@@ -2252,7 +2636,7 @@
     "R"
    ],
    "oracle": "For each creature target player controls, create a token that's a copy of that creature, except it has haste and \"At the beginning of the end step, if you don't control a planeswalker, sacrifice this creature.\"",
-   "unsupported": "not compiled yet"
+   "unsupported": "token copies of an opponent's creatures"
   },
   {
    "name": "Fulminous Forte",
@@ -2386,7 +2770,7 @@
     "R"
    ],
    "oracle": "{3}{R}: Exile target creature or planeswalker you control. Reveal cards from the top of your library until you reveal a creature or planeswalker card. Put that card onto the battlefield and the rest on the bottom of your library in a random order. Activate only as a sorcery.",
-   "unsupported": "not compiled yet"
+   "unsupported": "exile-and-reveal replacement"
   },
   {
    "name": "Master of Barbs",
@@ -2409,7 +2793,9 @@
     "R"
    ],
    "oracle": "Menace\nWhenever one or more opponents are dealt noncombat damage, creatures you control get +1/+0 until end of turn.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the noncombat-damage trigger is omitted"
+   ]
   },
   {
    "name": "No Admittance",
@@ -2457,6 +2843,14 @@
     "cost": "{R}",
     "types": [
      "Sorcery"
+    ],
+    "effects": [
+     {
+      "op": "loot",
+      "draw": 1,
+      "discard": 1,
+      "discard_first": true
+     }
     ]
    },
    "rarity": "rare",
@@ -2465,7 +2859,7 @@
     "R"
    ],
    "oracle": "[Pompous Battlemage] Prowess\nThis creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n[Improvised Act] You may discard a card. If you do, draw a card.",
-   "unsupported": "not compiled yet"
+   "enters_prepared": true
   },
   {
    "name": "Pyre Rhymer",
@@ -2487,7 +2881,8 @@
     "cost": "{R}",
     "types": [
      "Instant"
-    ]
+    ],
+    "effects": []
    },
    "rarity": "rare",
    "collector_number": "91",
@@ -2495,7 +2890,10 @@
     "R"
    ],
    "oracle": "[Pyre Rhymer] Prowess\nThis creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n[Molten Tide] Until end of turn, whenever you tap a Mountain for mana, add an additional {R}.",
-   "unsupported": "not compiled yet"
+   "enters_prepared": true,
+   "approximations": [
+    "Molten Tide's extra Mountain mana is omitted"
+   ]
   },
   {
    "name": "Skilled Battlecarver",
@@ -2560,7 +2958,9 @@
     "R"
    ],
    "oracle": "Haste\nWhen this creature enters, target instant or sorcery card in your graveyard gains flashback until end of turn. The flashback cost is equal to its mana cost.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the flashback grant is omitted"
+   ]
   },
   {
    "name": "Tether Technician",
@@ -2778,6 +3178,17 @@
     "cost": "{G}",
     "types": [
      "Sorcery"
+    ],
+    "effects": [
+     {
+      "op": "search",
+      "filter": "land",
+      "dest": "top"
+     },
+     {
+      "op": "mill",
+      "count": 1
+     }
     ]
    },
    "rarity": "rare",
@@ -2786,7 +3197,23 @@
     "G"
    ],
    "oracle": "[Carnivorous Cultivator] Deathtouch\nThis creature enters prepared.\nWhenever this creature deals combat damage to a player, return target land card from your graveyard to your hand.\n[Enroot] Search your library for a land card, put it into your graveyard, then shuffle.",
-   "unsupported": "not compiled yet"
+   "enters_prepared": true,
+   "triggers": [
+    {
+     "when": "combat_damage_player",
+     "effects": [
+      {
+       "op": "bounce"
+      }
+     ],
+     "targets": [
+      "land:zone=graveyard,yours"
+     ]
+    }
+   ],
+   "approximations": [
+    "Enroot: the land is milled from the top"
+   ]
   },
   {
    "name": "Compel Brutality",
@@ -2858,7 +3285,9 @@
     "G"
    ],
    "oracle": "Whenever a creature you control dies, put a charge counter on this enchantment.\nAt the beginning of your first main phase, add {G} for each charge counter on this enchantment.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "charge counters and their mana are omitted"
+   ]
   },
   {
    "name": "Greenhouse Propagator",
@@ -2952,7 +3381,9 @@
     "G"
    ],
    "oracle": "Vigilance\nWhenever this creature is dealt damage, you may search your library for up to that many land cards, put them onto the battlefield tapped, then shuffle.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the damage-to-lands trigger is omitted"
+   ]
   },
   {
    "name": "Hungering Puppetbeast",
@@ -2973,7 +3404,40 @@
     "G"
    ],
    "oracle": "When this creature enters, create a Heartwood token. (It's a red and green artifact with \"{T}: Add {R} or {G}.\")\n{1}, Sacrifice another artifact: Put a +1/+1 counter on this creature. It gains your choice of trample, hexproof, or haste until end of turn.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": "heartwood"
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{1}",
+     "sacrifice": "artifact",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "self"
+      },
+      {
+       "op": "pump",
+       "keywords": [
+        "trample"
+       ],
+       "to": "self"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "always picks trample"
+   ]
   },
   {
    "name": "Hunter's Axe",
@@ -3058,7 +3522,7 @@
     "G"
    ],
    "oracle": "Enchant artifact or non-Aura enchantment\nEnchanted permanent is a Construct creature with base power and toughness 5/5 in addition to its other types.\n{4}{G}: Return this card from your graveyard to your hand.",
-   "unsupported": "not compiled yet"
+   "unsupported": "turns a noncreature permanent into a creature"
   },
   {
    "name": "Restore with Empathy",
@@ -3103,7 +3567,27 @@
     "G"
    ],
    "oracle": "When this creature enters, you may search your library for a basic land card, put that card onto the battlefield tapped, then shuffle.\nWhen this creature dies, draw a card.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "battlefield_tapped"
+      }
+     ]
+    },
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Something Worth Saving",
@@ -3177,15 +3661,17 @@
    "subtypes": [
     "Lhurgoyf"
    ],
-   "power": null,
-   "toughness": null,
    "rarity": "mythic",
    "collector_number": "116",
    "color_identity": [
     "G"
    ],
    "oracle": "Tarmogoyf's power is equal to the number of card types among cards in all graveyards and its toughness is equal to that number plus 1.",
-   "unsupported": "not compiled yet"
+   "power_expr": "graveyard_types",
+   "toughness_expr": "graveyard_types",
+   "approximations": [
+    "toughness equals power, not power plus one"
+   ]
   },
   {
    "name": "Tethermage's Advantage",
@@ -3235,7 +3721,9 @@
     "G"
    ],
    "oracle": "At the beginning of each player's upkeep, you create a 3/3 green Forest Tentacle land creature token. (It has \"{T}: Add {G}.\" It's affected by summoning sickness until your next turn.)",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the upkeep Forest Tentacle tokens are omitted"
+   ]
   },
   {
    "name": "Vinelasher Adept",
@@ -3350,7 +3838,42 @@
     "R"
    ],
    "oracle": "Flying\nWhen Aerid Konstrari enters or dies, create a Heartwood token. (It's a red and green artifact with \"{T}: Add {R} or {G}.\")\n{6}: Create a Heartwood token. Then Aerid Konstrari gets +X/+0 until end of turn, where X is the number of artifacts you control.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "token",
+       "token": "heartwood"
+      }
+     ]
+    },
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "token",
+       "token": "heartwood"
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{6}",
+     "effects": [
+      {
+       "op": "token",
+       "token": "heartwood"
+      },
+      {
+       "op": "pump",
+       "power": "count:artifact:yours",
+       "to": "self"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Avatar of Burgeoning Echoes",
@@ -3370,7 +3893,37 @@
     "U"
    ],
    "oracle": "Landfall — Whenever a land you control enters, empower Jace 2. (Put two loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")\nPlaneswalkers you control have \"[−10]: Put a +1/+1 counter on target creature for each land you control.\"",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "landfall",
+     "effects": [
+      {
+       "op": "empower_jace",
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "all:planeswalker:yours",
+     "abilities": [
+      {
+       "loyalty": -10,
+       "effects": [
+        {
+         "op": "counters",
+         "count": "lands"
+        }
+       ],
+       "text": "[-10]: +1/+1 counters per land.",
+       "targets": [
+        "creature"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Blessed Ghoul",
@@ -3629,7 +4182,18 @@
     "W"
    ],
    "oracle": "Flash\nFlying\nWhenever you scry or surveil, put a +1/+1 counter on each creature you control.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "scry_or_surveil",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "all:creature:yours"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Desperate Futurescribe",
@@ -3737,7 +4301,7 @@
     "U"
    ],
    "oracle": "You may sacrifice a planeswalker. If you do, search your library for a planeswalker card, put it onto the battlefield, then shuffle.",
-   "unsupported": "not compiled yet"
+   "unsupported": "planeswalker exchange"
   },
   {
    "name": "Fatehold Charm",
@@ -3889,7 +4453,28 @@
     "U"
    ],
    "oracle": "Trample, haste\nWhenever this creature deals combat damage to a player, draw two cards.\nAt the beginning of the end step, sacrifice this creature.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "combat_damage_player",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 2
+      }
+     ]
+    },
+    {
+     "when": "end_step",
+     "effects": [
+      {
+       "op": "sacrifice_self"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "sacrificed only at your end step"
+   ]
   },
   {
    "name": "Grim Repriser",
@@ -3942,7 +4527,9 @@
     "R"
    ],
    "oracle": "Flying\nWhenever a creature you control attacks, that creature deals 1 damage to each opponent.\n{4}: Create a 2/2 colorless Wizard Soldier creature token named Cadet. Then creatures you control gain haste until end of turn.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the attack pings and the Cadet ability are omitted"
+   ]
   },
   {
    "name": "Konstrari Charm",
@@ -4059,7 +4646,9 @@
     "W"
    ],
    "oracle": "Flying, vigilance, lifelink, ward {2}\nWhenever you gain life, create a colorless artifact token named Lotus with \"{T}, Sacrifice this token: Add three mana of any one color.\" This ability triggers only once each turn.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the Lotus tokens are omitted"
+   ]
   },
   {
    "name": "Mind Meanderer",
@@ -4134,7 +4723,21 @@
     "U"
    ],
    "oracle": "When this creature enters, if you cast it, target opponent reveals their hand. You choose a nonland card from it. Exile that card.\nThreshold — As long as there are seven or more cards in your graveyard, you may cast the exiled card, and mana of any type can be spent to cast that spell.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "discard",
+       "count": 1,
+       "who": "each_opponent"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the exiled card cannot be cast; the opponent picks"
+   ]
   },
   {
    "name": "Paradox Shaper",
@@ -4252,7 +4855,30 @@
     "W"
    ],
    "oracle": "Whenever this creature or another creature you control enters, surveil 1. (Look at the top card of your library. You may put it into your graveyard.)\n{W}{U}: Return this card from your graveyard to the battlefield with a finality counter on it. Activate only if you've scried or surveilled this turn. (If a creature with a finality counter on it would die, exile it instead.)",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "surveil",
+       "count": 1
+      }
+     ]
+    },
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "surveil",
+       "count": 1
+      }
+     ],
+     "filter": "creature"
+    }
+   ],
+   "approximations": [
+    "the graveyard return is omitted"
+   ]
   },
   {
    "name": "Prudent Fateseer",
@@ -4349,7 +4975,9 @@
     "W"
    ],
    "oracle": "Whenever an opponent casts a spell with mana value 2 or less, you gain 2 life.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the opponents'-cheap-spell lifegain is omitted"
+   ]
   },
   {
    "name": "Solitary Cell",
@@ -4364,7 +4992,23 @@
     "W"
    ],
    "oracle": "When this artifact enters, exile target nonland permanent an opponent controls with mana value 3 or less until this artifact leaves the battlefield.\n{1}, {T}, Discard a legendary card: Draw a card.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "exile",
+       "until_source_leaves": true
+      }
+     ],
+     "targets": [
+      "nonland:theirs,mv<=3"
+     ]
+    }
+   ],
+   "approximations": [
+    "the discard-a-legend draw is omitted"
+   ]
   },
   {
    "name": "Stingerquill Charm",
@@ -4482,7 +5126,24 @@
     "R"
    ],
    "oracle": "Stinging Vitriol deals 2 damage to target opponent. That player reveals their hand. You choose a nonland card from it. They discard that card.",
-   "unsupported": "not compiled yet"
+   "targets": [
+    "opponent"
+   ],
+   "effects": [
+    {
+     "op": "damage",
+     "amount": 2,
+     "to": "target0"
+    },
+    {
+     "op": "discard",
+     "count": 1,
+     "who": "target_player"
+    }
+   ],
+   "approximations": [
+    "the opponent picks the discard"
+   ]
   },
   {
    "name": "Tam's Resistance",
@@ -4539,7 +5200,9 @@
     "R"
    ],
    "oracle": "When this creature enters, you may sacrifice a land. If you do, create two tapped Heartwood tokens. (They're red and green artifacts with \"{T}: Add {R} or {G}.\")\nTap two untapped artifacts you control: Put two +1/+1 counters on this creature.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "both abilities are omitted"
+   ]
   },
   {
    "name": "Theorix Charm",
@@ -4737,7 +5400,7 @@
     "U"
    ],
    "oracle": "Flying\nWhen Uldaros Theorix enters, if you cast him, exile up to one target nonland card of each card type from your graveyard. Copy those cards. You may cast any number of spells with total mana value 6 or less from among the copies without paying their mana costs. (Permanent spells cast this way become tokens.)",
-   "unsupported": "not compiled yet"
+   "unsupported": "casts copies from the graveyard for free"
   },
   {
    "name": "Vigorbloom Charm",
@@ -4862,7 +5525,17 @@
     "W"
    ],
    "oracle": "Exile target creature or planeswalker. If that permanent's mana value was 3 or less, return it to the battlefield tapped under your control. Exile it at the beginning of the next end step.",
-   "unsupported": "not compiled yet"
+   "targets": [
+    "creature|planeswalker"
+   ],
+   "effects": [
+    {
+     "op": "exile"
+    }
+   ],
+   "approximations": [
+    "the steal-a-cheap-permanent part is omitted"
+   ]
   },
   {
    "name": "Warrior's Blades",
@@ -5119,7 +5792,7 @@
     "W"
    ],
    "oracle": "Whenever you cast a prepared spell, copy it. You may choose new targets for the copy.\n{W}{U}{B}{R}{G}, {T}: Each creature you control becomes prepared. (Only creatures with prepare spells can become prepared.)",
-   "unsupported": "not compiled yet"
+   "unsupported": "copies prepared spells"
   },
   {
    "name": "The Echoverse Fulcrum",
@@ -5134,7 +5807,32 @@
    "collector_number": "169",
    "color_identity": [],
    "oracle": "When The Echoverse Fulcrum enters, draw a card, then discard a card.\n{5}, {T}, Exile The Echoverse Fulcrum: Destroy all creatures. Activate only as a sorcery.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 1,
+       "discard": 1
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{5}",
+     "tap": true,
+     "sorcery": true,
+     "sacrifice_self": true,
+     "effects": [
+      {
+       "op": "destroy",
+       "to": "all:creature"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Eye of Jace",
@@ -5332,7 +6030,15 @@
     "W"
    ],
    "oracle": "This land enters tapped unless you control two or more other lands.\n{T}: Add {W} or {U}.",
-   "unsupported": "not compiled yet"
+   "enters_tapped": true,
+   "enters_tapped_unless": {
+    "kind": "control",
+    "n": 2,
+    "filter": "land:yours,other"
+   },
+   "mana": [
+    "W/U"
+   ]
   },
   {
    "name": "Fatehold Annex",
@@ -5388,7 +6094,12 @@
    "collector_number": "179",
    "color_identity": [],
    "oracle": "{T}: Add {C}.\n{5}: This land becomes a copy of target creature you control until end of turn. The \"legend rule\" doesn't apply to permanents you control this turn.",
-   "unsupported": "not compiled yet"
+   "mana": [
+    "C"
+   ],
+   "approximations": [
+    "the copy ability is omitted"
+   ]
   },
   {
    "name": "Haunted Ridge",
@@ -5403,7 +6114,15 @@
     "R"
    ],
    "oracle": "This land enters tapped unless you control two or more other lands.\n{T}: Add {B} or {R}.",
-   "unsupported": "not compiled yet"
+   "enters_tapped": true,
+   "enters_tapped_unless": {
+    "kind": "control",
+    "n": 2,
+    "filter": "land:yours,other"
+   },
+   "mana": [
+    "B/R"
+   ]
   },
   {
    "name": "Hexhaven Dueling Arena",
@@ -5516,7 +6235,15 @@
     "W"
    ],
    "oracle": "This land enters tapped unless you control two or more other lands.\n{T}: Add {G} or {W}.",
-   "unsupported": "not compiled yet"
+   "enters_tapped": true,
+   "enters_tapped_unless": {
+    "kind": "control",
+    "n": 2,
+    "filter": "land:yours,other"
+   },
+   "mana": [
+    "G/W"
+   ]
   },
   {
    "name": "Rockfall Vale",
@@ -5531,7 +6258,15 @@
     "R"
    ],
    "oracle": "This land enters tapped unless you control two or more other lands.\n{T}: Add {R} or {G}.",
-   "unsupported": "not compiled yet"
+   "enters_tapped": true,
+   "enters_tapped_unless": {
+    "kind": "control",
+    "n": 2,
+    "filter": "land:yours,other"
+   },
+   "mana": [
+    "R/G"
+   ]
   },
   {
    "name": "Roiling Canopy",
@@ -5545,7 +6280,13 @@
     "G"
    ],
    "oracle": "This land enters tapped.\nWhenever a Forest you control enters, if you control at least five other Forests, target creature you control gets +3/+3 until end of turn.\n{T}: Add {G}.",
-   "unsupported": "not compiled yet"
+   "enters_tapped": true,
+   "mana": [
+    "G"
+   ],
+   "approximations": [
+    "the five-Forests pump is omitted"
+   ]
   },
   {
    "name": "Room of Refuge",
@@ -5595,7 +6336,15 @@
     "U"
    ],
    "oracle": "This land enters tapped unless you control two or more other lands.\n{T}: Add {U} or {B}.",
-   "unsupported": "not compiled yet"
+   "enters_tapped": true,
+   "enters_tapped_unless": {
+    "kind": "control",
+    "n": 2,
+    "filter": "land:yours,other"
+   },
+   "mana": [
+    "U/B"
+   ]
   },
   {
    "name": "Stingerquill Annex",
@@ -5634,7 +6383,29 @@
     "U"
    ],
    "oracle": "({T}: Add {U}.)\nAs this land enters, you may behold a Jace. If you don't, this land enters tapped. (To behold a Jace, choose a Jace you control or reveal a Jace card from your hand.)\n{2}{U}, {T}: Empower Jace 2.",
-   "unsupported": "not compiled yet"
+   "mana": [
+    "U"
+   ],
+   "enters_tapped": true,
+   "enters_tapped_unless": {
+    "kind": "control",
+    "filter": "planeswalker:yours,subtype=Jace"
+   },
+   "abilities": [
+    {
+     "cost": "{2}{U}",
+     "tap": true,
+     "effects": [
+      {
+       "op": "empower_jace",
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "behold only sees a Jace you control"
+   ]
   },
   {
    "name": "Theorix Annex",
@@ -5721,7 +6492,54 @@
     "W"
    ],
    "oracle": "Whenever you gain life, put a loyalty counter on Ajani.\n0: You gain 1 life.\n−4: Create a 2/2 white Cat Soldier creature token named Ajani's Pridemate with \"Whenever you gain life, put a +1/+1 counter on this token.\"\n−10: You get an emblem with \"Creatures you control get +2/+2.\"",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": 0,
+     "effects": [
+      {
+       "op": "gain_life",
+       "amount": 1
+      }
+     ],
+     "text": "0: You gain 1 life."
+    },
+    {
+     "loyalty": -4,
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Ajani's Pridemate",
+        "power": 2,
+        "toughness": 2,
+        "subtypes": [
+         "Cat",
+         "Soldier"
+        ],
+        "colors": [
+         "W"
+        ]
+       }
+      }
+     ],
+     "text": "-4: Create Ajani's Pridemate."
+    }
+   ],
+   "triggers": [
+    {
+     "when": "gain_life",
+     "effects": [
+      {
+       "op": "add_loyalty",
+       "count": 1,
+       "to": "self"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the emblem and the Pridemate's trigger are omitted"
+   ]
   },
   {
    "name": "Danitha, Sword of Hope",
@@ -5789,7 +6607,34 @@
     "W"
    ],
    "oracle": "Creature tokens you control get +1/+0 and have vigilance.\n{T}: Add one mana of any color. Spend this mana only to cast a planeswalker spell.\n{1}{W}, Discard this card: It deals 4 damage to target attacking or blocking creature.",
-   "unsupported": "not compiled yet"
+   "statics": [
+    {
+     "affects": "all:creature:yours,token",
+     "power": 1,
+     "keywords": [
+      "vigilance"
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{1}{W}",
+     "zone": "hand",
+     "discard_self": true,
+     "targets": [
+      "creature:attacking|blocking"
+     ],
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 4
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the planeswalker-only mana is omitted"
+   ]
   },
   {
    "name": "Koth of the Homestead",
@@ -5858,7 +6703,36 @@
     "W"
    ],
    "oracle": "Whenever another creature or planeswalker you control enters, you gain 1 life.\n{1}, {T}, Discard a card: Another target creature or planeswalker you control gains hexproof until end of turn.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "gain_life",
+       "amount": 1
+      }
+     ],
+     "filter": "creature|planeswalker"
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{1}",
+     "tap": true,
+     "discard": 1,
+     "targets": [
+      "creature|planeswalker:yours,other"
+     ],
+     "effects": [
+      {
+       "op": "pump",
+       "keywords": [
+        "hexproof"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Lyra, Archangel of Dawn",
@@ -5884,7 +6758,18 @@
     "W"
    ],
    "oracle": "Flying\nWhenever you gain life, put a +1/+1 counter on each Angel you control.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "gain_life",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "all:creature:yours,subtype=Angel"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Rescue Girl, First Responder",
@@ -6300,7 +7185,37 @@
     "U"
    ],
    "oracle": "+1: Surveil 1. If you put a noncreature, nonland card into your graveyard this way, put that card into your hand.\n+1: Add {U}. Spend this mana only to cast a noncreature spell.\n−X: Tap target artifact or creature. Put X stun counters on it.\n−6: You get an emblem with \"Whenever you cast a spell, draw a card.\"",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": 1,
+     "effects": [
+      {
+       "op": "surveil",
+       "count": 1
+      }
+     ],
+     "text": "+1: Surveil 1."
+    },
+    {
+     "loyalty": -2,
+     "effects": [
+      {
+       "op": "tap"
+      },
+      {
+       "op": "stun",
+       "count": 2
+      }
+     ],
+     "text": "-X: tap and stun (X = 2).",
+     "targets": [
+      "artifact|creature"
+     ]
+    }
+   ],
+   "approximations": [
+    "mana ability, emblem and variable X are omitted"
+   ]
   },
   {
    "name": "Fblthp, Impossibly Lost",
@@ -6427,7 +7342,21 @@
     "U"
    ],
    "oracle": "+1: Empower Jace X, where X is the number of Islands you control.\n−3: Until your next turn, whenever a creature attacks you or a planeswalker you control, it gets -5/-0 until end of turn.\n0: Exile all but the bottom card of each opponent's library. Activate only if there are twenty-five or more loyalty counters among Jaces you control.",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": 1,
+     "effects": [
+      {
+       "op": "empower_jace",
+       "count": "count:land:yours,subtype=Island"
+      }
+     ],
+     "text": "+1: Empower Jace X (Islands)."
+    }
+   ],
+   "approximations": [
+    "the -3 and 0 abilities are omitted"
+   ]
   },
   {
    "name": "Lyra, Tolarian Archangel",
@@ -6453,7 +7382,9 @@
     "U"
    ],
    "oracle": "Flying\nAt the beginning of each end step, if you've drawn three or more cards this turn, create a 3/3 blue Angel creature token with flying.\n{3}{U}{U}: Until end of turn, whenever Lyra deals combat damage to a player, draw two cards.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "both abilities are omitted"
+   ]
   },
   {
    "name": "Proft, Consulting Detective",
@@ -6550,7 +7481,9 @@
     "U"
    ],
    "oracle": "Instant and sorcery spells you control have split second. (As long as a spell with split second is on the stack, players can't cast spells or activate abilities that aren't mana abilities.)",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "split second is omitted"
+   ]
   },
   {
    "name": "Tetsuko Umezawa, Fugitive",
@@ -6831,7 +7764,54 @@
     "B"
    ],
    "oracle": "If a creature an opponent controls would die, exile it instead.\n+2: Up to one target creature gets -4/-1 until your next turn.\n−2: Each player sacrifices a creature of their choice. If you sacrificed a creature this way, create a 4/4 green Beast creature token with trample.\n−3: Each opponent discards two cards. For each opponent who didn't discard two nonland cards this way, you draw a card.",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": 2,
+     "effects": [
+      {
+       "op": "pump",
+       "power": -4,
+       "toughness": -1
+      }
+     ],
+     "text": "+2: up to one creature gets -4/-1.",
+     "targets": [
+      {
+       "sel": "creature",
+       "optional": true
+      }
+     ]
+    },
+    {
+     "loyalty": -2,
+     "effects": [
+      {
+       "op": "sacrifice",
+       "filter": "creature",
+       "who": "each_player"
+      },
+      {
+       "op": "token",
+       "token": "beast"
+      }
+     ],
+     "text": "-2: Each player sacrifices; a Beast."
+    },
+    {
+     "loyalty": -3,
+     "effects": [
+      {
+       "op": "discard",
+       "count": 2,
+       "who": "each_opponent"
+      }
+     ],
+     "text": "-3: Opponents discard two."
+    }
+   ],
+   "approximations": [
+    "the exile replacement and the -3 draw are omitted; -4/-1 lasts a turn"
+   ]
   },
   {
    "name": "Gideon the Oathless",
@@ -6854,7 +7834,9 @@
     "B"
    ],
    "oracle": "Ward—Discard a card.\nWhenever a creature an opponent controls enters, Gideon deals 1 damage to that player.\nWhenever an opponent activates a loyalty ability, Gideon deals 1 damage to that player.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "ward and both triggers are omitted"
+   ]
   },
   {
    "name": "Liliana the Repentant",
@@ -6877,7 +7859,41 @@
     "B"
    ],
    "oracle": "Whenever another creature or planeswalker you control enters, mill two cards.\nExhaust — {5}{B}: Return target creature or planeswalker card from your graveyard to the battlefield. Put a +1/+1 counter on Liliana. Activate only as a sorcery. (Activate each exhaust ability only once.)",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "mill",
+       "count": 2
+      }
+     ],
+     "filter": "creature|planeswalker"
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{5}{B}",
+     "sorcery": true,
+     "once_per_turn": true,
+     "targets": [
+      "creature|planeswalker:zone=graveyard,yours"
+     ],
+     "effects": [
+      {
+       "op": "reanimate"
+      },
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "self"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "exhaust (once ever) is once per turn"
+   ]
   },
   {
    "name": "Loot, the Anomaly",
@@ -7273,7 +8289,36 @@
     "R"
    ],
    "oracle": "Whenever you activate a loyalty ability, create a 2/2 colorless Wizard Soldier creature token named Cadet.\n+1: Creatures you control get +1/+0 and gain haste until end of turn.\n−2: Discard your hand, then draw a card for each creature you control.\n−3: Ajani deals 4 damage to each creature except for tokens you control.",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": 1,
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "keywords": [
+        "haste"
+       ],
+       "to": "all:creature:yours"
+      }
+     ],
+     "text": "+1: +1/+0 and haste."
+    },
+    {
+     "loyalty": -3,
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 4,
+       "to": "all:creature:!token"
+      }
+     ],
+     "text": "-3: 4 damage to each nontoken creature."
+    }
+   ],
+   "approximations": [
+    "the Cadet trigger and the -2 are omitted"
+   ]
   },
   {
    "name": "Arni, Renowned Champion",
@@ -7332,7 +8377,35 @@
     "R"
    ],
    "oracle": "+1: Exile the top card of your library. You may cast that card. If you don't, Chandra deals 2 damage to each opponent.\n+1: Add {R}{R}.\n−3: Chandra deals 4 damage to target creature.\n−7: You get an emblem with \"Whenever you cast a spell, this emblem deals 5 damage to any target.\"",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": 1,
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 2,
+       "to": "each_opponent"
+      }
+     ],
+     "text": "+1: 2 damage to each opponent."
+    },
+    {
+     "loyalty": -3,
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 4
+      }
+     ],
+     "text": "-3: 4 damage to target creature.",
+     "targets": [
+      "creature"
+     ]
+    }
+   ],
+   "approximations": [
+    "the exile-and-cast, mana and emblem abilities are omitted"
+   ]
   },
   {
    "name": "Gallia, the Merrymaker",
@@ -7600,7 +8673,14 @@
     "R"
    ],
    "oracle": "Creatures you control have haste.",
-   "unsupported": "not compiled yet"
+   "statics": [
+    {
+     "affects": "all:creature:yours",
+     "keywords": [
+      "haste"
+     ]
+    }
+   ]
   },
   {
    "name": "Tetsuko Umezawa, Pursuer",
@@ -7893,7 +8973,53 @@
     "G"
    ],
    "oracle": "Whenever a creature you control with power 4 or greater enters, draw a card.\n+2: Untap up to two target lands.\n−3: Create a 4/4 green Beast creature token with trample.\n−4: Until your next turn, whenever one or more creatures attack one of your opponents, those creatures get +2/+2 and gain trample until end of turn.",
-   "unsupported": "not compiled yet"
+   "abilities": [
+    {
+     "loyalty": -3,
+     "effects": [
+      {
+       "op": "token",
+       "token": "beast"
+      }
+     ],
+     "text": "-3: Create a 4/4 Beast."
+    },
+    {
+     "loyalty": 2,
+     "effects": [
+      {
+       "op": "tap",
+       "untap": true
+      }
+     ],
+     "text": "+2: Untap up to two lands.",
+     "targets": [
+      {
+       "sel": "land:yours",
+       "optional": true
+      },
+      {
+       "sel": "land:yours",
+       "optional": true
+      }
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "when": "other_etb",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ],
+     "filter": "creature:power>=4"
+    }
+   ],
+   "approximations": [
+    "the -4 is omitted"
+   ]
   },
   {
    "name": "Ghalta the Unstoppable",
@@ -8409,7 +9535,7 @@
     "W"
    ],
    "oracle": "Vigilance, trample\nWhen Karn enters, draw a card for each color among other artifacts you control.",
-   "unsupported": "not compiled yet"
+   "unsupported": "Phyrexian-style {2/C} hybrid costs"
   },
   {
    "name": "Kiora of Salt and Sand",
@@ -8578,7 +9704,9 @@
     "W"
    ],
    "oracle": "Planeswalker spells you cast cost {1} less to cast.\n{W}{U}{B}{R}{G}, {T}: Proliferate X times, where X is the number of planeswalker types among planeswalkers you control. (To proliferate, choose any number of permanents and/or players, then give each another counter of each kind already there.)",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "both abilities are omitted"
+   ]
   },
   {
    "name": "Vraska, Soul of Stone",
@@ -8603,7 +9731,40 @@
     "W"
    ],
    "oracle": "Artifact creatures you control have vigilance.\nWhenever you cast a noncreature spell, create a 1/1 colorless Sculpture Treasure artifact creature token with \"{T}, Sacrifice this token: Add one mana of any color.\"",
-   "unsupported": "not compiled yet"
+   "statics": [
+    {
+     "affects": "all:creature:yours,type=artifact",
+     "keywords": [
+      "vigilance"
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "when": "cast_noncreature",
+     "effects": [
+      {
+       "op": "token",
+       "token": {
+        "name": "Sculpture Treasure",
+        "power": 1,
+        "toughness": 1,
+        "types": [
+         "Artifact",
+         "Creature"
+        ],
+        "subtypes": [
+         "Sculpture",
+         "Treasure"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the Sculpture's sacrifice-for-mana is omitted"
+   ]
   },
   {
    "name": "Vraska, the Cutting Glare",
@@ -8630,7 +9791,27 @@
     "G"
    ],
    "oracle": "Deathtouch\nWhen Vraska enters, if you control six or more lands, destroy target permanent an opponent controls. They create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "destroy"
+      }
+     ],
+     "targets": [
+      "permanent:theirs"
+     ],
+     "if": {
+      "kind": "control",
+      "n": 6,
+      "filter": "land:yours"
+     }
+    }
+   ],
+   "approximations": [
+    "the opponent's Treasure is omitted"
+   ]
   },
   {
    "name": "Karn, Argent Defender",
@@ -8651,7 +9832,7 @@
    "collector_number": "279",
    "color_identity": [],
    "oracle": "Artifacts and creatures entering the battlefield don't cause abilities to trigger.",
-   "unsupported": "not compiled yet"
+   "unsupported": "stops enter-the-battlefield triggers"
   },
   {
    "name": "Traxos, Scourge Eternal",
@@ -8833,7 +10014,7 @@
    "collector_number": "438",
    "color_identity": [],
    "oracle": "When you cast this spell, untap all lands you control.\nFlying, trample\nWard—Sacrifice three permanents.\n{3}, Exile this card from your hand: Target land gains \"{T}: Add {C}{C}\" until this card is cast from exile. You may cast this card for as long as it remains exiled.",
-   "unsupported": "not compiled yet"
+   "unsupported": "cast trigger, sacrifice ward, exile casting"
   },
   {
    "name": "Return to the Light Realms",
@@ -8847,7 +10028,12 @@
     "W"
    ],
    "oracle": "Return all nonland permanent cards from your graveyard to the battlefield.",
-   "unsupported": "not compiled yet"
+   "effects": [
+    {
+     "op": "reanimate",
+     "to": "all:nonland:zone=graveyard,yours"
+    }
+   ]
   },
   {
    "name": "Seasoned Cryomancer",
@@ -8867,7 +10053,34 @@
     "U"
    ],
    "oracle": "When this creature enters, draw two cards, then discard two cards. When you discard one or more nonland cards this way, tap up to that many target creatures and put a stun counter on each of them.\n{3}{U}{U}, Exile this card from your graveyard: Draw two cards.",
-   "unsupported": "not compiled yet"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "loot",
+       "draw": 2,
+       "discard": 2
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{3}{U}{U}",
+     "zone": "graveyard",
+     "exile_self": true,
+     "effects": [
+      {
+       "op": "draw",
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the tap-and-stun rider is omitted"
+   ]
   },
   {
    "name": "Darklight Phoenix",
@@ -8890,7 +10103,9 @@
     "B"
    ],
    "oracle": "Flying, haste\nAt the beginning of combat on your turn, if two or more creatures died this turn, return this card from your graveyard to the battlefield.",
-   "unsupported": "not compiled yet"
+   "approximations": [
+    "the graveyard return is omitted"
+   ]
   },
   {
    "name": "Omnipresence",
@@ -8904,7 +10119,7 @@
     "G"
    ],
    "oracle": "You may cast spells with mana value less than or equal to the number of creatures you control from your hand without paying their mana costs.",
-   "unsupported": "not compiled yet"
+   "unsupported": "free casting"
   }
  ]
 }

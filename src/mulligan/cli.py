@@ -454,6 +454,19 @@ def fit_cmd(
     console.print(f"wrote {model.save()}")
 
 
+@app.command("update-set")
+def update_set_cmd(set_code: str = typer.Argument(..., help="A compiled set, e.g. fra.")):
+    """Add newly spoiled cards to a compiled set (marked 'not compiled yet');
+    cards already compiled are left alone."""
+    from .cards.compiler import update_set
+    from .cards.ingest import fetch_set
+    from .cards.sets import load_set
+    added, pending = update_set(set_code, fetch_set(set_code))
+    console.print(f"{len(added)} new card(s): {', '.join(added) or '-'}", highlight=False)
+    console.print(f"{len(pending)} card(s) waiting to be compiled", highlight=False)
+    console.print(load_set(set_code).coverage(), markup=False)
+
+
 @app.command("ingest")
 def ingest_cmd(set_code: str = typer.Argument(..., help="Scryfall set code, e.g. fra.")):
     """Fetch a set's cards from Scryfall, the input to compiling it."""

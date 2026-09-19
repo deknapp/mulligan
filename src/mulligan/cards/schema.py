@@ -165,10 +165,20 @@ def targets(values) -> tuple[TargetSpec, ...]:
     return tuple(target(v) for v in values or ())
 
 
+CONDITIONS = {
+    "cast_from_graveyard", "cast_this_turn", "control", "creature_died_this_turn",
+    "drawn_this_turn", "enduring_story", "graveyard", "it_matches", "kicked",
+    "life_gained_this_turn", "opponent_controls", "prepared", "surveilled_this_turn",
+    "target_matches", "your_turn"
+}
+
+
 def condition(value) -> Condition | None:
     if value is None:
         return None
     _check_keys(value, {"kind", "n", "filter", "negate"}, "condition")
+    if value["kind"] not in CONDITIONS:
+        raise CardDataError(f"unknown condition kind {value['kind']!r}")
     return Condition(value["kind"], value.get("n", 1), value.get("filter", ""),
                      bool(value.get("negate")))
 

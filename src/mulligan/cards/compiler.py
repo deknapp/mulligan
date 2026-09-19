@@ -163,3 +163,29 @@ def compile_with_llm(raw_cards: list[dict], model: str = "claude-opus-5",
             entry = {**base, "unsupported": f"compiler output did not load: {error}"}
         out.append(entry)
     return out
+
+
+def update_set(code: str, raw_cards: list[dict], path=None) -> tuple[list[str], list[str]]:
+    """Merge a fresh Scryfall fetch into a compiled set without touching the
+    cards already compiled: new cards (a spoiler season adds them every day)
+    are appended with their skeleton and ``unsupported: not compiled yet``.
+    Returns (new card names, names still not compiled)."""
+    from pathlib import Path
+
+    from .sets import load_set, set_path
+    path = Path(path) if path else set_path(code)
+    data = json.loads(path.read_text())
+    known = {c["name"] for c in data["cards"]}
+    added = []
+    for raw in raw_cards:
+        entry = skeleton(raw)
+        if entry["name"] in known:
+            continue
+        known.add(entry["name"])
+        data["cards"].append({**entry, "unsupported": "not compiled yet"})
+        added.append(entry["name"])
+    if added:
+        path.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        load_set.cache_clear()
+    pending = [c["name"] for c in data["cards"] if c.get("unsupported") == "not compiled yet"]
+    return added, pending

@@ -322,6 +322,12 @@ class Game:
             return len(self.state.players[ctx.controller].graveyard)
         if value == "hand":
             return len(self.state.players[ctx.controller].hand)
+        if value == "graveyard_types":
+            types = set()
+            for pl in self.state.players:
+                for obj_id in pl.graveyard:
+                    types |= self.state.objects[obj_id].spec.types
+            return len(types)
         if value == "life_gained":
             return self.state.players[ctx.controller].life_gained_this_turn
         if value == "full_graveyards":
@@ -365,6 +371,8 @@ class Game:
             return player.draws_this_turn >= cond.n
         if kind == "creature_died_this_turn":
             return self.state.creature_died_this_turn
+        if kind == "life_gained_this_turn":
+            return player.life_gained_this_turn >= cond.n
         if kind == "cast_this_turn":
             return player.spells_cast_this_turn >= cond.n
         if kind == "surveilled_this_turn":

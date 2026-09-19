@@ -211,3 +211,42 @@ def test_every_trigger_event_a_card_uses_can_actually_fire():
         for spec in load_set(code).playable.values():
             for trigger in spec.triggers:
                 assert f'"{trigger.when}"' in matcher, (spec.name, trigger.when)
+
+
+def test_a_real_planeswalker_card_enters_with_loyalty_and_uses_abilities():
+    game = scene(Side(hand=["Chandra, Torch of Defiance"], lands={"R": 4}),
+                 Side(battlefield=["Heartstring Puller"]))
+    cast(game, "Chandra, Torch of Defiance")
+    resolve(game)
+    chandra = named(game, "Chandra, Torch of Defiance")[0]
+    assert chandra.loyalty == 4
+    minus = [o for o in options(game, act.ActivateAbility)
+             if o.source_id == chandra.id and o.targets]
+    game.apply(minus[0])  # -3: 4 damage to target creature
+    resolve(game)
+    assert chandra.loyalty == 1 and not named(game, "Heartstring Puller")
+
+
+def test_tarmogoyf_counts_card_types_in_all_graveyards():
+    game = scene(Side(battlefield=["Tarmogoyf"], graveyard=["Unsummon", "Rank Rat"]),
+                 Side(graveyard=["Forest"]))
+    goyf = named(game, "Tarmogoyf")[0]
+    assert game.power_of(goyf) == 3  # instant, creature, land
+
+
+def test_check_lands_need_two_other_lands():
+    game = scene(Side(hand=["Deserted Beach"], lands={"W": 1}))
+    game.apply(options(game, act.PlayLand)[0])
+    assert named(game, "Deserted Beach")[0].tapped
+    game2 = scene(Side(hand=["Deserted Beach"], lands={"W": 2}))
+    game2.apply(options(game2, act.PlayLand)[0])
+    assert not named(game2, "Deserted Beach")[0].tapped
+
+
+def test_unknown_condition_kinds_are_load_errors():
+    import pytest
+
+    from mulligan.cards.schema import CardDataError, card
+    with pytest.raises(CardDataError):
+        card({"name": "X", "types": ["Creature"], "power": 1, "toughness": 1,
+              "statics": [{"affects": "self", "power": 1, "if": {"kind": "no_such_thing"}}]})
