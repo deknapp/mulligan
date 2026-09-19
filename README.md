@@ -42,8 +42,27 @@ than a quarter of this deck is simplified, so treat its result as unreliable
 ```
 
 That warning is earned. The deck above went 4–3 in a real Premier Draft; the
-simulator gives it about 30% against a typical field, because its Elf/landfall
-engine is exactly the part the compiled cards simplify.
+simulator gives it about 30% against a typical field, because a third of its
+cards each lose one ability in the compiled data (Woodland Weavemaster's mana,
+Silvan Reveler's land recursion, Thranduil's borrowed abilities, ...).
+
+So `versus` also answers from **real games**, when 17Lands has data for the set:
+a logistic regression of win/loss on the full decklist, the pilot's skill and
+the play/draw, fitted to 17Lands' public game logs (`mulligan fit --set hob`,
+about 10 seconds). It needs no rules engine, so no card is ever simplified, but
+it rates decks against an average opponent and so misses specific matchups.
+
+| HOB Premier Draft deck model (217,581 games) | held-out result |
+|---|---|
+| decks it ranks in its top fifth | actually won 67.2% |
+| decks it ranks in its bottom fifth | actually won 57.0% |
+| rank correlation, deck score vs actual win rate (2,627 decks, ≥5 games) | +0.20 (pilot skill alone: +0.35) |
+| the 4–3 deck above | predicted 47% vs an average opponent |
+
+The two answers are complementary: the data model is the better number once a
+set has data; the simulator works on release day, sees matchups, and lets you
+watch why. Where they disagree, the gap points at the cards the engine
+simplifies.
 
 ## Does it mean anything?
 
@@ -102,7 +121,8 @@ Python 3.11+. Dependencies: `typer`, `rich`. That's all.
 | command | what it does |
 |---|---|
 | `mulligan decks` | your event decks from the MTG Arena log |
-| `mulligan versus A B` | which of two Arena decks would win (`log:N`, `clipboard`, or a file) |
+| `mulligan versus A B` | which of two Arena decks would win (`log:N`, `clipboard`, or a file): from real 17Lands games and by simulation |
+| `mulligan fit --set hob` | fit the deck model to 17Lands' public games for a set |
 | `mulligan sets` | compiled sets and how much of each the engine can play |
 | `mulligan sealed --set hob --seed N` | open a sealed pool and build the best deck |
 | `mulligan compare A B --set hob` | which deck is better: head to head, and against the set's field |

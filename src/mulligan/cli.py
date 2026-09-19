@@ -132,10 +132,15 @@ def versus_cmd(
     games: int = typer.Option(2000, help="Games to play (rounded up to even)."),
     agent: str = typer.Option("heuristic", help="Who pilots both decks."),
     set_code: str = typer.Option(None, "--set", help="Override the detected set."),
+    fmt: str = typer.Option("PremierDraft", "--format",
+                            help="17Lands format for the data model: PremierDraft or Sealed."),
     seed: int = typer.Option(0),
     workers: int = typer.Option(0),
 ):
-    """Which of two Arena decks would win? Decks from your Arena log or Export text."""
+    """Which of two Arena decks would win? Decks from your Arena log or Export text.
+
+    Two answers: a model fitted to real 17Lands games (when one exists for the
+    set), and a simulation of the matchup."""
     from .arena_log import ArenaLogError
     from .decks import DeckError, load_ref
     try:
@@ -152,12 +157,27 @@ def versus_cmd(
     if a.set_code and b.set_code and a.set_code != b.set_code:
         console.print(f"[yellow]note:[/yellow] the decks are from different sets "
                       f"({a.set_code.upper()} vs {b.set_code.upper()})")
+    if a.names and b.names and a.set_code == b.set_code:
+        from .deckmodel import DeckModel
+        try:
+            model = DeckModel.load(a.set_code, fmt)
+        except FileNotFoundError:
+            model = None
+        if model is not None:
+            p = model.head_to_head(a.names, b.names)
+            console.print(f"\n[bold]From real games[/bold] (17Lands {a.set_code.upper()} {fmt}, "
+                          f"{model.meta.get('train_games', '?')} games; full card text, "
+                          f"no simulation)")
+            console.print(f"  {a.label} beats {b.label}: {p:.0%}", highlight=False)
+            console.print(f"  vs an average opponent: {a.label} {model.vs_field(a.names):.0%}, "
+                          f"{b.label} {model.vs_field(b.names):.0%}", highlight=False)
     start = time.time()
     result = compare(Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent, tuple(b.cards)),
                      games=games, seed=seed, workers=workers or None)
+    console.print("\n[bold]Simulated[/bold] (both decks piloted by the "
+                  f"{agent} agent; sees matchups, but only the modelled card text)")
     console.print(result.summary(), markup=False)
-    console.print(f"[dim]{result.games} games in {time.time() - start:.1f}s, both decks "
-                  f"piloted by the {agent} agent[/dim]")
+    console.print(f"[dim]{result.games} games in {time.time() - start:.1f}s[/dim]")
 
 
 @app.command("agents")
@@ -292,6 +312,18 @@ def train_cmd(
                     workers=workers or None, log=log)
     low, high = history.best_interval
     console.print(f"best vs heuristic: {history.best_rate:.1%} ({low:.1%}–{high:.1%})")
+
+
+@app.command("fit")
+def fit_cmd(
+    set_code: str = typer.Option(..., "--set"),
+    fmt: str = typer.Option("PremierDraft", "--format", help="PremierDraft, Sealed, ..."),
+    epochs: int = typer.Option(8),
+):
+    """Fit the deck model to 17Lands' public games for a set (about a minute)."""
+    from .deckmodel import fit
+    model = fit(set_code, fmt, epochs=epochs, log=lambda line: console.print(f"[dim]{line}[/dim]"))
+    console.print(f"wrote {model.save()}")
 
 
 @app.command("ingest")

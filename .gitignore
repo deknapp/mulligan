@@ -12,3 +12,4 @@ htmlcov/
 runs/
 data/raw/
 data/17lands/
+data/17lands/*.csv.gz

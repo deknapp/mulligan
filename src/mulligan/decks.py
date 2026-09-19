@@ -82,6 +82,7 @@ class DeckRef:
     cards: list[CardSpec]
     warnings: list[str]
     replaced: int = 0
+    names: dict[str, int] | None = None   # the real list, before any replacement
 
     def fidelity(self) -> tuple[int, int, int]:
         """(exact, approximated, replaced) counts over the deck's nonland cards."""
@@ -159,7 +160,8 @@ def load_ref(ref: str, set_code: str | None = None) -> DeckRef:
         if logged.unresolved:
             warnings.append(f"log:{index}: {sum(logged.unresolved.values())} card(s) with "
                             f"unknown Arena ids were left out")
-        return DeckRef(f"log:{index} ({logged.event})", code, cards, warnings, replaced)
+        return DeckRef(f"log:{index} ({logged.event})", code, cards, warnings, replaced,
+                       dict(logged.names))
     if ref == "clipboard":
         import subprocess
         text = subprocess.run(["pbpaste"], capture_output=True, text=True).stdout
@@ -189,4 +191,4 @@ def load_ref(ref: str, set_code: str | None = None) -> DeckRef:
         name = match.group(2).strip().split(" // ")[0]
         names[name] = names.get(name, 0) + int(match.group(1))
     cards, warnings, replaced = _substitute(names, load_set(code).playable, label)
-    return DeckRef(label, code, cards, warnings, replaced)
+    return DeckRef(label, code, cards, warnings, replaced, names)
