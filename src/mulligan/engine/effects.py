@@ -426,6 +426,7 @@ class ReturnToBattlefield(Effect):
     to: str = "target"
     tapped: bool = False
     attach_to: str = ""  # an Aura returning "attached to target creature"
+    finality: bool = False  # "with a finality counter on it"
 
     def resolve(self, game: Game, ctx: Context) -> None:
         hosts = ctx.objects(game, self.attach_to) if self.attach_to else []
@@ -434,6 +435,7 @@ class ReturnToBattlefield(Effect):
                 host = hosts[0].id if hosts and hosts[0].zone == "battlefield" else None
                 game.put_onto_battlefield(obj, ctx.controller, from_zone="graveyard",
                                           tapped=self.tapped, attach_to=host)
+                obj.finality = self.finality
 
     def describe(self) -> str:
         return f"return {self.to} to the battlefield"

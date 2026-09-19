@@ -2821,8 +2821,20 @@
     "R"
    ],
    "oracle": "Menace\nWhenever one or more opponents are dealt noncombat damage, creatures you control get +1/+0 until end of turn.",
+   "triggers": [
+    {
+     "when": "opponent_noncombat_damaged",
+     "effects": [
+      {
+       "op": "pump",
+       "power": 1,
+       "to": "all:creature:yours"
+      }
+     ]
+    }
+   ],
    "approximations": [
-    "the noncombat-damage trigger is omitted"
+    "triggers per damage event, not once per batch"
    ]
   },
   {
@@ -4526,8 +4538,21 @@
     "R"
    ],
    "oracle": "Prowess (Whenever you cast a noncreature spell, this creature gets +1/+1 until end of turn.)\n{B}{R}: Return this card from your graveyard to the battlefield with a finality counter on it. Activate only if an opponent has been dealt noncombat damage this turn. (If a creature with a finality counter on it would die, exile it instead.)",
-   "approximations": [
-    "the graveyard-return ability is omitted"
+   "abilities": [
+    {
+     "cost": "{B}{R}",
+     "zone": "graveyard",
+     "if": {
+      "kind": "opponent_noncombat_damaged"
+     },
+     "effects": [
+      {
+       "op": "reanimate",
+       "to": "self",
+       "finality": true
+      }
+     ]
+    }
    ]
   },
   {
@@ -4904,8 +4929,21 @@
      "filter": "creature"
     }
    ],
-   "approximations": [
-    "the graveyard return is omitted"
+   "abilities": [
+    {
+     "cost": "{W}{U}",
+     "zone": "graveyard",
+     "if": {
+      "kind": "surveilled_this_turn"
+     },
+     "effects": [
+      {
+       "op": "reanimate",
+       "to": "self",
+       "finality": true
+      }
+     ]
+    }
    ]
   },
   {
@@ -5648,8 +5686,17 @@
    ],
    "oracle": "[Whiplash Wordsmith] This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\nAs long as an opponent was dealt noncombat damage this turn, this creature has flying and haste.\n[Vicious Verse] Vicious Verse deals 1 damage to target opponent.",
    "enters_prepared": true,
-   "approximations": [
-    "the noncombat-damage flying/haste static is omitted"
+   "statics": [
+    {
+     "affects": "self",
+     "keywords": [
+      "flying",
+      "haste"
+     ],
+     "if": {
+      "kind": "opponent_noncombat_damaged"
+     }
+    }
    ]
   },
   {
@@ -6951,8 +6998,12 @@
     "W"
    ],
    "oracle": "Lifelink\nNoncreature spells your opponents cast cost {1} more to cast.",
-   "approximations": [
-    "the opponents' spell tax is omitted"
+   "statics": [
+    {
+     "affects": "self",
+     "opponent_spells": 1,
+     "spell_filter": "card:!type=creature"
+    }
    ]
   },
   {
@@ -7291,8 +7342,12 @@
     "U"
    ],
    "oracle": "Flying\nNoncreature spells you cast cost {1} less to cast.",
-   "approximations": [
-    "the noncreature discount is omitted"
+   "statics": [
+    {
+     "affects": "self",
+     "your_spells": -1,
+     "spell_filter": "card:!type=creature"
+    }
    ]
   },
   {
@@ -8026,10 +8081,20 @@
        "amount": 1
       }
      ]
+    },
+    {
+     "when": "opponent_noncombat_damaged",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "self"
+      }
+     ]
     }
    ],
    "approximations": [
-    "planeswalker deaths and the noncombat-damage trigger are omitted"
+    "planeswalker deaths do not trigger it"
    ]
   },
   {
@@ -8158,10 +8223,20 @@
        "who": "each_opponent"
       }
      ]
+    },
+    {
+     "when": "any_discard",
+     "effects": [
+      {
+       "op": "damage",
+       "amount": 1,
+       "to": "each_opponent"
+      }
+     ]
     }
    ],
    "approximations": [
-    "the discard-damage trigger is omitted"
+    "triggers per card discarded, not per batch"
    ]
   },
   {
@@ -9317,10 +9392,17 @@
        "to": "self"
       }
      ]
+    },
+    {
+     "when": "discarded",
+     "effects": [
+      {
+       "op": "gain_life",
+       "amount": 3
+      }
+     ],
+     "zone": "graveyard"
     }
-   ],
-   "approximations": [
-    "the discard lifegain is omitted"
    ]
   },
   {

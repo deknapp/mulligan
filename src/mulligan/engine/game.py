@@ -383,6 +383,8 @@ class Game:
             return self.state.creature_died_this_turn
         if kind == "life_gained_this_turn":
             return player.life_gained_this_turn >= cond.n
+        if kind == "opponent_noncombat_damaged":
+            return self.state.players[1 - seat].noncombat_damage_this_turn > 0
         if kind == "noncreature_cast_this_turn":
             return player.noncreature_cast_this_turn >= cond.n
         if kind == "cast_this_turn":
@@ -450,6 +452,10 @@ class Game:
             )
             if combat and source is not None:
                 self._fire("combat_damage_player", subject=source, amount=amount)
+            if not combat:
+                self.state.players[target.id].noncombat_damage_this_turn += amount
+                self._fire("opponent_noncombat_damaged", controller=1 - target.id,
+                           amount=amount)
         elif target.kind == "object":
             obj = self.object_by_id(target.id)
             if obj is None or obj.zone != "battlefield":
@@ -543,6 +549,8 @@ class Game:
         obj = self.object_by_id(obj_id)
         if obj is None:
             return
+        if obj.finality and obj.zone == "battlefield" and zone == "graveyard":
+            zone = "exile"  # a finality counter: exiled instead of going to the graveyard
         state = self.state
         was_on_battlefield = obj.zone == "battlefield"
         left_graveyard = obj.zone == "graveyard" and zone != "graveyard" and obj.spec.is_creature
@@ -571,6 +579,7 @@ class Game:
         obj.attack_target = None
         obj.x_paid = 0
         obj.chosen = ""
+        obj.finality = False
         died_as_creature = was_on_battlefield and zone == "graveyard" and self.is_creature(obj)
         obj.controller = obj.owner
         if was_on_battlefield:
@@ -763,6 +772,7 @@ class Game:
                 hand, key=lambda c: self.card_value(c.spec) + (5 if c.spec.is_land else 0))
         self.move_to_zone(choice.id, "graveyard")
         self.state.record(f"{player.name} discards {choice.name}")
+        self._discarded(seat, choice)
         return choice
 
     def choose_creature_type(self, seat: int, source_id: int | None, policy: str) -> None:
@@ -785,6 +795,10 @@ class Game:
             source.chosen = max(sorted(score), key=lambda t: score[t])
             self.state.record(f"{source.name}: chose {source.chosen}")
 
+    def _discarded(self, seat: int, card: GameObject) -> None:
+        self._fire("any_discard", subject=card, controller=seat)
+        self._fire("discarded", subject=card, controller=seat)
+
     def random_discard(self, seat: int) -> None:
         hand = self.state.players[seat].hand
         if hand:
@@ -792,6 +806,7 @@ class Game:
             self.move_to_zone(choice.id, "graveyard")
             self.state.record(f"{self.state.players[seat].name} discards {choice.name} "
                               "at random")
+            self._discarded(seat, choice)
 
     def _want_on_top(self, seat: int, obj: GameObject) -> bool:
         lands = self._lands_total(seat)
@@ -1367,6 +1382,15 @@ class Game:
                 self, Context(controller=seat, targets=targets, source_id=obj.id))
             if applies:
                 cost = cost.reduced(spec.cost_reduction)
+        for src in self._statics():
+            for static in src.spec.statics:
+                change = (static.your_spells if src.controller == seat
+                          else static.opponent_spells)
+                if not change or not _card_matches(self, filters.parse(static.spell_filter),
+                                                   obj, seat):
+                    continue
+                cost = cost.plus(ManaCost(generic=change)) if change > 0 else cost.reduced(
+                    -change)
         tax = self._ward_tax(targets, seat)
         if tax:
             cost = cost.plus(ManaCost(generic=tax))
@@ -1385,6 +1409,9 @@ class Game:
                     if ability.tap_cost and (obj.tapped or self.has_summoning_sickness(obj)):
                         continue
                     if ability.once_per_turn and obj.activations.get(index):
+                        continue
+                    if ability.only_if is not None and not ability.only_if.holds(
+                            self, Context(controller=seat, source_id=obj.id)):
                         continue
                     if ability.loyalty is not None:
                         # One loyalty ability per planeswalker per turn, at
@@ -1514,6 +1541,7 @@ class Game:
             player = state.players[seat]
             self.move_to_zone(action.card_id, "graveyard")
             state.record(f"{player.name} discards {state.objects[action.card_id].name}")
+            self._discarded(seat, state.objects[action.card_id])
             return
         if isinstance(action, act.ChooseTargets):
             trigger = state.pending_trigger
@@ -1802,6 +1830,10 @@ class Game:
                         self, trigger.filter + (",zone=graveyard" if ":" in trigger.filter
                                                 else ":zone=graveyard"),
                         subject, obj.controller, obj.id)))
+        if when == "any_discard":
+            return event == "any_discard"
+        if when == "discarded":
+            return event == "discarded" and subject is obj
         if when == "any_dies":
             return event == "dies" and subject is not obj and self.is_creature(subject)
         if when == "attacks":
@@ -1816,7 +1848,7 @@ class Game:
                     "cast_noncreature", "cast_creature", "cast_spell", "draw_second",
                     "opp_draw_second", "opp_cast_noncreature", "draw",
                     "creature_leaves_graveyard", "gain_life", "scry_or_surveil",
-                    "loyalty_counters"):
+                    "loyalty_counters", "opponent_noncombat_damaged"):
             return event == when and mine
         return False
 
@@ -1882,6 +1914,7 @@ class Game:
                 p.spells_cast_this_turn = 0
                 p.life_gained_this_turn = 0
                 p.noncreature_cast_this_turn = 0
+                p.noncombat_damage_this_turn = 0
                 p.surveilled_this_turn = False
             for obj in self.state.zone_objects(seat, "battlefield"):
                 obj.activations = {}

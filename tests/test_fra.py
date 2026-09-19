@@ -300,3 +300,51 @@ def test_kindred_judgment_keeps_the_chosen_type():
     resolve(game)
     assert named(game, "Semester Foreseer") and named(game, "Variable Chaser")
     assert not named(game, "Rampart Hunter") and not named(game, "Apex Witchstalker")
+
+
+def test_spell_taxes_and_discounts():
+    taxed = scene(Side(hand=["Unsummon"], lands={"U": 1}),
+                  Side(battlefield=["Thalia, the Survivor", "Heartstring Puller"]))
+    assert not options(taxed, act.CastSpell), "Thalia makes Unsummon cost {1}{U}"
+    discounted = scene(Side(hand=["Last Gasp"], battlefield=["Geist of Saint Thalia"],
+                            lands={"B": 1}), Side(battlefield=["Heartstring Puller"]))
+    assert options(discounted, act.CastSpell), "Geist makes {1}{B} cost {B}"
+
+
+def test_noncombat_damage_turns_on_whiplash_wordsmith():
+    game = scene(Side(hand=["Whiplash Wordsmith"], lands={"B": 5}))
+    cast(game, "Whiplash Wordsmith")
+    resolve(game)
+    wordsmith = named(game, "Whiplash Wordsmith")[0]
+    from mulligan.engine.types import Keyword
+    assert not game.has_keyword(wordsmith, Keyword.FLYING)
+    cast(game, "Whiplash Wordsmith", face="prepared")  # Vicious Verse: 1 to the opponent
+    resolve(game)
+    assert game.has_keyword(wordsmith, Keyword.FLYING)
+
+
+def test_finality_counter_exiles_instead_of_dying():
+    game = scene(Side(graveyard=["Grim Repriser"], hand=["No Admittance"],
+                      lands={"B": 2, "R": 4}),
+                 Side(battlefield=["Heartstring Puller"]))
+    assert not options(game, act.ActivateAbility), "needs noncombat damage first"
+    burn = next(o for o in options(game, act.CastSpell) if o.targets[0].kind == "player"
+                and o.targets[0].id == 1)
+    game.apply(burn)  # No Admittance to the opponent's face: noncombat damage
+    resolve(game)
+    in_graveyard = next(o for o in game.state.objects.values() if o.name == "Grim Repriser")
+    game.apply(next(o for o in options(game, act.ActivateAbility)
+                    if o.source_id == in_graveyard.id))
+    resolve(game)
+    repriser = named(game, "Grim Repriser")[0]
+    game.destroy(repriser.id)
+    assert repriser.zone == "exile"
+
+
+def test_discard_triggers():
+    """Tinybones pings each opponent whenever any player discards."""
+    game = scene(Side(battlefield=["Tinybones, Pocket Nuisance"], hand=["Rank Rat"],
+                      lands={"B": 2}), Side(hand=["Unsummon"]))
+    cast(game, "Rank Rat")  # its ETB makes the opponent discard
+    resolve(game)
+    assert game.state.players[1].life == 19

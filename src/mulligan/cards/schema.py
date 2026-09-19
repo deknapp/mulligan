@@ -169,7 +169,7 @@ def targets(values) -> tuple[TargetSpec, ...]:
 CONDITIONS = {
     "cast_from_graveyard", "cast_this_turn", "control", "creature_died_this_turn",
     "drawn_this_turn", "enduring_story", "graveyard", "it_matches", "kicked",
-    "noncreature_cast_this_turn",
+    "noncreature_cast_this_turn", "opponent_noncombat_damaged",
     "life_gained_this_turn", "opponent_controls", "prepared", "surveilled_this_turn",
     "target_matches", "your_turn"
 }
@@ -249,17 +249,20 @@ def trigger(value: dict) -> Trigger:
 
 def static(value: dict) -> Static:
     _check_keys(value, {"affects", "power", "toughness", "keywords", "flags", "ward", "if",
-                        "text", "abilities"}, "static")
+                        "text", "abilities", "your_spells", "opponent_spells",
+                        "spell_filter"}, "static")
     return Static(value.get("affects", "self"), value.get("power", 0),
                   value.get("toughness", 0), keywords(value.get("keywords")),
                   frozenset(value.get("flags", ())), value.get("ward", 0),
                   condition(value.get("if")), value.get("text", ""),
-                  tuple(ability(a) for a in value.get("abilities", ())))
+                  tuple(ability(a) for a in value.get("abilities", ())),
+                  value.get("your_spells", 0), value.get("opponent_spells", 0),
+                  value.get("spell_filter", "card"))
 
 
 ABILITY_KEYS = {"cost", "tap", "sacrifice_self", "sacrifice", "discard", "discard_self",
                 "life", "zone", "sorcery", "once_per_turn", "targets", "effects", "mana",
-                "text", "loyalty", "exile_self"}
+                "text", "loyalty", "exile_self", "if"}
 
 
 def ability(value: dict) -> ActivatedAbility:
@@ -272,7 +275,8 @@ def ability(value: dict) -> ActivatedAbility:
         sacrifice=value.get("sacrifice", ""), discard=value.get("discard", 0),
         discard_self=bool(value.get("discard_self")), life=value.get("life", 0),
         zone=value.get("zone", "battlefield"), once_per_turn=bool(value.get("once_per_turn")),
-        loyalty=value.get("loyalty"), exile_self=bool(value.get("exile_self")))
+        loyalty=value.get("loyalty"), exile_self=bool(value.get("exile_self")),
+        only_if=condition(value.get("if")))
 
 
 def cost(value: dict) -> Cost:

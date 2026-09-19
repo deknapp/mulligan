@@ -48,6 +48,9 @@ TRIGGER_EVENTS = {
     "gain_life": "you gain life",
     "scry_or_surveil": "you scry or surveil",
     "loyalty_counters": "you put loyalty counters on a planeswalker",
+    "opponent_noncombat_damaged": "an opponent is dealt noncombat damage",
+    "any_discard": "a player discards a card",
+    "discarded": "this card is discarded (it triggers from the graveyard)",
 }
 
 
@@ -102,6 +105,7 @@ class ActivatedAbility:
     # A planeswalker's loyalty ability: +N / -N (0 is "0:"); None otherwise.
     loyalty: int | None = None
     exile_self: bool = False   # "Exile this card from your graveyard: ..."
+    only_if: Condition | None = None  # "Activate only if ..."
 
     @property
     def cost(self) -> Cost:
@@ -170,6 +174,11 @@ class Static:
     # Activated abilities granted to what it affects ("Planeswalkers you
     # control have '[-2]: ...'").
     abilities: tuple[ActivatedAbility, ...] = ()
+    # Spell cost changes: generic mana added to (or, negative, removed from)
+    # spells matching ``spell_filter`` cast by you / by your opponents.
+    your_spells: int = 0
+    opponent_spells: int = 0
+    spell_filter: str = "card"
 
 
 @dataclass(frozen=True)
@@ -312,7 +321,7 @@ class GameObject:
                  "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to",
                  "temp_flags", "base_override", "lore", "on_adventure", "playable_until",
                  "linked_to", "activations", "cast_face", "loyalty", "stun", "prepared",
-                 "attack_target", "x_paid", "chosen")
+                 "attack_target", "x_paid", "chosen", "finality")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -358,6 +367,7 @@ class GameObject:
         self.attack_target: int | None = None  # a planeswalker it is attacking
         self.x_paid = 0          # X chosen when it was cast ("enters with X counters")
         self.chosen = ""         # a creature type chosen as it entered / resolved
+        self.finality = False    # a finality counter: exiled instead of dying
 
     @property
     def name(self) -> str:
@@ -414,6 +424,7 @@ class Player:
         self.spells_cast_this_turn = 0
         self.life_gained_this_turn = 0
         self.noncreature_cast_this_turn = 0
+        self.noncombat_damage_this_turn = 0
         self.surveilled_this_turn = False
 
     def zone(self, name: str) -> list[int]:
