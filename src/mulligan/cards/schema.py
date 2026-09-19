@@ -101,6 +101,7 @@ EFFECTS: dict[str, type[fx.Effect]] = {
     "may_pay": fx.MayPay,
     "copy_self": fx.CopySelf,
     "reveal_until": fx.RevealUntil,
+    "flicker": fx.Flicker,
 }
 
 NAMED_TOKENS = {"treasure": fx.TREASURE, "soldier": fx.SOLDIER,

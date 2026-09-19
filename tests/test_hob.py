@@ -372,3 +372,39 @@ def test_part_in_friendship_finds_a_creature_when_one_dies():
     cast(game, "Bilbo's Deadly Slice", target="Lake-town Lookout")
     resolve(game)
     assert named(game, "Ordinary Bear", 0), "mana value 4 <= 6 lands: onto the battlefield"
+
+
+def test_ragged_short_spear_discards_then_draws_two():
+    game = scene(Side(hand=["Ragged Short Spear", "Ordinary Bear"], lands={"R": 2},
+                      library=["Forest"] * 5))
+    cast(game, "Ragged Short Spear")
+    resolve(game)
+    hand = [game.state.obj(i).name for i in game.state.players[0].hand]
+    assert len(hand) == 2 and "Ordinary Bear" not in hand  # discarded 1, drew 2
+
+
+def test_moment_of_glory_flashback_counters_the_others_once():
+    game = scene(Side(graveyard=["Moment of Glory"], battlefield=["Ordinary Bear", "Attercop"],
+                      lands={"W": 5}))
+    cast(game, "Moment of Glory", face="flashback", target="Ordinary Bear")
+    resolve(game)
+    assert named(game, "Ordinary Bear")[0].counters == 1
+    assert named(game, "Attercop")[0].counters == 1
+
+
+def test_vow_to_erebor_attaches_equipment_to_a_dwarf():
+    game = scene(Side(hand=["Vow to Erebor"], battlefield=["Dori, Bearer of Friends",
+                                                           "Well-Worn Spatula"],
+                      lands={"W": 2}))
+    cast(game, "Vow to Erebor", target="Dori, Bearer of Friends")
+    resolve(game)
+    spatula = named(game, "Well-Worn Spatula")[0]
+    assert spatula.attached_to == named(game, "Dori, Bearer of Friends")[0].id
+
+
+def test_gone_fishing_flickers_and_retriggers_etb():
+    game = scene(Side(hand=["Lake-town Mariners"], battlefield=["Dori, Bearer of Friends"],
+                      lands={"U": 4}))
+    cast(game, "Lake-town Mariners", face="adventure", target="Dori, Bearer of Friends")
+    resolve(game)
+    assert len(named(game, "Treasure", 0)) == 1, "Dori's ETB made a new Treasure"

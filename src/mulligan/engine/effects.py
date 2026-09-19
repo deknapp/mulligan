@@ -251,8 +251,15 @@ class Loot(Effect):
     discard: int = 1
     # "If you discard a land card this way, put it onto the battlefield tapped."
     land_to_battlefield: bool = False
+    # "You may discard a card. If you do, draw two cards." (a rummage)
+    discard_first: bool = False
 
     def resolve(self, game: Game, ctx: Context) -> None:
+        if self.discard_first:
+            if game.auto_discard(ctx.controller) is not None:
+                for _ in range(self.draw):
+                    game.draw_card(ctx.controller)
+            return
         for _ in range(self.draw):
             game.draw_card(ctx.controller)
         for _ in range(self.discard):
@@ -414,6 +421,24 @@ class ReturnToBattlefield(Effect):
 
 
 @dataclass(frozen=True)
+class Flicker(Effect):
+    """Exile, then return to the battlefield under the owner's control: a new
+    object, so counters and Auras fall off and enter-the-battlefield
+    abilities trigger again."""
+
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            game.move_to_zone(obj.id, "exile")
+            if obj.zone == "exile":
+                game.put_onto_battlefield(obj, obj.owner, from_zone="exile")
+
+    def describe(self) -> str:
+        return f"exile {self.to}, then return it to the battlefield"
+
+
+@dataclass(frozen=True)
 class PutOnLibrary(Effect):
     """Put on top or bottom of its owner's library (the owner's choice where
     the card says so: the engine picks top, the usual right answer)."""
@@ -555,11 +580,14 @@ class AddCounters(Effect):
 
     count: Amount = 1
     to: str = "target"
+    except_targets: bool = False  # "each other creature you control"
 
     def resolve(self, game: Game, ctx: Context) -> None:
         n = game.amount(self.count, ctx)
+        skip = {t.id for t in ctx.targets if t.kind == "object"} if self.except_targets else set()
         for obj in _on_battlefield(ctx.objects(game, self.to)):
-            game.add_counters(obj.id, n)
+            if obj.id not in skip:
+                game.add_counters(obj.id, n)
 
     def describe(self) -> str:
         return f"put {self.count} +1/+1 counter(s) on {self.to}"
@@ -622,11 +650,15 @@ class Attach(Effect):
 
     to: str = "target"
     what: str = "self"
+    one: bool = False  # "attach an Equipment you control": just one (the strongest)
 
     def resolve(self, game: Game, ctx: Context) -> None:
         creatures = [o for o in _on_battlefield(ctx.objects(game, self.to))
                      if game.is_creature(o)]
-        for equipment in _on_battlefield(ctx.objects(game, self.what)):
+        gear = _on_battlefield(ctx.objects(game, self.what))
+        if self.one:
+            gear = sorted(gear, key=lambda o: -o.spec.cost.mana_value)[:1]
+        for equipment in gear:
             if creatures:
                 game.attach(equipment.id, creatures[0].id)
 

@@ -37,7 +37,7 @@ games, each with its full decklist):
 
 | question | tool | how well it works |
 |---|---|---|
-| Which build of *my* deck is better? (swap cards, change lands, cut a color) | **deck model** (real games) | the core of the model: each card's and deck-shape's value, fitted to real results |
+| Which build of *my* deck is better? (swap cards, change lands, cut a color) | **deck model** (real games) | not directly measurable (nobody plays both builds); it rests on the card and deck-shape values validated below |
 | | **simulator** (bots play both versions) | agrees with the real-game model on the direction of 77% of 3-card swaps (66 of 86), Spearman +0.34 |
 | Which of two *different* decks is better? | **deck model** | held-out decks it ranks in its top fifth won 67.2%; bottom fifth 57.0%; Spearman +0.20 |
 | | simulator | **does not work** (Spearman ≈ 0): bot pilots exaggerate differences between human-built decks |
@@ -72,7 +72,7 @@ your cards; the output says so.
 A rules engine that plays real games: shuffles, mulligans, the stack,
 triggers, combat, state-based actions. The rules are hard-coded, cards are
 data, and agents only ever choose among legal actions. HOB: 178 of 193 cards
-playable (all commons and uncommons), 59 with a listed simplification.
+playable (all commons and uncommons), 56 with a listed simplification.
 
 Your decks' fidelity is reported with every simulated result, and it matters:
 the 4–3 deck above lost simulated games partly because its cards were

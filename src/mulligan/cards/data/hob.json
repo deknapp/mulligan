@@ -761,15 +761,13 @@
       {
        "op": "counters",
        "count": 1,
-       "to": "all:creature:yours"
+       "to": "all:creature:yours",
+       "except_targets": true
       }
      ]
     }
    ],
-   "flashback": "{4}{W}",
-   "approximations": [
-    "flashback also adds a second counter to the target"
-   ]
+   "flashback": "{4}{W}"
   },
   {
    "name": "The Mountain-king's Return",
@@ -1111,10 +1109,22 @@
      "op": "pump",
      "power": 2,
      "toughness": 2
+    },
+    {
+     "op": "if",
+     "cond": {
+      "kind": "target_matches",
+      "filter": "creature:subtype=Dwarf"
+     },
+     "then": [
+      {
+       "op": "attach",
+       "to": "target0",
+       "what": "all:artifact:yours,subtype=Equipment",
+       "one": true
+      }
+     ]
     }
-   ],
-   "approximations": [
-    "the optional Equipment attach for a Dwarf is omitted"
    ]
   },
   {
@@ -1570,9 +1580,26 @@
     "U"
    ],
    "oracle": "[Lake-town Mariners] Vigilance\nWard {2} (Whenever this creature becomes the target of a spell or ability an opponent controls, counter it unless that player pays {2}.)\n[Gone Fishing] Exile two target creatures and/or lands you control, then return them to the battlefield under their owner's control.",
-   "approximations": [
-    "the Gone Fishing adventure is omitted"
-   ]
+   "adventure": {
+    "name": "Gone Fishing",
+    "cost": "{3}{U}",
+    "types": [
+     "Instant"
+    ],
+    "targets": [
+     "creature|land:yours",
+     {
+      "sel": "creature|land:yours",
+      "optional": true
+     }
+    ],
+    "effects": [
+     {
+      "op": "flicker",
+      "to": "target"
+     }
+    ]
+   }
   },
   {
    "name": "Long Lake Nuisance",
@@ -4010,7 +4037,8 @@
       {
        "op": "loot",
        "draw": 2,
-       "discard": 1
+       "discard": 1,
+       "discard_first": true
       }
      ]
     }
