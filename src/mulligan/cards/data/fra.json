@@ -10302,6 +10302,58 @@
    ],
    "oracle": "You may cast spells with mana value less than or equal to the number of creatures you control from your hand without paying their mana costs.",
    "unsupported": "free casting"
+  },
+  {
+   "name": "Your Fate Ends Here",
+   "cost": "{2}{W}",
+   "types": [
+    "Instant"
+   ],
+   "rarity": "uncommon",
+   "collector_number": "24",
+   "color_identity": [
+    "W"
+   ],
+   "oracle": "Destroy target creature or planeswalker with mana value 3 or greater. Surveil 1. (Look at the top card of your library. You may put it into your graveyard.)",
+   "targets": [
+    "creature|planeswalker:mv>=3"
+   ],
+   "effects": [
+    {
+     "op": "destroy"
+    },
+    {
+     "op": "surveil",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "name": "Artifist Acumen",
+   "cost": "{R}",
+   "types": [
+    "Sorcery"
+   ],
+   "rarity": "common",
+   "collector_number": "73",
+   "color_identity": [
+    "R"
+   ],
+   "oracle": "Creatures you control gain first strike until end of turn.\nDraw a card.",
+   "effects": [
+    {
+     "op": "pump",
+     "power": 0,
+     "keywords": [
+      "first strike"
+     ],
+     "to": "all:creature:yours"
+    },
+    {
+     "op": "draw",
+     "count": 1
+    }
+   ]
   }
  ]
 }
