@@ -1031,7 +1031,24 @@
     "types": [
      "Sorcery"
     ],
-    "subtypes": []
+    "subtypes": [],
+    "effects": [
+     {
+      "op": "token",
+      "token": {
+       "name": "Dwarf",
+       "power": 2,
+       "toughness": 2,
+       "subtypes": [
+        "Dwarf"
+       ],
+       "colors": [
+        "R"
+       ]
+      },
+      "count": "x"
+     }
+    ]
    },
    "rarity": "rare",
    "collector_number": "29",
@@ -1040,7 +1057,27 @@
     "W"
    ],
    "oracle": "[An Unexpected Party] As this enchantment enters, choose a creature type.\nCreatures you control of the chosen type get +2/+2.\n[At the Door] Create X 2/2 red Dwarf creature tokens. (Then exile this card. You may cast the enchantment later from exile.)",
-   "unsupported": "choose a creature type"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "choose_type",
+       "policy": "yours"
+      }
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "all:creature:yours,subtype=chosen",
+     "power": 2,
+     "toughness": 2
+    }
+   ],
+   "approximations": [
+    "the creature type is an automated choice (your most common type)"
+   ]
   },
   {
    "name": "Velvetwing Butterflies",

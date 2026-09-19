@@ -261,3 +261,42 @@ def test_cast_restrictions_hold():
     big = scene(Side(hand=["Proft, Sinister Mastermind"], lands={"B": 3},
                      graveyard=["Unsummon"] * 7))
     assert [o for o in options(big, act.CastSpell) if o.face == ""]
+
+
+def test_x_spells_offer_each_affordable_x_and_use_it():
+    game = scene(Side(hand=["Ajani's Anguish"], lands={"R": 4}),
+                 Side(battlefield=["Rampart Hunter"]))  # a 3/3
+    xs = sorted({o.x for o in options(game, act.CastSpell)})
+    assert xs == [1, 2, 3]  # {X}{R} with four lands
+    choice = next(o for o in options(game, act.CastSpell) if o.x == 3)
+    game.apply(choice)
+    # Nobody can respond, so it resolves at once and its ETB asks for a target.
+    assert game.state.pending == "trigger_targets"
+    hunter = named(game, "Rampart Hunter")[0]
+    game.apply(next(o for o in options(game, act.ChooseTargets)
+                    if o.targets[0].kind == "object" and o.targets[0].id == hunter.id))
+    resolve(game)
+    assert not named(game, "Rampart Hunter"), "X=3 damage kills the 3/3"
+
+
+def test_enters_with_x_counters():
+    game = scene(Side(hand=["Guiding Hydra"], lands={"W": 4}))
+    game.apply(next(o for o in options(game, act.CastSpell) if o.x == 3))
+    resolve(game)
+    hydra = named(game, "Guiding Hydra")[0]
+    assert (game.power_of(hydra), game.toughness_of(hydra)) == (4, 3)
+
+
+def test_domain_counts_basic_land_types():
+    game = scene(Side(battlefield=["Fblthp, Knows the Way"], lands={"G": 2, "U": 1, "R": 1}))
+    assert game.power_of(named(game, "Fblthp, Knows the Way")[0]) == 3
+
+
+def test_kindred_judgment_keeps_the_chosen_type():
+    game = scene(Side(hand=["Kindred Judgment"], lands={"W": 7},
+                      battlefield=["Semester Foreseer", "Variable Chaser"]),  # Human Wizards
+                 Side(battlefield=["Rampart Hunter", "Apex Witchstalker"]))
+    cast(game, "Kindred Judgment")
+    resolve(game)
+    assert named(game, "Semester Foreseer") and named(game, "Variable Chaser")
+    assert not named(game, "Rampart Hunter") and not named(game, "Apex Witchstalker")

@@ -53,6 +53,7 @@ class Context:
     cast_from: str = "hand"
     kicked: bool = False
     event_amount: int = 0
+    x: int = 0
 
     def target(self, index: int = 0) -> Target | None:
         return self.targets[index] if index < len(self.targets) else None
@@ -321,10 +322,10 @@ class SearchLibrary(Effect):
 
     filter: str = "land:basic"
     dest: str = "hand"
-    count: int = 1
+    count: Amount = 1
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        game.auto_search(ctx.controller, self.filter, self.dest, self.count)
+        game.auto_search(ctx.controller, self.filter, self.dest, game.amount(self.count, ctx))
 
     def describe(self) -> str:
         return f"search for {self.filter} to {self.dest}"
@@ -825,6 +826,22 @@ class Stun(Effect):
 
     def describe(self) -> str:
         return f"put {self.count} stun counter(s) on {self.to}"
+
+
+@dataclass(frozen=True)
+class ChooseCreatureType(Effect):
+    """"Choose a creature type" (an automated choice): ``policy`` ``yours``
+    picks the type most common among your creatures in play, hand and library;
+    ``keep`` picks the type that keeps the most of your creatures alive relative
+    to your opponent's (for "destroy all creatures not of the chosen type")."""
+
+    policy: str = "yours"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.choose_creature_type(ctx.controller, ctx.source_id, self.policy)
+
+    def describe(self) -> str:
+        return "choose a creature type"
 
 
 @dataclass(frozen=True)

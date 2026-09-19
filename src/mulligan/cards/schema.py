@@ -101,6 +101,7 @@ EFFECTS: dict[str, type[fx.Effect]] = {
     "may_pay": fx.MayPay,
     "copy_self": fx.CopySelf,
     "reveal_until": fx.RevealUntil,
+    "choose_type": fx.ChooseCreatureType,
     "flicker": fx.Flicker,
     "surveil": fx.Surveil,
     "empower_jace": fx.EmpowerJace,
@@ -131,7 +132,7 @@ CARD_KEYS = {
     "modes", "triggers", "statics", "abilities", "equip", "enchant", "flashback", "kicker",
     "additional_costs", "cost_reduction", "cost_reduction_if", "adventure", "chapters",
     "storied", "approximations", "unsupported", "colors", "loyalty", "prepare",
-    "enters_prepared", "enters_tapped_unless", "cast_if",
+    "enters_prepared", "enters_tapped_unless", "cast_if", "enters_with_counters",
     # Provenance, carried through for reports; not used by the engine.
     "rarity", "oracle", "collector_number", "arena_id", "color_identity", "note",
 }
@@ -336,6 +337,7 @@ def card(data: dict) -> CardSpec:
             enters_prepared=bool(data.get("enters_prepared")),
             enters_tapped_unless=condition(data.get("enters_tapped_unless")),
             cast_if=condition(data.get("cast_if")),
+            enters_with_counters=data.get("enters_with_counters", 0),
             approximations=tuple(data.get("approximations", ())),
         )
     except CardDataError:

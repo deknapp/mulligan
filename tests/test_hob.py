@@ -408,3 +408,18 @@ def test_gone_fishing_flickers_and_retriggers_etb():
     cast(game, "Lake-town Mariners", face="adventure", target="Dori, Bearer of Friends")
     resolve(game)
     assert len(named(game, "Treasure", 0)) == 1, "Dori's ETB made a new Treasure"
+
+
+def test_an_unexpected_party_pumps_the_chosen_type_and_at_the_door_makes_x():
+    game = scene(Side(hand=["An Unexpected Party"], lands={"W": 4},
+                      battlefield=["Dori, Bearer of Friends", "Óin the Brave", "Attercop"]))
+    cast(game, "An Unexpected Party")
+    resolve(game)
+    dori = named(game, "Dori, Bearer of Friends")[0]
+    assert game.power_of(dori) == 5  # a Dwarf, the most common type: +2/+2
+    assert game.power_of(named(game, "Attercop")[0]) == 2
+    game2 = scene(Side(hand=["An Unexpected Party"], lands={"W": 5}))
+    game2.apply(next(o for o in options(game2, act.CastSpell)
+                     if o.face == "adventure" and o.x == 2))
+    resolve(game2)
+    assert len(named(game2, "Dwarf", 0)) == 2

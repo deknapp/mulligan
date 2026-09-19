@@ -221,6 +221,9 @@ class CardSpec:
     enters_tapped_unless: Condition | None = None
     # "You can't cast this spell unless ..."
     cast_if: Condition | None = None
+    # "This creature enters with N +1/+1 counters" (an amount, e.g. "x"): part of
+    # entering, not a trigger, so a 0-toughness body survives.
+    enters_with_counters: int | str = 0
     flavor_note: str = ""
     # For the set compiler's coverage report: what (if anything) was left out.
     approximations: tuple[str, ...] = ()
@@ -309,7 +312,7 @@ class GameObject:
                  "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to",
                  "temp_flags", "base_override", "lore", "on_adventure", "playable_until",
                  "linked_to", "activations", "cast_face", "loyalty", "stun", "prepared",
-                 "attack_target")
+                 "attack_target", "x_paid", "chosen")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -353,6 +356,8 @@ class GameObject:
         self.stun = 0
         self.prepared = False
         self.attack_target: int | None = None  # a planeswalker it is attacking
+        self.x_paid = 0          # X chosen when it was cast ("enters with X counters")
+        self.chosen = ""         # a creature type chosen as it entered / resolved
 
     @property
     def name(self) -> str:

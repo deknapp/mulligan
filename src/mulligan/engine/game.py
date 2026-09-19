@@ -54,6 +54,7 @@ from .types import (
 
 MAX_HAND_SIZE = 7
 MAX_MULLIGANS = 6
+MAX_X = 12
 TARGET_COMBINATION_CAP = 64
 """Multi-target spells enumerate every combination of legal targets. The cap
 stops a pathological board from producing a five-figure action list."""
@@ -322,6 +323,15 @@ class Game:
             return len(self.state.players[ctx.controller].graveyard)
         if value == "hand":
             return len(self.state.players[ctx.controller].hand)
+        if value == "x":
+            if ctx.x:
+                return ctx.x
+            source = self.object_by_id(ctx.source_id)
+            return source.x_paid if source is not None else 0
+        if value == "domain":
+            basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
+            return len({t for o in self.state.zone_objects(ctx.controller, "battlefield")
+                        if o.spec.is_land for t in o.spec.subtypes if t in basics})
         if value == "graveyard_types":
             types = set()
             for pl in self.state.players:
@@ -559,6 +569,8 @@ class Game:
         obj.loyalty = obj.stun = 0
         obj.prepared = False
         obj.attack_target = None
+        obj.x_paid = 0
+        obj.chosen = ""
         died_as_creature = was_on_battlefield and zone == "graveyard" and self.is_creature(obj)
         obj.controller = obj.owner
         if was_on_battlefield:
@@ -668,6 +680,9 @@ class Game:
         obj.attached_to = None
         obj.loyalty = obj.spec.loyalty or 0
         obj.prepared = obj.spec.enters_prepared
+        if obj.spec.enters_with_counters:
+            obj.counters += self.amount(obj.spec.enters_with_counters,
+                                        Context(controller=seat, source_id=obj.id))
         state.players[seat].battlefield.append(obj.id)
         self._dirty()
         state.record(f"{obj.name} enters the battlefield under {state.players[seat].name}")
@@ -749,6 +764,26 @@ class Game:
         self.move_to_zone(choice.id, "graveyard")
         self.state.record(f"{player.name} discards {choice.name}")
         return choice
+
+    def choose_creature_type(self, seat: int, source_id: int | None, policy: str) -> None:
+        source = self.object_by_id(source_id)
+        if source is None:
+            return
+        score: Counter[str] = Counter()
+        mine = [self.state.objects[i] for zone in ("battlefield", "hand", "library")
+                for i in self.state.players[seat].zone(zone)]
+        for obj in mine:
+            if obj.spec.is_creature:
+                weight = 2 if obj.zone == "battlefield" else 1
+                for t in obj.spec.subtypes:
+                    score[t] += weight
+        if policy == "keep":
+            for obj in self.creatures_of(1 - seat):
+                for t in obj.spec.subtypes:
+                    score[t] -= 2
+        if score:
+            source.chosen = max(sorted(score), key=lambda t: score[t])
+            self.state.record(f"{source.name}: chose {source.chosen}")
 
     def random_discard(self, seat: int) -> None:
         hand = self.state.players[seat].hand
@@ -1305,10 +1340,18 @@ class Game:
                     for kicked in kicks:
                         cost = self._spell_cost(seat, spec, base_cost, combo, extra, kicked,
                                                 obj)
-                        if not self.can_pay(seat, cost, paying_for=obj):
+                        if not base_cost.has_x:
+                            if self.can_pay(seat, cost, paying_for=obj):
+                                found.append(act.CastSpell(obj.id, combo, mode, face, kicked,
+                                                           extra_index))
                             continue
-                        found.append(act.CastSpell(obj.id, combo, mode, face, kicked,
-                                                   extra_index))
+                        # One option per affordable X (X = 0 is never worth offering).
+                        for x in range(1, MAX_X + 1):
+                            if not self.can_pay(seat, cost.plus(ManaCost(generic=x)),
+                                                paying_for=obj):
+                                break
+                            found.append(act.CastSpell(obj.id, combo, mode, face, kicked,
+                                                       extra_index, x))
         return found
 
     def _spell_cost(self, seat: int, spec: CardSpec, base_cost: ManaCost,
@@ -1537,6 +1580,9 @@ class Game:
         base_cost = obj.spec.flashback if face == "flashback" else spec.cost
         extra = spec.additional_costs[action.extra] if action.extra >= 0 else None
         cost = self._spell_cost(seat, spec, base_cost, action.targets, extra, action.kicked, obj)
+        if action.x:
+            cost = cost.plus(ManaCost(generic=action.x))
+        obj.x_paid = action.x
         player = self.state.players[seat]
         # The card moves to the stack before costs are paid (CR 601.2a), so a
         # sacrifice or discard cost can never pick the spell itself.
@@ -1561,7 +1607,7 @@ class Game:
             effects=effects, targets=action.targets,
             is_permanent_spell=spec.is_permanent and face != "adventure", source_id=obj.id,
             extra={"target_specs": target_specs, "cast_from": from_zone, "face": face,
-                   "kicked": action.kicked},
+                   "kicked": action.kicked, "x": action.x},
         )
         self.state.stack.append(item)
         target_note = ""
@@ -1593,6 +1639,8 @@ class Game:
         assert spec is not None
         extra = spec.additional_costs[action.extra] if action.extra >= 0 else None
         cost = self._spell_cost(seat, spec, spec.cost, action.targets, extra, action.kicked, obj)
+        if action.x:
+            cost = cost.plus(ManaCost(generic=action.x))
         obj.prepared = False
         self._pay_mana(seat, cost, paying_for=obj)
         if extra is not None:
@@ -1602,7 +1650,7 @@ class Game:
             obj_id=None, controller=seat, name=spec.name, kind="spell",
             effects=mode.effects if mode else spec.on_resolve, targets=action.targets,
             source_id=obj.id, extra={"target_specs": mode.targets if mode else spec.targets,
-                                     "face": "prepared"}))
+                                     "face": "prepared", "x": action.x}))
         player = self.state.players[seat]
         self.state.record(f"{player.name} casts a copy of {spec.name} (from {obj.name})")
         player.spells_cast_this_turn += 1
@@ -1669,7 +1717,7 @@ class Game:
                       source_id=item.source_id, source_name=item.name,
                       event_id=extra.get("event_id"), cast_from=extra.get("cast_from", "hand"),
                       kicked=extra.get("kicked", False),
-                      event_amount=extra.get("event_amount", 0))
+                      event_amount=extra.get("event_amount", 0), x=extra.get("x", 0))
         condition = extra.get("condition")
         if condition is not None and not condition.holds(self, ctx):
             self.state.record(f"{item.name} does nothing (its condition no longer holds)")
@@ -2168,7 +2216,7 @@ class Game:
         if isinstance(action, act.CastSpell):
             obj = self.state.obj(action.card_id)
             spec = obj.spec.adventure if action.face == "adventure" else obj.spec
-            label = spec.name
+            label = spec.name + (f" (X={action.x})" if action.x else "")
             if action.mode >= 0:
                 label += f" (mode {action.mode + 1})"
             if action.face == "flashback":

@@ -306,17 +306,8 @@
     "W"
    ],
    "oracle": "This creature enters with a +1/+1 counter on it.\nWhen this creature dies, put its counters on up to one target creature you control.",
+   "enters_with_counters": 1,
    "triggers": [
-    {
-     "when": "etb",
-     "effects": [
-      {
-       "op": "counters",
-       "count": 1,
-       "to": "self"
-      }
-     ]
-    },
     {
      "when": "dies",
      "effects": [
@@ -355,7 +346,10 @@
     "W"
    ],
    "oracle": "This creature enters with X +1/+1 counters on it.\nAt the beginning of combat on your turn, you may remove a +1/+1 counter from this creature. If you do, put a +1/+1 counter on each other creature you control.",
-   "unsupported": "X cost"
+   "enters_with_counters": "x",
+   "approximations": [
+    "the combat counter-sharing ability is omitted"
+   ]
   },
   {
    "name": "Hexhaven Battalion",
@@ -408,7 +402,19 @@
     "W"
    ],
    "oracle": "Choose a creature type. Destroy all creatures that aren't of the chosen type.",
-   "unsupported": "choose a creature type"
+   "effects": [
+    {
+     "op": "choose_type",
+     "policy": "keep"
+    },
+    {
+     "op": "destroy",
+     "to": "all:creature:!subtype=chosen"
+    }
+   ],
+   "approximations": [
+    "the creature type is an automated choice"
+   ]
   },
   {
    "name": "Loyal Tutor",
@@ -2326,7 +2332,28 @@
     "R"
    ],
    "oracle": "When this enchantment enters, it deals X damage to any target.\nCreatures you control have trample.",
-   "unsupported": "X cost"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "damage",
+       "amount": "x"
+      }
+     ],
+     "targets": [
+      "any_target"
+     ]
+    }
+   ],
+   "statics": [
+    {
+     "affects": "all:creature:yours",
+     "keywords": [
+      "trample"
+     ]
+    }
+   ]
   },
   {
    "name": "Awaken the Inferno",
@@ -8952,7 +8979,23 @@
     "G"
    ],
    "oracle": "Domain — Fblthp's power is equal to the number of basic land types among lands you control.\nWhen Fblthp enters, search your library for up to X basic land cards with different names, reveal them, put them into your hand, then shuffle.",
-   "unsupported": "X cost"
+   "power_expr": "domain",
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "search",
+       "filter": "land:basic",
+       "dest": "hand",
+       "count": "x"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the basics need not have different names"
+   ]
   },
   {
    "name": "Garruk, Curse Breaker",

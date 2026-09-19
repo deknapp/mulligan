@@ -227,6 +227,7 @@ class HeuristicAgent(Agent):
     # --------------------------------------------------------------- casting
 
     def _score_cast(self, view: PlayerView, action: act.CastSpell) -> float:
+        self._x = action.x
         card = view.card(action.card_id)
         spec = (card.spec.adventure if action.face == "adventure" else
                 card.spec.prepare if action.face == "prepared" else card.spec)
@@ -249,7 +250,8 @@ class HeuristicAgent(Agent):
             etb = self._etb_value(view, spec)
             if etb < -5:
                 return -1.0
-            return 10.0 + self._sv(spec) + etb + mv + bonus - self._extra_cost(view, spec, action)
+            return (10.0 + self._sv(spec) + etb + mv + bonus + 1.2 * action.x
+                    - self._extra_cost(view, spec, action))
         value = self._effects_value(view, effects, targets, source_id=action.card_id)
         value -= self._extra_cost(view, spec, action)
         if value <= 0:
@@ -446,8 +448,11 @@ class HeuristicAgent(Agent):
                 total += 0.5  # an effect this heuristic does not model: assume mildly good
         return total
 
-    @staticmethod
-    def _amount(value) -> int:
+    _x = 0
+
+    def _amount(self, value) -> int:
+        if value == "x":
+            return self._x
         return value if isinstance(value, int) else 2
 
     def _who_sign(self, view: PlayerView, who: str, targets) -> float:
@@ -511,12 +516,11 @@ class HeuristicAgent(Agent):
             return 0.5 if perm.tapped else -0.5
         return 1.0
 
-    @staticmethod
-    def _removes(effect, perm: PermanentView) -> bool:
+    def _removes(self, effect, perm: PermanentView) -> bool:
         if isinstance(effect, REMOVAL):
             return True
         if isinstance(effect, fx.DealDamage):
-            amount = effect.amount if isinstance(effect.amount, int) else 2
+            amount = self._amount(effect.amount)
             if perm.is_planeswalker and not perm.is_creature:
                 return amount >= perm.loyalty
             return perm.is_creature and amount >= perm.toughness - perm.damage

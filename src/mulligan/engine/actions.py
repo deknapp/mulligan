@@ -41,6 +41,7 @@ class CastSpell(Action):
     face: str = ""
     kicked: bool = False
     extra: int = -1
+    x: int = 0  # the value chosen for X in the cost
 
 
 @dataclass(frozen=True)

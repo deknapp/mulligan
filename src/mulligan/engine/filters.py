@@ -124,6 +124,9 @@ def _predicate(game: Game, obj: GameObject, pred: Predicate, controller: int,
                                                           and obj.blocking is not None)
     if key == "subtype":
         subtypes = game.subtypes_of(obj)
+        if value == "chosen":  # the type chosen by the source ("Choose a creature type")
+            source = game.object_by_id(source_id)
+            return bool(source is not None and source.chosen and source.chosen in subtypes)
         return any(v in subtypes for v in value.split("|"))
     if key == "type":
         types = game.types_of(obj)
