@@ -165,17 +165,30 @@ def versus_cmd(
             model = None
         if model is not None:
             p = model.head_to_head(a.names, b.names)
+            low, high = model.head_to_head_interval(a.names, b.names)
             console.print(f"\n[bold]From real games[/bold] (17Lands {a.set_code.upper()} {fmt}, "
                           f"{model.meta.get('train_games', '?')} games; full card text, "
-                          f"no simulation)")
-            console.print(f"  {a.label} beats {b.label}: {p:.0%}", highlight=False)
+                          f"no simulation) — the answer to trust for this set")
+            verdict = (f"{a.label} is better" if low > 0.5 else f"{b.label} is better"
+                       if high < 0.5 else "too close to call")
+            console.print(f"  {a.label} beats {b.label}: {p:.0%} "
+                          f"(90% interval {low:.0%}–{high:.0%}) → {verdict}", highlight=False)
             console.print(f"  vs an average opponent: {a.label} {model.vs_field(a.names):.0%}, "
                           f"{b.label} {model.vs_field(b.names):.0%}", highlight=False)
+            diffs = model.differences(a.names, b.names)
+            if diffs:
+                console.print("  cards that differ, biggest effect first (A = first deck):")
+                for name, delta, effect in diffs[:8]:
+                    side = "A" if delta > 0 else "B"
+                    good = (effect > 0) == (side == "A")
+                    console.print(f"    {abs(delta)}× {name} in {side}: {'helps' if good else 'hurts'} "
+                                  f"{side} by {abs(effect):.1f} pts", highlight=False)
     start = time.time()
     result = compare(Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent, tuple(b.cards)),
                      games=games, seed=seed, workers=workers or None)
     console.print("\n[bold]Simulated[/bold] (both decks piloted by the "
-                  f"{agent} agent; sees matchups, but only the modelled card text)")
+                  f"{agent} agent). Not yet validated for ranking real decks — "
+                  "see README; useful for watching the matchup")
     console.print(result.summary(), markup=False)
     console.print(f"[dim]{result.games} games in {time.time() - start:.1f}s[/dim]")
 

@@ -95,6 +95,8 @@ class DeckModel:
     play: float
     skill: float
     meta: dict = field(default_factory=dict)
+    # Card weights refitted on resampled drafts: the spread is the uncertainty.
+    bootstrap: list[dict[str, float]] = field(default_factory=list)
 
     def score(self, deck: dict[str, int]) -> float:
         """The deck's card contribution, in log-odds against an average deck."""
@@ -110,13 +112,40 @@ class DeckModel:
     def head_to_head(self, a: dict[str, int], b: dict[str, int]) -> float:
         return _sigmoid(self.score(a) - self.score(b))
 
+    def head_to_head_interval(self, a: dict[str, int], b: dict[str, int],
+                              z: float = 1.64) -> tuple[float, float]:
+        """A 90% interval for ``head_to_head`` from the bootstrap refits."""
+        if len(self.bootstrap) < 3:
+            return 0.0, 1.0
+        diffs = []
+        for w in self.bootstrap:
+            diffs.append(sum(w.get(n, 0.0) * c for n, c in a.items())
+                         - sum(w.get(n, 0.0) * c for n, c in b.items()))
+        mean = sum(diffs) / len(diffs)
+        sd = math.sqrt(sum((d - mean) ** 2 for d in diffs) / (len(diffs) - 1))
+        center = self.score(a) - self.score(b)
+        return _sigmoid(center - z * sd), _sigmoid(center + z * sd)
+
+    def differences(self, a: dict[str, int], b: dict[str, int]) -> list[tuple[str, int, float]]:
+        """Cards in one deck and not the other: (name, copies in A minus copies
+        in B, effect on A's win rate against B in percentage points), biggest
+        effect first."""
+        rows = []
+        for name in set(a) | set(b):
+            delta = a.get(name, 0) - b.get(name, 0)
+            if delta:
+                effect = 100 * (_sigmoid(delta * self.weights.get(name, 0.0)) - 0.5)
+                rows.append((name, delta, effect))
+        return sorted(rows, key=lambda r: -abs(r[2]))
+
     def save(self, path: Path | None = None) -> Path:
         path = path or MODEL_DIR / f"{self.set_code.lower()}_{self.fmt}_decks.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps({
             "set": self.set_code, "format": self.fmt, "intercept": round(self.intercept, 5),
             "on_play": round(self.play, 5), "skill": round(self.skill, 5), "meta": self.meta,
-            "weights": {k: round(v, 5) for k, v in sorted(self.weights.items())}}, indent=0))
+            "weights": {k: round(v, 5) for k, v in sorted(self.weights.items())},
+            "bootstrap": self.bootstrap}, indent=0))
         return path
 
     @staticmethod
@@ -127,7 +156,8 @@ class DeckModel:
                                     f"build one with `mulligan fit --set {set_code}`")
         raw = json.loads(path.read_text())
         return DeckModel(raw["set"], raw["format"], raw["weights"], raw["intercept"],
-                         raw["on_play"], raw["skill"], raw.get("meta", {}))
+                         raw["on_play"], raw["skill"], raw.get("meta", {}),
+                         raw.get("bootstrap", []))
 
 
 def _log_loss(rows: list[Row], predict) -> float:
@@ -138,24 +168,17 @@ def _log_loss(rows: list[Row], predict) -> float:
     return total / len(rows)
 
 
-def fit(set_code: str, fmt: str = "PremierDraft", epochs: int = 8, lr: float = 0.02,
-        l2: float = 3e-5, holdout: float = 0.1, seed: int = 0, log=print) -> DeckModel:
-    """Logistic regression by SGD with a per-feature adaptive step (Adagrad).
-    A tenth of the drafts are held out to check the model predicts better than
-    knowing only the pilot's skill and the play/draw."""
-    names, rows = load_games(set_code, fmt)
-    rng = random.Random(seed)
-    groups = sorted({r.group for r in rows})
-    test_groups = set(rng.sample(groups, int(len(groups) * holdout)))
-    train = [r for r in rows if r.group not in test_groups]
-    test = [r for r in rows if r.group in test_groups]
-    w = [0.0] * len(names)
-    g2 = [1e-8] * len(names)
+def _sgd(train: list[Row], n_cards: int, epochs: int, lr: float, l2: float,
+         rng: random.Random) -> tuple[list[float], float, float, float]:
+    """Logistic regression by SGD with a per-feature adaptive step (Adagrad)."""
+    w = [0.0] * n_cards
+    g2 = [1e-8] * n_cards
     b = b_play = b_skill = 0.0
     gb = [1e-8, 1e-8, 1e-8]
-    for epoch in range(epochs):
-        rng.shuffle(train)
-        for r in train:
+    order = list(train)
+    for _ in range(epochs):
+        rng.shuffle(order)
+        for r in order:
             z = b + b_play * r.on_play + b_skill * r.skill + sum(w[j] * x for j, x in r.cards)
             err = r.won - _sigmoid(z)
             for k, x in enumerate((1.0, r.on_play, r.skill)):
@@ -172,7 +195,23 @@ def fit(set_code: str, fmt: str = "PremierDraft", epochs: int = 8, lr: float = 0
                 grad = err * x - l2 * w[j]
                 g2[j] += grad * grad
                 w[j] += lr * grad / math.sqrt(g2[j])
-        log(f"epoch {epoch + 1}/{epochs}")
+    return w, b, b_play, b_skill
+
+
+def fit(set_code: str, fmt: str = "PremierDraft", epochs: int = 6, lr: float = 0.02,
+        l2: float = 3e-5, holdout: float = 0.1, bootstrap: int = 8, seed: int = 0,
+        log=print) -> DeckModel:
+    """Fit the model; hold out a tenth of the drafts to check it predicts better
+    than pilot skill and play/draw alone; then refit ``bootstrap`` times on
+    resampled drafts so every answer can carry an uncertainty."""
+    names, rows = load_games(set_code, fmt)
+    rng = random.Random(seed)
+    groups = sorted({r.group for r in rows})
+    test_groups = set(rng.sample(groups, int(len(groups) * holdout)))
+    train = [r for r in rows if r.group not in test_groups]
+    test = [r for r in rows if r.group in test_groups]
+    w, b, b_play, b_skill = _sgd(train, len(names), epochs, lr, l2, rng)
+    log("fitted")
 
     def full(r: Row) -> float:
         return _sigmoid(b + b_play * r.on_play + b_skill * r.skill
@@ -192,10 +231,21 @@ def fit(set_code: str, fmt: str = "PremierDraft", epochs: int = 8, lr: float = 0
 
     model_ll, base_ll = _log_loss(test, full), _log_loss(test, base)
     accuracy = sum((full(r) > 0.5) == (r.won > 0.5) for r in test) / len(test)
-    meta = {"train_games": len(train), "test_games": len(test),
-            "test_log_loss": round(model_ll, 5), "baseline_log_loss": round(base_ll, 5),
-            "test_accuracy": round(accuracy, 4),
-            "source": "17lands.com public game data (CC BY 4.0)"}
     log(f"held-out log loss {model_ll:.4f} vs {base_ll:.4f} without cards; "
         f"accuracy {accuracy:.1%} on {len(test)} games")
-    return DeckModel(set_code, fmt, dict(zip(names, w, strict=True)), b, b_play, b_skill, meta)
+    by_group: dict[str, list[Row]] = {}
+    for r in train:
+        by_group.setdefault(r.group, []).append(r)
+    group_list = list(by_group)
+    boots = []
+    for k in range(bootstrap):
+        sample = [r for g in (rng.choice(group_list) for _ in group_list) for r in by_group[g]]
+        bw, *_ = _sgd(sample, len(names), max(2, epochs // 2), lr, l2, rng)
+        boots.append({n: round(x, 4) for n, x in zip(names, bw, strict=True)})
+        log(f"bootstrap {k + 1}/{bootstrap}")
+    meta = {"train_games": len(train), "test_games": len(test),
+            "test_log_loss": round(model_ll, 5), "baseline_log_loss": round(base_ll, 5),
+            "test_accuracy": round(accuracy, 4), "bootstrap_fits": bootstrap,
+            "source": "17lands.com public game data (CC BY 4.0)"}
+    return DeckModel(set_code, fmt, dict(zip(names, w, strict=True)), b, b_play, b_skill, meta,
+                     boots)

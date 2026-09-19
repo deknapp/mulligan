@@ -30,3 +30,16 @@ def test_shipped_hob_models_load_and_know_every_card():
         m = DeckModel.load("hob", fmt)
         assert names <= set(m.weights) | {"Plains", "Island", "Swamp", "Mountain", "Forest"}
         assert m.meta["test_log_loss"] < m.meta["baseline_log_loss"]
+
+
+def test_differences_and_interval():
+    m = _model()
+    m.bootstrap = [{"Bomb": 0.18, "Dud": -0.1}, {"Bomb": 0.22, "Dud": -0.12},
+                   {"Bomb": 0.2, "Dud": -0.08}, {"Bomb": 0.21, "Dud": -0.1}]
+    a, b = {"Bomb": 1, "Filler": 22}, {"Dud": 1, "Filler": 22}
+    diffs = {name: (delta, effect) for name, delta, effect in m.differences(a, b)}
+    assert diffs["Bomb"][0] == 1 and diffs["Bomb"][1] > 0
+    assert diffs["Dud"][0] == -1 and diffs["Dud"][1] > 0   # B's dud helps A
+    assert "Filler" not in diffs
+    low, high = m.head_to_head_interval(a, b)
+    assert low < m.head_to_head(a, b) < high and low > 0.5

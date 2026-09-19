@@ -168,7 +168,7 @@ def load_ref(ref: str, set_code: str | None = None) -> DeckRef:
         label = "clipboard"
     elif Path(ref).exists():
         text = Path(ref).read_text()
-        label = ref
+        label = Path(ref).name
     elif ref in DECKS:
         return DeckRef(ref, "", list(DECKS[ref]), [])
     else:
