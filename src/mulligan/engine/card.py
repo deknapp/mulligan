@@ -219,6 +219,8 @@ class CardSpec:
     prepare: CardSpec | None = None
     enters_prepared: bool = False
     enters_tapped_unless: Condition | None = None
+    # "You can't cast this spell unless ..."
+    cast_if: Condition | None = None
     flavor_note: str = ""
     # For the set compiler's coverage report: what (if anything) was left out.
     approximations: tuple[str, ...] = ()
@@ -406,6 +408,7 @@ class Player:
         self.enduring_story = False
         self.spells_cast_this_turn = 0
         self.life_gained_this_turn = 0
+        self.noncreature_cast_this_turn = 0
         self.surveilled_this_turn = False
 
     def zone(self, name: str) -> list[int]:

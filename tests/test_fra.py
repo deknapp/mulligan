@@ -250,3 +250,14 @@ def test_unknown_condition_kinds_are_load_errors():
     with pytest.raises(CardDataError):
         card({"name": "X", "types": ["Creature"], "power": 1, "toughness": 1,
               "statics": [{"affects": "self", "power": 1, "if": {"kind": "no_such_thing"}}]})
+
+
+def test_cast_restrictions_hold():
+    """Proft, Sinister Mastermind can't be cast without threshold: an omitted
+    restriction would make it a free 5/5 menace and inflate its rating."""
+    small = scene(Side(hand=["Proft, Sinister Mastermind"], lands={"B": 3},
+                       graveyard=["Unsummon"] * 3))
+    assert not [o for o in options(small, act.CastSpell) if o.face == ""]
+    big = scene(Side(hand=["Proft, Sinister Mastermind"], lands={"B": 3},
+                     graveyard=["Unsummon"] * 7))
+    assert [o for o in options(big, act.CastSpell) if o.face == ""]

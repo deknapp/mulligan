@@ -131,7 +131,7 @@ CARD_KEYS = {
     "modes", "triggers", "statics", "abilities", "equip", "enchant", "flashback", "kicker",
     "additional_costs", "cost_reduction", "cost_reduction_if", "adventure", "chapters",
     "storied", "approximations", "unsupported", "colors", "loyalty", "prepare",
-    "enters_prepared", "enters_tapped_unless",
+    "enters_prepared", "enters_tapped_unless", "cast_if",
     # Provenance, carried through for reports; not used by the engine.
     "rarity", "oracle", "collector_number", "arena_id", "color_identity", "note",
 }
@@ -168,6 +168,7 @@ def targets(values) -> tuple[TargetSpec, ...]:
 CONDITIONS = {
     "cast_from_graveyard", "cast_this_turn", "control", "creature_died_this_turn",
     "drawn_this_turn", "enduring_story", "graveyard", "it_matches", "kicked",
+    "noncreature_cast_this_turn",
     "life_gained_this_turn", "opponent_controls", "prepared", "surveilled_this_turn",
     "target_matches", "your_turn"
 }
@@ -334,6 +335,7 @@ def card(data: dict) -> CardSpec:
             prepare=card(data["prepare"]) if data.get("prepare") else None,
             enters_prepared=bool(data.get("enters_prepared")),
             enters_tapped_unless=condition(data.get("enters_tapped_unless")),
+            cast_if=condition(data.get("cast_if")),
             approximations=tuple(data.get("approximations", ())),
         )
     except CardDataError:

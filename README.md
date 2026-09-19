@@ -4,7 +4,8 @@ Deck decisions for MTG Arena Limited, backed by real games and by simulation.
 It reads your decks and card pools straight from Arena's log, tells you which
 of two decks is better and why, suggests the best build of the pool you
 drafted or opened, and can play any two decks against each other. Runs on a
-laptop CPU in seconds. Currently one set: **The Hobbit (HOB)**.
+laptop CPU in seconds. Sets: **The Hobbit (HOB)**, and **Reality Fracture
+(FRA)** from its partial spoiler (release 2026-10-02).
 
 ```
 $ mulligan decks                       # your event decks, from the Arena log
@@ -81,6 +82,33 @@ simplified (29.8% vs the field), then gained when missing text was restored
 The Notary Hobbits was only cast in half the games where it was drawn in a
 three-color, 17-land deck; when it was cast the deck won 63%.
 
+## Reality Fracture (before release)
+
+FRA has no 17Lands data yet, so everything here is the simulator — the
+release-day case it exists for. From the 285 cards spoiled by 2026-09-18:
+
+```
+$ mulligan sets
+Reality Fracture (FRA): 263/283 cards playable (93%), 110 with noted approximations
+  common     85/85  (100%)
+  uncommon  103/108 (95%)
+  rare       52/64  (81%)
+  mythic     23/26  (88%)
+$ mulligan update-set fra        # pull newly spoiled cards (added as 'not compiled yet')
+$ mulligan sealed --set fra      # a sealed pool from the cards spoiled so far
+$ mulligan rate --set fra        # release-day card ratings from self-play
+```
+
+The engine gained what the set is built on: planeswalkers (loyalty
+abilities, attacking them, abilities granted to them), Empower Jace, prepare
+(a creature that carries a castable spell), surveil, prowess and stun
+counters. Two cautions for FRA ratings: pools are built only from spoiled
+cards, and on HOB the same method tracked real results at Spearman +0.62, not
+1.0. A compiled card's simplification is only ever allowed to make it weaker
+than printed, never stronger (a stronger one inflates its rating: Proft,
+Sinister Mastermind rated 60.5% until its casting restriction was modelled,
+then 41.8%).
+
 ## Commands
 
 | command | what it does |
@@ -95,6 +123,7 @@ three-color, 17-land deck; when it was cast the deck won 63%.
 | `mulligan validate --set hob --ratings r.json` | check card ratings against 17Lands |
 | `mulligan play A B --set hob` | watch one simulated game |
 | `mulligan sets` | how much of each compiled set the engine plays |
+| `mulligan update-set fra` | add newly spoiled cards to a compiled set |
 | `mulligan agents A B --deck D` | which agent plays better (seat-swapped mirrors) |
 | `mulligan train --set hob` | self-play training (experimental; see below) |
 

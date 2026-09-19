@@ -1495,9 +1495,12 @@
     ],
     "effects": [
      {
-      "op": "loot",
-      "draw": 7,
-      "discard": 0
+      "op": "discard",
+      "count": "hand"
+     },
+     {
+      "op": "draw",
+      "count": 7
      }
     ]
    },
@@ -1509,7 +1512,7 @@
    "oracle": "[Variable Chaser] Flying, prowess\nThis creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n[Arc of Fortune] Each player may discard their hand and draw seven cards.",
    "enters_prepared": true,
    "approximations": [
-    "Arc of Fortune: only you draw seven, nobody discards"
+    "Arc of Fortune: only you discard and draw seven"
    ]
   },
   {
@@ -7549,9 +7552,9 @@
    ],
    "oracle": "This spell costs {2} less to cast if you've cast a noncreature spell this turn.\nFlying, vigilance\nProwess (Whenever you cast a noncreature spell, this creature gets +1/+1 until end of turn.)",
    "cost_reduction": 2,
-   "approximations": [
-    "the discount always applies"
-   ]
+   "cost_reduction_if": {
+    "kind": "noncreature_cast_this_turn"
+   }
   },
   {
    "name": "Way of the Cryomancer",
@@ -8027,6 +8030,10 @@
     "B"
    ],
    "oracle": "Threshold — You can't cast this spell unless there are seven or more cards in your graveyard.\nMenace\n{B}, Discard this card: Target creature gets -3/-1 until end of turn.",
+   "cast_if": {
+    "kind": "graveyard",
+    "n": 7
+   },
    "abilities": [
     {
      "cost": "{B}",
@@ -8043,9 +8050,6 @@
       }
      ]
     }
-   ],
-   "approximations": [
-    "the threshold casting restriction is omitted"
    ]
   },
   {

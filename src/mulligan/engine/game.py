@@ -373,6 +373,8 @@ class Game:
             return self.state.creature_died_this_turn
         if kind == "life_gained_this_turn":
             return player.life_gained_this_turn >= cond.n
+        if kind == "noncreature_cast_this_turn":
+            return player.noncreature_cast_this_turn >= cond.n
         if kind == "cast_this_turn":
             return player.spells_cast_this_turn >= cond.n
         if kind == "surveilled_this_turn":
@@ -1251,6 +1253,9 @@ class Game:
         for obj, face, spec, base_cost in self._castable_faces(seat):
             if not (sorcery_ok or spec.is_instant):
                 continue
+            if spec.cast_if is not None and not spec.cast_if.holds(
+                    self, Context(controller=seat, source_id=obj.id)):
+                continue
             options.extend(self._cast_variants(seat, obj, face, spec, base_cost))
         for obj, index, ability in self._activatable(seat):
             if ability.sorcery_speed and not sorcery_ok:
@@ -1566,6 +1571,7 @@ class Game:
         self.state.priority = seat
 
     def _cast_noncreature(self, seat: int, obj: GameObject) -> None:
+        self.state.players[seat].noncreature_cast_this_turn += 1
         self._fire("cast_noncreature", subject=obj, controller=seat)
         self._fire("opp_cast_noncreature", subject=obj, controller=1 - seat)
         for creature in self.creatures_of(seat):
@@ -1819,6 +1825,7 @@ class Game:
                 p.draws_this_turn = 0
                 p.spells_cast_this_turn = 0
                 p.life_gained_this_turn = 0
+                p.noncreature_cast_this_turn = 0
                 p.surveilled_this_turn = False
             for obj in self.state.zone_objects(seat, "battlefield"):
                 obj.activations = {}
