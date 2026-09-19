@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="mulligan: simulated Limited" href="feed.xml">
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">mulligan</a>
+<nav><a href="index.html">Findings</a><a href="method.html">How it works</a>
+<a href="https://github.com/deknapp/mulligan">Code</a></nav></header>
+<main>
+<article><h1>How it works</h1>
+<h2>The pipeline</h2>
+<ol>
+<li><strong>Cards become data.</strong> Each card in a set is translated once into a small
+   declarative format: costs, types and stats straight from Scryfall, and the
+   rules text as triggers, abilities and effects. A card is either exact,
+   <em>approximated</em> (with a list of what's left out), or unsupported. One rule:
+   <strong>an approximation may only make a card weaker than printed</strong>, never
+   stronger. A simplified card can't win games its real version would lose.</li>
+<li><strong>A rules engine plays real games.</strong> Turns, priority, the stack, combat,
+   state-based actions, planeswalkers, the works. The bots only ever see what a
+   player could see: their own hand, never the opponent's hand or either
+   library.</li>
+<li><strong>Bots draft.</strong> A pod is eight bots. Each opens three packs and passes them
+   left, right, left. A bot takes the card with the best card rating plus a
+   bonus for staying in its colors. The bonus is zero at the first pick and
+   grows through the draft. Each bot also has a small random lean toward some
+   colors, so eight bots don't all fight over the same one.</li>
+<li><strong>Bots build and play.</strong> Each drafted pool becomes a 40-card deck: the best
+   two colors, 23 spells, 17 lands. Then decks from all the pods play each
+   other, tens of thousands of games at a time.</li>
+<li><strong>We count, 17Lands-style.</strong> The headline card number is <em>win rate when
+   drawn</em>: the share of games won in which the card reached its owner's hand.
+   That's the same statistic as 17Lands' "GIH WR", so the two can be compared.</li>
+</ol>
+<h2>How far to trust it</h2>
+<p>The simulator was checked against a set that humans have played: <strong>The Hobbit
+(HOB)</strong>, using 17Lands' public game data.</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>How the simulator did</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Does its card ranking match real players' results?</td>
+<td>Yes, moderately: Spearman correlation <strong>+0.62</strong> with real win rate when drawn (a rarity-only guess gets +0.31)</td>
+</tr>
+<tr>
+<td>Is being on the play worth about the same?</td>
+<td>Yes: <strong>55.5%</strong> on the play in simulation; real HOB games work out to about 55%</td>
+</tr>
+<tr>
+<td>Given two builds of one deck, does it pick the better one?</td>
+<td>Usually: it agrees with a model fitted to real games on <strong>77%</strong> of three-card swaps</td>
+</tr>
+<tr>
+<td>Can it rank <em>different</em> decks by how they really did?</td>
+<td>Barely: Spearman <strong>+0.10</strong> over 1,000 real decks (a model fitted to real games gets +0.20, and pilot skill alone +0.34)</td>
+</tr>
+</tbody>
+</table>
+<p>It also has known biases, measured on HOB, that you should apply to every post:</p>
+<ul>
+<li><strong>It overrates big, high-toughness creatures</strong> and decks full of them.</li>
+<li><strong>It underrates blue</strong>, especially small value creatures and instants. Bots
+  get less out of card advantage, tricks and counterspells than people do.</li>
+</ul>
+<p>These biases survived two rounds of smarter bot tactics, so they are more
+likely about what bots can't see than about any one play they make.</p>
+<h2>What the numbers are for</h2>
+<p>Card win rates and archetype records here are <strong>predictions for a format
+nobody has played yet</strong>. They're a hypothesis for your first drafts, not a
+replacement for 17Lands once real data exists. Each post that compares against
+real data does so in a new post, rather than editing the old one.</p>
+<p>All the code, card data and raw simulation output are in the
+<a href="https://github.com/deknapp/mulligan">repository</a>.</p></article>
+</main>
+<footer>Simulated with <a href="https://github.com/deknapp/mulligan">mulligan</a>, an open-source Magic: The Gathering
+Limited simulator. Card data from Scryfall; real-game comparisons from
+<a href="https://www.17lands.com">17Lands</a>' public data. Not affiliated with
+Wizards of the Coast.</footer>
+</body>
+</html>

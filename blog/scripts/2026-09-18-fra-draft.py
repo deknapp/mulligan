@@ -42,3 +42,6 @@ for label, names in (("under", under), ("over", over), ("beats text", beats),
         _, rate, games, ata = stats[n]
         print(f"  {n}: {rate:.3f} ata={ata:.1f} games={games}")
 print("mechanics", {k: (round(v[0] * 100, 2), v[1]) for k, v in mech.items()})
+
+ways = sorted(n for n in run.cards if n.startswith("Way of the") and n in run.data.playable)
+f.write(out, PREFIX + "ways", f.card_intervals(run, ways, "The Way of the ... cycle"))

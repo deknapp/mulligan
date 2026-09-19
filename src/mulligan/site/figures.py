@@ -19,6 +19,7 @@ from ..limited.rating import static_rating
 from . import charts
 
 MIN_GAMES = 300
+COLOR_NAMES = {"W": "White", "U": "Blue", "B": "Black", "R": "Red", "G": "Green"}
 
 
 def wilson(wins: float, n: int, z: float = 1.96) -> tuple[float, float]:
@@ -105,8 +106,11 @@ def card_table(run: DraftRun, names: list[str], note: dict[str, str] | None = No
     for name in names:
         _, rate, games, ata = stats[name]
         spec = run.data.playable[name]
+        mark = ' <span title="{}">†</span>'.format(escape("; ".join(spec.approximations))) \
+            if spec.approximations else ""
         rows.append(
-            f"<tr><td>{escape(name)}</td><td>{escape(str(spec.cost))}</td>"
+            f"<tr><td>{escape(name)}{mark}</td>"
+            f"<td>{escape(run.data.entries.get(name, {}).get('cost', ''))}</td>"
             f"<td>{_rarity(run.data, name)[0].upper()}</td>"
             f'<td class="num">{rate:.1%}</td><td class="num">{ata:.1f}</td>'
             f'<td class="num">{games:,}</td>'
@@ -114,7 +118,10 @@ def card_table(run: DraftRun, names: list[str], note: dict[str, str] | None = No
     head = ("<tr><th>Card</th><th>Cost</th><th>Rarity</th><th class=\"num\">Win rate when "
             "drawn</th><th class=\"num\">Avg pick</th><th class=\"num\">Games</th>"
             + ("<th>Why</th>" if note is not None else "") + "</tr>")
-    return f"<table>{head}{''.join(rows)}</table>"
+    foot = ("<p class=\"caption\">† Simplified in the simulator (hover for what's left "
+            "out). Simplifications only ever make a card weaker than printed.</p>"
+            if any(run.data.playable[n].approximations for n in names) else "")
+    return f"<table>{head}{''.join(rows)}</table>{foot}"
 
 
 def best_commons(run: DraftRun, per_color: int = 3) -> str:
@@ -174,7 +181,7 @@ def mechanics(run: DraftRun, seed: int = 0) -> tuple[str, dict[str, tuple[float,
         summary[mechanic] = (avg, len(cards))
     out.sort(key=lambda r: -r[1])
     svg = charts.interval_bars(out, "Mechanics against the set average", reference=0.0,
-                               fmt=lambda v: f"{v * 100:+.1f}")
+                               fmt=lambda v: f"{v * 100:+.1f}", left=190)
     return svg, summary
 
 
@@ -204,11 +211,10 @@ def color_presence(run: DraftRun) -> str:
             wins[c] += w
             games[c] += g
     total = len(run.decks)
-    rows = [(f"{c}  in {decks[c] / total:.0%} of decks", wins[c] / games[c],
+    rows = [(f"{COLOR_NAMES[c]} · {decks[c] / total:.0%} of decks", wins[c] / games[c],
              *wilson(wins[c], int(games[c])), c) for c in "WUBRG"]
-    rows = [(r[0], r[1], r[2], r[3], r[4]) for r in rows]
     return charts.interval_bars(sorted(rows, key=lambda r: -r[1]),
-                                "Win rate of decks playing each color")
+                                "Win rate of decks playing each color", left=190)
 
 
 def write(out_dir: Path, name: str, content: str) -> Path:
@@ -217,3 +223,16 @@ def write(out_dir: Path, name: str, content: str) -> Path:
     path = out_dir / f"{name}{suffix}"
     path.write_text(content)
     return path
+
+
+def card_intervals(run: DraftRun, names: list[str], label: str) -> str:
+    """Each card's games-in-hand win rate with a 95% interval, best first,
+    against the set's average."""
+    rows = []
+    for name in names:
+        wins, games, _, _ = run.cards[name]
+        lo, hi = wilson(wins, int(games))
+        rows.append((name, wins / games, lo, hi, _colors(run.data, name) or "C"))
+    rows.sort(key=lambda r: -r[1])
+    return charts.interval_bars(rows, label, reference=run.mean_gih(),
+                                fmt=lambda v: f"{v:.0%}", left=190)

@@ -49,11 +49,11 @@ def _ticks(lo: float, hi: float, n: int = 5) -> list[float]:
 
 
 def interval_bars(rows: list[tuple[str, float, float, float, str]], label: str,
-                  reference: float = 0.5, fmt=lambda v: f"{v:.0%}") -> str:
+                  reference: float = 0.5, fmt=lambda v: f"{v:.0%}", left: int = 90) -> str:
     """Horizontal points with interval whiskers, one row each:
     (row label, value, low, high, colors). ``colors`` like "WU" paints a
     two-tone marker."""
-    width, row_h, left, right, top = 640, 26, 90, 30, 16
+    width, row_h, right, top = 640, 26, 30, 16
     height = top + row_h * len(rows) + 34
     lo = min(r[2] for r in rows + [("", reference, reference, reference, "")])
     hi = max(r[3] for r in rows + [("", reference, reference, reference, "")])
@@ -132,11 +132,16 @@ def scatter(points: list[tuple[str, float, float, str]], label: str, x_label: st
         r = 5 if name in callouts else 3.6
         body.append(f'<circle cx="{px(x):.1f}" cy="{py(y):.1f}" r="{r}"'
                     f' fill="{MANA[key]}" class="{cls}">{tip}</circle>')
-    for name, x, y, _ in points:
-        if name in callouts:
-            anchor = "end" if px(x) > width * 0.7 else "start"
-            dx = -8 if anchor == "end" else 8
-            body.append(_text(px(x) + dx, py(y) + 4, name, "callout", anchor))
+    placed: list[tuple[float, float]] = []
+    for name, x, y, _ in sorted((p for p in points if p[0] in callouts), key=lambda p: -p[2]):
+        anchor = "end" if px(x) > width * 0.7 else "start"
+        dx = -8 if anchor == "end" else 8
+        ly = py(y) + 4
+        # Nudge a label down past any label already placed on top of it.
+        while any(abs(ly - oy) < 14 and abs(px(x) - ox) < 160 for ox, oy in placed):
+            ly += 14
+        placed.append((px(x), ly))
+        body.append(_text(px(x) + dx, ly, name, "callout", anchor))
     return _svg(width, height, body, label)
 
 

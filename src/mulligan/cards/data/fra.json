@@ -3325,9 +3325,7 @@
     "G"
    ],
    "oracle": "Whenever a creature you control dies, put a charge counter on this enchantment.\nAt the beginning of your first main phase, add {G} for each charge counter on this enchantment.",
-   "approximations": [
-    "charge counters and their mana are omitted"
-   ]
+   "unsupported": "charge counters that make mana"
   },
   {
    "name": "Greenhouse Propagator",
