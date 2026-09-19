@@ -171,7 +171,8 @@ def _tools(blog: Path, site: Path) -> None:
                  "like, and its best cards.",
     }
     for slug, name, _ in TOOLS:
-        body = (f'<p class="date">{set_name}</p><h1>{name}</h1><p class="intro sans">{notes[slug]}</p>'
+        body = (f'<p class="date">{set_name}</p><h1>{name}</h1>'
+                f'<p class="intro sans">{notes[slug]}</p>'
                 f'<div id="tool"><noscript>This tool needs JavaScript.</noscript></div>')
         attrs = f' class="tool" data-tool="{slug}" data-set="{CURRENT_SET}"'
         (site / "tools" / f"{slug}.html").write_text(_page(
