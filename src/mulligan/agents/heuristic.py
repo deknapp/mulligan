@@ -52,6 +52,8 @@ def creature_value(power: int, toughness: int, keywords) -> float:
 
 
 def permanent_value(perm: PermanentView) -> float:
+    if isinstance(perm, Combatant):
+        return perm.base
     if perm.is_planeswalker and not perm.is_creature:
         return 2.0 + 0.8 * perm.loyalty
     if perm.is_creature:
@@ -102,7 +104,29 @@ def combat_outcome(attacker: PermanentView, blocker: PermanentView) -> tuple[boo
 
 
 def can_block(view: PlayerView, blocker: PermanentView, attacker: PermanentView) -> bool:
-    return view.could_block(blocker, attacker)
+    return view.could_block(blocker.perm if isinstance(blocker, Combatant) else blocker,
+                            attacker.perm if isinstance(attacker, Combatant) else attacker)
+
+
+class Combatant:
+    """A creature's combat numbers, read once per combat decision: computing
+    power, toughness and keywords applies every static on the battlefield, and
+    combat planning asks for them thousands of times."""
+
+    __slots__ = ("id", "power", "toughness", "damage", "keywords", "perm", "value", "base")
+
+    def __init__(self, perm: PermanentView, value: float):
+        self.id = perm.id
+        self.power = perm.power
+        self.toughness = perm.toughness
+        self.damage = perm.damage
+        self.keywords = frozenset(perm.keywords)
+        self.perm = perm
+        self.value = value
+        self.base = permanent_value(perm)
+
+    def has(self, keyword) -> bool:
+        return keyword in self.keywords
 
 
 # ------------------------------------------------------------------ effects
@@ -145,6 +169,8 @@ class HeuristicAgent(Agent):
         self.greedy_attacks = greedy_attacks
 
     def _pv(self, perm: PermanentView) -> float:
+        if isinstance(perm, Combatant):
+            return perm.value
         return max(0.5, permanent_value(perm) + self.card_values.get(perm.name, 0.0))
 
     def _sv(self, spec: CardSpec) -> float:
@@ -659,13 +685,14 @@ class HeuristicAgent(Agent):
 
     def _plan_attackers(self, view: PlayerView) -> set[int]:
         me, opp = view.seat, view.opponent
-        mine = [c for c in view.creatures(me) if not c.tapped and not c.summoning_sick
-                and not c.has(Keyword.DEFENDER)]
-        blockers = [c for c in view.creatures(opp) if c.can_block]
+        self._legal = {}
+        mine = [self._snap(c) for c in view.creatures(me) if not c.tapped
+                and not c.summoning_sick and not c.has(Keyword.DEFENDER)]
+        blockers = [self._snap(c) for c in view.creatures(opp) if c.can_block]
         opp_life = view.life(opp)
 
-        def blockable_by(att: PermanentView) -> list[PermanentView]:
-            found = [b for b in blockers if can_block(view, b, att)]
+        def blockable_by(att: Combatant) -> list[Combatant]:
+            found = [b for b in blockers if self._can(view, b, att)]
             return found if not att.has(Keyword.MENACE) or len(found) >= 2 else []
 
         # Alpha strike when the unblockable damage alone is lethal, or when the
@@ -686,7 +713,8 @@ class HeuristicAgent(Agent):
         # Keep back enough to survive the crack-back.
         threat = sum(c.power for c in view.creatures(opp))
         defenders = [c for c in mine if c.id not in plan or c.has(Keyword.VIGILANCE)]
-        defenders += [c for c in view.creatures(me) if c not in mine and not c.tapped]
+        attacking = {c.id for c in mine}
+        defenders += [c for c in view.creatures(me) if c.id not in attacking and not c.tapped]
         for att in sorted((c for c in mine if c.id in plan), key=lambda c: c.toughness,
                           reverse=True):
             if threat - self._soak(defenders) < view.life(me):
@@ -741,12 +769,12 @@ class HeuristicAgent(Agent):
     def _attack_value(self, view: PlayerView, attack, blockers, opp_life: int) -> float:
         """Material swing plus damage for ``attack`` against predicted blocks."""
         blocks = self._choose_blocks(view, attack, list(blockers), opp_life)
+        by_id = {b.id: b for b in blockers}
         value = 0.0
         damage = 0
         for att in attack:
             mult = 2 if att.has(Keyword.DOUBLE_STRIKE) else 1
-            bs = [view.permanent(b) for b, a in blocks if a == att.id]
-            bs = [b for b in bs if b is not None]
+            bs = [by_id[b] for b, a in blocks if a == att.id]
             if not bs:
                 damage += att.power * mult
                 continue
@@ -793,8 +821,19 @@ class HeuristicAgent(Agent):
         me = view.seat
         declared = set(view.blocks())
         used = {b for b, _ in declared}
-        pool = [c for c in view.creatures(me) if c.can_block and c.id not in used]
-        return self._choose_blocks(view, view.attackers(), pool, view.life(me), declared)
+        self._legal = {}
+        pool = [self._snap(c) for c in view.creatures(me) if c.can_block and c.id not in used]
+        attackers = [self._snap(a) for a in view.attackers()]
+        return self._choose_blocks(view, attackers, pool, view.life(me), declared)
+
+    def _snap(self, perm: PermanentView) -> Combatant:
+        return Combatant(perm, self._pv(perm))
+
+    def _can(self, view: PlayerView, blocker: Combatant, attacker: Combatant) -> bool:
+        key = (blocker.id, attacker.id)
+        if key not in self._legal:
+            self._legal[key] = can_block(view, blocker, attacker)
+        return self._legal[key]
 
     def _choose_blocks(self, view: PlayerView, attackers, pool, life: int,
                        declared: set | None = None) -> set[tuple[int, int]]:
@@ -807,7 +846,7 @@ class HeuristicAgent(Agent):
         for att in attackers:
             if att.id in blocked or att.has(Keyword.MENACE):
                 continue
-            candidates = [b for b in pool if can_block(view, b, att)]
+            candidates = [b for b in pool if self._can(view, b, att)]
             good = [b for b in candidates if combat_outcome(att, b) == (True, False)]
             trade = [b for b in candidates if combat_outcome(att, b) == (True, True)
                      and self._pv(b) <= self._pv(att)]
@@ -831,7 +870,7 @@ class HeuristicAgent(Agent):
                 break
             if att.id in blocked:
                 continue
-            candidates = [b for b in pool if can_block(view, b, att)]
+            candidates = [b for b in pool if self._can(view, b, att)]
             need = 2 if att.has(Keyword.MENACE) else 1
             if len(candidates) < need:
                 continue
@@ -843,3 +882,4 @@ class HeuristicAgent(Agent):
         return plan
 
     _plan: set = set()
+    _legal: dict = {}
