@@ -278,6 +278,12 @@ class HeuristicAgent(Agent):
                 return -1.0
             return (10.0 + self._sv(spec) + etb + mv + bonus + 1.2 * action.x
                     - self._extra_cost(view, spec, action))
+        if view.is_my_turn and view.step in (Step.UPKEEP, Step.DRAW) and not view.stack():
+            return -1.0  # nothing is urgent yet: the land drop and the draw come first
+        untargeted = not any(t.kind in ("object", "player") for t in targets)
+        if (CardType.INSTANT in spec.types and untargeted
+                and not (not view.is_my_turn and view.step == Step.END_STEP)):
+            return -1.0  # card draw at instant speed: cast it with mana left at their end step
         value = self._effects_value(view, effects, targets, source_id=action.card_id)
         value -= self._extra_cost(view, spec, action)
         if value <= 0:
@@ -667,6 +673,10 @@ class HeuristicAgent(Agent):
             # Firebreathing: only while it is attacking unblocked or in a fight.
             attacking = getattr(source, "attacking", False)
             return 1.0 if (attacking and view.step == Step.DECLARE_BLOCKERS) else -1.0
+        if (ability.sacrifice_self and getattr(source, "is_land", False) and any(
+                isinstance(e, fx.SearchLibrary) and e.dest.startswith("battlefield")
+                for e in ability.effects)):
+            return 5.0  # a fetch land: crack it (the land it finds is the one that makes mana)
         if ability.discard_self:  # cycling: only when the card is dead weight
             lands = len(view.lands(view.seat))
             if source.spec.is_land and lands < 5:

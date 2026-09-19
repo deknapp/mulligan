@@ -106,9 +106,8 @@ def _ata(set_code: str, start: str = "2020-01-01") -> dict[str, float]:
     if path.exists():
         rows = json.loads(path.read_text())
     else:
-        url = ("https://www.17lands.com/card_ratings/data?expansion={}&format=PremierDraft"
-               "&start_date={}&end_date={}").format(set_code.upper(), start,
-                                                     datetime.date.today().isoformat())
+        url = (f"https://www.17lands.com/card_ratings/data?expansion={set_code.upper()}&format=PremierDraft"
+               f"&start_date={start}&end_date={datetime.date.today().isoformat()}")
         with urllib.request.urlopen(urllib.request.Request(url, headers=HEADERS),
                                     timeout=60) as response:
             rows = json.load(response)
