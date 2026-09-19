@@ -187,7 +187,7 @@ def simulate_draft(set_code: str, pods: int = 25, games: int = 20000, seed: int 
                                       [names] * len(chunks), chunks, [agent] * len(chunks)):
             card_games.update(g)
             card_wins.update(w)
-            for (a, b, score, _), (seen_a, seen_b) in zip(res, seen):
+            for (a, b, score, _), (seen_a, seen_b) in zip(res, seen, strict=True):
                 for idx, s, cards in ((a, score, seen_a), (b, 1 - score, seen_b)):
                     for name in cards:
                         rec = pair_cards[name, decks[idx][0]]

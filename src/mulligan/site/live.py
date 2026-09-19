@@ -38,7 +38,9 @@ def fetch(set_code: str, fmt: str = "PremierDraft") -> dict:
     code = set_code.upper()
     today = datetime.date.today().isoformat()
     start = _get("/data/filters").get("start_dates", {}).get(code, "")[:10]
-    out = {"fetched": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="minutes"),
+    # timezone.utc, not datetime.UTC: this runs on whatever python3 the runner has.
+    now = datetime.datetime.now(datetime.timezone.utc)  # noqa: UP017
+    out = {"fetched": now.isoformat(timespec="minutes"),
            "format": fmt, "start": start, "cards": {}, "pairs": {}}
     if not start or start > today:
         return out
