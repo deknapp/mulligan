@@ -265,7 +265,7 @@ def static(value: dict) -> Static:
 
 ABILITY_KEYS = {"cost", "tap", "sacrifice_self", "sacrifice", "discard", "discard_self",
                 "life", "zone", "sorcery", "once_per_turn", "targets", "effects", "mana",
-                "text", "loyalty", "exile_self", "if", "crew"}
+                "text", "loyalty", "exile_self", "if", "crew", "exhaust"}
 
 
 def ability(value: dict) -> ActivatedAbility:
@@ -279,7 +279,8 @@ def ability(value: dict) -> ActivatedAbility:
         discard_self=bool(value.get("discard_self")), life=value.get("life", 0),
         zone=value.get("zone", "battlefield"), once_per_turn=bool(value.get("once_per_turn")),
         loyalty=value.get("loyalty"), exile_self=bool(value.get("exile_self")),
-        only_if=condition(value.get("if")), crew=value.get("crew", 0))
+        only_if=condition(value.get("if")), crew=value.get("crew", 0),
+        exhaust=bool(value.get("exhaust")))
 
 
 def cost(value: dict) -> Cost:

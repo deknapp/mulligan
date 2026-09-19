@@ -84,6 +84,7 @@ class Keyword(str, Enum):
     HEXPROOF = "hexproof"
     INDESTRUCTIBLE = "indestructible"
     PROWESS = "prowess"
+    CONVOKE = "convoke"
 
 
 @dataclass(frozen=True)

@@ -107,6 +107,7 @@ class ActivatedAbility:
     exile_self: bool = False   # "Exile this card from your graveyard: ..."
     only_if: Condition | None = None  # "Activate only if ..."
     crew: int = 0   # "Crew N": tap other creatures with total power N or more
+    exhaust: bool = False  # "Exhaust —": activate only once per game
 
     @property
     def cost(self) -> Cost:
@@ -326,7 +327,8 @@ class GameObject:
                  "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to",
                  "temp_flags", "base_override", "lore", "on_adventure", "playable_until",
                  "linked_to", "activations", "cast_face", "loyalty", "stun", "prepared",
-                 "attack_target", "x_paid", "chosen", "finality", "temp_types")
+                 "attack_target", "x_paid", "chosen", "finality", "temp_types",
+                 "exhausted")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -374,6 +376,7 @@ class GameObject:
         self.chosen = ""         # a creature type chosen as it entered / resolved
         self.finality = False    # a finality counter: exiled instead of dying
         self.temp_types: set[CardType] = set()  # e.g. a crewed Vehicle: until end of turn
+        self.exhausted: set[int] = set()  # exhaust abilities already used, by index
 
     @property
     def name(self) -> str:

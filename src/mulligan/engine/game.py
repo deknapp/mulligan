@@ -602,6 +602,7 @@ class Game:
         obj.chosen = ""
         obj.finality = False
         obj.temp_types.clear()
+        obj.exhausted = set()
         died_as_creature = was_on_battlefield and zone == "graveyard" and self.is_creature(obj)
         obj.controller = obj.owner
         if was_on_battlefield:
@@ -1027,6 +1028,15 @@ class Game:
                     units += tuple(e.symbols) * max(0, n)
                 if units and allowed:
                     found.append((obj, index, units, ability.sacrifice_self))
+        if paying_for is not None and Keyword.CONVOKE in paying_for.spec.keywords:
+            # Convoke: each untapped creature (summoning sick or not) pays for
+            # one mana of its color, or one generic.
+            sourced = {o.id for o, *_ in found}
+            for creature in self.creatures_of(seat):
+                if creature.tapped or creature.id in sourced or creature.id == exclude:
+                    continue
+                colors = sorted(creature.spec.color_set) or ["C"]
+                found.append((creature, -1, ("/".join(colors),), False))
         return found
 
     def _solve_payment(self, seat: int, cost: ManaCost, exclude: int | None = None,
@@ -1455,6 +1465,8 @@ class Game:
                         continue
                     if ability.crew and self._crew_power(seat, obj) < ability.crew:
                         continue
+                    if ability.exhaust and index in obj.exhausted:
+                        continue
                     if ability.loyalty is not None:
                         # One loyalty ability per planeswalker per turn, at
                         # sorcery speed, and never below zero loyalty.
@@ -1749,6 +1761,8 @@ class Game:
         self._pay_extra(seat, ability.cost, obj)
         if ability.crew:
             self._pay_crew(seat, obj, ability.crew)
+        if ability.exhaust:
+            obj.exhausted.add(action.index)
         if ability.discard_self:
             self.move_to_zone(obj.id, "graveyard")
         if ability.exile_self:

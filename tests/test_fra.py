@@ -358,3 +358,24 @@ def test_puppet_crafting_animates_a_noncreature_permanent():
     volume = named(game, "Murmuring Volume")[0]
     assert game.is_creature(volume)
     assert (game.power_of(volume), game.toughness_of(volume)) == (5, 5)
+
+
+def test_convoke_taps_creatures_to_help_pay():
+    # Winter, Team Player costs {4}{R}: two Mountains plus three creatures.
+    game = scene(Side(hand=["Winter, Team Player"], lands={"R": 2},
+                      battlefield=["Heartstring Puller", "Rank Rat", "Cryotheory Adept"]))
+    assert options(game, act.CastSpell)
+    cast(game, "Winter, Team Player")
+    tapped = [o.name for o in game.state.zone_objects(0, "battlefield") if o.tapped]
+    assert len(tapped) == 5
+
+
+def test_exhaust_is_once_per_game():
+    game = scene(Side(battlefield=["Liliana the Repentant"], graveyard=["Rank Rat", "Rank Rat"],
+                      lands={"B": 12}))
+    liliana = named(game, "Liliana the Repentant")[0]
+    game.apply(next(o for o in options(game, act.ActivateAbility) if o.source_id == liliana.id))
+    resolve(game)
+    liliana.activations = {}  # a new turn resets once-per-turn limits, not exhaust
+    game.advance()
+    assert not [o for o in options(game, act.ActivateAbility) if o.source_id == liliana.id]

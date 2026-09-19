@@ -7980,7 +7980,7 @@
     {
      "cost": "{5}{B}",
      "sorcery": true,
-     "once_per_turn": true,
+     "exhaust": true,
      "targets": [
       "creature|planeswalker:zone=graveyard,yours"
      ],
@@ -7995,9 +7995,6 @@
       }
      ]
     }
-   ],
-   "approximations": [
-    "exhaust (once ever) is once per turn"
    ]
   },
   {
@@ -8981,6 +8978,9 @@
    ],
    "power": 3,
    "toughness": 3,
+   "keywords": [
+    "convoke"
+   ],
    "rarity": "uncommon",
    "collector_number": "256",
    "color_identity": [
@@ -8998,9 +8998,6 @@
       }
      ]
     }
-   ],
-   "approximations": [
-    "convoke is omitted"
    ]
   },
   {
