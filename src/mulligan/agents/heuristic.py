@@ -135,12 +135,14 @@ def _side(ref: str) -> str:
 class HeuristicAgent(Agent):
     """Scores every legal action with general Limited heuristics."""
 
-    def __init__(self, name: str = "heuristic", card_values: dict[str, float] | None = None):
+    def __init__(self, name: str = "heuristic", card_values: dict[str, float] | None = None,
+                 greedy_attacks: bool = True):
         """``card_values`` is an optional per-card adjustment learned for a set
         (see ``learn_values``): points added to the general value of a card,
         which steers casting order, removal targets, trades and blocks."""
         self.name = name
         self.card_values = card_values or {}
+        self.greedy_attacks = greedy_attacks
 
     def _pv(self, perm: PermanentView) -> float:
         return max(0.5, permanent_value(perm) + self.card_values.get(perm.name, 0.0))
@@ -676,6 +678,25 @@ class HeuristicAgent(Agent):
             if sum(by_power[len(blockers):]) >= opp_life:
                 return {c.id for c in mine}
 
+        if self.greedy_attacks:
+            plan = self._greedy_attackers(view, mine, blockers)
+        else:
+            plan = self._safe_attackers(mine, blockable_by)
+
+        # Keep back enough to survive the crack-back.
+        threat = sum(c.power for c in view.creatures(opp))
+        defenders = [c for c in mine if c.id not in plan or c.has(Keyword.VIGILANCE)]
+        defenders += [c for c in view.creatures(me) if c not in mine and not c.tapped]
+        for att in sorted((c for c in mine if c.id in plan), key=lambda c: c.toughness,
+                          reverse=True):
+            if threat - self._soak(defenders) < view.life(me):
+                break
+            plan.discard(att.id)
+            defenders.append(att)
+        return plan
+
+    def _safe_attackers(self, mine, blockable_by) -> set[int]:
+        """Attack with each creature no single blocker eats for free."""
         plan: set[int] = set()
         for att in mine:
             options = blockable_by(att)
@@ -694,17 +715,54 @@ class HeuristicAgent(Agent):
             if safe:
                 plan.add(att.id)
 
-        # Keep back enough to survive the crack-back.
-        threat = sum(c.power for c in view.creatures(opp))
-        defenders = [c for c in mine if c.id not in plan or c.has(Keyword.VIGILANCE)]
-        defenders += [c for c in view.creatures(me) if c not in mine and not c.tapped]
-        for att in sorted((c for c in mine if c.id in plan), key=lambda c: c.toughness,
-                          reverse=True):
-            if threat - self._soak(defenders) < view.life(me):
-                break
-            plan.discard(att.id)
-            defenders.append(att)
         return plan
+
+    def _greedy_attackers(self, view: PlayerView, mine, blockers) -> set[int]:
+        """Add attackers one at a time while the predicted combat improves.
+
+        The defender's blocks are predicted with this agent's own blocking
+        policy, so an attack is judged as a whole: two attackers into one
+        good blocker means one of them gets through."""
+        opp_life = view.life(view.opponent)
+        chosen: list[PermanentView] = []
+        best = 0.0
+        rest = list(mine)
+        while rest:
+            scored = [(self._attack_value(view, chosen + [c], blockers, opp_life), c)
+                      for c in rest]
+            value, pick = max(scored, key=lambda x: x[0])
+            if value <= best:
+                break
+            best = value
+            chosen.append(pick)
+            rest.remove(pick)
+        return {c.id for c in chosen}
+
+    def _attack_value(self, view: PlayerView, attack, blockers, opp_life: int) -> float:
+        """Material swing plus damage for ``attack`` against predicted blocks."""
+        blocks = self._choose_blocks(view, attack, list(blockers), opp_life)
+        value = 0.0
+        damage = 0
+        for att in attack:
+            mult = 2 if att.has(Keyword.DOUBLE_STRIKE) else 1
+            bs = [view.permanent(b) for b, a in blocks if a == att.id]
+            bs = [b for b in bs if b is not None]
+            if not bs:
+                damage += att.power * mult
+                continue
+            if len(bs) == 1:
+                att_dies, blk_dies = combat_outcome(att, bs[0])
+                if att.has(Keyword.TRAMPLE):
+                    damage += max(0, att.power - (bs[0].toughness - bs[0].damage))
+            else:  # a chump pair on a menace attacker
+                att_dies, blk_dies = False, True
+            if att_dies:
+                value -= self._pv(att)
+            if blk_dies:
+                value += sum(self._pv(b) for b in bs[:1])
+        if damage >= opp_life:
+            return 1000.0
+        return value + damage * (0.5 + 3.0 / max(opp_life, 1))
 
     def _assign_targets(self, view: PlayerView, attackers: set[int]) -> dict[int, int]:
         """Everyone attacks the player, except that the smallest attacker able
@@ -733,12 +791,18 @@ class HeuristicAgent(Agent):
 
     def _plan_blocks(self, view: PlayerView) -> set[tuple[int, int]]:
         me = view.seat
-        attackers = sorted(view.attackers(), key=lambda a: a.power, reverse=True)
         declared = set(view.blocks())
         used = {b for b, _ in declared}
         pool = [c for c in view.creatures(me) if c.can_block and c.id not in used]
-        plan: set[tuple[int, int]] = set(declared)
-        blocked: set[int] = {a for _, a in declared}
+        return self._choose_blocks(view, view.attackers(), pool, view.life(me), declared)
+
+    def _choose_blocks(self, view: PlayerView, attackers, pool, life: int,
+                       declared: set | None = None) -> set[tuple[int, int]]:
+        """Blocks for ``attackers`` from ``pool`` by a defender at ``life``:
+        also used to predict the opponent's blocks when planning an attack."""
+        attackers = sorted(attackers, key=lambda a: a.power, reverse=True)
+        plan: set[tuple[int, int]] = set(declared or ())
+        blocked: set[int] = {a for _, a in plan}
 
         for att in attackers:
             if att.id in blocked or att.has(Keyword.MENACE):
@@ -763,7 +827,7 @@ class HeuristicAgent(Agent):
 
         # Chump the biggest hits until the damage is survivable.
         for att in attackers:
-            if unblocked_damage() < view.life(me):
+            if unblocked_damage() < life:
                 break
             if att.id in blocked:
                 continue
