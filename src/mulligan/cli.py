@@ -181,8 +181,9 @@ def versus_cmd(
                 for name, delta, effect in diffs[:8]:
                     side = "A" if delta > 0 else "B"
                     good = (effect > 0) == (side == "A")
-                    console.print(f"    {abs(delta)}× {name} in {side}: {'helps' if good else 'hurts'} "
-                                  f"{side} by {abs(effect):.1f} pts", highlight=False)
+                    verb = "helps" if good else "hurts"
+                    console.print(f"    {abs(delta)}× {name} in {side}: {verb} {side} by "
+                                  f"{abs(effect):.1f} pts", highlight=False)
     start = time.time()
     result = compare(Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent, tuple(b.cards)),
                      games=games, seed=seed, workers=workers or None)
