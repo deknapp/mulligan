@@ -680,8 +680,11 @@ class HeuristicAgent(Agent):
                 isinstance(e, fx.SearchLibrary) and e.dest.startswith("battlefield")
                 for e in ability.effects)):
             return 5.0  # a fetch land: crack it (the land it finds is the one that makes mana)
+        if view.is_my_turn and view.step in (Step.UPKEEP, Step.DRAW) and not view.stack():
+            return -1.0  # as with spells: the land drop and the draw come first
         if ability.discard_self:  # cycling: only when the card is dead weight
-            lands = len(view.lands(view.seat))
+            # Lands in hand count: they'll be played before a big spell is due.
+            lands = len(view.lands(view.seat)) + sum(1 for c in view.hand() if c.spec.is_land)
             if source.spec.is_land and lands < 5:
                 return -1.0
             if not source.spec.is_land and source.spec.cost.mana_value <= lands + 1:
