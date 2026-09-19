@@ -125,7 +125,7 @@ def validate_simulator(set_code: str = "hob", n_decks: int = 200, opponents: int
     names = [d.names for d in decks]
     jobs = []
     for i in range(len(decks)):
-        for k in range(opponents):
+        for _ in range(opponents):
             j = rng.randrange(len(decks) - 1)
             j = j + 1 if j >= i else j
             jobs.append((i, j, rng.randrange(1 << 30)))
