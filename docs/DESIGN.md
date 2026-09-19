@@ -70,8 +70,9 @@ Each card is either exact, approximate (with a list of what it leaves out), or
 unsupported (with a reason). `mulligan sets` reports the coverage. The compiled
 file is committed, so nobody else needs an API key.
 
-HOB (The Hobbit) was compiled in a Claude Code session: 178/193 cards playable,
-100% of commons and uncommons, 56 with noted approximations, 15 unsupported.
+HOB (The Hobbit) and FRA (Reality Fracture, from its spoiler) were compiled in
+Claude Code sessions: HOB 180/193 playable, FRA 269/283 of the cards spoiled so
+far. `mulligan sets` prints the current counts.
 
 ## Engine vocabulary
 
@@ -93,8 +94,12 @@ HOB (The Hobbit) was compiled in a Claude Code session: 178/193 cards playable,
   `unblockable`, `doesnt_untap`, `loses_abilities`, `cant_be_blocked_by:<f>`),
   ward; on self, the equipped/enchanted creature, or everything matching a
   filter; optionally conditional.
-- **Casting**: modal spells, auras, adventures, flashback, kicker, additional
-  costs, conditional cost reductions, flash, hybrid mana, ward as a tax.
+- **Casting**: modal spells, auras, adventures, prepare, flashback, kicker,
+  additional costs, X costs, convoke, conditional cost reductions, spell taxes
+  and discounts, flash, hybrid mana, ward as a tax, copying spells.
+- **Permanents**: planeswalkers (loyalty abilities, attacking them), vehicles
+  and crew, permanents that become creatures, sagas, exhaust abilities,
+  finality counters, "choose a creature type".
 
 ## Automated choices (a deliberate simplification)
 
@@ -111,12 +116,13 @@ the colors the rest of the hand needs.
 
 ## Not modelled
 
-Vehicles, planeswalkers, X costs, copying other cards (a card copying itself is
-supported), "choose a creature type", damage prevention, replacement effects,
-extra combats, control-changing, casting spells from a graveyard other than by
-flashback (activated and triggered abilities that work from the graveyard are
-supported). Cards that need these are unsupported or list
-the omission as an approximation.
+Damage prevention, general replacement effects, extra combats,
+control-changing, casting spells from a graveyard other than by flashback,
+"outside the game", and free casting (activated and triggered abilities that
+work from the graveyard are supported). Cards that need these are unsupported
+or list the omission as an approximation. An approximation may only make a
+card weaker than printed, never stronger, so a simplified card can't win the
+simulator games its real version would lose.
 
 ## Information
 
