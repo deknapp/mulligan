@@ -21,6 +21,30 @@ Against the field (24 sealed decks of HOB, 20 games each)
 5.5s
 ```
 
+## Your Arena decks
+
+```
+$ mulligan decks                      # event decks found in your MTG Arena log
+  log:2  PremierDraft_HOB_20260811  40 cards  2026-09-06 09:48
+$ mulligan versus log:2 clipboard     # vs a deck copied with Arena's Export button
+```
+
+Decks come from Arena's `Player.log` (turn on Options → Account → "Detailed
+Logs (Plugin Support)") or from Export text (a file, or `clipboard`). The log
+only holds your own decks; Arena never logs an opponent's list, so a friend's
+deck comes from their Export. Cards the engine cannot play yet are replaced by
+a basic land and reported, and every result says how much of each deck is
+modelled exactly:
+
+```
+fidelity: log:2: 12 of 23 spells modelled exactly, 9 approximated, 2 replaced — more
+than a quarter of this deck is simplified, so treat its result as unreliable
+```
+
+That warning is earned. The deck above went 4–3 in a real Premier Draft; the
+simulator gives it about 30% against a typical field, because its Elf/landfall
+engine is exactly the part the compiled cards simplify.
+
 ## Does it mean anything?
 
 The simulator's card ratings — each card's win rate in games where it was
@@ -77,6 +101,8 @@ Python 3.11+. Dependencies: `typer`, `rich`. That's all.
 
 | command | what it does |
 |---|---|
+| `mulligan decks` | your event decks from the MTG Arena log |
+| `mulligan versus A B` | which of two Arena decks would win (`log:N`, `clipboard`, or a file) |
 | `mulligan sets` | compiled sets and how much of each the engine can play |
 | `mulligan sealed --set hob --seed N` | open a sealed pool and build the best deck |
 | `mulligan compare A B --set hob` | which deck is better: head to head, and against the set's field |
@@ -102,8 +128,11 @@ against the heuristic on the same deck pairings with seats swapped:
 | policy-gradient correction, temperature 0.5 (7 iterations × 2000 games) | 50.1% at iteration 3, 47.3% at 6 — exploration noise hurt |
 | policy-gradient correction, temperature 0.15 (12 × 2000) | 48.3–50.1% (±3%), no gain |
 | heuristic with card values from simulated ratings (3 strengths) | 49.0–50.3% (±2.2%), no gain |
+| **search**: top-3 moves, 4 re-dealt playouts each (not a learned model) | **63.0% (56.1–69.4%, 200 games)** — but ~100× slower |
+| linear correction distilled from search's decisions (14,899) | 38.6–42.2% — worse; a linear model can't hold situational choices |
 
-So far the heuristic's play is the ceiling. Next ideas: a per-decision credit signal (rollouts from determinized
+Search clearly beats the heuristic, so better play is reachable; the open
+problem is compressing it into a small, fast model. Next ideas: a per-decision credit signal (rollouts from determinized
 states) instead of whole-game win/loss, and fixing the heuristic's known
 blind spots (big bodies, amass synergy) directly.
 

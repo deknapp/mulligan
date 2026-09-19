@@ -2,7 +2,9 @@
 
     mulligan sets                                  compiled sets and their coverage
     mulligan sealed --set hob --seed 7 --out a.txt open a sealed pool, build a deck
-    mulligan compare a.txt b.txt --set hob         which deck is better?
+    mulligan decks                                 your event decks from the Arena log
+    mulligan versus log:2 clipboard                which of two Arena decks would win?
+    mulligan compare a.txt b.txt --set hob         which deck is better (+ vs the field)?
     mulligan agents heuristic random --deck ...    which agent is better?
     mulligan play a.txt b.txt --set hob            watch one game
     mulligan rate --set hob --out r.json           card ratings from self-play
@@ -103,6 +105,59 @@ def compare_cmd(
                           workers=workers or None)
         console.print(result.summary(), markup=False)
     console.print(f"[dim]{time.time() - start:.1f}s[/dim]")
+
+
+@app.command("decks")
+def decks_cmd():
+    """The event decks (draft, sealed) found in your MTG Arena log."""
+    from .arena_log import read_decks
+    from .cards.sets import available_sets
+    decks = read_decks()
+    if not decks:
+        console.print("No event decks in your Arena log yet.")
+        return
+    compiled = set(available_sets())
+    for i, deck in enumerate(decks):
+        ok = "" if deck.set_code in compiled else "   [dim](set not compiled yet)[/dim]"
+        when = deck.updated[:16].replace("T", " ")
+        console.print(f"  log:{i}  {deck.event}  {deck.size} cards  {when}{ok}")
+    console.print("[dim]Use these with: mulligan versus log:N log:M  (or a file, or "
+                  "'clipboard' after Arena's Export)[/dim]")
+
+
+@app.command("versus")
+def versus_cmd(
+    deck_a: str = typer.Argument(..., help="log:N, log:latest, clipboard, or a decklist file."),
+    deck_b: str = typer.Argument(..., help="log:N, log:latest, clipboard, or a decklist file."),
+    games: int = typer.Option(2000, help="Games to play (rounded up to even)."),
+    agent: str = typer.Option("heuristic", help="Who pilots both decks."),
+    set_code: str = typer.Option(None, "--set", help="Override the detected set."),
+    seed: int = typer.Option(0),
+    workers: int = typer.Option(0),
+):
+    """Which of two Arena decks would win? Decks from your Arena log or Export text."""
+    from .arena_log import ArenaLogError
+    from .decks import DeckError, load_ref
+    try:
+        a, b = load_ref(deck_a, set_code), load_ref(deck_b, set_code)
+    except (DeckError, ArenaLogError) as exc:
+        console.print(f"[red]error:[/red] {exc}", highlight=False)
+        raise typer.Exit(1) from None
+    for warning in a.warnings + b.warnings:
+        console.print(f"[yellow]note:[/yellow] {warning}", highlight=False)
+    for deck in (a, b):
+        note = deck.fidelity_note()
+        if note:
+            console.print(f"[cyan]fidelity:[/cyan] {note}", highlight=False)
+    if a.set_code and b.set_code and a.set_code != b.set_code:
+        console.print(f"[yellow]note:[/yellow] the decks are from different sets "
+                      f"({a.set_code.upper()} vs {b.set_code.upper()})")
+    start = time.time()
+    result = compare(Entry(a.label, agent, tuple(a.cards)), Entry(b.label, agent, tuple(b.cards)),
+                     games=games, seed=seed, workers=workers or None)
+    console.print(result.summary(), markup=False)
+    console.print(f"[dim]{result.games} games in {time.time() - start:.1f}s, both decks "
+                  f"piloted by the {agent} agent[/dim]")
 
 
 @app.command("agents")
