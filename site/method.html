@@ -83,9 +83,10 @@
 <ul>
 <li><strong>It overrates high-toughness creatures</strong> and decks full of them. Bots don't
   punish a wall with tricks, evasion or going wide the way people do.</li>
-<li><strong>It still underrates blue,</strong> though by about half as much since a bot fix on
-  September 18 (see <a href="posts/2026-09-18-bots-cast-card-draw-in-their-own-upkeep.html">the correction</a>).
-  Real blue pairs won 52–56% in HOB; simulated ones 45–49%.</li>
+<li><strong>It still underrates blue,</strong> though by about half as much since September 18,
+  when we stopped the bots casting their card draw in their own upkeep (they
+  now wait for the opponent's end step, like people do). Real blue pairs won
+  52–56% in HOB; simulated ones 45–49%.</li>
 <li><strong>Cards with a few hundred games are noisy.</strong> A card win rate moves several
   points between runs. Posts only call out a card when its 95% interval clears
   the set's average.</li>
@@ -93,8 +94,12 @@
 <h2>What the numbers are for</h2>
 <p>Card win rates and archetype records here are <strong>predictions for a format
 nobody has played yet</strong>. They're a hypothesis for your first drafts, not a
-replacement for 17Lands once real data exists. Each post that compares against
-real data does so in a new post, rather than editing the old one.</p>
+replacement for 17Lands once real data exists.</p>
+<p>The tools update themselves. Once a day the site fetches the set's live
+17Lands numbers. When a card has a real win rate from at least 500 games,
+the tools use it instead of the simulated one (shifted onto the same scale,
+since 17Lands players win more than average), and they say which numbers are
+real. Before release, everything is simulated, and the tools say that too.</p>
 <p>All the code, card data and raw simulation output are in the
 <a href="https://github.com/deknapp/mulligan">repository</a>.</p></article>
 </main>

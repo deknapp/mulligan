@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reality Fracture draft primer</title>
+<meta name="description" content="What 800 simulated drafts and 100,000 games say about the format before release. Draft the open lane, since no pair dominates. Play 16 or more creatures and choose to play first. Green commons run deepest, and the Way of the Warlord and Wildspeaker are late-pick gems.">
+<link rel="stylesheet" href="../style.css">
+<link rel="alternate" type="application/rss+xml" title="mulligan: simulated Limited" href="../feed.xml">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">mulligan</a>
+<nav><a href="../index.html">Primer</a><a href="../tools/cards.html">Card ratings</a><a href="../tools/pick.html">Pick helper</a><a href="../tools/pairs.html">Color pairs</a><a href="../method.html">How it works</a>
+<a href="https://github.com/deknapp/mulligan">Code</a></nav></header>
+<main>
+<article><p class="date">September 19, 2026</p><h1>Reality Fracture draft primer</h1><p>Reality Fracture comes out on Arena on October 2. We had bots draft it 800
+times (100 pods of eight). Each bot built a deck from its picks, and the decks
+played <strong>100,000 games</strong> against each other under the full rules. This primer
+is what those games say, written as advice for your first drafts.</p>
+<p>Each claim is tagged with how much to trust it:</p>
+<ul>
+<li><strong>Solid</strong>: a big effect, clear of the noise, and the kind of thing the
+  simulator gets right on sets humans have played.</li>
+<li><strong>Lean</strong>: real in the simulation, but small or in an area where the simulator
+  is weaker.</li>
+<li><strong>Unproven</strong>: likely to be wrong; see why.</li>
+</ul>
+<p>Want a specific card or pack? The <a href="../tools/cards.html">card ratings</a>,
+<a href="../tools/pick.html">pick helper</a> and <a href="../tools/pairs.html">color pairs</a> tools
+use the same data. Once the set is out, they switch to real 17Lands results by
+themselves.</p>
+<h2>The short version</h2>
+<ol>
+<li><strong>Draft the open lane.</strong> Nine of the ten color pairs finish within 3.5
+   points of each other. Being in the colors nobody else is in will
+   matter more than picking the "right" pair. <em>Solid.</em></li>
+<li><strong>Play 16 or more creatures.</strong> Decks with 16–17 creatures won 52.6%. Decks
+   with 13 or fewer won 46.6%. <em>Solid, with a caveat below.</em></li>
+<li><strong>Choose to play first.</strong> The player on the play won <strong>53.7%</strong>. <em>Solid.</em></li>
+<li><strong>Green has the deepest commons.</strong> Red, green and white are slightly the
+   best colors. Black is the weakest. <em>Lean.</em></li>
+<li><strong>Judge Empower Jace cards by what they do besides Jace.</strong> Some of the best
+   and worst uncommons share the mechanic. <em>Solid.</em></li>
+<li><strong>Late picks worth watching for:</strong> Way of the Warlord, Way of the
+   Wildspeaker and Tam's Resistance. <em>Solid.</em></li>
+</ol>
+<h2>Colors and pairs</h2>
+
+<figure class="fig"><svg class="chart" viewBox="0 0 640 310" role="img" aria-label="Win rate by color pair in simulated drafts" xmlns="http://www.w3.org/2000/svg"><line x1="165.9" x2="165.9" y1="10" y2="282" class="grid"/><text x="165.9" y="298.0" class="tick" text-anchor="middle" >46%</text><line x1="293.2" x2="293.2" y1="10" y2="282" class="grid"/><text x="293.2" y="298.0" class="tick" text-anchor="middle" >48%</text><line x1="420.4" x2="420.4" y1="10" y2="282" class="grid"/><text x="420.4" y="298.0" class="tick" text-anchor="middle" >50%</text><line x1="547.6" x2="547.6" y1="10" y2="282" class="grid"/><text x="547.6" y="298.0" class="tick" text-anchor="middle" >52%</text><line x1="420.4" x2="420.4" y1="10" y2="282" class="ref"/><text x="80.0" y="33.0" class="label" text-anchor="end" >RG</text><line x1="491.8" x2="574.1" y1="29.0" y2="29.0" class="whisker"/><g class="dot"><title>RG: 52% (95% interval 51%–52%)</title><path d="M533.0,22.0 A7,7 0 0 0 533.0,36.0 Z" fill="var(--mana-r)"/><path d="M533.0,22.0 A7,7 0 0 1 533.0,36.0 Z" fill="var(--mana-g)"/><circle cx="533.0" cy="29.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="59.0" class="label" text-anchor="end" >WG</text><line x1="488.2" x2="565.3" y1="55.0" y2="55.0" class="whisker"/><g class="dot"><title>WG: 52% (95% interval 51%–52%)</title><path d="M526.8,48.0 A7,7 0 0 0 526.8,62.0 Z" fill="var(--mana-w)"/><path d="M526.8,48.0 A7,7 0 0 1 526.8,62.0 Z" fill="var(--mana-g)"/><circle cx="526.8" cy="55.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="85.0" class="label" text-anchor="end" >WU</text><line x1="437.6" x2="520.7" y1="81.0" y2="81.0" class="whisker"/><g class="dot"><title>WU: 51% (95% interval 50%–52%)</title><path d="M479.2,74.0 A7,7 0 0 0 479.2,88.0 Z" fill="var(--mana-w)"/><path d="M479.2,74.0 A7,7 0 0 1 479.2,88.0 Z" fill="var(--mana-u)"/><circle cx="479.2" cy="81.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="111.0" class="label" text-anchor="end" >UR</text><line x1="405.2" x2="517.0" y1="107.0" y2="107.0" class="whisker"/><g class="dot"><title>UR: 51% (95% interval 50%–52%)</title><path d="M461.1,100.0 A7,7 0 0 0 461.1,114.0 Z" fill="var(--mana-u)"/><path d="M461.1,100.0 A7,7 0 0 1 461.1,114.0 Z" fill="var(--mana-r)"/><circle cx="461.1" cy="107.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="137.0" class="label" text-anchor="end" >WR</text><line x1="412.6" x2="488.4" y1="133.0" y2="133.0" class="whisker"/><g class="dot"><title>WR: 50% (95% interval 50%–51%)</title><path d="M450.5,126.0 A7,7 0 0 0 450.5,140.0 Z" fill="var(--mana-w)"/><path d="M450.5,126.0 A7,7 0 0 1 450.5,140.0 Z" fill="var(--mana-r)"/><circle cx="450.5" cy="133.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="163.0" class="label" text-anchor="end" >BR</text><line x1="390.3" x2="480.4" y1="159.0" y2="159.0" class="whisker"/><g class="dot"><title>BR: 50% (95% interval 50%–51%)</title><path d="M435.4,152.0 A7,7 0 0 0 435.4,166.0 Z" fill="var(--mana-b)"/><path d="M435.4,152.0 A7,7 0 0 1 435.4,166.0 Z" fill="var(--mana-r)"/><circle cx="435.4" cy="159.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="189.0" class="label" text-anchor="end" >BG</text><line x1="288.7" x2="379.2" y1="185.0" y2="185.0" class="whisker"/><g class="dot"><title>BG: 49% (95% interval 48%–49%)</title><path d="M333.9,178.0 A7,7 0 0 0 333.9,192.0 Z" fill="var(--mana-b)"/><path d="M333.9,178.0 A7,7 0 0 1 333.9,192.0 Z" fill="var(--mana-g)"/><circle cx="333.9" cy="185.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="215.0" class="label" text-anchor="end" >UG</text><line x1="273.4" x2="387.3" y1="211.0" y2="211.0" class="whisker"/><g class="dot"><title>UG: 49% (95% interval 48%–49%)</title><path d="M330.3,204.0 A7,7 0 0 0 330.3,218.0 Z" fill="var(--mana-u)"/><path d="M330.3,204.0 A7,7 0 0 1 330.3,218.0 Z" fill="var(--mana-g)"/><circle cx="330.3" cy="211.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="241.0" class="label" text-anchor="end" >WB</text><line x1="285.4" x2="362.3" y1="237.0" y2="237.0" class="whisker"/><g class="dot"><title>WB: 48% (95% interval 48%–49%)</title><path d="M323.8,230.0 A7,7 0 0 0 323.8,244.0 Z" fill="var(--mana-w)"/><path d="M323.8,230.0 A7,7 0 0 1 323.8,244.0 Z" fill="var(--mana-b)"/><circle cx="323.8" cy="237.0" r="7" fill="none" class="outline"/></g><text x="80.0" y="267.0" class="label" text-anchor="end" >UB</text><line x1="125.9" x2="236.3" y1="263.0" y2="263.0" class="whisker"/><g class="dot"><title>UB: 46% (95% interval 45%–47%)</title><path d="M181.0,256.0 A7,7 0 0 0 181.0,270.0 Z" fill="var(--mana-u)"/><path d="M181.0,256.0 A7,7 0 0 1 181.0,270.0 Z" fill="var(--mana-b)"/><circle cx="181.0" cy="263.0" r="7" fill="none" class="outline"/></g></svg></figure>
+
+<p><em>Each pair's win rate against the whole field, with 95% intervals.</em></p>
+<p>The spread is narrow. Red-green (51.8%) and white-green (51.7%) are on top,
+and seven pairs sit between 48.5% and 51%. <strong>Blue-black is the one pair to
+avoid (46.2%)</strong>. It's the only one clearly below the pack. Real formats usually
+spread wider than this once people learn them. A flat field before release means
+there's no pair to force, and being in the open lane is what matters.</p>
+<p>By color, red (50.8%), green (50.5%) and white (50.4%) are roughly even. Blue
+(49.4%) and black (48.6%) trail. Half of all bot decks played white, so expect
+white to be contested.</p>
+<ul>
+<li><strong>Black is shallow.</strong> Its best cards are rares: Sanctum Lurker, Curse-Marred
+  Demon, Garruk, Veiled Butcher and Overwrite the Multiverse. At common,
+  Extended Absence (exile a creature for four) and Screeching Soulbreaker are
+  good, and the rest is thin. If you're the second black drafter at the table,
+  get out. <em>Lean.</em></li>
+<li><strong>Blue may be better than it looks.</strong> On The Hobbit, where real results
+  exist, this simulator underrated blue decks. So "blue is middling" here
+  probably means "blue is fine". Blue-black's last place is the weakest call
+  in this primer. <em>Unproven.</em></li>
+</ul>
+<p>The <a href="../tools/pairs.html">color pairs tool</a> shows each pair's best commons and
+uncommons, measured in that pair's decks, and a sample deck.</p>
+<h2>What to take</h2>
+<h3>Commons</h3>
+
+<figure class="fig"><svg class="chart" viewBox="0 0 640 350" role="img" aria-label="Best commons by color" xmlns="http://www.w3.org/2000/svg"><text x="202.0" y="23.0" class="label" text-anchor="end" >Blossom-Blessed Angel</text><rect x="210.0" y="11" width="371.6" height="16" fill="var(--mana-w)" class="seg"><title>Blossom-Blessed Angel: 59.5%</title></rect><text x="586.6" y="23.0" class="tick" text-anchor="start" >59.5%</text><text x="202.0" y="45.0" class="label" text-anchor="end" >Surgical Precision</text><rect x="210.0" y="33" width="259.4" height="16" fill="var(--mana-w)" class="seg"><title>Surgical Precision: 54.8%</title></rect><text x="474.4" y="45.0" class="tick" text-anchor="start" >54.8%</text><text x="202.0" y="67.0" class="label" text-anchor="end" >Emergency Phytomedic</text><rect x="210.0" y="55" width="253.1" height="16" fill="var(--mana-w)" class="seg"><title>Emergency Phytomedic: 54.6%</title></rect><text x="468.1" y="67.0" class="tick" text-anchor="start" >54.6%</text><text x="202.0" y="89.0" class="label" text-anchor="end" >Tam&#x27;s Resistance</text><rect x="210.0" y="77" width="276.3" height="16" fill="var(--mana-u)" class="seg"><title>Tam&#x27;s Resistance: 55.5%</title></rect><text x="491.3" y="89.0" class="tick" text-anchor="start" >55.5%</text><text x="202.0" y="111.0" class="label" text-anchor="end" >Undulating Witness</text><rect x="210.0" y="99" width="228.7" height="16" fill="var(--mana-u)" class="seg"><title>Undulating Witness: 53.6%</title></rect><text x="443.7" y="111.0" class="tick" text-anchor="start" >53.6%</text><text x="202.0" y="133.0" class="label" text-anchor="end" >Mindseeker Oculus</text><rect x="210.0" y="121" width="228.2" height="16" fill="var(--mana-u)" class="seg"><title>Mindseeker Oculus: 53.5%</title></rect><text x="443.2" y="133.0" class="tick" text-anchor="start" >53.5%</text><text x="202.0" y="155.0" class="label" text-anchor="end" >Extended Absence</text><rect x="210.0" y="143" width="279.5" height="16" fill="var(--mana-b)" class="seg"><title>Extended Absence: 55.7%</title></rect><text x="494.5" y="155.0" class="tick" text-anchor="start" >55.7%</text><text x="202.0" y="177.0" class="label" text-anchor="end" >Screeching Soulbreaker</text><rect x="210.0" y="165" width="277.6" height="16" fill="var(--mana-b)" class="seg"><title>Screeching Soulbreaker: 55.6%</title></rect><text x="492.6" y="177.0" class="tick" text-anchor="start" >55.6%</text><text x="202.0" y="199.0" class="label" text-anchor="end" >Void Extrapolator</text><rect x="210.0" y="187" width="189.3" height="16" fill="var(--mana-b)" class="seg"><title>Void Extrapolator: 51.9%</title></rect><text x="404.3" y="199.0" class="tick" text-anchor="start" >51.9%</text><text x="202.0" y="221.0" class="label" text-anchor="end" >Tether Technician</text><rect x="210.0" y="209" width="287.4" height="16" fill="var(--mana-r)" class="seg"><title>Tether Technician: 56.0%</title></rect><text x="502.4" y="221.0" class="tick" text-anchor="start" >56.0%</text><text x="202.0" y="243.0" class="label" text-anchor="end" >Heartstring Puller</text><rect x="210.0" y="231" width="266.3" height="16" fill="var(--mana-r)" class="seg"><title>Heartstring Puller: 55.1%</title></rect><text x="481.3" y="243.0" class="tick" text-anchor="start" >55.1%</text><text x="202.0" y="265.0" class="label" text-anchor="end" >Awaken the Inferno</text><rect x="210.0" y="253" width="240.2" height="16" fill="var(--mana-r)" class="seg"><title>Awaken the Inferno: 54.0%</title></rect><text x="455.2" y="265.0" class="tick" text-anchor="start" >54.0%</text><text x="202.0" y="287.0" class="label" text-anchor="end" >Bestial Incursion</text><rect x="210.0" y="275" width="380.0" height="16" fill="var(--mana-g)" class="seg"><title>Bestial Incursion: 59.9%</title></rect><text x="595.0" y="287.0" class="tick" text-anchor="start" >59.9%</text><text x="202.0" y="309.0" class="label" text-anchor="end" >Wrecking Gecko</text><rect x="210.0" y="297" width="294.5" height="16" fill="var(--mana-g)" class="seg"><title>Wrecking Gecko: 56.3%</title></rect><text x="509.5" y="309.0" class="tick" text-anchor="start" >56.3%</text><text x="202.0" y="331.0" class="label" text-anchor="end" >Arcane Amphisbaena</text><rect x="210.0" y="319" width="277.9" height="16" fill="var(--mana-g)" class="seg"><title>Arcane Amphisbaena: 55.6%</title></rect><text x="492.9" y="331.0" class="tick" text-anchor="start" >55.6%</text></svg></figure>
+
+<p><em>The three best commons in each color by win rate when drawn.</em></p>
+<p><strong>Bestial Incursion</strong> (a 4/4 trampler for four that comes back with flashback)
+and <strong>Blossom-Blessed Angel</strong> (a 2/4 flier with vigilance plus a one-mana +1/+1
+counter) are the best commons in the set. Take either over most uncommons.</p>
+<p>Green runs deepest. After Bestial Incursion come Wrecking Gecko (a 5/5 ward
+for five), Arcane Amphisbaena (a two-mana deathtouch body plus a Jace) and
+Greenhouse Propagator. In red, Tether Technician (a 4/5 with reach that can
+deal 2 damage when it enters) and Heartstring Puller (a 3/1 trampler that
+brings a 2/2) are the picks.</p>
+<h3>Uncommons</h3>
+
+<div class="table"><table><tr><th>Card</th><th>Cost</th><th>Rarity</th><th class="num">Win rate when drawn</th><th class="num">Avg pick</th><th class="num">Games</th></tr><tr><td>Thalia, the Survivor</td><td>{3}{W}</td><td>U</td><td class="num">60.9%</td><td class="num">1.5</td><td class="num">6,405</td></tr><tr><td>Tetsuko Umezawa, Pursuer <span title="the blocker-damage trigger is omitted">†</span></td><td>{3}{R}</td><td>U</td><td class="num">60.3%</td><td class="num">2.0</td><td class="num">4,137</td></tr><tr><td>Kiora of Fire and Ashes</td><td>{4}{R}{R}</td><td>U</td><td class="num">59.2%</td><td class="num">1.6</td><td class="num">7,605</td></tr><tr><td>Vigorbloom Vanguard</td><td>{1}{G/W}</td><td>U</td><td class="num">58.7%</td><td class="num">2.8</td><td class="num">6,378</td></tr><tr><td>Bloombrute</td><td>{2}{G}{W}</td><td>U</td><td class="num">57.3%</td><td class="num">1.2</td><td class="num">2,240</td></tr><tr><td>Your Fate Ends Here</td><td>{2}{W}</td><td>U</td><td class="num">56.8%</td><td class="num">2.7</td><td class="num">6,844</td></tr><tr><td>Desperate Futurescribe</td><td>{2}{W}{U}</td><td>U</td><td class="num">57.0%</td><td class="num">2.0</td><td class="num">3,005</td></tr><tr><td>Titanbones, Towering Heart</td><td>{3}{G}</td><td>U</td><td class="num">57.3%</td><td class="num">3.6</td><td class="num">5,950</td></tr></table><p class="caption">† Simplified in the simulator (hover for what's left out). Simplifications only ever make a card weaker than printed.</p></div>
+
+<p><strong>Thalia, the Survivor</strong> (a 3/4 lifelinker that taxes their spells) and
+<strong>Tetsuko Umezawa, Pursuer</strong> (a 2/4 double striker) are the best uncommons,
+and <strong>Kiora of Fire and Ashes</strong> (six mana for a 2/2 and a 5/5 flying dragon)
+isn't far behind. Your Fate Ends Here is the best removal spell at uncommon.</p>
+<h3>Sleepers</h3>
+<p>These won far more than their pick position says, and their 95% intervals
+clear the set's average. Bots took them around pick 10 or later.</p>
+
+<div class="table"><table><tr><th>Card</th><th>Cost</th><th>Rarity</th><th class="num">Win rate when drawn</th><th class="num">Avg pick</th><th class="num">Games</th><th>Why</th></tr><tr><td>Way of the Warlord</td><td>{2}{R}</td><td>U</td><td class="num">56.7%</td><td class="num">10.4</td><td class="num">922</td><td>A 5-loyalty Jace that can -4 to kill a creature and hit face</td></tr><tr><td>Way of the Wildspeaker</td><td>{4}{G}</td><td>U</td><td class="num">56.6%</td><td class="num">10.8</td><td class="num">1,227</td><td>A 7-loyalty Jace that makes a 4/4 trampler the turn it lands</td></tr><tr><td>Tam&#x27;s Resistance</td><td>{1}{G/U}</td><td>C</td><td class="num">55.5%</td><td class="num">11.3</td><td class="num">5,047</td><td>Two mana: a counter and a 4-loyalty Jace, in green or blue</td></tr><tr><td>Garruk, Curse Breaker <span title="the -4 is omitted">†</span></td><td>{3}{G}{G}</td><td>M</td><td class="num">62.5%</td><td class="num">8.6</td><td class="num">1,642</td><td>A 4/4 every other turn, and cards off your big creatures</td></tr><tr><td>Overwrite the Multiverse</td><td>{4}{B}{B}</td><td>M</td><td class="num">61.0%</td><td class="num">8.4</td><td class="num">680</td><td>Six-mana wrath that leaves you a huge Jace</td></tr></table><p class="caption">† Simplified in the simulator (hover for what's left out). Simplifications only ever make a card weaker than printed.</p></div>
+
+<p>The two Ways are the standouts. Each creates a Jace planeswalker with enough
+loyalty to use its new −4 the turn it comes down: Warlord's is 2 damage to a
+creature and 2 to a player, and Wildspeaker's makes a 4/4 trampler. Both
+leave a Jace behind that your opponent has to deal with. <strong>Tam's Resistance</strong>
+is a two-mana hybrid green or blue common: a +1/+1 counter and a four-loyalty
+Jace.</p>
+<p>The two Garruks and Overwrite the Multiverse are mythics, so you'll rarely see
+them late. When you do, take them.</p>
+<h3>Traps</h3>
+<p>These go early and don't win.</p>
+
+<div class="table"><table><tr><th>Card</th><th>Cost</th><th>Rarity</th><th class="num">Win rate when drawn</th><th class="num">Avg pick</th><th class="num">Games</th><th>Why</th></tr><tr><td>Proft, Sinister Mastermind</td><td>{2}{B}</td><td>U</td><td class="num">43.1%</td><td class="num">4.1</td><td class="num">5,835</td><td>Needs seven cards in your graveyard to cast</td></tr><tr><td>Ghalta the Unstoppable <span title="the power-based discount is omitted">†</span></td><td>{8}{G}</td><td>U</td><td class="num">43.2%</td><td class="num">3.5</td><td class="num">5,073</td><td>Simplified: no cost reduction here. Discount this one</td></tr><tr><td>Flickering Hound</td><td>{3}{W}</td><td>R</td><td class="num">41.4%</td><td class="num">7.4</td><td class="num">2,451</td><td>A 2/2 for four whose trigger rarely matters</td></tr><tr><td>Germinate Recruits</td><td>{2}{W}</td><td>R</td><td class="num">40.0%</td><td class="num">6.4</td><td class="num">4,545</td><td>Blank unless you gained life this turn</td></tr><tr><td>Loyal Tutor</td><td>{W}</td><td>R</td><td class="num">36.0%</td><td class="num">8.3</td><td class="num">1,747</td><td>Does nothing in a deck without planeswalker cards</td></tr></table><p class="caption">† Simplified in the simulator (hover for what's left out). Simplifications only ever make a card weaker than printed.</p></div>
+
+<p><strong>Proft, Sinister Mastermind</strong> reads like a three-mana 5/5 menace. But you
+can't cast it until your graveyard holds seven cards, which is late or never
+in Limited. <strong>Germinate Recruits</strong> does nothing unless you gained life that
+turn. <strong>Loyal Tutor</strong> needs planeswalker <em>cards</em> in your deck (Jace tokens
+don't count). Ghalta is marked † because the simulator leaves out its cost
+reduction, so ignore its number.</p>
+<h2>Empower Jace and the Way cycle</h2>
+<p>Empower Jace is the set's main mechanic. It puts loyalty counters on your Jace
+token, creating one if you don't have one. Across its 32 cards it averages
+about zero: neither good nor bad on its own. <strong>What decides a card is its
+payload.</strong> The clearest case is the uncommon Way cycle:</p>
+
+<figure class="fig"><svg class="chart" viewBox="0 0 640 310" role="img" aria-label="The Way of the ... cycle" xmlns="http://www.w3.org/2000/svg"><line x1="308.9" x2="308.9" y1="10" y2="282" class="grid"/><text x="308.9" y="298.0" class="tick" text-anchor="middle" >40%</text><line x1="445.7" x2="445.7" y1="10" y2="282" class="grid"/><text x="445.7" y="298.0" class="tick" text-anchor="middle" >50%</text><line x1="582.6" x2="582.6" y1="10" y2="282" class="grid"/><text x="582.6" y="298.0" class="tick" text-anchor="middle" >60%</text><line x1="471.5" x2="471.5" y1="10" y2="282" class="ref"/><text x="180.0" y="33.0" class="label" text-anchor="end" >Way of the Warlord</text><line x1="493.7" x2="581.0" y1="29.0" y2="29.0" class="whisker"/><circle cx="537.7" cy="29.0" r="7" fill="var(--mana-r)" class="dot"><title>Way of the Warlord: 57% (95% interval 54%–60%)</title></circle><text x="180.0" y="59.0" class="label" text-anchor="end" >Way of the Wildspeaker</text><line x1="497.9" x2="573.7" y1="55.0" y2="55.0" class="whisker"/><circle cx="536.1" cy="55.0" r="7" fill="var(--mana-g)" class="dot"><title>Way of the Wildspeaker: 57% (95% interval 54%–59%)</title></circle><text x="180.0" y="85.0" class="label" text-anchor="end" >Way of the Deathbringer</text><line x1="445.4" x2="525.5" y1="81.0" y2="81.0" class="whisker"/><circle cx="485.6" cy="81.0" r="7" fill="var(--mana-b)" class="dot"><title>Way of the Deathbringer: 53% (95% interval 50%–56%)</title></circle><text x="180.0" y="111.0" class="label" text-anchor="end" >Way of the Healer</text><line x1="456.8" x2="512.6" y1="107.0" y2="107.0" class="whisker"/><circle cx="484.8" cy="107.0" r="7" fill="var(--mana-w)" class="dot"><title>Way of the Healer: 53% (95% interval 51%–55%)</title></circle><text x="180.0" y="137.0" class="label" text-anchor="end" >Way of the Cryomancer</text><line x1="371.7" x2="490.3" y1="133.0" y2="133.0" class="whisker"/><circle cx="430.9" cy="133.0" r="7" fill="var(--mana-u)" class="dot"><title>Way of the Cryomancer: 49% (95% interval 45%–53%)</title></circle><text x="180.0" y="163.0" class="label" text-anchor="end" >Way of the Paradox</text><line x1="382.4" x2="464.9" y1="159.0" y2="159.0" class="whisker"/><circle cx="423.6" cy="159.0" r="7" fill="var(--mana-g)" class="dot"><title>Way of the Paradox: 48% (95% interval 45%–51%)</title></circle><text x="180.0" y="189.0" class="label" text-anchor="end" >Way of the Pyromancer</text><line x1="378.5" x2="450.6" y1="185.0" y2="185.0" class="whisker"/><circle cx="414.5" cy="185.0" r="7" fill="var(--mana-r)" class="dot"><title>Way of the Pyromancer: 48% (95% interval 45%–50%)</title></circle><text x="180.0" y="215.0" class="label" text-anchor="end" >Way of the Mentor</text><line x1="385.4" x2="440.9" y1="211.0" y2="211.0" class="whisker"/><circle cx="413.1" cy="211.0" r="7" fill="var(--mana-w)" class="dot"><title>Way of the Mentor: 48% (95% interval 46%–50%)</title></circle><text x="180.0" y="241.0" class="label" text-anchor="end" >Way of the Necromancer</text><line x1="354.1" x2="420.8" y1="237.0" y2="237.0" class="whisker"/><circle cx="387.3" cy="237.0" r="7" fill="var(--mana-b)" class="dot"><title>Way of the Necromancer: 46% (95% interval 43%–48%)</title></circle><text x="180.0" y="267.0" class="label" text-anchor="end" >Way of the Mind Sculptor</text><line x1="219.0" x2="350.1" y1="263.0" y2="263.0" class="whisker"/><circle cx="283.0" cy="263.0" r="7" fill="var(--mana-u)" class="dot"><title>Way of the Mind Sculptor: 38% (95% interval 33%–43%)</title></circle></svg></figure>
+
+<p><em>Win rate when drawn for each Way, with 95% intervals. The dashed line is the
+set's average card.</em></p>
+<p>Warlord and Wildspeaker are well above average, and Deathbringer and Healer
+are slightly above. The rest are below average, and Necromancer is the lowest
+of those. Way of the Mind Sculptor looks worst of all, but
+part of its text is left out in the simulator, so don't read much into it.</p>
+<p>Two other patterns: <strong>flying</strong> creatures average <strong>+2.6 points</strong> over the set's
+average card, and cards with <strong>prepare</strong> (creatures that carry a spell you can
+cast from them) sit at about average.</p>
+<h2>Building your deck</h2>
+<p>We compared the 800 decks' records against what was in them. We also held
+each deck's average card quality fixed, so "more creatures" doesn't just mean
+"better cards".</p>
+
+<figure class="fig"><svg class="chart" viewBox="0 0 640 180" role="img" aria-label="Deck win rate by creature count" xmlns="http://www.w3.org/2000/svg"><line x1="247.1" x2="247.1" y1="10" y2="152" class="grid"/><text x="247.1" y="168.0" class="tick" text-anchor="middle" >46%</text><line x1="326.6" x2="326.6" y1="10" y2="152" class="grid"/><text x="326.6" y="168.0" class="tick" text-anchor="middle" >48%</text><line x1="406.2" x2="406.2" y1="10" y2="152" class="grid"/><text x="406.2" y="168.0" class="tick" text-anchor="middle" >50%</text><line x1="485.7" x2="485.7" y1="10" y2="152" class="grid"/><text x="485.7" y="168.0" class="tick" text-anchor="middle" >52%</text><line x1="565.2" x2="565.2" y1="10" y2="152" class="grid"/><text x="565.2" y="168.0" class="tick" text-anchor="middle" >54%</text><line x1="406.2" x2="406.2" y1="10" y2="152" class="ref"/><text x="220.0" y="33.0" class="label" text-anchor="end" >≤13 creatures (238 decks)</text><line x1="256.2" x2="288.2" y1="29.0" y2="29.0" class="whisker"/><circle cx="272.2" cy="29.0" r="7" fill="var(--mana-c)" class="dot"><title>≤13 creatures (238 decks): 47% (95% interval 46%–47%)</title></circle><text x="220.0" y="59.0" class="label" text-anchor="end" >14–15 creatures (231 decks)</text><line x1="360.2" x2="392.6" y1="55.0" y2="55.0" class="whisker"/><circle cx="376.4" cy="55.0" r="7" fill="var(--mana-c)" class="dot"><title>14–15 creatures (231 decks): 49% (95% interval 49%–50%)</title></circle><text x="220.0" y="85.0" class="label" text-anchor="end" >16–17 creatures (197 decks)</text><line x1="490.6" x2="525.6" y1="81.0" y2="81.0" class="whisker"/><circle cx="508.1" cy="81.0" r="7" fill="var(--mana-c)" class="dot"><title>16–17 creatures (197 decks): 53% (95% interval 52%–53%)</title></circle><text x="220.0" y="111.0" class="label" text-anchor="end" >18–19 creatures (106 decks)</text><line x1="520.3" x2="568.0" y1="107.0" y2="107.0" class="whisker"/><circle cx="544.1" cy="107.0" r="7" fill="var(--mana-c)" class="dot"><title>18–19 creatures (106 decks): 53% (95% interval 53%–54%)</title></circle><text x="220.0" y="137.0" class="label" text-anchor="end" >20+ creatures (28 decks)</text><line x1="491.0" x2="583.8" y1="133.0" y2="133.0" class="whisker"/><circle cx="537.5" cy="133.0" r="7" fill="var(--mana-c)" class="dot"><title>20+ creatures (28 decks): 53% (95% interval 52%–54%)</title></circle></svg></figure>
+
+<p><em>Deck win rate by number of creatures, with 95% intervals.</em></p>
+<ul>
+<li><strong>Creatures matter most.</strong> With card quality held fixed, each extra creature
+  is worth <strong>+0.65 points</strong> of win rate (±0.20). The average bot deck ran 15.
+  Aim for 16–17. <em>Solid, but see the caveat.</em></li>
+<li><strong>Removal counts, too:</strong> about <strong>+0.6 points</strong> per removal spell (±0.25),
+  quality held fixed. <em>Lean.</em></li>
+<li><strong>Two-drops don't matter by themselves.</strong> Decks with more two-drops win more,
+  but only because they have more creatures. With the creature count held
+  fixed, the extra two-drops add nothing. Don't take a weak two-drop over a
+  strong four-drop to fix your curve. <em>Lean.</em></li>
+<li><strong>Choose to play first:</strong> 53.7% on the play (±0.3). <em>Solid.</em></li>
+</ul>
+<p>The caveat: on The Hobbit, the simulator overrated decks full of big-bodied
+creatures. Bots don't punish a board of large creatures with tricks and
+evasion the way people do. The direction here is right, but the size of the
+creature effect is probably a bit high.</p>
+<h2>What the simulator can't tell you (yet)</h2>
+<ul>
+<li><strong>Combat tricks look terrible here</strong> (Blazing Crescendo, Charge the Sanctum
+  and Academic Ascent are near the bottom). Bots use tricks worse than people,
+  so these are underrated. Don't write them off.</li>
+<li><strong>Cards marked † are simplified.</strong> A simplification only ever makes a card
+  weaker, so treat their numbers as floors. Ferocity of the Hunt is the
+  clearest case: without its return-from-death half, it's just a deathtouch
+  aura.</li>
+<li><strong>Not every card is revealed yet.</strong> 285 of the set's 460 cards are out
+  (many of the rest never open in draft packs). Only revealed cards are in
+  the simulated packs, and 270 of the 285 are playable here.</li>
+<li><strong>Nothing here has met a real draft deck.</strong> The bots have never played an
+  Arena deck from this set, because none exist yet.</li>
+</ul>
+<h2>How this updates</h2>
+<p>The tools refresh on their own. Once a day, they fetch Reality Fracture's live
+17Lands data. When real players have enough games with a card, its real win
+rate replaces the simulated one, and the tools say which numbers are real.
+We'll also rerun the drafts when the full card list is out. After release,
+we'll check this primer against 17Lands in a new post.</p>
+<p><em>Raw data: <a href="https://github.com/deknapp/mulligan/blob/main/blog/data/fra-draft-2026-09-19.json">fra-draft-2026-09-19.json</a>.
+Reproduce with <code>mulligan draft --set fra --pods 100 --games 100000</code>. How far
+to trust the simulator in general: <a href="../method.html">How it works</a>.</em></p></article>
+</main>
+<footer>Simulated with <a href="https://github.com/deknapp/mulligan">mulligan</a>, an open-source Magic: The Gathering
+Limited simulator. Card data from Scryfall; real-game comparisons from
+<a href="https://www.17lands.com">17Lands</a>' public data. Not affiliated with
+Wizards of the Coast.</footer>
+</body>
+</html>
