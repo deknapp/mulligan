@@ -8,6 +8,7 @@ from .agents.base import Agent
 from .cards.cube import DECKS
 from .engine.card import CardSpec
 from .engine.game import Game
+from .engine.types import Step
 from .engine.view import PlayerView
 
 
@@ -37,11 +38,23 @@ def play_game(
     on_the_play: int = 0,
     max_turns: int = 60,
     keep_log: bool = False,
+    show_hands: bool = False,
 ) -> MatchResult:
+    """Play one game. ``show_hands`` adds each player's hand and available
+    mana to the log at the start of their first main phase (for reading
+    misplays; it is written after the fact and never shown to the agents)."""
     game = Game(list(decks), names=(agents[0].name, agents[1].name), seed=seed,
                 max_turns=max_turns, on_the_play=on_the_play)
     views = (PlayerView(game, 0), PlayerView(game, 1))
+    shown: set[tuple[int, int]] = set()
     while not game.is_over:
+        state = game.state
+        if (show_hands and state.step is Step.PRECOMBAT_MAIN
+                and (state.turn, state.active) not in shown):
+            shown.add((state.turn, state.active))
+            view = views[state.active]
+            hand = ", ".join(f"{c.name} {c.spec.cost}" for c in view.hand())
+            state.record(f"[{view.mana_available(state.active)} mana] hand: {hand}")
         options = game.legal_actions()
         seat = game.state.decision_player
         choice = agents[seat].choose(views[seat], options)

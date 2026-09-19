@@ -374,12 +374,13 @@ def play_cmd(
     agent: str = typer.Option("heuristic"),
     seed: int = typer.Option(0),
     set_code: str = typer.Option(None, "--set"),
+    hands: bool = typer.Option(False, help="Also log each hand at the start of each turn."),
 ):
     """Play one game and print its log."""
     from .arena import make_agent
     result = play_game((make_agent(agent, 1), make_agent(agent, 2)),
                        (_resolve(deck_a, set_code), _resolve(deck_b, set_code)),
-                       seed=seed, keep_log=True)
+                       seed=seed, keep_log=True, show_hands=hands)
     for line in result.log:
         console.print(line, markup=False, highlight=False)
     console.print(f"\n[bold]{result.reason}[/bold] after {result.turns} turns")
