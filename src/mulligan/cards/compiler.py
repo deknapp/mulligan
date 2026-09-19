@@ -26,7 +26,8 @@ from .schema import CardDataError, card
 EVERGREEN = {k.value for k in Keyword}
 BASIC_MANA = {"Plains": "W", "Island": "U", "Swamp": "B", "Mountain": "R", "Forest": "G"}
 SUPERTYPES = {"Legendary", "Basic", "Snow", "World"}
-CARD_TYPES = {"Land", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery"}
+CARD_TYPES = {"Land", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery",
+              "Planeswalker"}
 
 
 def _types(type_line: str) -> tuple[list[str], list[str], list[str]]:
@@ -52,6 +53,8 @@ def _face(face: dict) -> dict:
     out["types"] = types
     if subtypes:
         out["subtypes"] = [s for s in subtypes if s != "Adventure"]
+    if face.get("loyalty") is not None and str(face["loyalty"]).isdigit():
+        out["loyalty"] = int(face["loyalty"])
     power, toughness = face.get("power"), face.get("toughness")
     if power is not None:
         out["power"] = _stat(power)
@@ -74,12 +77,12 @@ def _face(face: dict) -> dict:
 def skeleton(raw: dict) -> dict:
     """The mechanical part of a card entry, straight from Scryfall fields."""
     faces = raw.get("card_faces") or [raw]
-    entry = _face(faces[0] if raw.get("layout") == "adventure" else {**raw, **faces[0]}
-                  if raw.get("card_faces") else raw)
-    entry["name"] = raw["name"].split(" // ")[0] if raw.get("layout") == "adventure" else raw[
-        "name"]
-    if raw.get("layout") == "adventure" and len(faces) > 1:
-        entry["adventure"] = _face(faces[1])
+    split = raw.get("layout") in ("adventure", "prepare")
+    entry = _face(faces[0] if split else {**raw, **faces[0]} if raw.get("card_faces") else raw)
+    entry["name"] = raw["name"].split(" // ")[0] if split else raw["name"]
+    if split and len(faces) > 1:
+        # An Adventure's second half, or a prepare card's spell.
+        entry[raw["layout"]] = _face(faces[1])
         if "power" not in entry and raw.get("power") is not None:
             entry["power"], entry["toughness"] = _stat(raw["power"]), _stat(raw["toughness"])
     if "Basic" in entry.get("supertypes", ()) and entry["name"] in BASIC_MANA:
@@ -99,10 +102,10 @@ def merge(base: dict, semantics: dict) -> dict:
     semantics go under ``adventure`` and merge into that face."""
     out = dict(base)
     for key, value in semantics.items():
-        if key == "adventure" and isinstance(value, dict) and "adventure" in out:
-            out["adventure"] = {**out["adventure"], **value}
-        elif key == "adventure" and value is None:
-            out.pop("adventure", None)
+        if key in ("adventure", "prepare") and isinstance(value, dict) and key in out:
+            out[key] = {**out[key], **value}
+        elif key in ("adventure", "prepare") and value is None:
+            out.pop(key, None)
         else:
             out[key] = value
     return out

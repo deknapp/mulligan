@@ -77,6 +77,14 @@ class PermanentView:
     is_creature = property(lambda self: self._game.is_creature(self._obj))
     is_land = property(lambda self: self._obj.spec.is_land)
     attached_to = property(lambda self: self._obj.attached_to)
+    loyalty = property(lambda self: self._obj.loyalty)
+    prepared = property(lambda self: self._obj.prepared)
+    attack_target = property(lambda self: self._obj.attack_target)
+    stun = property(lambda self: self._obj.stun)
+
+    @property
+    def is_planeswalker(self) -> bool:
+        return CardType.PLANESWALKER in self._obj.spec.types
 
     @property
     def power(self) -> int:
@@ -248,6 +256,11 @@ class PlayerView:
         menace aside, "can't be blocked", "can't block", ...). Rules are public."""
         return (not blocker.tapped
                 and self._game.can_block_attacker(blocker._obj, attacker._obj))
+
+    def abilities(self, obj_id: int):
+        """A visible object's activated abilities, including granted ones."""
+        obj = self._game.object_by_id(obj_id)
+        return self._game.abilities_of(obj) if obj is not None else ()
 
     def mana_available(self, seat: int | None = None) -> int:
         """Untapped mana sources plus floating mana. Public for both players:

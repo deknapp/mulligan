@@ -45,6 +45,9 @@ TRIGGER_EVENTS = {
     "draw": "you draw a card",
     "counters_placed": "you put +1/+1 counters on a permanent matching ``filter``",
     "creature_leaves_graveyard": "a creature card leaves your graveyard",
+    "gain_life": "you gain life",
+    "scry_or_surveil": "you scry or surveil",
+    "loyalty_counters": "you put loyalty counters on a planeswalker",
 }
 
 
@@ -59,6 +62,7 @@ class Cost:
     discard: int = 0         # discard this many cards (the engine picks)
     discard_self: bool = False
     life: int = 0
+    behold: str = ""         # a filter: control a matching permanent or reveal one from hand
 
     @property
     def is_free(self) -> bool:
@@ -95,6 +99,9 @@ class ActivatedAbility:
     zone: str = "battlefield"
     once_per_turn: bool = False
     is_equip: bool = False
+    # A planeswalker's loyalty ability: +N / -N (0 is "0:"); None otherwise.
+    loyalty: int | None = None
+    exile_self: bool = False   # "Exile this card from your graveyard: ..."
 
     @property
     def cost(self) -> Cost:
@@ -160,6 +167,9 @@ class Static:
     ward: int = 0
     condition: Condition | None = None
     text: str = ""
+    # Activated abilities granted to what it affects ("Planeswalkers you
+    # control have '[-2]: ...'").
+    abilities: tuple[ActivatedAbility, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -204,6 +214,11 @@ class CardSpec:
     adventure: CardSpec | None = None
     chapters: tuple[Chapter, ...] = ()
     storied: bool = False
+    loyalty: int | None = None
+    # A prepare card's spell: while the creature is prepared you may cast a copy.
+    prepare: CardSpec | None = None
+    enters_prepared: bool = False
+    enters_tapped_unless: Condition | None = None
     flavor_note: str = ""
     # For the set compiler's coverage report: what (if anything) was left out.
     approximations: tuple[str, ...] = ()
@@ -211,7 +226,7 @@ class CardSpec:
     @property
     def is_permanent(self) -> bool:
         return bool(self.types & {CardType.LAND, CardType.CREATURE, CardType.ARTIFACT,
-                                  CardType.ENCHANTMENT})
+                                  CardType.ENCHANTMENT, CardType.PLANESWALKER})
 
     @property
     def is_creature(self) -> bool:
@@ -291,7 +306,8 @@ class GameObject:
                  "temp_power", "temp_toughness", "granted_keywords", "is_token",
                  "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to",
                  "temp_flags", "base_override", "lore", "on_adventure", "playable_until",
-                 "linked_to", "activations", "cast_face")
+                 "linked_to", "activations", "cast_face", "loyalty", "stun", "prepared",
+                 "attack_target")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -331,6 +347,10 @@ class GameObject:
         self.activations: dict[int, int] = {}
         # Which face is on the stack: "" (the card) or "adventure".
         self.cast_face = ""
+        self.loyalty = 0
+        self.stun = 0
+        self.prepared = False
+        self.attack_target: int | None = None  # a planeswalker it is attacking
 
     @property
     def name(self) -> str:
@@ -385,6 +405,8 @@ class Player:
         self.seen: set[int] = set()
         self.enduring_story = False
         self.spells_cast_this_turn = 0
+        self.life_gained_this_turn = 0
+        self.surveilled_this_turn = False
 
     def zone(self, name: str) -> list[int]:
         return getattr(self, name)

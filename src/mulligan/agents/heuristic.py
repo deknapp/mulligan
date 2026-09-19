@@ -52,6 +52,8 @@ def creature_value(power: int, toughness: int, keywords) -> float:
 
 
 def permanent_value(perm: PermanentView) -> float:
+    if perm.is_planeswalker and not perm.is_creature:
+        return 2.0 + 0.8 * perm.loyalty
     if perm.is_creature:
         return creature_value(perm.power, perm.toughness, perm.keywords)
     if perm.is_land:
@@ -175,7 +177,9 @@ class HeuristicAgent(Agent):
             return self._effects_value(view, effects, action.targets,
                                        source_id=trigger.source_id if trigger else None)
         if isinstance(action, act.DeclareAttacker):
-            return 1.0 if action.creature_id in self._plan else -1.0
+            target = self._plan.get(action.creature_id, None) if isinstance(
+                self._plan, dict) else None
+            return 1.0 if target is not None and target == action.target else -1.0
         if isinstance(action, act.DeclareBlocker):
             pair = (action.blocker_id, action.attacker_id)
             return 1.0 if pair in self._plan else -1.0
@@ -224,7 +228,8 @@ class HeuristicAgent(Agent):
 
     def _score_cast(self, view: PlayerView, action: act.CastSpell) -> float:
         card = view.card(action.card_id)
-        spec = card.spec.adventure if action.face == "adventure" else card.spec
+        spec = (card.spec.adventure if action.face == "adventure" else
+                card.spec.prepare if action.face == "prepared" else card.spec)
         mv = spec.cost.mana_value
         main_phase = view.is_my_turn and view.step in (Step.PRECOMBAT_MAIN,
                                                        Step.POSTCOMBAT_MAIN)
@@ -233,7 +238,7 @@ class HeuristicAgent(Agent):
         else:
             effects, targets = spec.on_resolve, action.targets
         bonus = 0.5 if action.kicked else 0.0
-        if spec.is_permanent and action.face != "adventure":
+        if spec.is_permanent and action.face not in ("adventure", "prepared"):
             if not main_phase and CardType.CREATURE in spec.types:
                 # Flash creatures: hold them for the opponent's end step.
                 if not (view.step == Step.END_STEP and not view.is_my_turn):
@@ -512,6 +517,8 @@ class HeuristicAgent(Agent):
             return True
         if isinstance(effect, fx.DealDamage):
             amount = effect.amount if isinstance(effect.amount, int) else 2
+            if perm.is_planeswalker and not perm.is_creature:
+                return amount >= perm.loyalty
             return perm.is_creature and amount >= perm.toughness - perm.damage
         if isinstance(effect, fx.Pump) and isinstance(effect.toughness, int):
             return perm.is_creature and perm.toughness + effect.toughness <= 0
@@ -580,7 +587,14 @@ class HeuristicAgent(Agent):
 
     def _score_activation(self, view: PlayerView, action: act.ActivateAbility) -> float:
         source = view.card(action.source_id)
-        ability = source.spec.abilities[action.index]
+        ability = view.abilities(action.source_id)[action.index]
+        if ability.loyalty is not None:
+            # A planeswalker's loyalty is a resource: spending it costs a
+            # little, adding it is worth a little.
+            value = self._effects_value(view, ability.effects, action.targets,
+                                        source_id=action.source_id)
+            value += 0.35 * ability.loyalty
+            return value if value > 0 else -1.0
         if ability.is_equip:
             target = view.permanent(action.targets[0].id) if action.targets else None
             if target is None or target.controller != view.seat:
@@ -608,7 +622,10 @@ class HeuristicAgent(Agent):
 
     # ---------------------------------------------------------------- combat
 
-    def _plan_attacks(self, view: PlayerView) -> set[int]:
+    def _plan_attacks(self, view: PlayerView) -> dict[int, int]:
+        return self._assign_targets(view, self._plan_attackers(view))
+
+    def _plan_attackers(self, view: PlayerView) -> set[int]:
         me, opp = view.seat, view.opponent
         mine = [c for c in view.creatures(me) if not c.tapped and not c.summoning_sick
                 and not c.has(Keyword.DEFENDER)]
@@ -657,6 +674,26 @@ class HeuristicAgent(Agent):
                 break
             plan.discard(att.id)
             defenders.append(att)
+        return plan
+
+    def _assign_targets(self, view: PlayerView, attackers: set[int]) -> dict[int, int]:
+        """Everyone attacks the player, except that the smallest attacker able
+        to finish off an opposing planeswalker goes at it (or, failing that,
+        the smallest attacker chips at the most loyal one)."""
+        plan = dict.fromkeys(attackers, -1)
+        walkers = [p for p in view.battlefield(view.opponent)
+                   if p.is_planeswalker and not p.is_creature]
+        if not walkers or not attackers:
+            return plan
+        ours = sorted((view.permanent(i) for i in attackers), key=lambda c: c.power)
+        for walker in sorted(walkers, key=lambda w: -w.loyalty):
+            free = [c for c in ours if plan[c.id] == -1]
+            if not free:
+                break
+            finisher = next((c for c in free if c.power >= walker.loyalty), None)
+            chosen = finisher or (free[0] if walker.loyalty >= 4 else None)
+            if chosen is not None:
+                plan[chosen.id] = walker.id
         return plan
 
     @staticmethod

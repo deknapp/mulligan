@@ -297,6 +297,20 @@ class Scry(Effect):
 
 
 @dataclass(frozen=True)
+class Surveil(Effect):
+    """Look at the top ``count``; each goes to the graveyard or back on top
+    (an automated choice, like scry)."""
+
+    count: int = 1
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.auto_surveil(ctx.controller, self.count)
+
+    def describe(self) -> str:
+        return f"surveil {self.count}"
+
+
+@dataclass(frozen=True)
 class SearchLibrary(Effect):
     """Search for a card matching ``filter`` and put it ``dest``: ``hand``,
     ``battlefield``, ``battlefield_tapped`` or ``top``."""
@@ -678,15 +692,17 @@ class TokenSpec:
     subtypes: tuple[str, ...] = ()
     colors: tuple[str, ...] = ()
     keywords: frozenset[Keyword] = field(default_factory=frozenset)
-    kind: str = ""  # "treasure", "food", "equipment" — tokens with rules text
+    kind: str = ""  # "treasure", "food", "equipment", "jace" — tokens with rules text
     equip_cost: str = ""
     equip_power: int = 0
     equip_toughness: int = 0
+    mana: tuple[str, ...] = ()   # "{T}: Add ..." (e.g. ("R/G",) for Heartwood)
 
 
 SOLDIER = TokenSpec("Human Soldier", 1, 1, subtypes=("Human", "Soldier"), colors=("W",))
 TREASURE = TokenSpec("Treasure", types=("Artifact",), subtypes=("Treasure",), kind="treasure")
 ARMY = TokenSpec("Army", 0, 0, subtypes=("Army",), colors=("B",))
+JACE = TokenSpec("Jace", types=("Planeswalker",), subtypes=("Jace",), colors=("U",), kind="jace")
 
 
 @dataclass(frozen=True)
@@ -744,6 +760,66 @@ class RevealUntil(Effect):
 
     def describe(self) -> str:
         return f"reveal until a {self.filter}"
+
+
+@dataclass(frozen=True)
+class EmpowerJace(Effect):
+    """Reality Fracture: put ``count`` loyalty counters on a Jace token you
+    control, creating one first if you don't ("[-1]: Surveil 1",
+    "[-3]: Draw a card")."""
+
+    count: Amount = 1
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.empower_jace(ctx.controller, game.amount(self.count, ctx))
+
+    def describe(self) -> str:
+        return f"empower Jace {self.count}"
+
+
+@dataclass(frozen=True)
+class AddLoyalty(Effect):
+    count: Amount = 1
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        n = game.amount(self.count, ctx)
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            game.add_loyalty(obj.id, n)
+
+    def describe(self) -> str:
+        return f"put {self.count} loyalty counter(s) on {self.to}"
+
+
+@dataclass(frozen=True)
+class SetPrepared(Effect):
+    """'becomes prepared' (or, with ``value`` False, 'becomes unprepared')."""
+
+    to: str = "self"
+    value: bool = True
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            if obj.spec.prepare is not None or not self.value:
+                obj.prepared = self.value
+
+    def describe(self) -> str:
+        return f"{self.to} becomes {'prepared' if self.value else 'unprepared'}"
+
+
+@dataclass(frozen=True)
+class Stun(Effect):
+    """Stun counters: each one stops the permanent's next untap."""
+
+    count: int = 1
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            obj.stun += self.count
+
+    def describe(self) -> str:
+        return f"put {self.count} stun counter(s) on {self.to}"
 
 
 @dataclass(frozen=True)

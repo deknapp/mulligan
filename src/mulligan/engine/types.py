@@ -33,6 +33,7 @@ class CardType(str, Enum):
     SORCERY = "Sorcery"
     ARTIFACT = "Artifact"
     ENCHANTMENT = "Enchantment"
+    PLANESWALKER = "Planeswalker"
 
 
 class Zone(str, Enum):
@@ -82,6 +83,7 @@ class Keyword(str, Enum):
     FLASH = "flash"
     HEXPROOF = "hexproof"
     INDESTRUCTIBLE = "indestructible"
+    PROWESS = "prowess"
 
 
 @dataclass(frozen=True)

@@ -59,7 +59,8 @@ def action_features(view: PlayerView, action: act.Action, sit: Features) -> Feat
     elif isinstance(action, act.CastSpell):
         kind = "cast"
         card = view.card(action.card_id)
-        spec = card.spec.adventure if action.face == "adventure" else card.spec
+        spec = (card.spec.adventure if action.face == "adventure" else
+                card.spec.prepare if action.face == "prepared" else card.spec)
         name = spec.name + (f"#{action.mode}" if action.mode >= 0 else "")
         feats[f"cast:{name}"] = 1.0
         timing = ("main" if view.is_my_turn and view.step in (Step.PRECOMBAT_MAIN,
@@ -93,6 +94,7 @@ def action_features(view: PlayerView, action: act.Action, sit: Features) -> Feat
         feats["attack|biggest_blocker_vs_toughness"] = (
             max((b.power for b in blockers), default=0) - perm.toughness) / 5.0
         feats["attack|power"] = perm.power / 5.0
+        feats["attack|planeswalker"] = 1.0 if action.target >= 0 else 0.0
     elif isinstance(action, act.DeclareBlocker):
         kind = "block"
         blocker = view.permanent(action.blocker_id)

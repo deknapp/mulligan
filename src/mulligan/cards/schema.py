@@ -102,17 +102,36 @@ EFFECTS: dict[str, type[fx.Effect]] = {
     "copy_self": fx.CopySelf,
     "reveal_until": fx.RevealUntil,
     "flicker": fx.Flicker,
+    "surveil": fx.Surveil,
+    "empower_jace": fx.EmpowerJace,
+    "add_loyalty": fx.AddLoyalty,
+    "set_prepared": fx.SetPrepared,
+    "stun": fx.Stun,
 }
 
-NAMED_TOKENS = {"treasure": fx.TREASURE, "soldier": fx.SOLDIER,
-                "food": TokenSpec("Food", types=("Artifact",), subtypes=("Food",), kind="food")}
+NAMED_TOKENS = {
+    "treasure": fx.TREASURE, "soldier": fx.SOLDIER,
+    "food": TokenSpec("Food", types=("Artifact",), subtypes=("Food",), kind="food"),
+    # Reality Fracture
+    "cadet": TokenSpec("Cadet", 2, 2, subtypes=("Wizard", "Soldier")),
+    "thopter": TokenSpec("Thopter", 1, 1, types=("Artifact", "Creature"),
+                         subtypes=("Thopter",), keywords=frozenset({fx.Keyword.FLYING})),
+    "heartwood": TokenSpec("Heartwood", types=("Artifact",), subtypes=("Heartwood",),
+                           mana=("R/G",)),
+    "beast": TokenSpec("Beast", 4, 4, subtypes=("Beast",), colors=("G",),
+                       keywords=frozenset({fx.Keyword.TRAMPLE})),
+    "illusion": TokenSpec("Illusion", 1, 1, subtypes=("Illusion",), colors=("U",)),
+    "dragon": TokenSpec("Dragon", 5, 5, subtypes=("Dragon",), colors=("R",),
+                        keywords=frozenset({fx.Keyword.FLYING})),
+}
 
 CARD_KEYS = {
     "name", "cost", "types", "subtypes", "supertypes", "power", "toughness", "power_expr",
     "toughness_expr", "keywords", "ward", "mana", "enters_tapped", "targets", "effects",
     "modes", "triggers", "statics", "abilities", "equip", "enchant", "flashback", "kicker",
     "additional_costs", "cost_reduction", "cost_reduction_if", "adventure", "chapters",
-    "storied", "approximations", "unsupported", "colors",
+    "storied", "approximations", "unsupported", "colors", "loyalty", "prepare",
+    "enters_prepared", "enters_tapped_unless",
     # Provenance, carried through for reports; not used by the engine.
     "rarity", "oracle", "collector_number", "arena_id", "color_identity", "note",
 }
@@ -160,14 +179,15 @@ def token(value) -> TokenSpec:
             raise CardDataError(f"unknown named token {value!r}")
         return NAMED_TOKENS[value]
     _check_keys(value, {"name", "power", "toughness", "types", "subtypes", "colors",
-                        "keywords", "kind", "equip_cost", "equip_power", "equip_toughness"},
-                "token")
+                        "keywords", "kind", "equip_cost", "equip_power", "equip_toughness",
+                        "mana"}, "token")
     return TokenSpec(
         name=value["name"], power=value.get("power", 0), toughness=value.get("toughness", 0),
         types=tuple(value.get("types", ["Creature"])), subtypes=tuple(value.get("subtypes", ())),
         colors=tuple(value.get("colors", ())), keywords=keywords(value.get("keywords")),
         kind=value.get("kind", ""), equip_cost=value.get("equip_cost", ""),
-        equip_power=value.get("equip_power", 0), equip_toughness=value.get("equip_toughness", 0))
+        equip_power=value.get("equip_power", 0), equip_toughness=value.get("equip_toughness", 0),
+        mana=tuple(value.get("mana", ())))
 
 
 def effect(value: dict) -> fx.Effect:
@@ -217,16 +237,17 @@ def trigger(value: dict) -> Trigger:
 
 def static(value: dict) -> Static:
     _check_keys(value, {"affects", "power", "toughness", "keywords", "flags", "ward", "if",
-                        "text"}, "static")
+                        "text", "abilities"}, "static")
     return Static(value.get("affects", "self"), value.get("power", 0),
                   value.get("toughness", 0), keywords(value.get("keywords")),
                   frozenset(value.get("flags", ())), value.get("ward", 0),
-                  condition(value.get("if")), value.get("text", ""))
+                  condition(value.get("if")), value.get("text", ""),
+                  tuple(ability(a) for a in value.get("abilities", ())))
 
 
 ABILITY_KEYS = {"cost", "tap", "sacrifice_self", "sacrifice", "discard", "discard_self",
                 "life", "zone", "sorcery", "once_per_turn", "targets", "effects", "mana",
-                "text"}
+                "text", "loyalty", "exile_self"}
 
 
 def ability(value: dict) -> ActivatedAbility:
@@ -238,13 +259,15 @@ def ability(value: dict) -> ActivatedAbility:
         text=value.get("text", ""), sacrifice_self=bool(value.get("sacrifice_self")),
         sacrifice=value.get("sacrifice", ""), discard=value.get("discard", 0),
         discard_self=bool(value.get("discard_self")), life=value.get("life", 0),
-        zone=value.get("zone", "battlefield"), once_per_turn=bool(value.get("once_per_turn")))
+        zone=value.get("zone", "battlefield"), once_per_turn=bool(value.get("once_per_turn")),
+        loyalty=value.get("loyalty"), exile_self=bool(value.get("exile_self")))
 
 
 def cost(value: dict) -> Cost:
-    _check_keys(value, {"cost", "sacrifice", "discard", "life"}, "additional cost")
+    _check_keys(value, {"cost", "sacrifice", "discard", "life", "behold"}, "additional cost")
     return Cost(mana=ManaCost.parse(value.get("cost", "")), sacrifice=value.get("sacrifice", ""),
-                discard=value.get("discard", 0), life=value.get("life", 0))
+                discard=value.get("discard", 0), life=value.get("life", 0),
+                behold=value.get("behold", ""))
 
 
 def card(data: dict) -> CardSpec:
@@ -297,6 +320,10 @@ def card(data: dict) -> CardSpec:
             adventure=card(data["adventure"]) if data.get("adventure") else None,
             chapters=chapters,
             storied=bool(data.get("storied")),
+            loyalty=data.get("loyalty"),
+            prepare=card(data["prepare"]) if data.get("prepare") else None,
+            enters_prepared=bool(data.get("enters_prepared")),
+            enters_tapped_unless=condition(data.get("enters_tapped_unless")),
             approximations=tuple(data.get("approximations", ())),
         )
     except CardDataError:

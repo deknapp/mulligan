@@ -42,6 +42,7 @@ class GameState:
     mulligan_decided: list[bool] = field(default_factory=list)
     pending_trigger: StackItem | None = None
     attackers_declared: list[int] = field(default_factory=list)
+    attack_targets: dict[int, int] = field(default_factory=dict)
     blocks_declared: list[tuple[int, int]] = field(default_factory=list)
     # Declaring no blocks is a real declaration. Without a flag distinguishing
     # "has not declared yet" from "declared nothing", the engine re-asks

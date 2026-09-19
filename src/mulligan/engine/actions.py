@@ -52,7 +52,11 @@ class ActivateAbility(Action):
 
 @dataclass(frozen=True)
 class DeclareAttacker(Action):
+    """Attack with a creature: the defending player (``target`` -1) or one of
+    their planeswalkers (``target`` = its id)."""
+
     creature_id: int
+    target: int = -1
 
 
 @dataclass(frozen=True)

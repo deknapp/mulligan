@@ -21,14 +21,14 @@ HEADERS = {"User-Agent": "mulligan/0.1 (github.com/deknapp/mulligan)",
            "Accept": "application/json"}
 KEEP = ("name", "mana_cost", "type_line", "oracle_text", "power", "toughness", "rarity",
         "colors", "color_identity", "keywords", "collector_number", "arena_id", "layout",
-        "produced_mana")
-FACE_KEEP = ("name", "mana_cost", "type_line", "oracle_text", "power", "toughness")
+        "produced_mana", "loyalty")
+FACE_KEEP = ("name", "mana_cost", "type_line", "oracle_text", "power", "toughness", "loyalty")
 RAW_DIR = cache_dir("raw")
 
 
 def fetch_set(code: str) -> list[dict]:
-    query = urllib.parse.urlencode({"q": f"set:{code} game:arena", "unique": "cards",
-                                    "order": "set"})
+    # Spoiled cards of an unreleased set are not yet tagged game:arena.
+    query = urllib.parse.urlencode({"q": f"set:{code}", "unique": "cards", "order": "set"})
     url: str | None = f"{SEARCH_URL}?{query}"
     cards: list[dict] = []
     while url:

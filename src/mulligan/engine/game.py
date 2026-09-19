@@ -28,6 +28,7 @@ from . import filters
 from .card import ActivatedAbility, CardSpec, Cost, GameObject, Player, StackItem, Static
 from .effects import (
     ARMY,
+    JACE,
     TREASURE,
     AddMana,
     Condition,
@@ -164,6 +165,8 @@ class Game:
         self._static_sources = None
 
     def _lost_abilities(self, obj: GameObject) -> bool:
+        if "loses_abilities" in obj.temp_flags:
+            return True
         for src in self._statics():
             if src.attached_to != obj.id and src.id != obj.id:
                 continue
@@ -202,6 +205,13 @@ class Game:
                 if self._static_applies(src, static, obj):
                     found.append((src, static))
         return found
+
+    def abilities_of(self, obj: GameObject) -> tuple[ActivatedAbility, ...]:
+        """Printed activated abilities plus any granted by statics
+        ("Planeswalkers you control have ...")."""
+        granted = tuple(a for _, st in self.statics_on(obj) for a in st.abilities) if (
+            obj.zone == "battlefield") else ()
+        return obj.spec.abilities + granted
 
     def is_creature(self, obj: GameObject) -> bool:
         return CardType.CREATURE in obj.spec.types
@@ -301,6 +311,8 @@ class Game:
             return len(self.state.players[ctx.controller].graveyard)
         if value == "hand":
             return len(self.state.players[ctx.controller].hand)
+        if value == "life_gained":
+            return self.state.players[ctx.controller].life_gained_this_turn
         if value == "full_graveyards":
             return sum(1 for p in self.state.players if len(p.graveyard) >= 7)
         head, _, rest = value.partition(":")
@@ -342,6 +354,11 @@ class Game:
             return player.draws_this_turn >= cond.n
         if kind == "creature_died_this_turn":
             return self.state.creature_died_this_turn
+        if kind == "surveilled_this_turn":
+            return player.surveilled_this_turn
+        if kind == "prepared":
+            source = self.object_by_id(ctx.source_id)
+            return source is not None and source.prepared
         if kind == "your_turn":
             return self.state.active == seat
         if kind in ("it_matches", "target_matches"):
@@ -377,7 +394,9 @@ class Game:
         if amount <= 0:
             return
         self.state.players[seat].life += amount
+        self.state.players[seat].life_gained_this_turn += amount
         self.state.record(f"{self.state.players[seat].name} gains {amount} life")
+        self._fire("gain_life", controller=seat, amount=amount)
 
     def lose_life(self, seat: int, amount: int) -> None:
         if amount <= 0:
@@ -402,9 +421,12 @@ class Game:
             obj = self.object_by_id(target.id)
             if obj is None or obj.zone != "battlefield":
                 return
-            obj.damage += amount
-            if source is not None and self.has_keyword(source, Keyword.DEATHTOUCH):
-                obj.deathtouched = True
+            if CardType.PLANESWALKER in obj.spec.types:
+                obj.loyalty -= amount  # damage to a planeswalker removes loyalty
+            if self.is_creature(obj):
+                obj.damage += amount
+                if source is not None and self.has_keyword(source, Keyword.DEATHTOUCH):
+                    obj.deathtouched = True
             self.state.record(
                 f"{source.name if source else 'an effect'} deals {amount} to {obj.name}"
             )
@@ -511,6 +533,9 @@ class Game:
         obj.playable_until = None
         obj.linked_to = None
         obj.activations = {}
+        obj.loyalty = obj.stun = 0
+        obj.prepared = False
+        obj.attack_target = None
         died_as_creature = was_on_battlefield and zone == "graveyard" and self.is_creature(obj)
         obj.controller = obj.owner
         if was_on_battlefield:
@@ -613,8 +638,13 @@ class Game:
         obj.controller = seat
         obj.entered_turn = state.turn
         obj.summoning_sick = True
-        obj.tapped = tapped or obj.spec.enters_tapped
+        enters_tapped = obj.spec.enters_tapped and not (
+            obj.spec.enters_tapped_unless is not None and obj.spec.enters_tapped_unless.holds(
+                self, Context(controller=seat, source_id=obj.id)))
+        obj.tapped = tapped or enters_tapped
         obj.attached_to = None
+        obj.loyalty = obj.spec.loyalty or 0
+        obj.prepared = obj.spec.enters_prepared
         state.players[seat].battlefield.append(obj.id)
         self._dirty()
         state.record(f"{obj.name} enters the battlefield under {state.players[seat].name}")
@@ -712,6 +742,36 @@ class Game:
         library.extend(bottom)
         self.state.record(f"{self.state.players[seat].name} scries {n} "
                           f"({len(keep)} top, {len(bottom)} bottom)")
+        self.state.players[seat].surveilled_this_turn = True
+        self._fire("scry_or_surveil", controller=seat)
+
+    def auto_surveil(self, seat: int, n: int) -> None:
+        """Surveil: cards the owner does not want next go to the graveyard."""
+        player = self.state.players[seat]
+        top = player.library[:n]
+        binned = [i for i in top if not self._want_on_top(seat, self.state.objects[i])]
+        for obj_id in binned:
+            self.move_to_zone(obj_id, "graveyard")
+        self.state.record(f"{player.name} surveils {n} ({len(binned)} to the graveyard)")
+        player.surveilled_this_turn = True
+        self._fire("scry_or_surveil", controller=seat)
+
+    def empower_jace(self, seat: int, n: int) -> None:
+        jaces = [o for o in self.state.zone_objects(seat, "battlefield")
+                 if o.is_token and CardType.PLANESWALKER in o.spec.types
+                 and "Jace" in o.spec.subtypes]
+        jace = jaces[0] if jaces else self.create_token(seat, JACE)
+        self.add_loyalty(jace.id, n)
+
+    def add_loyalty(self, obj_id: int, n: int) -> None:
+        obj = self.object_by_id(obj_id)
+        if obj is None or obj.zone != "battlefield" or n <= 0:
+            return
+        if CardType.PLANESWALKER not in obj.spec.types:
+            return
+        obj.loyalty += n
+        self.state.record(f"{obj.name} gets {n} loyalty (now {obj.loyalty})")
+        self._fire("loyalty_counters", subject=obj, controller=obj.controller, amount=n)
 
     def auto_search(self, seat: int, filter_text: str, dest: str, count: int = 1) -> None:
         player = self.state.players[seat]
@@ -970,6 +1030,14 @@ class Game:
             if not [o for o in self.find(cost.sacrifice, seat, exclude)
                     if o.controller == seat and o.id != exclude]:
                 return False
+        if cost.behold:
+            flt = filters.parse(cost.behold)
+            mine = [o for o in self.state.zone_objects(seat, "battlefield")
+                    if _card_matches(self, flt, o, seat)]
+            shown = [o for o in self.state.zone_objects(seat, "hand")
+                     if o is not source and _card_matches(self, flt, o, seat)]
+            if not mine and not shown:
+                return False
         if cost.discard:
             in_hand = len(player.hand) - (1 if source is not None and source.zone == "hand"
                                           else 0)
@@ -997,7 +1065,7 @@ class Game:
             found.extend(Target("player", s) for s in seats)
             if selector != "any_target":
                 return found
-            selector = "creature"
+            selector = "creature|planeswalker"
         if selector.startswith("spell"):
             _, _, flt = selector.partition(":")
             for item in self.state.stack:
@@ -1141,6 +1209,10 @@ class Game:
             obj = state.objects[obj_id]
             if obj.spec.flashback is not None:
                 yield obj, "flashback", obj.spec, obj.spec.flashback
+        for obj_id in player.battlefield:
+            obj = state.objects[obj_id]
+            if obj.prepared and obj.spec.prepare is not None:
+                yield obj, "prepared", obj.spec.prepare, obj.spec.prepare.cost
 
     def _priority_options(self, seat: int) -> list[act.Action]:
         options: list[act.Action] = [act.Pass()]
@@ -1227,15 +1299,23 @@ class Game:
         state = self.state
         for zone in ("battlefield", "hand", "graveyard"):
             for obj in state.zone_objects(seat, zone):
-                if zone == "battlefield" and obj.spec.abilities and self._lost_abilities(obj):
+                abilities = self.abilities_of(obj)
+                if zone == "battlefield" and abilities and self._lost_abilities(obj):
                     continue
-                for index, ability in enumerate(obj.spec.abilities):
+                for index, ability in enumerate(abilities):
                     if ability.zone != zone or ability.is_mana_ability:
                         continue  # the engine taps for mana; see docs/DESIGN.md
                     if ability.tap_cost and (obj.tapped or self.has_summoning_sickness(obj)):
                         continue
                     if ability.once_per_turn and obj.activations.get(index):
                         continue
+                    if ability.loyalty is not None:
+                        # One loyalty ability per planeswalker per turn, at
+                        # sorcery speed, and never below zero loyalty.
+                        if obj.activations.get("loyalty") or not self._sorcery_timing(seat):
+                            continue
+                        if obj.loyalty + ability.loyalty < 0:
+                            continue
                     yield obj, index, ability
 
     def _attacker_options(self, seat: int) -> list[act.Action]:
@@ -1248,6 +1328,9 @@ class Game:
             if self.has_keyword(obj, Keyword.DEFENDER) or "cant_attack" in self.flags_of(obj):
                 continue
             options.append(act.DeclareAttacker(obj.id))
+            for walker in self.state.zone_objects(1 - seat, "battlefield"):
+                if CardType.PLANESWALKER in walker.spec.types:
+                    options.append(act.DeclareAttacker(obj.id, walker.id))
         return options
 
     def can_block_attacker(self, blocker: GameObject, attacker: GameObject) -> bool:
@@ -1382,6 +1465,8 @@ class Game:
             return
         if isinstance(action, act.DeclareAttacker):
             state.attackers_declared.append(action.creature_id)
+            if action.target >= 0:
+                state.attack_targets[action.creature_id] = action.target
             return
         if isinstance(action, act.DeclareBlocker):
             state.blocks_declared.append((action.blocker_id, action.attacker_id))
@@ -1408,6 +1493,9 @@ class Game:
     def _cast(self, seat: int, action: act.CastSpell) -> None:
         obj = self.state.obj(action.card_id)
         face = action.face
+        if face == "prepared":
+            self._cast_prepared(seat, obj, action)
+            return
         spec = obj.spec.adventure if face == "adventure" else obj.spec
         from_zone = obj.zone
         base_cost = obj.spec.flashback if face == "flashback" else spec.cost
@@ -1450,15 +1538,52 @@ class Game:
         if spec.is_creature:
             self._fire("cast_creature", subject=obj, controller=seat)
         else:
-            self._fire("cast_noncreature", subject=obj, controller=seat)
-            self._fire("opp_cast_noncreature", subject=obj, controller=1 - seat)
+            self._cast_noncreature(seat, obj)
+        self.state.passes = 0
+        self.state.priority = seat
+
+    def _cast_noncreature(self, seat: int, obj: GameObject) -> None:
+        self._fire("cast_noncreature", subject=obj, controller=seat)
+        self._fire("opp_cast_noncreature", subject=obj, controller=1 - seat)
+        for creature in self.creatures_of(seat):
+            if self.has_keyword(creature, Keyword.PROWESS):
+                self.pump(creature.id, 1, 1)
+
+    def _cast_prepared(self, seat: int, obj: GameObject, action: act.CastSpell) -> None:
+        """Cast a copy of a prepared creature's spell. The creature stays put
+        and becomes unprepared; the copy is a spell but not a card."""
+        spec = obj.spec.prepare
+        assert spec is not None
+        extra = spec.additional_costs[action.extra] if action.extra >= 0 else None
+        cost = self._spell_cost(seat, spec, spec.cost, action.targets, extra, action.kicked, obj)
+        obj.prepared = False
+        self._pay_mana(seat, cost, paying_for=obj)
+        if extra is not None:
+            self._pay_extra(seat, extra, obj)
+        mode = spec.modes[action.mode] if action.mode >= 0 else None
+        self.state.stack.append(StackItem(
+            obj_id=None, controller=seat, name=spec.name, kind="spell",
+            effects=mode.effects if mode else spec.on_resolve, targets=action.targets,
+            source_id=obj.id, extra={"target_specs": mode.targets if mode else spec.targets,
+                                     "face": "prepared"}))
+        player = self.state.players[seat]
+        self.state.record(f"{player.name} casts a copy of {spec.name} (from {obj.name})")
+        player.spells_cast_this_turn += 1
+        self._fire("cast_spell", subject=obj, controller=seat)
+        self._cast_noncreature(seat, obj)
         self.state.passes = 0
         self.state.priority = seat
 
     def _activate(self, seat: int, action: act.ActivateAbility) -> None:
         obj = self.state.obj(action.source_id)
-        ability: ActivatedAbility = obj.spec.abilities[action.index]
+        ability: ActivatedAbility = self.abilities_of(obj)[action.index]
         obj.activations[action.index] = obj.activations.get(action.index, 0) + 1
+        if ability.loyalty is not None:
+            obj.activations["loyalty"] = 1
+            if ability.loyalty > 0:
+                self.add_loyalty(obj.id, ability.loyalty)
+            else:
+                obj.loyalty += ability.loyalty
         if ability.tap_cost:
             obj.tapped = True
         cost = ability.mana_cost
@@ -1469,6 +1594,8 @@ class Game:
         self._pay_extra(seat, ability.cost, obj)
         if ability.discard_self:
             self.move_to_zone(obj.id, "graveyard")
+        if ability.exile_self:
+            self.move_to_zone(obj.id, "exile")
         if ability.sacrifice_self and obj.zone == "battlefield":
             self.sacrifice(obj.id)
         item = StackItem(
@@ -1667,9 +1794,14 @@ class Game:
             for p in state.players:
                 p.draws_this_turn = 0
                 p.spells_cast_this_turn = 0
+                p.life_gained_this_turn = 0
+                p.surveilled_this_turn = False
             for obj in self.state.zone_objects(seat, "battlefield"):
                 obj.activations = {}
                 if obj.tapped and "doesnt_untap" in self.flags_of(obj):
+                    continue
+                if obj.tapped and obj.stun > 0:
+                    obj.stun -= 1  # a stun counter is removed instead of untapping
                     continue
                 obj.tapped = False
                 obj.summoning_sick = False
@@ -1691,6 +1823,7 @@ class Game:
             self._fire("begin_combat", controller=seat)
         elif step is Step.DECLARE_ATTACKERS:
             state.attackers_declared = []
+            state.attack_targets = {}
             state.blocks_declared = []
             state.blockers_done = False
             state.pending = "attackers"
@@ -1717,6 +1850,7 @@ class Game:
         for attacker_id in state.attackers_declared:
             obj = state.obj(attacker_id)
             obj.attacking = True
+            obj.attack_target = state.attack_targets.get(attacker_id)
             if not self.has_keyword(obj, Keyword.VIGILANCE):
                 obj.tapped = True
         if state.attackers_declared:
@@ -1769,6 +1903,14 @@ class Game:
             has_ds = self.has_keyword(obj, Keyword.DOUBLE_STRIKE)
             return (has_fs or has_ds) if first_strike else (has_ds or not has_fs)
 
+        def hit(attacker: GameObject) -> Target:
+            walker = self.object_by_id(attacker.attack_target)
+            if attacker.attack_target is not None:
+                if walker is None or walker.zone != "battlefield":
+                    return Target("none", 0)  # its planeswalker is gone: no damage
+                return Target("object", walker.id)
+            return Target("player", defender)
+
         for attacker in [o for o in self.all_creatures() if o.attacking]:
             if not strikes_now(attacker):
                 continue
@@ -1776,7 +1918,7 @@ class Game:
             blockers = [self.state.obj(i) for i in attacker.blocked_by
                         if self.state.obj(i).zone == "battlefield"]
             if not attacker.was_blocked:
-                assignments.append((Target("player", defender), power, attacker.id))
+                assignments.append((hit(attacker), power, attacker.id))
                 continue
             remaining = power
             deathtouch = self.has_keyword(attacker, Keyword.DEATHTOUCH)
@@ -1789,7 +1931,7 @@ class Game:
                 remaining -= give
             if remaining > 0:
                 if self.has_keyword(attacker, Keyword.TRAMPLE):
-                    assignments.append((Target("player", defender), remaining, attacker.id))
+                    assignments.append((hit(attacker), remaining, attacker.id))
                 elif blockers:
                     assignments.append((Target("object", blockers[-1].id), remaining,
                                         attacker.id))
@@ -1815,6 +1957,11 @@ class Game:
             changed = False
             for obj in self.battlefield():
                 if obj.zone != "battlefield":
+                    continue
+                if CardType.PLANESWALKER in obj.spec.types and obj.loyalty <= 0:
+                    state.record(f"{obj.name} is put into the graveyard (no loyalty)")
+                    self.move_to_zone(obj.id, "graveyard")
+                    changed = True
                     continue
                 if self.is_creature(obj):
                     toughness = self.toughness_of(obj)
@@ -1991,7 +2138,7 @@ class Game:
                 label += " (kicked)"
             return f"cast {label}{targets(action.targets)}"
         if isinstance(action, act.ActivateAbility):
-            ability = self.state.obj(action.source_id).spec.abilities[action.index]
+            ability = self.abilities_of(self.state.obj(action.source_id))[action.index]
             return f"activate {name(action.source_id)}: {ability.describe()}" + targets(
                 action.targets)
         if isinstance(action, act.DeclareAttacker):
@@ -2086,6 +2233,14 @@ def _token_card(token: TokenSpec) -> CardSpec:
         abilities = (ActivatedAbility(effects=(GainLife(3),), mana_cost=ManaCost(2),
                                       tap_cost=True, sacrifice_self=True,
                                       text="{2}, {T}, Sacrifice this: You gain 3 life."),)
+    elif token.kind == "jace":
+        from .effects import DrawCards, Surveil
+        abilities = (ActivatedAbility(effects=(Surveil(1),), loyalty=-1, text="[-1]: Surveil 1."),
+                     ActivatedAbility(effects=(DrawCards(1),), loyalty=-3,
+                                      text="[-3]: Draw a card."))
+    elif token.mana:
+        abilities = (ActivatedAbility(effects=(AddMana(token.mana),), tap_cost=True,
+                                      is_mana_ability=True),)
     elif token.kind == "equipment":
         statics = (Static(affects="equipped", power=token.equip_power,
                           toughness=token.equip_toughness),)
@@ -2143,6 +2298,7 @@ def clone_game(game: Game) -> Game:
         log=[], mulligan_counts=list(old.mulligan_counts),
         mulligan_decided=list(old.mulligan_decided), pending_trigger=item(old.pending_trigger),
         attackers_declared=list(old.attackers_declared),
+        attack_targets=dict(old.attack_targets),
         blocks_declared=list(old.blocks_declared))
     new._trigger_queue = [item(t) for t in game._trigger_queue]
     new._delayed = list(game._delayed)
