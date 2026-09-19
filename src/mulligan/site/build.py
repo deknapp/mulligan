@@ -9,8 +9,11 @@ A post is ``blog/posts/YYYY-MM-DD-slug.md`` with a small header::
 
 and Markdown after it. ``{{figure name}}`` inlines ``blog/figures/name.svg`` (or a ``.html`` table)
 (generated from simulation output by ``site.figures``), so charts pick up the
-page's light/dark theme. Posts are never rewritten by the build: each day's
-entry stays as it was published, and a new finding is a new post.
+page's light/dark theme.
+
+The format tools (``site.tools``: card ratings, pick helper, color pairs) are
+static pages over ``site/data/<set>.json``, rebuilt from the newest simulated
+draft every time the site is built.
 """
 
 from __future__ import annotations
@@ -26,6 +29,10 @@ BLOG = ROOT / "blog"
 SITE = ROOT / "site"
 REPO = "https://github.com/deknapp/mulligan"
 TITLE = "mulligan: simulated Limited"
+CURRENT_SET = "fra"      # the format the tools cover
+TOOLS = [("cards", "Card ratings", "Every card graded, filterable by color, rarity and pair."),
+         ("pick", "Pick helper", "Paste a pack and your picks; get the pick and why."),
+         ("pairs", "Color pairs", "Which pairs win, their best cards, a sample deck.")]
 FIGURE = re.compile(r"\{\{\s*figure\s+([\w-]+)\s*\}\}")
 
 
@@ -78,8 +85,10 @@ def _date(d: str) -> str:
     return datetime.date.fromisoformat(d).strftime("%B %-d, %Y")
 
 
-def _page(title: str, body: str, depth: int = 0, description: str = "") -> str:
+def _page(title: str, body: str, depth: int = 0, description: str = "",
+          body_attrs: str = "", scripts: str = "") -> str:
     up = "../" * depth
+    tools = "".join(f'<a href="{up}tools/{slug}.html">{name}</a>' for slug, name, _ in TOOLS)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -90,9 +99,9 @@ def _page(title: str, body: str, depth: int = 0, description: str = "") -> str:
 <link rel="stylesheet" href="{up}style.css">
 <link rel="alternate" type="application/rss+xml" title="{TITLE}" href="{up}feed.xml">
 </head>
-<body>
+<body{body_attrs}>
 <header class="top"><a class="brand" href="{up}index.html">mulligan</a>
-<nav><a href="{up}index.html">Findings</a><a href="{up}method.html">How it works</a>
+<nav><a href="{up}index.html">Primer</a>{tools}<a href="{up}method.html">How it works</a>
 <a href="{REPO}">Code</a></nav></header>
 <main>
 {body}
@@ -101,7 +110,7 @@ def _page(title: str, body: str, depth: int = 0, description: str = "") -> str:
 Limited simulator. Card data from Scryfall; real-game comparisons from
 <a href="https://www.17lands.com">17Lands</a>' public data. Not affiliated with
 Wizards of the Coast.</footer>
-</body>
+{scripts}</body>
 </html>
 """
 
@@ -121,14 +130,18 @@ def build(blog: Path = BLOG, site: Path = SITE) -> list[Path]:
         path = site / "posts" / f"{post.slug}.html"
         path.write_text(_page(post.title, body, depth=1, description=post.summary))
         written.append(path)
+    _tools(blog, site)
     items = "\n".join(
         f'<li><a href="posts/{p.slug}.html"><span class="date">{_date(p.date)}</span>'
         f"<strong>{escape(p.title)}</strong><span class=\"summary\">{escape(p.summary)}"
         f"</span></a></li>" for p in posts)
     intro = (blog / "intro.md").read_text() if (blog / "intro.md").exists() else ""
     import markdown
+    cards = "".join(f'<a href="tools/{slug}.html"><strong>{name}</strong><span>{escape(blurb)}'
+                    f"</span></a>" for slug, name, blurb in TOOLS)
     index = (f'<section class="intro">{markdown.markdown(intro)}</section>'
-             f'<h2 class="list-head">Findings</h2><ul class="posts">{items}</ul>')
+             f'<h2 class="list-head">Tools</h2><div class="toolcards">{cards}</div>'
+             f'<h2 class="list-head">Posts</h2><ul class="posts">{items}</ul>')
     (site / "index.html").write_text(_page(TITLE, index, description=TITLE))
     method = blog / "method.md"
     if method.exists():
@@ -137,6 +150,33 @@ def build(blog: Path = BLOG, site: Path = SITE) -> list[Path]:
     (site / "feed.xml").write_text(_feed(posts))
     (site / ".nojekyll").write_text("")
     return written + [site / "index.html"]
+
+
+def _tools(blog: Path, site: Path) -> None:
+    """The format tools: one data file from the newest simulated draft, and
+    a static page per tool that reads it."""
+    from ..cards.sets import load_set
+    from .tools import write
+    set_name = load_set(CURRENT_SET).name
+    if write(blog, site, CURRENT_SET) is None:
+        return
+    shutil.copy(Path(__file__).with_name("tools.js"), site / "tools.js")
+    (site / "tools").mkdir(exist_ok=True)
+    notes = {
+        "cards": "Every card in the set, graded by how often its owner wins when it's drawn. "
+                 "Filter by color, rarity or the color pair it was played in.",
+        "pick": "Type the cards in your pack, and optionally what you've taken so far. "
+                "It ranks the pack by card quality and how well each card fits your colors.",
+        "pairs": "How each two-color pair did in simulated drafts, what its decks looked "
+                 "like, and its best cards.",
+    }
+    for slug, name, _ in TOOLS:
+        body = (f'<p class="date">{set_name}</p><h1>{name}</h1><p class="intro sans">{notes[slug]}</p>'
+                f'<div id="tool"><noscript>This tool needs JavaScript.</noscript></div>')
+        attrs = f' class="tool" data-tool="{slug}" data-set="{CURRENT_SET}"'
+        (site / "tools" / f"{slug}.html").write_text(_page(
+            f"{name}: {set_name}", body, depth=1, description=notes[slug],
+            body_attrs=attrs, scripts='<script src="../tools.js" defer></script>\n'))
 
 
 def _rfc822(d: str) -> str:

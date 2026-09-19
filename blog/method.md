@@ -43,9 +43,10 @@ It also has known biases, measured on HOB, that you should apply to every post:
 
 - **It overrates high-toughness creatures** and decks full of them. Bots don't
   punish a wall with tricks, evasion or going wide the way people do.
-- **It still underrates blue,** though by about half as much since a bot fix on
-  September 18 (see [the correction](posts/2026-09-18-bots-cast-card-draw-in-their-own-upkeep.html)).
-  Real blue pairs won 52–56% in HOB; simulated ones 45–49%.
+- **It still underrates blue,** though by about half as much since September 18,
+  when we stopped the bots casting their card draw in their own upkeep (they
+  now wait for the opponent's end step, like people do). Real blue pairs won
+  52–56% in HOB; simulated ones 45–49%.
 - **Cards with a few hundred games are noisy.** A card win rate moves several
   points between runs. Posts only call out a card when its 95% interval clears
   the set's average.
@@ -54,8 +55,13 @@ It also has known biases, measured on HOB, that you should apply to every post:
 
 Card win rates and archetype records here are **predictions for a format
 nobody has played yet**. They're a hypothesis for your first drafts, not a
-replacement for 17Lands once real data exists. Each post that compares against
-real data does so in a new post, rather than editing the old one.
+replacement for 17Lands once real data exists.
+
+The tools update themselves. Once a day the site fetches the set's live
+17Lands numbers. When a card has a real win rate from at least 500 games,
+the tools use it instead of the simulated one (shifted onto the same scale,
+since 17Lands players win more than average), and they say which numbers are
+real. Before release, everything is simulated, and the tools say that too.
 
 All the code, card data and raw simulation output are in the
 [repository](https://github.com/deknapp/mulligan).

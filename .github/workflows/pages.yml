@@ -1,12 +1,16 @@
 name: pages
 
-# Publishes site/ — the findings blog — as static files. Nothing is computed at
-# request time: posts are rendered from blog/ by `mulligan site`, and the
-# simulations behind them take minutes to hours on a laptop.
+# Publishes site/ — the primer and format tools — as static files. Posts and
+# the simulated data are rendered from blog/ by `mulligan site` (the
+# simulations take minutes to hours on a laptop). Once a day it also fetches
+# the set's live 17Lands numbers, so the tools switch from simulated to real
+# card win rates on their own as the format is played.
 on:
   push:
     branches: [main]
-    paths: ["site/**", ".github/workflows/pages.yml"]
+    paths: ["site/**", "src/mulligan/site/live.py", ".github/workflows/pages.yml"]
+  schedule:
+    - cron: "30 12 * * *"
   workflow_dispatch:
 
 permissions:
@@ -30,6 +34,9 @@ jobs:
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+      # Real results for the tools; before release this writes an empty file.
+      # A 17Lands outage must not block publishing the simulated tools.
+      - run: python3 src/mulligan/site/live.py fra site/data || echo "17Lands fetch failed"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
