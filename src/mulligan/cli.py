@@ -132,8 +132,9 @@ def versus_cmd(
     games: int = typer.Option(2000, help="Games to play (rounded up to even)."),
     agent: str = typer.Option("heuristic", help="Who pilots both decks."),
     set_code: str = typer.Option(None, "--set", help="Override the detected set."),
-    fmt: str = typer.Option("PremierDraft", "--format",
-                            help="17Lands format for the data model: PremierDraft or Sealed."),
+    fmt: str = typer.Option(None, "--format",
+                            help="17Lands data model: PremierDraft or Sealed (default: "
+                                 "Sealed for sealed events in your log, else PremierDraft)."),
     seed: int = typer.Option(0),
     workers: int = typer.Option(0),
 ):
@@ -157,6 +158,8 @@ def versus_cmd(
     if a.set_code and b.set_code and a.set_code != b.set_code:
         console.print(f"[yellow]note:[/yellow] the decks are from different sets "
                       f"({a.set_code.upper()} vs {b.set_code.upper()})")
+    if fmt is None:
+        fmt = "Sealed" if any("sealed" in d.label.lower() for d in (a, b)) else "PremierDraft"
     if a.names and b.names and a.set_code == b.set_code:
         from .deckmodel import DeckModel
         try:
@@ -201,7 +204,8 @@ def versus_cmd(
 @app.command("build")
 def build_cmd(
     deck: str = typer.Argument("log:latest", help="A deck from your Arena log (log:N)."),
-    fmt: str = typer.Option("PremierDraft", "--format", help="PremierDraft or Sealed model."),
+    fmt: str = typer.Option(None, "--format",
+                            help="PremierDraft or Sealed model (default: from the event)."),
     colors: str = typer.Option(None, help="Force a color pair, e.g. BG."),
     out: Path = typer.Option(None, help="Write the suggested decklist here."),
 ):
@@ -229,6 +233,7 @@ def build_cmd(
     ids.update(arena_names(missing))
     resolve(logged, ids)
     pool = [ids[g] for g in logged.pool if g in ids]
+    fmt = fmt or ("Sealed" if "sealed" in logged.event.lower() else "PremierDraft")
     model = DeckModel.load(logged.set_code, fmt)
     advice = best_build(pool, data, model, colors)
     played = logged.names
