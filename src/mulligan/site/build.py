@@ -7,7 +7,7 @@ A post is ``blog/posts/YYYY-MM-DD-slug.md`` with a small header::
     summary: One sentence for the index.
     ---
 
-and Markdown after it. ``{{figure name}}`` inlines ``blog/figures/name.svg``
+and Markdown after it. ``{{figure name}}`` inlines ``blog/figures/name.svg`` (or a ``.html`` table)
 (generated from simulation output by ``site.figures``), so charts pick up the
 page's light/dark theme. Posts are never rewritten by the build: each day's
 entry stays as it was published, and a new finding is a new post.
@@ -58,10 +58,13 @@ def _render(post: Post, figures: Path) -> str:
     import markdown
 
     def figure(match: re.Match) -> str:
-        svg = (figures / f"{match.group(1)}.svg")
-        if not svg.exists():
-            raise FileNotFoundError(f"{post.slug}: missing figure {svg.name}")
-        return f'\n<figure class="fig">{svg.read_text()}</figure>\n'
+        svg = figures / f"{match.group(1)}.svg"
+        if svg.exists():
+            return f'\n<figure class="fig">{svg.read_text()}</figure>\n'
+        table = figures / f"{match.group(1)}.html"
+        if table.exists():
+            return f'\n<div class="table">{table.read_text()}</div>\n'
+        raise FileNotFoundError(f"{post.slug}: missing figure {match.group(1)}")
 
     html = markdown.markdown(post.body, extensions=["tables", "fenced_code", "sane_lists"])
     # Figures are block-level: unwrap the paragraph Markdown puts around them.

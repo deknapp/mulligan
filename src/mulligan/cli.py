@@ -473,6 +473,14 @@ def draft_cmd(
         console.print(f"[dim]wrote {out}[/dim]")
 
 
+@app.command("site")
+def site_cmd():
+    """Render the findings site (blog/ -> site/). Needs the 'site' extra."""
+    from .site.build import SITE, build
+    written = build()
+    console.print(f"wrote {len(written)} pages to {SITE}")
+
+
 @app.command("validate")
 def validate_cmd(
     set_code: str = typer.Option(..., "--set"),
