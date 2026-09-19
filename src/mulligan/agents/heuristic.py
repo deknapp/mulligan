@@ -71,7 +71,11 @@ def _produces(spec: CardSpec) -> set[str]:
 
 def spec_value(spec: CardSpec) -> float:
     if spec.is_creature:
-        return creature_value(spec.power or 0, spec.toughness or 0, spec.keywords)
+        # "*" stats (e.g. "equal to the lands you control"): assume a midgame 3.
+        power = spec.power if spec.power is not None else (3 if spec.power_expr else 0)
+        tough = spec.toughness if spec.toughness is not None else (
+            3 if spec.toughness_expr else 0)
+        return creature_value(power, tough, spec.keywords)
     return 1.0 + spec.cost.mana_value * 0.6
 
 
@@ -240,8 +244,9 @@ class HeuristicAgent(Agent):
             etb = self._etb_value(view, spec)
             if etb < -5:
                 return -1.0
-            return 10.0 + self._sv(spec) + etb + mv + bonus
+            return 10.0 + self._sv(spec) + etb + mv + bonus - self._extra_cost(view, spec, action)
         value = self._effects_value(view, effects, targets, source_id=action.card_id)
+        value -= self._extra_cost(view, spec, action)
         if value <= 0:
             return -1.0
         if self._is_trick(effects) and not self._trick_now(view, effects, targets):
@@ -249,6 +254,21 @@ class HeuristicAgent(Agent):
         if action.face == "adventure":
             value += 2.0  # the creature half stays available: casting the adventure is free value
         return 10.0 + value + 0.5 * mv + bonus
+
+    def _extra_cost(self, view: PlayerView, spec: CardSpec, action: act.CastSpell) -> float:
+        """What an additional cost gives up: a sacrifice costs the cheapest
+        permanent that could pay it (tokens and Treasure are cheap)."""
+        if action.extra < 0 or action.extra >= len(spec.additional_costs):
+            return 0.0
+        cost = spec.additional_costs[action.extra]
+        total = 1.8 * cost.discard + 0.3 * cost.life
+        if cost.sacrifice:
+            fodder = [p for p in view.battlefield(view.seat) if not p.is_land
+                      and p.id != action.card_id]
+            cheapest = min((0.5 if p.is_token and not p.is_creature else self._pv(p)
+                            for p in fodder), default=5.0)
+            total += 0.5 + cheapest
+        return total
 
     def _etb_value(self, view: PlayerView, spec: CardSpec) -> float:
         """Untargeted ETB effects (targeted ones are valued when their targets
