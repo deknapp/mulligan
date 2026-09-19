@@ -941,6 +941,35 @@ class MayPay(Effect):
 
 
 @dataclass(frozen=True)
+class CopyNextSpell(Effect):
+    """'When you next cast an instant or sorcery spell this turn, copy that
+    spell.' The copy keeps the original's targets (choosing new ones is an
+    omitted refinement)."""
+
+    filter: str = "card:type=instant|sorcery"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        game.state.players[ctx.controller].copy_next = self.filter
+
+    def describe(self) -> str:
+        return "copy the next instant or sorcery you cast this turn"
+
+
+@dataclass(frozen=True)
+class CopyTriggeringSpell(Effect):
+    """Copy the spell whose casting set this off (the event's source)."""
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for item in reversed(game.state.stack):
+            if item.kind == "spell" and item.source_id == ctx.event_id:
+                game.copy_spell(item)
+                return
+
+    def describe(self) -> str:
+        return "copy that spell"
+
+
+@dataclass(frozen=True)
 class Delayed(Effect):
     """Set up a delayed trigger: ``effects`` happen at ``when``
     (``next_upkeep`` or ``next_end_step``)."""

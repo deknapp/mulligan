@@ -5889,7 +5889,31 @@
     "W"
    ],
    "oracle": "Whenever you cast a prepared spell, copy it. You may choose new targets for the copy.\n{W}{U}{B}{R}{G}, {T}: Each creature you control becomes prepared. (Only creatures with prepare spells can become prepared.)",
-   "unsupported": "copies prepared spells"
+   "triggers": [
+    {
+     "when": "cast_prepared",
+     "effects": [
+      {
+       "op": "copy_triggering_spell"
+      }
+     ]
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{W}{U}{B}{R}{G}",
+     "tap": true,
+     "effects": [
+      {
+       "op": "set_prepared",
+       "to": "all:creature:yours"
+      }
+     ]
+    }
+   ],
+   "approximations": [
+    "the copy keeps the original's targets"
+   ]
   },
   {
    "name": "The Echoverse Fulcrum",
@@ -7684,8 +7708,24 @@
      ]
     }
    ],
+   "statics": [
+    {
+     "affects": "all:planeswalker:yours",
+     "abilities": [
+      {
+       "loyalty": -3,
+       "effects": [
+        {
+         "op": "copy_next_spell"
+        }
+       ],
+       "text": "[-3]: Copy your next instant or sorcery this turn."
+      }
+     ]
+    }
+   ],
    "approximations": [
-    "the granted copy ability is omitted"
+    "the copy keeps the original's targets"
    ]
   },
   {

@@ -51,6 +51,7 @@ TRIGGER_EVENTS = {
     "opponent_noncombat_damaged": "an opponent is dealt noncombat damage",
     "any_discard": "a player discards a card",
     "discarded": "this card is discarded (it triggers from the graveyard)",
+    "cast_prepared": "you cast a prepared spell (a copy of a prepare creature's spell)",
 }
 
 
@@ -435,6 +436,7 @@ class Player:
         self.life_gained_this_turn = 0
         self.noncreature_cast_this_turn = 0
         self.noncombat_damage_this_turn = 0
+        self.copy_next: str = ""  # "when you next cast <filter> this turn, copy it"
         self.surveilled_this_turn = False
 
     def zone(self, name: str) -> list[int]:

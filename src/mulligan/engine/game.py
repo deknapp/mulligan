@@ -836,6 +836,19 @@ class Game:
             source.chosen = max(sorted(score), key=lambda t: score[t])
             self.state.record(f"{source.name}: chose {source.chosen}")
 
+    def copy_spell(self, item: StackItem) -> None:
+        import dataclasses
+        copy = dataclasses.replace(item, obj_id=None, name=f"{item.name} (copy)",
+                                   extra={**item.extra, "face": "copy"})
+        self.state.stack.append(copy)
+        self.state.record(f"{item.name} is copied")
+
+    def _maybe_copy(self, seat: int, obj: GameObject, item: StackItem) -> None:
+        player = self.state.players[seat]
+        if player.copy_next and _card_matches(self, filters.parse(player.copy_next), obj, seat):
+            player.copy_next = ""
+            self.copy_spell(item)
+
     def _discarded(self, seat: int, card: GameObject) -> None:
         self._fire("any_discard", subject=card, controller=seat)
         self._fire("discarded", subject=card, controller=seat)
@@ -1692,6 +1705,8 @@ class Game:
                    "kicked": action.kicked, "x": action.x},
         )
         self.state.stack.append(item)
+        if not spec.is_permanent or face == "adventure":
+            self._maybe_copy(seat, obj, item)
         target_note = ""
         if action.targets:
             target_note = " targeting " + ", ".join(self.describe_target(t)
@@ -1735,6 +1750,7 @@ class Game:
                                      "face": "prepared", "x": action.x}))
         player = self.state.players[seat]
         self.state.record(f"{player.name} casts a copy of {spec.name} (from {obj.name})")
+        self._fire("cast_prepared", subject=obj, controller=seat)
         player.spells_cast_this_turn += 1
         self._fire("cast_spell", subject=obj, controller=seat)
         self._cast_noncreature(seat, obj)
@@ -1906,7 +1922,7 @@ class Game:
                     "cast_noncreature", "cast_creature", "cast_spell", "draw_second",
                     "opp_draw_second", "opp_cast_noncreature", "draw",
                     "creature_leaves_graveyard", "gain_life", "scry_or_surveil",
-                    "loyalty_counters", "opponent_noncombat_damaged"):
+                    "loyalty_counters", "opponent_noncombat_damaged", "cast_prepared"):
             return event == when and mine
         return False
 
@@ -1973,6 +1989,7 @@ class Game:
                 p.life_gained_this_turn = 0
                 p.noncreature_cast_this_turn = 0
                 p.noncombat_damage_this_turn = 0
+                p.copy_next = ""
                 p.surveilled_this_turn = False
             for obj in self.state.zone_objects(seat, "battlefield"):
                 obj.activations = {}

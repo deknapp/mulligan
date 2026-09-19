@@ -379,3 +379,19 @@ def test_exhaust_is_once_per_game():
     liliana.activations = {}  # a new turn resets once-per-turn limits, not exhaust
     game.advance()
     assert not [o for o in options(game, act.ActivateAbility) if o.source_id == liliana.id]
+
+
+def test_way_of_the_cryomancer_copies_the_next_instant_or_sorcery():
+    game = scene(Side(hand=["Way of the Cryomancer", "No Admittance"], lands={"U": 3, "R": 2}))
+    cast(game, "Way of the Cryomancer")
+    resolve(game)
+    jace = jaces(game)[0]
+    copy = next(o for o in options(game, act.ActivateAbility)
+                if o.source_id == jace.id and o.index == 2)
+    game.apply(copy)
+    resolve(game)
+    burn = next(o for o in options(game, act.CastSpell) if o.targets
+                and o.targets[0].kind == "player" and o.targets[0].id == 1)
+    game.apply(burn)
+    resolve(game)
+    assert game.state.players[1].life == 14, "3 damage, copied"

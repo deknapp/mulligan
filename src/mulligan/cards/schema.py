@@ -103,6 +103,8 @@ EFFECTS: dict[str, type[fx.Effect]] = {
     "reveal_until": fx.RevealUntil,
     "choose_type": fx.ChooseCreatureType,
     "animate": fx.Animate,
+    "copy_next_spell": fx.CopyNextSpell,
+    "copy_triggering_spell": fx.CopyTriggeringSpell,
     "flicker": fx.Flicker,
     "surveil": fx.Surveil,
     "empower_jace": fx.EmpowerJace,
