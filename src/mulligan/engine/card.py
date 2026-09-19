@@ -44,6 +44,7 @@ TRIGGER_EVENTS = {
     "opp_draw_second": "an opponent draws their second card each turn",
     "draw": "you draw a card",
     "counters_placed": "you put +1/+1 counters on a permanent matching ``filter``",
+    "creature_leaves_graveyard": "a creature card leaves your graveyard",
 }
 
 
@@ -119,6 +120,13 @@ class ActivatedAbility:
 
 
 @dataclass(frozen=True)
+class Mode:
+    effects: tuple[Effect, ...]
+    targets: tuple[TargetSpec, ...] = ()
+    text: str = ""
+
+
+@dataclass(frozen=True)
 class Trigger:
     when: str
     effects: tuple[Effect, ...]
@@ -127,6 +135,10 @@ class Trigger:
     condition: Condition | None = None
     once_per_turn: bool = False
     text: str = ""
+    # "Choose one —" triggers: the controller picks a mode as it goes on the stack.
+    modes: tuple[Mode, ...] = ()
+    # Where the source must be for this to trigger: "battlefield" or "graveyard".
+    zone: str = "battlefield"
 
     def describe(self) -> str:
         return self.text or (f"{TRIGGER_EVENTS.get(self.when, self.when)}: "
@@ -147,13 +159,6 @@ class Static:
     flags: frozenset[str] = frozenset()
     ward: int = 0
     condition: Condition | None = None
-    text: str = ""
-
-
-@dataclass(frozen=True)
-class Mode:
-    effects: tuple[Effect, ...]
-    targets: tuple[TargetSpec, ...] = ()
     text: str = ""
 
 

@@ -109,7 +109,7 @@ class PermanentView:
 
 class StackView:
     __slots__ = ("name", "controller", "kind", "spec", "targets", "obj_id", "source_id",
-                 "effects")
+                 "effects", "modes")
 
     def __init__(self, item, game: Game):
         self.name = item.name
@@ -122,6 +122,7 @@ class StackView:
         self.targets = tuple(item.targets)
         # What it will do. Always public: it is printed on a card everyone can see.
         self.effects = tuple(item.effects)
+        self.modes = tuple(item.extra.get("modes") or ())
 
 
 class PlayerView:

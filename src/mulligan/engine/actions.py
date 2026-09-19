@@ -69,9 +69,11 @@ class FinishDeclaring(Action):
 
 @dataclass(frozen=True)
 class ChooseTargets(Action):
-    """Choose targets for a triggered ability going on the stack."""
+    """Choose targets (and, for a modal trigger, the mode) for a triggered
+    ability going on the stack."""
 
     targets: tuple[Target, ...] = ()
+    mode: int = -1
 
 
 @dataclass(frozen=True)

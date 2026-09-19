@@ -166,6 +166,8 @@ class HeuristicAgent(Agent):
         if isinstance(action, act.ChooseTargets):
             trigger = view.pending_trigger()
             effects = trigger.effects if trigger is not None else ()
+            if trigger is not None and action.mode >= 0:
+                effects = trigger.modes[action.mode].effects
             return self._effects_value(view, effects, action.targets,
                                        source_id=trigger.source_id if trigger else None)
         if isinstance(action, act.DeclareAttacker):
@@ -320,6 +322,15 @@ class HeuristicAgent(Agent):
             if isinstance(effect, fx.If):
                 total += 0.7 * self._effects_value(view, effect.then, targets, source_id)
                 continue
+            if isinstance(effect, fx.MayPay):
+                total += 0.8 * self._effects_value(view, effect.then, targets, source_id)
+                continue
+            if (isinstance(effect, (fx.ReturnToHand, fx.ReturnToBattlefield))
+                    and effect.to == "self" and source_id is not None):
+                card = view.card(source_id)
+                if card is not None and card.zone == "graveyard":
+                    total += self._sv(card.spec)  # buying back your own card
+                    continue
             if isinstance(effect, (fx.CounterSpell, fx.ReturnSpellToHand)):
                 for t in targets:
                     if t.kind != "object":

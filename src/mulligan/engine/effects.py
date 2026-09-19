@@ -120,9 +120,14 @@ def _on_battlefield(objs):
 @dataclass(frozen=True)
 class AddMana(Effect):
     """Mana abilities. ``symbols`` has one entry per unit of mana produced; an
-    entry may offer a choice (``"W/U"``) or be ``"*"`` for any color."""
+    entry may offer a choice (``"W/U"``) or be ``"*"`` for any color.
+    ``amount`` (an amount expression) repeats the symbols that many times, for
+    "add X mana"; ``only_for`` is a filter the spell or ability source being
+    paid for must match ("spend this mana only to cast Elf spells")."""
 
     symbols: tuple[str, ...]
+    amount: Amount = 1
+    only_for: str = ""
 
     def resolve(self, game: Game, ctx: Context) -> None:
         for symbol in self.symbols:
@@ -244,12 +249,17 @@ class Loot(Effect):
 
     draw: int = 1
     discard: int = 1
+    # "If you discard a land card this way, put it onto the battlefield tapped."
+    land_to_battlefield: bool = False
 
     def resolve(self, game: Game, ctx: Context) -> None:
         for _ in range(self.draw):
             game.draw_card(ctx.controller)
         for _ in range(self.discard):
-            game.auto_discard(ctx.controller)
+            card = game.auto_discard(ctx.controller, prefer_land=self.land_to_battlefield)
+            if self.land_to_battlefield and card is not None and card.spec.is_land:
+                game.put_onto_battlefield(card, ctx.controller, from_zone="graveyard",
+                                          tapped=True)
 
     def describe(self) -> str:
         return f"draw {self.draw}, then discard {self.discard}"
@@ -389,12 +399,15 @@ class ReturnToBattlefield(Effect):
 
     to: str = "target"
     tapped: bool = False
+    attach_to: str = ""  # an Aura returning "attached to target creature"
 
     def resolve(self, game: Game, ctx: Context) -> None:
+        hosts = ctx.objects(game, self.attach_to) if self.attach_to else []
         for obj in ctx.objects(game, self.to):
             if obj.zone == "graveyard":
+                host = hosts[0].id if hosts and hosts[0].zone == "battlefield" else None
                 game.put_onto_battlefield(obj, ctx.controller, from_zone="graveyard",
-                                          tapped=self.tapped)
+                                          tapped=self.tapped, attach_to=host)
 
     def describe(self) -> str:
         return f"return {self.to} to the battlefield"
@@ -723,6 +736,23 @@ class If(Effect):
         body = ", ".join(e.describe() for e in self.then)
         other = ", ".join(e.describe() for e in self.otherwise)
         return f"if {self.condition.kind}: {body}" + (f"; otherwise {other}" if other else "")
+
+
+@dataclass(frozen=True)
+class MayPay(Effect):
+    """"You may pay <cost>. If you do, ...": paid automatically whenever the
+    controller can afford it (an automated choice)."""
+
+    cost: str
+    then: tuple[Effect, ...] = ()
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        if game.try_pay(ctx.controller, self.cost):
+            for effect in self.then:
+                effect.resolve(game, ctx)
+
+    def describe(self) -> str:
+        return f"you may pay {self.cost}: " + ", ".join(e.describe() for e in self.then)
 
 
 @dataclass(frozen=True)

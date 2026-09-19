@@ -301,7 +301,12 @@ class Game:
             return len(self.state.players[ctx.controller].graveyard)
         if value == "hand":
             return len(self.state.players[ctx.controller].hand)
+        if value == "full_graveyards":
+            return sum(1 for p in self.state.players if len(p.graveyard) >= 7)
         head, _, rest = value.partition(":")
+        if head == "mul":
+            factor, _, inner = rest.partition(":")
+            return int(factor) * self.amount(inner, ctx)
         if head.startswith("count"):
             factor = int(head[6:]) if head.startswith("count*") else 1
             return factor * self.count(rest, ctx.controller, ctx.source_id)
@@ -485,6 +490,7 @@ class Game:
             return
         state = self.state
         was_on_battlefield = obj.zone == "battlefield"
+        left_graveyard = obj.zone == "graveyard" and zone != "graveyard" and obj.spec.is_creature
         owner = state.players[obj.owner]
         controller = state.players[obj.controller]
         for name in ("hand", "battlefield", "graveyard", "exile", "library"):
@@ -523,6 +529,8 @@ class Game:
         else:
             obj.zone = zone
             owner.zone(zone).append(obj_id)
+        if left_graveyard:
+            self._fire("creature_leaves_graveyard", subject=obj, controller=obj.owner)
         if was_on_battlefield and zone == "graveyard":
             if died_as_creature:
                 state.creature_died_this_turn = True
@@ -595,6 +603,13 @@ class Game:
     def _put_onto_battlefield(self, obj: GameObject, seat: int) -> None:
         self.put_onto_battlefield(obj, seat)
 
+    def try_pay(self, seat: int, cost_text: str) -> bool:
+        cost = ManaCost.parse(cost_text)
+        if not self.can_pay(seat, cost):
+            return False
+        self._pay_mana(seat, cost)
+        return True
+
     def try_pay_generic(self, seat: int, n: int) -> bool:
         cost = ManaCost(generic=n)
         if not self.can_pay(seat, cost):
@@ -630,7 +645,8 @@ class Game:
         in_hand = sum(1 for i in player.hand if self.state.objects[i].spec.is_land)
         return in_hand + sum(1 for i in player.battlefield if self.state.objects[i].spec.is_land)
 
-    def auto_discard(self, seat: int, prefer_nonland: bool = False) -> GameObject | None:
+    def auto_discard(self, seat: int, prefer_nonland: bool = False,
+                     prefer_land: bool = False) -> GameObject | None:
         """Discard the card its owner least needs: an excess land when flooded,
         otherwise the least valuable spell."""
         player = self.state.players[seat]
@@ -640,7 +656,9 @@ class Game:
         lands = [c for c in hand if c.spec.is_land]
         spells = [c for c in hand if not c.spec.is_land]
         flooded = self._lands_total(seat) >= 6 and lands
-        if flooded and not (prefer_nonland and spells and self._lands_total(seat) < 7):
+        if prefer_land and lands:
+            choice = lands[0]
+        elif flooded and not (prefer_nonland and spells and self._lands_total(seat) < 7):
             choice = lands[0]
         elif spells and (prefer_nonland or not lands or self._lands_total(seat) >= 4):
             choice = min(spells, key=lambda c: self.card_value(c.spec))
@@ -769,10 +787,13 @@ class Game:
 
     # ------------------------------------------------------------------ mana
 
-    def _mana_sources(self, seat: int, exclude: int | None = None):
+    def _mana_sources(self, seat: int, exclude: int | None = None,
+                      paying_for: GameObject | None = None):
         """Untapped permanents that can be tapped for mana right now:
         ``(object, ability index, units, sacrifices)``. ``exclude`` leaves out
-        a permanent that is about to be tapped for some other cost."""
+        a permanent that is about to be tapped for some other cost; restricted
+        mana is only offered when ``paying_for`` (the spell, or the source of
+        the ability) matches its restriction."""
         found = []
         for obj in self.state.zone_objects(seat, "battlefield"):
             if obj.tapped or not obj.spec.abilities or obj.id == exclude:
@@ -784,13 +805,23 @@ class Game:
                     continue
                 if ability.mana_cost.mana_value or ability.sacrifice or ability.life:
                     continue  # sources with their own costs are not auto-tapped
-                units = tuple(u for e in ability.effects if isinstance(e, AddMana)
-                              for u in e.symbols)
-                if units:
+                units: tuple[str, ...] = ()
+                allowed = True
+                for e in ability.effects:
+                    if not isinstance(e, AddMana):
+                        continue
+                    if e.only_for and (paying_for is None or not filters.matches(
+                            self, e.only_for + (",zone=any" if ":" in e.only_for
+                                                else ":zone=any"), paying_for, seat)):
+                        allowed = False
+                    n = self.amount(e.amount, Context(controller=seat, source_id=obj.id))
+                    units += tuple(e.symbols) * max(0, n)
+                if units and allowed:
                     found.append((obj, index, units, ability.sacrifice_self))
         return found
 
-    def _solve_payment(self, seat: int, cost: ManaCost, exclude: int | None = None):
+    def _solve_payment(self, seat: int, cost: ManaCost, exclude: int | None = None,
+                       paying_for: GameObject | None = None):
         """Find sources to tap (and floating mana to spend) that pay ``cost``.
 
         Pips are matched by search, fewest-options first; the generic remainder
@@ -800,7 +831,7 @@ class Game:
         ``(sources, floating spent)`` or None.
         """
         pool = self.state.players[seat].pool
-        sources = self._mana_sources(seat, exclude)
+        sources = self._mana_sources(seat, exclude, paying_for)
         order = sorted(range(len(sources)),
                        key=lambda i: (sources[i][3], self.is_creature(sources[i][0]),
                                       len(_unit_options(sources[i][2][0]))))
@@ -878,15 +909,17 @@ class Game:
             return None
         return [(sources[i][0], sources[i][1], sources[i][3]) for i in used], spent
 
-    def can_pay(self, seat: int, cost: ManaCost, exclude: int | None = None) -> bool:
+    def can_pay(self, seat: int, cost: ManaCost, exclude: int | None = None,
+                paying_for: GameObject | None = None) -> bool:
         if cost.mana_value == 0:
             return True
-        return self._solve_payment(seat, cost, exclude) is not None
+        return self._solve_payment(seat, cost, exclude, paying_for) is not None
 
-    def _pay_mana(self, seat: int, cost: ManaCost) -> None:
+    def _pay_mana(self, seat: int, cost: ManaCost, paying_for: GameObject | None = None,
+                  exclude: int | None = None) -> None:
         if cost.mana_value == 0:
             return
-        plan = self._solve_payment(seat, cost)
+        plan = self._solve_payment(seat, cost, exclude, paying_for)
         if plan is None:
             raise IllegalAction(f"cannot pay {cost}")
         sources, spent = plan
@@ -1038,14 +1071,22 @@ class Game:
         if pending == "trigger_targets":
             trigger = self.state.pending_trigger
             assert trigger is not None
-            specs = trigger.extra.get("target_specs") or ()
-            return [act.ChooseTargets(combo) for combo in
-                    self._target_combinations(specs, trigger.controller, trigger.source_id)]
+            return self._trigger_choices(trigger)
         if pending == "attackers":
             return self._attacker_options(seat)
         if pending == "blockers":
             return self._blocker_options(seat)
         return self._priority_options(seat)
+
+    def _trigger_choices(self, trigger: StackItem) -> list[act.Action]:
+        modes = trigger.extra.get("modes") or ()
+        if not modes:
+            specs = trigger.extra.get("target_specs") or ()
+            return [act.ChooseTargets(combo) for combo in
+                    self._target_combinations(specs, trigger.controller, trigger.source_id)]
+        return [act.ChooseTargets(combo, index) for index, mode in enumerate(modes)
+                for combo in self._target_combinations(mode.targets, trigger.controller,
+                                                       trigger.source_id)]
 
     def _sorcery_timing(self, seat: int) -> bool:
         return (not self.state.stack and self.state.active == seat
@@ -1104,7 +1145,8 @@ class Game:
                 tax = self._ward_tax(combo, seat)
                 if tax:
                     cost = cost.plus(ManaCost(generic=tax))
-                if not self.can_pay(seat, cost, exclude=obj.id if ability.tap_cost else None):
+                if not self.can_pay(seat, cost, exclude=obj.id if ability.tap_cost else None,
+                                    paying_for=obj):
                     continue
                 options.append(act.ActivateAbility(obj.id, index, combo))
         return options
@@ -1129,7 +1171,7 @@ class Game:
                     for kicked in kicks:
                         cost = self._spell_cost(seat, spec, base_cost, combo, extra, kicked,
                                                 obj)
-                        if not self.can_pay(seat, cost):
+                        if not self.can_pay(seat, cost, paying_for=obj):
                             continue
                         found.append(act.CastSpell(obj.id, combo, mode, face, kicked,
                                                    extra_index))
@@ -1287,6 +1329,10 @@ class Game:
             trigger = state.pending_trigger
             assert trigger is not None
             trigger.targets = action.targets
+            if action.mode >= 0:
+                mode = trigger.extra["modes"][action.mode]
+                trigger.effects = mode.effects
+                trigger.extra["target_specs"] = mode.targets
             state.stack.append(trigger)
             state.pending_trigger = None
             state.pending = "priority"
@@ -1349,7 +1395,7 @@ class Game:
         obj.cast_face = face
         obj.on_adventure = False
         obj.playable_until = None
-        self._pay_mana(seat, cost)
+        self._pay_mana(seat, cost, paying_for=obj)
         if extra is not None:
             self._pay_extra(seat, extra, obj)
         if action.mode >= 0:
@@ -1391,7 +1437,7 @@ class Game:
         tax = self._ward_tax(action.targets, seat)
         if tax:
             cost = cost.plus(ManaCost(generic=tax))
-        self._pay_mana(seat, cost)
+        self._pay_mana(seat, cost, paying_for=obj)
         self._pay_extra(seat, ability.cost, obj)
         if ability.discard_self:
             self.move_to_zone(obj.id, "graveyard")
@@ -1463,10 +1509,16 @@ class Game:
         if event == "dies" and subject is not None and subject not in watchers \
                 and subject.spec.triggers:
             watchers.append(subject)  # leaves-the-battlefield: look back in time
+        watchers += [self.state.objects[i] for p in self.state.players for i in p.graveyard
+                     if any(t.zone == "graveyard" for t in self.state.objects[i].spec.triggers)
+                     and self.state.objects[i] is not subject]
         for obj in watchers:
             if obj.zone == "battlefield" and self._lost_abilities(obj):
                 continue
             for index, trigger in enumerate(obj.spec.triggers):
+                in_graveyard = obj.zone == "graveyard" and not (event == "dies" and obj is subject)
+                if (trigger.zone == "graveyard") != in_graveyard:
+                    continue
                 if not self._trigger_matches(trigger, event, obj, subject, controller):
                     continue
                 if trigger.once_per_turn:
@@ -1485,7 +1537,8 @@ class Game:
                     effects=trigger.effects, source_id=obj.id,
                     extra={"target_specs": trigger.targets,
                            "event_id": subject.id if subject is not None else None,
-                           "event_amount": amount, "condition": trigger.condition},
+                           "event_amount": amount, "condition": trigger.condition,
+                           "modes": trigger.modes},
                 ))
 
     def _trigger_matches(self, trigger, event: str, obj: GameObject,
@@ -1521,7 +1574,8 @@ class Game:
                                                       obj.controller, obj.id)))
         if when in ("you_attack", "upkeep", "begin_combat", "first_main", "end_step",
                     "cast_noncreature", "cast_creature", "cast_spell", "draw_second",
-                    "opp_draw_second", "opp_cast_noncreature", "draw"):
+                    "opp_draw_second", "opp_cast_noncreature", "draw",
+                    "creature_leaves_graveyard"):
             return event == when and mine
         return False
 
@@ -1843,6 +1897,14 @@ class Game:
             self._trigger_queue.sort(key=lambda t: t.controller != state.active)
             trigger = self._trigger_queue.pop(0)
             specs = trigger.extra.get("target_specs") or ()
+            if trigger.extra.get("modes"):
+                if not self._trigger_choices(trigger):
+                    state.record(f"{trigger.name} is removed (no legal mode)")
+                    return True
+                state.pending_trigger = trigger
+                state.pending = "trigger_targets"
+                state.decision_player = trigger.controller
+                return True
             if specs:
                 combos = self._target_combinations(specs, trigger.controller, trigger.source_id)
                 if not combos:

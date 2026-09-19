@@ -112,6 +112,8 @@ def action_features(view: PlayerView, action: act.Action, sit: Features) -> Feat
         kind = "targets"
         trigger = view.pending_trigger()
         source = trigger.name.split(" (")[0] if trigger is not None else "?"
+        if action.mode >= 0:
+            feats[f"targets:{source}|mode{action.mode}"] = 1.0
         for t in action.targets:
             if t.kind == "object":
                 perm = view.permanent(t.id)

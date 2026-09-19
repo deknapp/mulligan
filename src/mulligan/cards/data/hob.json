@@ -1321,18 +1321,32 @@
    "triggers": [
     {
      "when": "landfall",
-     "effects": [
+     "modes": [
       {
-       "op": "tap"
+       "targets": [
+        "creature:theirs"
+       ],
+       "effects": [
+        {
+         "op": "tap"
+        }
+       ],
+       "text": "Tap target creature an opponent controls."
+      },
+      {
+       "targets": [
+        "creature:yours"
+       ],
+       "effects": [
+        {
+         "op": "tap",
+         "untap": true
+        }
+       ],
+       "text": "Untap target creature you control."
       }
-     ],
-     "targets": [
-      "creature:theirs"
      ]
     }
-   ],
-   "approximations": [
-    "modal trigger: always taps an opposing creature"
    ]
   },
   {
@@ -1659,8 +1673,11 @@
      ]
     }
    ],
-   "approximations": [
-    "the seven-card-graveyard bonus is omitted"
+   "statics": [
+    {
+     "affects": "self",
+     "power": "mul:2:full_graveyards"
+    }
    ]
   },
   {
@@ -2062,6 +2079,15 @@
      "targets": [
       "creature:zone=graveyard,yours"
      ]
+    },
+    {
+     "when": "creature_leaves_graveyard",
+     "effects": [
+      {
+       "op": "amass",
+       "count": 1
+      }
+     ]
     }
    ],
    "abilities": [
@@ -2077,9 +2103,6 @@
       }
      ]
     }
-   ],
-   "approximations": [
-    "the leaves-graveyard amass trigger is omitted"
    ]
   },
   {
@@ -2554,8 +2577,19 @@
      ]
     }
    ],
-   "approximations": [
-    "the return-from-graveyard ability is omitted"
+   "abilities": [
+    {
+     "cost": "{2}",
+     "sacrifice": "artifact|creature",
+     "zone": "graveyard",
+     "sorcery": true,
+     "effects": [
+      {
+       "op": "bounce",
+       "to": "self"
+      }
+     ]
+    }
    ]
   },
   {
@@ -2727,7 +2761,18 @@
    ],
    "oracle": "Deathtouch\nWhenever a player loses life, that player mills that many cards. (Damage causes loss of life.)\nWhen The Master of Lake-town dies, draw a card for each graveyard with seven or more cards in it.",
    "approximations": [
-    "the mill and graveyard-draw triggers are omitted"
+    "the lose-life-then-mill trigger is omitted"
+   ],
+   "triggers": [
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "draw",
+       "count": "full_graveyards"
+      }
+     ]
+    }
    ]
   },
   {
@@ -4331,16 +4376,30 @@
    "triggers": [
     {
      "when": "combat_damage_player",
-     "effects": [
+     "modes": [
       {
-       "op": "token",
-       "token": "treasure"
+       "targets": [
+        "creature:yours,subtype=Wolf"
+       ],
+       "effects": [
+        {
+         "op": "counters",
+         "count": 1
+        }
+       ],
+       "text": "Put a +1/+1 counter on target Wolf you control."
+      },
+      {
+       "effects": [
+        {
+         "op": "token",
+         "token": "treasure"
+        }
+       ],
+       "text": "Create a Treasure token."
       }
      ]
     }
-   ],
-   "approximations": [
-    "modal trigger: always makes a Treasure"
    ]
   },
   {
@@ -5254,7 +5313,24 @@
     }
    ],
    "approximations": [
-    "the Elf-only mana ability is omitted"
+    "the X mana may be of several colors, not one"
+   ],
+   "abilities": [
+    {
+     "tap": true,
+     "mana": true,
+     "effects": [
+      {
+       "op": "add_mana",
+       "symbols": [
+        "*"
+       ],
+       "amount": "power:self",
+       "only_for": "card:subtype=Elf"
+      }
+     ],
+     "text": "{T}: Add X mana of any one color, X = its power. Spend only on Elf spells and Elf sources' abilities."
+    }
    ]
   },
   {
@@ -5751,8 +5827,22 @@
      ]
     }
    ],
-   "approximations": [
-    "the return-from-graveyard ability is omitted"
+   "abilities": [
+    {
+     "cost": "{2}{W/U}{W/U}",
+     "zone": "graveyard",
+     "sorcery": true,
+     "targets": [
+      "creature:yours,power<=1"
+     ],
+     "effects": [
+      {
+       "op": "reanimate",
+       "to": "self",
+       "attach_to": "target0"
+      }
+     ]
+    }
    ]
   },
   {
@@ -6053,13 +6143,27 @@
       {
        "op": "loot",
        "draw": 1,
-       "discard": 1
+       "discard": 1,
+       "land_to_battlefield": true
+      }
+     ]
+    },
+    {
+     "when": "landfall",
+     "zone": "graveyard",
+     "effects": [
+      {
+       "op": "may_pay",
+       "cost": "{1}{G}{U}",
+       "then": [
+        {
+         "op": "bounce",
+         "to": "self"
+        }
+       ]
       }
      ]
     }
-   ],
-   "approximations": [
-    "the discarded-land and graveyard-return parts are omitted"
    ]
   },
   {

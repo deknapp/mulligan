@@ -19,7 +19,9 @@ Shape of one card (every key but ``name`` is optional)::
       "targets": [...], "effects": [...],  # an instant or sorcery
       "modes": [{"targets": [...], "effects": [...], "text": "..."}],
       "triggers": [{"when": "etb", "targets": [...], "effects": [...],
-                    "filter": "...", "if": {...}, "once_per_turn": true}],
+                    "filter": "...", "if": {...}, "once_per_turn": true,
+                    "modes": [...],            # "choose one" triggers
+                    "zone": "graveyard"}],     # triggers while in the graveyard
       "statics": [{"affects": "equipped", "power": 1, "toughness": 2, "keywords": [...],
                    "flags": [...], "ward": 1, "if": {...}}],
       "abilities": [{"cost": "{3}{W}", "tap": true, "sacrifice_self": true,
@@ -96,6 +98,7 @@ EFFECTS: dict[str, type[fx.Effect]] = {
     "amass": fx.Amass,
     "if": fx.If,
     "delayed": fx.Delayed,
+    "may_pay": fx.MayPay,
 }
 
 NAMED_TOKENS = {"treasure": fx.TREASURE, "soldier": fx.SOLDIER,
@@ -178,6 +181,8 @@ def effect(value: dict) -> fx.Effect:
         params["otherwise"] = effects(params.get("otherwise"))
     elif op == "delayed":
         params["effects"] = effects(params.get("effects"))
+    elif op == "may_pay":
+        params["then"] = effects(params.get("then"))
     if "keywords" in params:
         params["keywords"] = keywords(params["keywords"])
     if "flags" in params:
@@ -197,11 +202,14 @@ def effects(values) -> tuple[fx.Effect, ...]:
 
 
 def trigger(value: dict) -> Trigger:
-    _check_keys(value, {"when", "targets", "effects", "filter", "if", "once_per_turn", "text"},
-                "trigger")
+    _check_keys(value, {"when", "targets", "effects", "filter", "if", "once_per_turn", "text",
+                        "modes", "zone"}, "trigger")
+    modes = tuple(Mode(effects(m.get("effects")), targets(m.get("targets")), m.get("text", ""))
+                  for m in value.get("modes", ()))
     return Trigger(value["when"], effects(value.get("effects")), targets(value.get("targets")),
                    value.get("filter", ""), condition(value.get("if")),
-                   bool(value.get("once_per_turn")), value.get("text", ""))
+                   bool(value.get("once_per_turn")), value.get("text", ""), modes,
+                   value.get("zone", "battlefield"))
 
 
 def static(value: dict) -> Static:

@@ -290,3 +290,67 @@ def test_a_land_cannot_tap_for_its_own_tap_ability():
     game2 = scene(Side(battlefield=["Goblin-town", "Goblin-town Flunkies"], lands={"B": 2,
                                                                                     "R": 2}))
     assert options(game2, act.ActivateAbility)
+
+
+def test_restricted_mana_only_pays_for_elves():
+    """Woodland Weavemaster: {T}: add X mana (X = its power), Elf spells only."""
+    elf = scene(Side(battlefield=["Woodland Weavemaster"], hand=["Wood Elves"], lands={"G": 2}))
+    assert options(elf, act.CastSpell), "2 lands + 1 Elf mana cast a 3-mana Elf"
+    bear = scene(Side(battlefield=["Woodland Weavemaster"], hand=["Little Bear"], lands={"G": 2}))
+    assert not options(bear, act.CastSpell), "the Elf mana cannot pay for a Bear"
+
+
+def test_silvan_reveler_puts_a_discarded_land_onto_the_battlefield():
+    game = scene(Side(hand=["Silvan Reveler", "Forest"], lands={"G": 2, "U": 2},
+                      library=["Ordinary Bear"] * 5))
+    lands_before = len([o for o in game.state.zone_objects(0, "battlefield") if o.spec.is_land])
+    cast(game, "Silvan Reveler")
+    resolve(game)
+    lands_after = [o for o in game.state.zone_objects(0, "battlefield") if o.spec.is_land]
+    assert len(lands_after) == lands_before + 1 and lands_after[-1].tapped
+
+
+def test_silvan_reveler_returns_from_the_graveyard_on_landfall_if_you_pay():
+    game = scene(Side(graveyard=["Silvan Reveler"], hand=["Forest"], lands={"G": 2, "U": 1}))
+    game.apply(options(game, act.PlayLand)[0])
+    resolve(game)
+    assert "Silvan Reveler" in [game.state.obj(i).name for i in game.state.players[0].hand]
+
+
+def test_modal_trigger_lets_the_controller_choose():
+    game = scene(Side(battlefield=["Bejeweled Warg", "Ravening Warg"]), step=Step.BEGIN_COMBAT)
+    while game.state.pending != "attackers":
+        game.apply(next(o for o in game.legal_actions() if isinstance(o, act.Pass)))
+    warg = named(game, "Bejeweled Warg")[0]
+    game.apply(act.DeclareAttacker(warg.id))
+    if act.FinishDeclaring() in game.legal_actions():
+        game.apply(act.FinishDeclaring())
+    for _ in range(20):
+        if game.state.pending == "trigger_targets":
+            break
+        game.apply(next(o for o in game.legal_actions() if isinstance(o, act.Pass)))
+    assert {o.mode for o in options(game, act.ChooseTargets)} == {0, 1}
+    other = named(game, "Ravening Warg")[0]
+    game.apply(next(o for o in options(game, act.ChooseTargets)
+                    if o.mode == 0 and o.targets[0].id == other.id))
+    resolve(game)
+    assert other.counters == 1
+
+
+def test_leaving_the_graveyard_amasses_for_along_the_crooked_way():
+    game = scene(Side(hand=["Along the Crooked Way"], graveyard=["Ordinary Bear"],
+                      lands={"B": 3}))
+    cast(game, "Along the Crooked Way")  # its ETB targets the Bear in the graveyard
+    resolve(game)
+    assert any("Army" in o.spec.subtypes for o in game.battlefield())
+
+
+def test_graveyard_activated_abilities_work():
+    game = scene(Side(graveyard=["Gollum the Abandoned"], battlefield=["Ordinary Bear"],
+                      lands={"B": 2}))
+    ability = options(game, act.ActivateAbility)
+    assert ability, "Gollum's {2}, sacrifice: return-to-hand works from the graveyard"
+    game.apply(ability[0])
+    resolve(game)
+    assert "Gollum the Abandoned" in [game.state.obj(i).name
+                                      for i in game.state.players[0].hand]
