@@ -443,3 +443,15 @@ def test_crew_needs_enough_power():
     game = scene(Side(battlefield=["Great Gilded Boat", "Lake-town Lookout"]))  # a 1/1
     boat = named(game, "Great Gilded Boat")[0]
     assert not [o for o in options(game, act.ActivateAbility) if o.source_id == boat.id]
+
+
+def test_heuristic_does_not_cast_a_second_copy_of_a_legend():
+    from mulligan.agents.heuristic import HeuristicAgent
+    from mulligan.engine import actions as act
+    from mulligan.engine.view import PlayerView
+    game = scene(Side(hand=["Bilbo, Luckwearer"], battlefield=["Bilbo, Luckwearer"],
+                      lands={"U": 3}))
+    view = PlayerView(game, 0)
+    casts = [o for o in game.legal_actions() if isinstance(o, act.CastSpell)
+             and game.state.obj(o.card_id).name == "Bilbo, Luckwearer"]
+    assert casts and all(HeuristicAgent().score(view, a) < 0 for a in casts)

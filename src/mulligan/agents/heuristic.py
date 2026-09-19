@@ -266,6 +266,9 @@ class HeuristicAgent(Agent):
             effects, targets = spec.on_resolve, action.targets
         bonus = 0.5 if action.kicked else 0.0
         if spec.is_permanent and action.face not in ("adventure", "prepared"):
+            if "Legendary" in spec.supertypes and any(
+                    p.name == spec.name for p in view.battlefield(view.seat)):
+                return -1.0  # the legend rule would just throw one of them away
             if not main_phase and CardType.CREATURE in spec.types:
                 # Flash creatures: hold them for the opponent's end step.
                 if not (view.step == Step.END_STEP and not view.is_my_turn):
