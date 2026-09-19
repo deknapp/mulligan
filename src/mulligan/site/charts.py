@@ -129,7 +129,8 @@ def scatter(points: list[tuple[str, float, float, str]], label: str, x_label: st
     for name, x, y, key in sorted(points, key=lambda p: p[0] in callouts):
         tip = f"<title>{escape(name)}: {x_fmt(x)}, {y_fmt(y)}</title>"
         cls = "pt call" if name in callouts else "pt"
-        body.append(f'<circle cx="{px(x):.1f}" cy="{py(y):.1f}" r="{5 if name in callouts else 3.6}"'
+        r = 5 if name in callouts else 3.6
+        body.append(f'<circle cx="{px(x):.1f}" cy="{py(y):.1f}" r="{r}"'
                     f' fill="{MANA[key]}" class="{cls}">{tip}</circle>')
     for name, x, y, _ in points:
         if name in callouts:

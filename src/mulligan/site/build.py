@@ -143,7 +143,7 @@ def _rfc822(d: str) -> str:
     from email.utils import format_datetime
     day = datetime.date.fromisoformat(d)
     return format_datetime(datetime.datetime(day.year, day.month, day.day,
-                                             tzinfo=datetime.timezone.utc))
+                                             tzinfo=datetime.UTC))
 
 
 def _feed(posts: list[Post]) -> str:
