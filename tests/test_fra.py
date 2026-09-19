@@ -348,3 +348,13 @@ def test_discard_triggers():
     cast(game, "Rank Rat")  # its ETB makes the opponent discard
     resolve(game)
     assert game.state.players[1].life == 19
+
+
+def test_puppet_crafting_animates_a_noncreature_permanent():
+    game = scene(Side(hand=["Puppet Crafting"], battlefield=["Murmuring Volume"],
+                      lands={"G": 2}))
+    cast(game, "Puppet Crafting", target="Murmuring Volume")
+    resolve(game)
+    volume = named(game, "Murmuring Volume")[0]
+    assert game.is_creature(volume)
+    assert (game.power_of(volume), game.toughness_of(volume)) == (5, 5)

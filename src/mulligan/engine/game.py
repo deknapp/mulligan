@@ -106,6 +106,7 @@ class Game:
         self._trigger_queue: list[StackItem] = []
         self._delayed: list[tuple[str, int, tuple[Effect, ...], Context]] = []
         self._static_sources: list[GameObject] | None = None
+        self._type_changing = False
         self._fired_once: set[tuple[int, int]] = set()
         self._legal_cache: list[act.Action] | None = None
         self._resolving_statics: set[int] = set()
@@ -161,6 +162,8 @@ class Game:
     def _statics(self) -> list[GameObject]:
         if self._static_sources is None:
             self._static_sources = [o for o in self.battlefield() if o.spec.statics]
+            self._type_changing = any(st.add_types for src in self._static_sources
+                                      for st in src.spec.statics)
         return self._static_sources
 
     def _dirty(self) -> None:
@@ -226,10 +229,24 @@ class Game:
         return obj.spec.abilities + granted
 
     def is_creature(self, obj: GameObject) -> bool:
-        return CardType.CREATURE in obj.spec.types
+        if CardType.CREATURE in obj.spec.types:
+            return True
+        if CardType.CREATURE in obj.temp_types:
+            return True
+        return self._animating() and CardType.CREATURE in self.types_of(obj)
+
+    def _animating(self) -> bool:
+        """Whether any static on the battlefield adds card types (checked
+        before the costlier per-object scan; cached with the static sources)."""
+        self._statics()
+        return self._type_changing
 
     def types_of(self, obj: GameObject) -> frozenset[CardType]:
-        return obj.spec.types
+        types = obj.spec.types | frozenset(obj.temp_types)
+        if obj.zone == "battlefield" and self._animating():
+            for _, static in self.statics_on(obj):
+                types |= {CardType(t) for t in static.add_types}
+        return types
 
     def subtypes_of(self, obj: GameObject) -> tuple[str, ...]:
         return obj.spec.subtypes
@@ -262,6 +279,10 @@ class Game:
     def _base_pt(self, obj: GameObject) -> tuple[int, int]:
         if obj.base_override is not None:
             return obj.base_override
+        if obj.zone == "battlefield" and self._animating():
+            for _, static in self.statics_on(obj):
+                if static.base_power is not None:
+                    return static.base_power, static.base_toughness or 0
         spec = obj.spec
         ctx = Context(controller=obj.controller, source_id=obj.id)
         power = self.amount(spec.power_expr, ctx) if spec.power_expr else (spec.power or 0)
@@ -580,6 +601,7 @@ class Game:
         obj.x_paid = 0
         obj.chosen = ""
         obj.finality = False
+        obj.temp_types.clear()
         died_as_creature = was_on_battlefield and zone == "graveyard" and self.is_creature(obj)
         obj.controller = obj.owner
         if was_on_battlefield:
@@ -665,7 +687,8 @@ class Game:
             return
         if attachment.zone != "battlefield" or creature.zone != "battlefield":
             return
-        if not self.is_creature(creature):
+        # Equipment only attaches to creatures; an Aura to whatever it enchants.
+        if attachment.spec.enchant is None and not self.is_creature(creature):
             return
         attachment.attached_to = creature.id
         self._dirty()
@@ -707,6 +730,23 @@ class Game:
     # Kept for the scenario builder and tests written against the old name.
     def _put_onto_battlefield(self, obj: GameObject, seat: int) -> None:
         self.put_onto_battlefield(obj, seat)
+
+    def _crew_power(self, seat: int, vehicle: GameObject) -> int:
+        return sum(self.power_of(c) for c in self.creatures_of(seat)
+                   if c is not vehicle and not c.tapped)
+
+    def _pay_crew(self, seat: int, vehicle: GameObject, needed: int) -> None:
+        """Tap the least valuable untapped creatures whose power adds up to
+        ``needed`` (an automated choice)."""
+        crew = sorted((c for c in self.creatures_of(seat) if c is not vehicle and not c.tapped),
+                      key=self._permanent_value)
+        total = 0
+        for creature in crew:
+            if total >= needed:
+                break
+            creature.tapped = True
+            total += self.power_of(creature)
+        self.state.record(f"{vehicle.name} is crewed")
 
     def try_pay(self, seat: int, cost_text: str) -> bool:
         cost = ManaCost.parse(cost_text)
@@ -1413,6 +1453,8 @@ class Game:
                     if ability.only_if is not None and not ability.only_if.holds(
                             self, Context(controller=seat, source_id=obj.id)):
                         continue
+                    if ability.crew and self._crew_power(seat, obj) < ability.crew:
+                        continue
                     if ability.loyalty is not None:
                         # One loyalty ability per planeswalker per turn, at
                         # sorcery speed, and never below zero loyalty.
@@ -1705,6 +1747,8 @@ class Game:
             cost = cost.plus(ManaCost(generic=tax))
         self._pay_mana(seat, cost, paying_for=obj)
         self._pay_extra(seat, ability.cost, obj)
+        if ability.crew:
+            self._pay_crew(seat, obj, ability.crew)
         if ability.discard_self:
             self.move_to_zone(obj.id, "graveyard")
         if ability.exile_self:
@@ -2423,6 +2467,7 @@ def clone_game(game: Game) -> Game:
     new._trigger_queue = [item(t) for t in game._trigger_queue]
     new._delayed = list(game._delayed)
     new._static_sources = None
+    new._type_changing = False
     new._fired_once = set(game._fired_once)
     new._legal_cache = None
     new._resolving_statics = set()

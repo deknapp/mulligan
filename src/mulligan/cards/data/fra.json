@@ -3562,7 +3562,29 @@
     "G"
    ],
    "oracle": "Enchant artifact or non-Aura enchantment\nEnchanted permanent is a Construct creature with base power and toughness 5/5 in addition to its other types.\n{4}{G}: Return this card from your graveyard to your hand.",
-   "unsupported": "turns a noncreature permanent into a creature"
+   "enchant": "artifact|enchantment:!subtype=Aura",
+   "statics": [
+    {
+     "affects": "enchanted",
+     "add_types": [
+      "Creature"
+     ],
+     "base_power": 5,
+     "base_toughness": 5
+    }
+   ],
+   "abilities": [
+    {
+     "cost": "{4}{G}",
+     "zone": "graveyard",
+     "effects": [
+      {
+       "op": "bounce",
+       "to": "self"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Restore with Empathy",

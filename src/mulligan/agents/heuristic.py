@@ -292,6 +292,9 @@ class HeuristicAgent(Agent):
             return -1.0
         buff = sum(self._static_amount(s.power) + self._static_amount(s.toughness)
                    + len(s.keywords) for s in spec.statics if s.affects == "enchanted")
+        for s in spec.statics:
+            if s.affects == "enchanted" and "Creature" in s.add_types and not perm.is_creature:
+                buff += creature_value(s.base_power or 0, s.base_toughness or 0, s.keywords)
         lockdown = any({"loses_abilities", "doesnt_untap", "cant_attack", "cant_block"}
                        & set(s.flags) for s in spec.statics if s.affects == "enchanted")
         if perm.controller == view.seat:
@@ -564,6 +567,27 @@ class HeuristicAgent(Agent):
         loss = worth(mine) if side != "theirs" else 0.0
         return gain - loss - 1.0
 
+    def _score_crew(self, view: PlayerView, vehicle) -> float:
+        """Crew before combat on our turn, when the Vehicle is worth more on
+        offence than the creatures that would tap for it."""
+        if not view.is_my_turn or view.step not in (Step.PRECOMBAT_MAIN, Step.BEGIN_COMBAT):
+            return -1.0
+        if vehicle.is_creature or vehicle.tapped or vehicle.summoning_sick:
+            return -1.0
+        spec = vehicle.spec
+        worth = creature_value(spec.power or 0, spec.toughness or 0, spec.keywords)
+        crew = sorted((c for c in view.creatures(view.seat) if not c.tapped
+                       and c.id != vehicle.id), key=self._pv)
+        need = next(a.crew for a in view.abilities(vehicle.id) if a.crew)
+        cost, total = 0.0, 0
+        for c in crew:
+            if total >= need:
+                break
+            cost += self._pv(c)
+            total += c.power
+        value = worth - cost - 1.0
+        return value if value > 0 else -1.0
+
     def _activation_cost(self, view: PlayerView, ability, source) -> float:
         """What paying an ability's non-mana costs gives up."""
         cost = 1.8 * ability.discard + 0.3 * ability.life
@@ -599,6 +623,8 @@ class HeuristicAgent(Agent):
                                         source_id=action.source_id)
             value += 0.35 * ability.loyalty
             return value if value > 0 else -1.0
+        if ability.crew:
+            return self._score_crew(view, source)
         if ability.is_equip:
             target = view.permanent(action.targets[0].id) if action.targets else None
             if target is None or target.controller != view.seat:

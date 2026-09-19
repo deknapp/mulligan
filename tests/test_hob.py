@@ -423,3 +423,23 @@ def test_an_unexpected_party_pumps_the_chosen_type_and_at_the_door_makes_x():
                      if o.face == "adventure" and o.x == 2))
     resolve(game2)
     assert len(named(game2, "Dwarf", 0)) == 2
+
+
+def test_vehicles_crew_into_creatures_until_end_of_turn():
+    game = scene(Side(battlefield=["Great Gilded Boat", "Ordinary Bear"]))
+    boat = named(game, "Great Gilded Boat")[0]
+    assert not game.is_creature(boat)
+    crew = [o for o in options(game, act.ActivateAbility) if o.source_id == boat.id]
+    assert crew, "crew 2 is payable with a 4-power Bear"
+    game.apply(crew[0])
+    resolve(game)
+    assert game.is_creature(boat) and game.power_of(boat) == 4
+    assert named(game, "Ordinary Bear")[0].tapped
+    boat.reset_end_of_turn()
+    assert not game.is_creature(boat)
+
+
+def test_crew_needs_enough_power():
+    game = scene(Side(battlefield=["Great Gilded Boat", "Lake-town Lookout"]))  # a 1/1
+    boat = named(game, "Great Gilded Boat")[0]
+    assert not [o for o in options(game, act.ActivateAbility) if o.source_id == boat.id]

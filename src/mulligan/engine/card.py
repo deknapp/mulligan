@@ -106,6 +106,7 @@ class ActivatedAbility:
     loyalty: int | None = None
     exile_self: bool = False   # "Exile this card from your graveyard: ..."
     only_if: Condition | None = None  # "Activate only if ..."
+    crew: int = 0   # "Crew N": tap other creatures with total power N or more
 
     @property
     def cost(self) -> Cost:
@@ -179,6 +180,10 @@ class Static:
     your_spells: int = 0
     opponent_spells: int = 0
     spell_filter: str = "card"
+    # "is a creature with base power and toughness 5/5 in addition to ..."
+    add_types: frozenset[str] = frozenset()
+    base_power: int | None = None
+    base_toughness: int | None = None
 
 
 @dataclass(frozen=True)
@@ -321,7 +326,7 @@ class GameObject:
                  "targets", "entered_turn", "was_blocked", "deathtouched", "attached_to",
                  "temp_flags", "base_override", "lore", "on_adventure", "playable_until",
                  "linked_to", "activations", "cast_face", "loyalty", "stun", "prepared",
-                 "attack_target", "x_paid", "chosen", "finality")
+                 "attack_target", "x_paid", "chosen", "finality", "temp_types")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -368,6 +373,7 @@ class GameObject:
         self.x_paid = 0          # X chosen when it was cast ("enters with X counters")
         self.chosen = ""         # a creature type chosen as it entered / resolved
         self.finality = False    # a finality counter: exiled instead of dying
+        self.temp_types: set[CardType] = set()  # e.g. a crewed Vehicle: until end of turn
 
     @property
     def name(self) -> str:
@@ -387,6 +393,7 @@ class GameObject:
         self.granted_keywords.clear()
         self.temp_flags.clear()
         self.base_override = None
+        self.temp_types.clear()
 
     def clear_combat(self) -> None:
         self.attacking = False

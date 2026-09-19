@@ -582,6 +582,23 @@ class Pump(Effect):
 
 
 @dataclass(frozen=True)
+class Animate(Effect):
+    """'becomes an artifact creature until end of turn' (a crewed Vehicle)."""
+
+    to: str = "self"
+    types: tuple[str, ...] = ("Artifact", "Creature")
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        from .types import CardType
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            obj.temp_types |= {CardType(t) for t in self.types}
+            game._dirty()
+
+    def describe(self) -> str:
+        return f"{self.to} becomes {' '.join(self.types).lower()} until end of turn"
+
+
+@dataclass(frozen=True)
 class SetBasePT(Effect):
     power: int
     toughness: int
