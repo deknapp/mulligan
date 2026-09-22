@@ -81,13 +81,43 @@ def _effects(effects) -> float:
     return sum(_effect_value(e, True) for e in effects)
 
 
+# A cost reduction written as an expression ("costs {X} less, where X is the
+# greatest power among creatures you control") is worth about this much in a
+# deck that plays creatures at all. Guessing low is the safe direction.
+ASSUMED_VARIABLE_DISCOUNT = 3.0
+
+
+def effective_mana_value(spec: CardSpec) -> float:
+    """What the card really costs to cast, after its own discount."""
+    reduction = spec.cost_reduction
+    if isinstance(reduction, str):
+        reduction = ASSUMED_VARIABLE_DISCOUNT if reduction else 0
+    if reduction and spec.cost_reduction_if is not None:
+        reduction *= 0.5  # only sometimes
+    return max(0.0, spec.cost.mana_value - reduction)
+
+
+def _combat_stats(spec: CardSpec) -> tuple[int, int]:
+    """Power and toughness as they are worth in combat, honouring the two
+    Reality Fracture cards that change how damage is assigned. Without this a
+    0/7 that hits for seven is rated as a card that deals no damage at all."""
+    power = spec.power if spec.power is not None else 3
+    tough = spec.toughness if spec.toughness is not None else 3
+    flags = {f for st in spec.statics for f in st.flags
+             if st.affects in ("self", "all:creature:yours")}
+    if "damage_by_toughness" in flags:
+        power = max(power, tough)
+    if "abs_power_damage" in flags:
+        power = abs(power)
+    return power, tough
+
+
 def static_rating(spec: CardSpec) -> float:
     """Points a card is worth in a Limited deck, relative to its cost."""
-    mv = spec.cost.mana_value
+    mv = effective_mana_value(spec)
     value = 0.0
     if spec.is_creature:
-        power = spec.power if spec.power is not None else 3
-        tough = spec.toughness if spec.toughness is not None else 3
+        power, tough = _combat_stats(spec)
         value += creature_value(power, tough, spec.keywords) + 0.6 * spec.ward
         value -= 1.25 * mv  # a body is only as good as its rate
         value += 2.5  # having a body at all
@@ -99,8 +129,11 @@ def static_rating(spec: CardSpec) -> float:
         t = static.toughness if isinstance(static.toughness, int) else 2
         scale = 2.5 if static.affects.startswith("all:") else 1.0
         cond = 0.5 if static.condition is not None else 1.0
+        discount = static.your_spells
+        discount = ASSUMED_VARIABLE_DISCOUNT if isinstance(discount, str) else -discount
         value += cond * scale * (0.5 * (p + t) + 0.5 * len(static.keywords)
                                  + (1.0 if "unblockable" in static.flags else 0.0))
+        value += cond * 1.5 * max(0.0, discount)  # "your spells cost less"
         if static.affects == "enchanted" and {"loses_abilities", "doesnt_untap"} & set(
                 static.flags):
             value += REMOVAL_VALUE - 1.0

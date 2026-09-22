@@ -282,3 +282,19 @@ def test_rise_of_the_deathbringer_draws_your_greatest_power():
     resolve(game)
     assert len(game.state.players[0].hand) == before - 1 + 3, "a 3/1 means three cards"
     assert game.state.players[0].life == life - 3
+
+
+def test_the_agent_will_not_pay_a_life_cost_that_kills_it():
+    """Rise of the Deathbringer draws (and costs) your greatest power. With a
+    big creature out and a low life total, the draw mode is suicide."""
+    from mulligan.agents.heuristic import HeuristicAgent
+    from mulligan.engine.view import PlayerView
+    game = scene(Side(hand=["Rise of the Deathbringer"], lands={"B": 5}, life=3,
+                      battlefield=["Ghalta the Unstoppable"], library=["Island"] * 20),
+                 Side(life=20))
+    agent = HeuristicAgent()
+    view = PlayerView(game, 0)
+    draw_mode = next(o for o in options(game, act.CastSpell)
+                     if game.state.obj(o.card_id).name == "Rise of the Deathbringer"
+                     and o.mode == 0)
+    assert agent.score(view, draw_mode) < 0, "drawing 8 at 3 life kills you"

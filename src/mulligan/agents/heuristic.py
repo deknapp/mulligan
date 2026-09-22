@@ -499,11 +499,11 @@ class HeuristicAgent(Agent):
                 if not touched and to in ("self", "it"):
                     total += 0.5
                 if isinstance(effect, fx.DealDamage) and to in ("each_opponent",):
-                    amount = self._amount(effect.amount)
+                    amount = self._amount(effect.amount, view)
                     total += 100.0 if amount >= view.life(opp) else 0.4 * amount
                 continue
             if isinstance(effect, fx.DrawCards):
-                count = self._amount(effect.count)
+                count = self._amount(effect.count, view)
                 if effect.who in ("target_player", "target") and targets:
                     seat = next((t.id for t in targets if t.kind == "player"), me)
                     total += 2.0 * count if seat == me else -2.0 * count
@@ -514,13 +514,15 @@ class HeuristicAgent(Agent):
             elif type(effect) in CARD_ADVANTAGE:
                 total += CARD_ADVANTAGE[type(effect)]
             elif isinstance(effect, fx.GainLife):
-                total += 0.3 * self._amount(effect.amount) * self._who_sign(view, effect.who,
-                                                                            targets)
+                total += 0.3 * self._amount(effect.amount, view) * self._who_sign(
+                    view, effect.who, targets)
             elif isinstance(effect, fx.LoseLife):
-                amount = self._amount(effect.amount)
+                amount = self._amount(effect.amount, view)
                 sign = -self._who_sign(view, effect.who, targets)
                 if sign > 0 and amount >= view.life(opp):
                     total += 100.0
+                elif sign < 0 and amount >= view.life(me):
+                    total -= 100.0  # never pay a cost in life that kills you
                 else:
                     total += sign * 0.35 * amount
             elif isinstance(effect, fx.Discard):
@@ -551,12 +553,30 @@ class HeuristicAgent(Agent):
     _x = 0
     _life_gained = 0
 
-    def _amount(self, value) -> int:
+    def _amount(self, value, view: PlayerView | None = None) -> int:
+        """An effect's amount. Expressions the agent cannot work out fall back
+        to 2, but the board-derived ones are worth resolving: a card that draws
+        (and costs life) equal to your greatest power is a very different card
+        at 2 than at 8, and one of them kills you."""
         if value == "x":
             return self._x
         if value == "life_gained":
             return self._life_gained
-        return value if isinstance(value, int) else 2
+        if isinstance(value, int):
+            return value
+        if view is not None:
+            mine = [p for p in view.battlefield(view.seat) if p.is_creature]
+            if value == "max_power":
+                return max((p.power for p in mine), default=0)
+            if value == "max_toughness":
+                return max((p.toughness for p in mine), default=0)
+            if value == "distinct_powers":
+                return len({p.power for p in mine})
+            if value == "lands":
+                return len(view.lands(view.seat))
+            if value == "count:creature:yours":
+                return len(mine)
+        return 2
 
     def _who_sign(self, view: PlayerView, who: str, targets) -> float:
         if who == "you":
