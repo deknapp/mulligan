@@ -98,6 +98,7 @@ def _page(title: str, body: str, depth: int = 0, description: str = "",
 <meta name="description" content="{escape(description)}">
 <link rel="stylesheet" href="{up}style.css">
 <link rel="alternate" type="application/rss+xml" title="{TITLE}" href="{up}feed.xml">
+<script async src="https://deknapp.github.io/gc.js"></script>
 </head>
 <body{body_attrs}>
 <header class="top"><a class="brand" href="{up}index.html">mulligan</a>
@@ -109,7 +110,8 @@ def _page(title: str, body: str, depth: int = 0, description: str = "",
 <footer>Simulated with <a href="{REPO}">mulligan</a>, an open-source Magic: The Gathering
 Limited simulator. Card data from Scryfall; real-game comparisons from
 <a href="https://www.17lands.com">17Lands</a>' public data. Not affiliated with
-Wizards of the Coast.</footer>
+Wizards of the Coast.
+Built by <a href="https://deknapp.github.io/">Nathan Knapp</a> &middot; <a href="https://www.linkedin.com/in/nathan-knapp-63012741">LinkedIn</a>.</footer>
 {scripts}</body>
 </html>
 """
