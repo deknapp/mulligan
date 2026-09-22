@@ -8,12 +8,11 @@ times (100 pods of eight). Each bot built a deck from its picks, and the decks
 played **100,000 games** against each other under the full rules. This primer
 is what those games say, written as advice for your first drafts.
 
-**Updated September 21**, on the complete spoiler. Fifteen cards — thirteen of
-them rare or mythic — were previously missing from the simulation because the
-engine could not play them. All 285 cards are in now, which changed enough of
-the numbers that most of the sections below were rewritten. The biggest single
-move: **Ghalta the Immovable went from "not simulated" to one of the best
-uncommons in the set.**
+This run is on the **complete spoiler**, and for the first time every card in
+the set is actually simulated. Fifteen cards — thirteen of them rare or mythic —
+used to be missing, because the engine could not play them. Two of the fifteen
+turned out to be among the best uncommons in the format, so if you read an
+earlier version of this page, the card advice below has changed.
 
 Each claim is tagged with how much to trust it:
 
