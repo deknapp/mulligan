@@ -408,6 +408,9 @@ class Game:
                         for c in o.spec.color_set})
         if value == "distinct_powers":
             return len({self.power_of(o) for o in self.creatures_of(ctx.controller)})
+        if value == "max_power":
+            return max((self.power_of(o) for o in self.creatures_of(ctx.controller)),
+                       default=0)
         if value == "max_toughness":
             return max((self.toughness_of(o) for o in self.creatures_of(ctx.controller)),
                        default=0)

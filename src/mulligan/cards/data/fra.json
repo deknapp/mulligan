@@ -2,8 +2,8 @@
  "code": "fra",
  "name": "Reality Fracture",
  "released": "2026-10-02",
- "spoiler": "285 of 460 cards spoiled as of 2026-09-18",
- "compiled_by": "Claude (Opus 5) in a Claude Code session, 2026-09-18; skeleton fields by mulligan.cards.compiler.skeleton",
+ "spoiler": "complete: all 285 cards, checked against Scryfall 2026-09-21 (281 in the main set plus four basics)",
+ "compiled_by": "Claude (Opus 5) in a Claude Code session, 2026-09-18; skeleton fields by mulligan.cards.compiler.skeleton; completed 2026-09-21 when the full spoiler landed",
  "cards": [
   {
    "name": "Academic Ascent",
@@ -2016,11 +2016,11 @@
      "effects": [
       {
        "op": "draw",
-       "count": 3
+       "count": "max_power"
       },
       {
        "op": "lose_life",
-       "amount": 3
+       "amount": "max_power"
       }
      ],
      "text": "Draw (greatest power) cards, lose that much life."
@@ -2036,9 +2036,6 @@
      ],
      "text": "All creatures get -3/-3."
     }
-   ],
-   "approximations": [
-    "the draw mode uses 3 instead of your greatest power"
    ]
   },
   {
@@ -9415,9 +9412,7 @@
      ]
     }
    ],
-   "approximations": [
-    "the power-based discount is omitted"
-   ]
+   "cost_reduction": "max_power"
   },
   {
    "name": "Jiang Yanggu, Never Alone",

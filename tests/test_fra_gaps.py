@@ -260,3 +260,25 @@ def test_omnipresence_discounts_your_spells_by_your_creature_count():
     with_omni = scene(Side(hand=["Ghalta the Immovable"], lands={"W": 6},
                            battlefield=["Omnipresence", "Konstrari Improviser"]))
     assert castable(with_omni, "Ghalta the Immovable"), "one creature takes {1} off"
+
+
+def test_ghalta_the_unstoppable_costs_less_for_your_biggest_power():
+    """{8}{G} minus the greatest power among creatures you control."""
+    alone = scene(Side(hand=["Ghalta the Unstoppable"], lands={"G": 8}))
+    assert not castable(alone, "Ghalta the Unstoppable")
+    with_crier = scene(Side(hand=["Ghalta the Unstoppable"], lands={"G": 6},
+                            battlefield=["Campus Crier"]))
+    assert castable(with_crier, "Ghalta the Unstoppable"), "a 3/1 takes three off"
+
+
+def test_rise_of_the_deathbringer_draws_your_greatest_power():
+    game = scene(Side(hand=["Rise of the Deathbringer"], lands={"B": 5},
+                      battlefield=["Campus Crier"], library=["Island"] * 20))
+    before = len(game.state.players[0].hand)
+    life = game.state.players[0].life
+    draw = next(o for o in options(game, act.CastSpell)
+                if game.state.obj(o.card_id).name == "Rise of the Deathbringer" and o.mode == 0)
+    game.apply(draw)
+    resolve(game)
+    assert len(game.state.players[0].hand) == before - 1 + 3, "a 3/1 means three cards"
+    assert game.state.players[0].life == life - 3
