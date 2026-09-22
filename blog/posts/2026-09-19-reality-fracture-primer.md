@@ -38,7 +38,7 @@ themselves.
 
 ## Colors and pairs
 
-{{figure 2026-09-19-pairs}}
+{{figure fra-primer-pairs}}
 
 *Each pair's win rate against the whole field, with 95% intervals.*
 
@@ -69,7 +69,7 @@ uncommons, measured in that pair's decks, and a sample deck.
 
 ### Commons
 
-{{figure 2026-09-19-commons}}
+{{figure fra-primer-commons}}
 
 *The three best commons in each color by win rate when drawn.*
 
@@ -85,7 +85,7 @@ brings a 2/2) are the picks.
 
 ### Uncommons
 
-{{figure 2026-09-19-uncommons}}
+{{figure fra-primer-uncommons}}
 
 **Thalia, the Survivor** (a 3/4 lifelinker that taxes their spells) and
 **Tetsuko Umezawa, Pursuer** (a 2/4 double striker) are the best uncommons,
@@ -97,7 +97,7 @@ isn't far behind. Your Fate Ends Here is the best removal spell at uncommon.
 These won far more than their pick position says, and their 95% intervals
 clear the set's average. Bots took them around pick 10 or later.
 
-{{figure 2026-09-19-sleepers}}
+{{figure fra-primer-sleepers}}
 
 The two Ways are the standouts. Each creates a Jace planeswalker with enough
 loyalty to use its new −4 the turn it comes down: Warlord's is 2 damage to a
@@ -113,7 +113,7 @@ them late. When you do, take them.
 
 These go early and don't win.
 
-{{figure 2026-09-19-traps}}
+{{figure fra-primer-traps}}
 
 **Proft, Sinister Mastermind** reads like a three-mana 5/5 menace. But you
 can't cast it until your graveyard holds seven cards, which is late or never
@@ -129,7 +129,7 @@ token, creating one if you don't have one. Across its 32 cards it averages
 about zero: neither good nor bad on its own. **What decides a card is its
 payload.** The clearest case is the uncommon Way cycle:
 
-{{figure 2026-09-19-ways}}
+{{figure fra-primer-ways}}
 
 *Win rate when drawn for each Way, with 95% intervals. The dashed line is the
 set's average card.*
@@ -149,7 +149,7 @@ We compared the 800 decks' records against what was in them. We also held
 each deck's average card quality fixed, so "more creatures" doesn't just mean
 "better cards".
 
-{{figure 2026-09-19-creatures}}
+{{figure fra-primer-creatures}}
 
 *Deck win rate by number of creatures, with 95% intervals.*
 

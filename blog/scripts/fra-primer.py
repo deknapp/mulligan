@@ -1,9 +1,12 @@
-"""Figures and numbers for the Reality Fracture primer (2026-09-19).
+"""Figures and numbers for the Reality Fracture primer.
 
-    uv run python blog/scripts/2026-09-19-fra-primer.py
+    uv run python blog/scripts/fra-primer.py
 
-Reads blog/data/fra-draft-2026-09-19.json, writes blog/figures/2026-09-19-*.svg
-and prints the numbers the post quotes.
+The primer is one living page, not a dated post, so this reads whatever the
+newest blog/data/fra-draft-*.json is and always writes the same
+blog/figures/fra-primer-*.svg. Rerun a draft, rerun this, and the page's
+charts are the new numbers; the prose above them still has to be re-read by
+hand against what this prints.
 """
 
 from __future__ import annotations
@@ -26,12 +29,12 @@ from mulligan.site.figures import (
     wilson,
     write,
 )
-from mulligan.site.tools import deck_profile
+from mulligan.site.tools import deck_profile, latest_run
 
 ROOT = Path(__file__).resolve().parents[2]
-RUN = ROOT / "blog/data/fra-draft-2026-09-19.json"
+RUN = latest_run(ROOT / "blog", "fra")
 OUT = ROOT / "blog/figures"
-P = "2026-09-19-"
+P = "fra-primer-"
 
 
 def shrunk(run: DraftRun, name: str, prior: int = 200) -> float:
@@ -109,6 +112,9 @@ def bucket_chart(rows, label, x_label):
 
 
 def main() -> None:
+    if RUN is None:
+        raise SystemExit("no blog/data/fra-draft-*.json to read")
+    print(f"reading {RUN.name}")
     run = DraftRun(RUN)
     mean = run.mean_gih()
     write(OUT, P + "pairs", archetypes(run))

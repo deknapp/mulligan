@@ -90,15 +90,16 @@ three-color, 17-land deck; when it was cast the deck won 63%.
 ## Reality Fracture (before release)
 
 FRA has no 17Lands data yet, so everything here is the simulator — the
-release-day case it exists for. From the 285 cards spoiled by 2026-09-18:
+release-day case it exists for. The spoiler is complete (285 cards: 281 in the
+main set plus four basics), and every one of them is playable:
 
 ```
 $ mulligan sets
-Reality Fracture (FRA): 268/283 cards playable (95%), 103 with noted approximations
-  common     85/85  (100%)
-  uncommon  104/108 (96%)
-  rare       56/64  (88%)
-  mythic     23/26  (88%)
+Reality Fracture (FRA): 285/285 cards playable (100%), 108 with noted approximations
+  common     86/86  (100%)
+  uncommon  109/109 (100%)
+  rare       64/64  (100%)
+  mythic     26/26  (100%)
 $ mulligan update-set fra        # pull newly spoiled cards (added as 'not compiled yet')
 $ mulligan sealed --set fra      # a sealed pool from the cards spoiled so far
 $ mulligan rate --set fra        # release-day card ratings from self-play

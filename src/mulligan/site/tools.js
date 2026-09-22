@@ -148,6 +148,14 @@ function hoverCard(node, state, c) {
 function freshness(state) {
   const s = state.sim;
   const bits = [`Simulated: ${s.decks.toLocaleString()} bot-drafted decks, ${s.games.toLocaleString()} games (run of ${s.run}; ${s.spoiler}).`];
+  // How much of the set the engine plays as printed. A reader deciding how far
+  // to trust a number deserves to see this without hovering every dagger.
+  const playable = s.cards.filter((c) => !/Land/.test(c.t) || !/^(Plains|Island|Swamp|Mountain|Forest)$/.test(c.n));
+  const skipped = playable.filter((c) => c.un).length;
+  const simplified = playable.filter((c) => !c.un && c.ap && c.ap.length).length;
+  bits.push(skipped
+    ? `Coverage: ${playable.length - skipped - simplified} of ${playable.length} cards play as printed, ${simplified} are simplified (†), ${skipped} are not simulated at all.`
+    : `Coverage: every one of the ${playable.length} cards is simulated; ${simplified} of them are simplified (†), so those numbers are floors.`);
   if (state.real) {
     const n = Object.values(state.real.cards).filter((r) => r.gih != null && r.gih_n >= REAL_MIN_GAMES).length;
     bits.push(n ? `17Lands: ${n} cards with real win rates (updated ${state.real.fetched.slice(0, 10)}); those replace the simulated numbers.`
