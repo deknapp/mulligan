@@ -113,6 +113,8 @@ EFFECTS: dict[str, type[fx.Effect]] = {
     "stun": fx.Stun,
     "win_game": fx.WinGame,
     "token_copy": fx.TokenCopy,
+    "grant_ability": fx.GrantAbility,
+    "playable_from_exile": fx.PlayableFromExile,
 }
 
 NAMED_TOKENS = {

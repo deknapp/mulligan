@@ -1024,3 +1024,39 @@ class TokenCopy(Effect):
 
     def describe(self) -> str:
         return f"create a token copy of {self.of}"
+
+
+@dataclass(frozen=True)
+class GrantAbility(Effect):
+    """Give ``to`` an activated ability for the rest of the game.
+
+    Unlike a static, the grant outlives its source leaving the battlefield,
+    which is what "target land gains '{T}: Add {C}{C}'" needs when the card
+    granting it is sitting in exile.
+    """
+
+    ability: dict = field(default_factory=dict)
+    to: str = "target"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        from ..cards.schema import ability as build_ability
+        built = build_ability(dict(self.ability))
+        for obj in _on_battlefield(ctx.objects(game, self.to)):
+            if not any(a is built or a == built for a in obj.granted_abilities):
+                obj.granted_abilities = obj.granted_abilities + (built,)
+
+    def describe(self) -> str:
+        return f"{self.to} gains an ability"
+
+
+@dataclass(frozen=True)
+class PlayableFromExile(Effect):
+    """"You may cast this card for as long as it remains exiled."" """
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        source = game.object_by_id(ctx.source_id)
+        if source is not None and source.zone == "exile":
+            source.playable_until = 10 ** 6
+
+    def describe(self) -> str:
+        return "you may cast it from exile"

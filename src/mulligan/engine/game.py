@@ -244,7 +244,7 @@ class Game:
         ("Planeswalkers you control have ...")."""
         granted = tuple(a for _, st in self.statics_on(obj) for a in st.abilities) if (
             obj.zone == "battlefield") else ()
-        return obj.spec.abilities + granted
+        return obj.spec.abilities + granted + obj.granted_abilities
 
     def is_creature(self, obj: GameObject) -> bool:
         if CardType.CREATURE in obj.spec.types:
@@ -309,11 +309,18 @@ class Game:
         return power, tough
 
     def power_of(self, obj: GameObject) -> int:
+        """Power, floored at zero: nothing in the engine wants a creature that
+        heals what it hits. :meth:`raw_power_of` keeps the sign."""
+        return max(0, self.raw_power_of(obj))
+
+    def raw_power_of(self, obj: GameObject) -> int:
+        """Power as the rules compute it, which may be negative (Loot, the
+        Anomaly is printed -2/4 and shrinks himself from there)."""
         power, _ = self._base_pt(obj)
         power += obj.temp_power + obj.counters
         for src, static in self.statics_on(obj):
             power += self._static_amount(static.power, src)
-        return max(0, power)
+        return power
 
     def combat_power(self, obj: GameObject) -> int:
         """The damage a creature assigns in combat.
@@ -323,13 +330,13 @@ class Game:
         that is greater, and ``abs_power_damage`` (Loot, the Anomaly) assigns
         negative power as though it were positive.
         """
-        power = self.power_of(obj)
         flags = self.flags_of(obj)
+        power = self.raw_power_of(obj) if "abs_power_damage" in flags else self.power_of(obj)
         if "damage_by_toughness" in flags:
             power = max(power, self.toughness_of(obj))
         if "abs_power_damage" in flags and power < 0:
             power = -power
-        return power
+        return max(0, power)
 
     def toughness_of(self, obj: GameObject) -> int:
         _, tough = self._base_pt(obj)
@@ -395,6 +402,10 @@ class Game:
             return len(types)
         if value == "life_gained":
             return self.state.players[ctx.controller].life_gained_this_turn
+        if value == "artifact_colors":
+            return len({c for o in self.state.zone_objects(ctx.controller, "battlefield")
+                        if CardType.ARTIFACT in o.spec.types and o.id != ctx.source_id
+                        for c in o.spec.color_set})
         if value == "distinct_powers":
             return len({self.power_of(o) for o in self.creatures_of(ctx.controller)})
         if value == "max_toughness":
@@ -448,7 +459,9 @@ class Game:
         if kind == "creature_died_this_turn":
             return self.state.creature_died_this_turn
         if kind == "library_empty":
-            return len(player.library) <= cond.n - 1
+            # "if your library has no cards in it": n is the size to be at or
+            # under, so the usual form is {"kind": "library_empty", "n": 0}.
+            return len(player.library) <= cond.n
         if kind == "life_gained_this_turn":
             return player.life_gained_this_turn >= cond.n
         if kind == "opponent_noncombat_damaged":
@@ -520,6 +533,9 @@ class Game:
             )
             if combat and source is not None:
                 self._fire("combat_damage_player", subject=source, amount=amount)
+                # "when one or more opponents are dealt combat damage": watched
+                # by the damaged player's opponent, not by the damage's source.
+                self._fire("opponent_combat_damaged", controller=1 - target.id, amount=amount)
             if not combat:
                 self.state.players[target.id].noncombat_damage_this_turn += amount
                 self._fire("opponent_noncombat_damaged", controller=1 - target.id,
@@ -1543,6 +1559,10 @@ class Game:
             for static in src.spec.statics:
                 change = (static.your_spells if src.controller == seat
                           else static.opponent_spells)
+                if isinstance(change, str):
+                    change = -self.amount(change.lstrip("-"), Context(
+                        controller=seat, source_id=src.id)) if change.startswith("-") \
+                        else self.amount(change, Context(controller=seat, source_id=src.id))
                 if not change or not _card_matches(self, filters.parse(static.spell_filter),
                                                    obj, seat):
                     continue
@@ -2020,7 +2040,8 @@ class Game:
                     "cast_noncreature", "cast_creature", "cast_spell", "draw_second",
                     "opp_draw_second", "opp_cast_noncreature", "draw",
                     "creature_leaves_graveyard", "gain_life", "scry_or_surveil",
-                    "loyalty_counters", "opponent_noncombat_damaged", "cast_prepared"):
+                    "loyalty_counters", "opponent_noncombat_damaged", "cast_prepared",
+                    "opponent_combat_damaged"):
             return event == when and mine
         return False
 

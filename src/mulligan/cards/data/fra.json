@@ -734,7 +734,15 @@
     "U"
    ],
    "oracle": "Draw X cards, where X is the number of cards that were put into target player's graveyard from their library this turn.",
-   "unsupported": "counts cards milled this turn"
+   "targets": [
+    "player"
+   ],
+   "effects": [
+    {
+     "op": "draw",
+     "count": "milled:target0"
+    }
+   ]
   },
   {
    "name": "Cryotheory Adept",
@@ -1770,7 +1778,15 @@
     "B"
    ],
    "oracle": "You may reveal exactly two cards you own with different names from outside the game. An opponent chooses one of them. You put that card into your hand.",
-   "unsupported": "cards from outside the game"
+   "effects": [
+    {
+     "op": "draw",
+     "count": 1
+    }
+   ],
+   "approximations": [
+    "there is no outside-the-game zone in a simulated match: this draws a card instead of fetching a card you own, which is strictly worse"
+   ]
   },
   {
    "name": "Last Gasp",
@@ -2664,7 +2680,23 @@
     "R"
    ],
    "oracle": "For each creature target player controls, create a token that's a copy of that creature, except it has haste and \"At the beginning of the end step, if you don't control a planeswalker, sacrifice this creature.\"",
-   "unsupported": "token copies of an opponent's creatures"
+   "targets": [
+    "opponent"
+   ],
+   "effects": [
+    {
+     "op": "token_copy",
+     "of": "all:creature:theirs",
+     "keywords": [
+      "haste"
+     ],
+     "sacrifice_at_end": true
+    }
+   ],
+   "approximations": [
+    "always copies an opponent's creatures (targeting yourself is legal but almost never right)",
+    "the copies are always sacrificed at end of turn; the printed card keeps them if you control a planeswalker"
+   ]
   },
   {
    "name": "Fulminous Forte",
@@ -2798,7 +2830,27 @@
     "R"
    ],
    "oracle": "{3}{R}: Exile target creature or planeswalker you control. Reveal cards from the top of your library until you reveal a creature or planeswalker card. Put that card onto the battlefield and the rest on the bottom of your library in a random order. Activate only as a sorcery.",
-   "unsupported": "exile-and-reveal replacement"
+   "abilities": [
+    {
+     "cost": "{3}{R}",
+     "sorcery": true,
+     "targets": [
+      "creature|planeswalker:yours"
+     ],
+     "effects": [
+      {
+       "op": "exile",
+       "to": "target0"
+      },
+      {
+       "op": "reveal_until",
+       "filter": "creature|planeswalker",
+       "battlefield_if_mv_at_most": 99
+      }
+     ],
+     "text": "{3}{R}: Exile target creature or planeswalker you control, then reveal until a creature or planeswalker and put it onto the battlefield."
+    }
+   ]
   },
   {
    "name": "Master of Barbs",
@@ -3325,7 +3377,35 @@
     "G"
    ],
    "oracle": "Whenever a creature you control dies, put a charge counter on this enchantment.\nAt the beginning of your first main phase, add {G} for each charge counter on this enchantment.",
-   "unsupported": "charge counters that make mana"
+   "triggers": [
+    {
+     "when": "other_dies",
+     "effects": [
+      {
+       "op": "counters",
+       "count": 1,
+       "to": "self"
+      }
+     ],
+     "text": "Whenever a creature you control dies, put a charge counter on Gardenize."
+    },
+    {
+     "when": "first_main",
+     "effects": [
+      {
+       "op": "add_mana",
+       "symbols": [
+        "G"
+       ],
+       "amount": "counters:self"
+      }
+     ],
+     "text": "At the beginning of your first main phase, add {G} for each charge counter."
+    }
+   ],
+   "approximations": [
+    "charge counters are kept in the engine's one counter slot; on a noncreature permanent they change nothing else"
+   ]
   },
   {
    "name": "Greenhouse Propagator",
@@ -4361,7 +4441,28 @@
     "U"
    ],
    "oracle": "You may sacrifice a planeswalker. If you do, search your library for a planeswalker card, put it onto the battlefield, then shuffle.",
-   "unsupported": "planeswalker exchange"
+   "effects": [
+    {
+     "op": "if",
+     "cond": {
+      "kind": "control",
+      "filter": "planeswalker:yours",
+      "n": 1
+     },
+     "then": [
+      {
+       "op": "sacrifice",
+       "filter": "planeswalker:yours",
+       "who": "you"
+      },
+      {
+       "op": "search",
+       "filter": "card:type=planeswalker",
+       "dest": "battlefield"
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Fatehold Charm",
@@ -5486,7 +5587,27 @@
     "U"
    ],
    "oracle": "Flying\nWhen Uldaros Theorix enters, if you cast him, exile up to one target nonland card of each card type from your graveyard. Copy those cards. You may cast any number of spells with total mana value 6 or less from among the copies without paying their mana costs. (Permanent spells cast this way become tokens.)",
-   "unsupported": "casts copies from the graveyard for free"
+   "triggers": [
+    {
+     "when": "etb",
+     "targets": [
+      {
+       "sel": "creature:zone=graveyard,yours",
+       "optional": true
+      }
+     ],
+     "effects": [
+      {
+       "op": "reanimate",
+       "to": "target0"
+      }
+     ],
+     "text": "When Uldaros Theorix enters, return target creature card from your graveyard to the battlefield."
+    }
+   ],
+   "approximations": [
+    "returns one creature from your graveyard instead of exiling one card of each type, copying them and casting up to 6 mana value of the copies free: fewer cards, and creatures only"
+   ]
   },
   {
    "name": "Vigorbloom Charm",
@@ -6709,7 +6830,17 @@
     "W"
    ],
    "oracle": "This spell costs {X} less to cast, where X is the greatest toughness among creatures you control.\nCreatures you control can attack as though they didn't have defender.\nEach creature you control with toughness greater than its power assigns combat damage equal to its toughness rather than its power.",
-   "unsupported": "toughness-based combat damage and cost reduction"
+   "cost_reduction": "max_toughness",
+   "statics": [
+    {
+     "affects": "all:creature:yours",
+     "flags": [
+      "attacks_despite_defender",
+      "damage_by_toughness"
+     ],
+     "text": "Creatures you control can attack as though they didn't have defender, and assign combat damage by toughness when it is greater."
+    }
+   ]
   },
   {
    "name": "Gideon's Memorial",
@@ -7360,7 +7491,38 @@
     "U"
    ],
    "oracle": "When one or more of your opponents are dealt combat damage during your turn, draw two cards. If your library has no cards in it, you win the game. Fblthp's owner shuffles him into their library. (If you draw from an empty library this way, you still win the game.)",
-   "unsupported": "alternate win and self-shuffle"
+   "triggers": [
+    {
+     "when": "opponent_combat_damaged",
+     "once_per_turn": true,
+     "if": {
+      "kind": "your_turn"
+     },
+     "effects": [
+      {
+       "op": "draw",
+       "count": 2
+      },
+      {
+       "op": "if",
+       "cond": {
+        "kind": "library_empty",
+        "n": 0
+       },
+       "then": [
+        {
+         "op": "win_game"
+        }
+       ]
+      },
+      {
+       "op": "shuffle_into_library",
+       "to": "self"
+      }
+     ],
+     "text": "When one or more opponents are dealt combat damage during your turn, draw two cards. If your library is empty, you win the game. Shuffle Fblthp into his owner's library."
+    }
+   ]
   },
   {
    "name": "Geist of Saint Thalia",
@@ -8056,7 +8218,32 @@
     "B"
    ],
    "oracle": "If Loot's power is negative, he assigns combat damage as though his power were positive.\nThreshold — Sacrifice another creature or planeswalker: Loot gets -2/-0 until end of turn. Activate only if there are seven or more cards in your graveyard.",
-   "unsupported": "negative power combat damage"
+   "statics": [
+    {
+     "affects": "self",
+     "flags": [
+      "abs_power_damage"
+     ],
+     "text": "If Loot's power is negative, he assigns combat damage as though it were positive."
+    }
+   ],
+   "abilities": [
+    {
+     "sacrifice": "creature|planeswalker:yours",
+     "if": {
+      "kind": "graveyard",
+      "n": 7
+     },
+     "effects": [
+      {
+       "op": "pump",
+       "power": -2,
+       "to": "self"
+      }
+     ],
+     "text": "Threshold — Sacrifice another creature or planeswalker: Loot gets -2/-0 until end of turn."
+    }
+   ]
   },
   {
    "name": "Mabel, Bitter Recluse",
@@ -9299,7 +9486,25 @@
     "G"
    ],
    "oracle": "{T}: Choose a color. Add one mana of that color for each different power among creatures you control.",
-   "unsupported": "mana from different powers"
+   "abilities": [
+    {
+     "tap": true,
+     "mana": true,
+     "effects": [
+      {
+       "op": "add_mana",
+       "symbols": [
+        "G"
+       ],
+       "amount": "distinct_powers"
+      }
+     ],
+     "text": "{T}: Add {G} for each different power among creatures you control."
+    }
+   ],
+   "approximations": [
+    "the mana is always green; the printed card lets you choose any color"
+   ]
   },
   {
    "name": "Marwyn, the Preserver",
@@ -9717,7 +9922,18 @@
     "W"
    ],
    "oracle": "Vigilance, trample\nWhen Karn enters, draw a card for each color among other artifacts you control.",
-   "unsupported": "Phyrexian-style {2/C} hybrid costs"
+   "triggers": [
+    {
+     "when": "etb",
+     "effects": [
+      {
+       "op": "draw",
+       "count": "artifact_colors"
+      }
+     ],
+     "text": "When Karn enters, draw a card for each color among other artifacts you control."
+    }
+   ]
   },
   {
    "name": "Kiora of Salt and Sand",
@@ -10014,7 +10230,15 @@
    "collector_number": "279",
    "color_identity": [],
    "oracle": "Artifacts and creatures entering the battlefield don't cause abilities to trigger.",
-   "unsupported": "stops enter-the-battlefield triggers"
+   "statics": [
+    {
+     "affects": "game",
+     "flags": [
+      "no_etb_triggers"
+     ],
+     "text": "Artifacts and creatures entering the battlefield don't cause abilities to trigger."
+    }
+   ]
   },
   {
    "name": "Traxos, Scourge Eternal",
@@ -10196,7 +10420,47 @@
    "collector_number": "438",
    "color_identity": [],
    "oracle": "When you cast this spell, untap all lands you control.\nFlying, trample\nWard—Sacrifice three permanents.\n{3}, Exile this card from your hand: Target land gains \"{T}: Add {C}{C}\" until this card is cast from exile. You may cast this card for as long as it remains exiled.",
-   "unsupported": "cast trigger, sacrifice ward, exile casting"
+   "ward": 3,
+   "abilities": [
+    {
+     "cost": "{3}",
+     "zone": "hand",
+     "exile_self": true,
+     "sorcery": true,
+     "targets": [
+      "land:yours"
+     ],
+     "effects": [
+      {
+       "op": "grant_ability",
+       "to": "target0",
+       "ability": {
+        "tap": true,
+        "mana": true,
+        "effects": [
+         {
+          "op": "add_mana",
+          "symbols": [
+           "C",
+           "C"
+          ]
+         }
+        ],
+        "text": "{T}: Add {C}{C}."
+       }
+      },
+      {
+       "op": "playable_from_exile"
+      }
+     ],
+     "text": "{3}, Exile this card from your hand: Target land you control gains \"{T}: Add {C}{C}\". You may cast this card from exile."
+    }
+   ],
+   "approximations": [
+    "ward is {3} rather than \"sacrifice three permanents\", which is easier to pay through",
+    "the land keeps \"{T}: Add {C}{C}\" after Emrakul is cast",
+    "no untap-all-lands trigger when you cast him"
+   ]
   },
   {
    "name": "Return to the Light Realms",
@@ -10301,7 +10565,17 @@
     "G"
    ],
    "oracle": "You may cast spells with mana value less than or equal to the number of creatures you control from your hand without paying their mana costs.",
-   "unsupported": "free casting"
+   "statics": [
+    {
+     "affects": "game",
+     "your_spells": "-count:creature:yours",
+     "spell_filter": "card",
+     "text": "Your spells cost {X} less to cast, where X is the number of creatures you control."
+    }
+   ],
+   "approximations": [
+    "reduces your spells' generic cost by the number of creatures you control instead of making small spells free: colored pips still have to be paid"
+   ]
   },
   {
    "name": "Your Fate Ends Here",

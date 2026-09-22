@@ -329,7 +329,7 @@ class GameObject:
                  "temp_flags", "base_override", "lore", "on_adventure", "playable_until",
                  "linked_to", "activations", "cast_face", "loyalty", "stun", "prepared",
                  "attack_target", "x_paid", "chosen", "finality", "temp_types",
-                 "exhausted")
+                 "exhausted", "granted_abilities")
 
     def __init__(self, obj_id: int, spec: CardSpec, owner: int, *, is_token: bool = False):
         self.id = obj_id
@@ -365,6 +365,9 @@ class GameObject:
         self.playable_until: int | None = None
         # Exiled "until X leaves the battlefield": the id of X.
         self.linked_to: int | None = None
+        # Abilities handed to this object by a resolved effect, which
+        # outlive their source (Emrakul's land gains "{T}: Add {C}{C}").
+        self.granted_abilities: tuple = ()
         # Activations this turn, by ability index (for "only once each turn").
         self.activations: dict[int, int] = {}
         # Which face is on the stack: "" (the card) or "adventure".
