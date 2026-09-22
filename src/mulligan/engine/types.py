@@ -96,11 +96,17 @@ class ManaCost:
     can be paid with either color. ``"0"`` or ``""`` is free. ``{X}`` is kept as
     ``has_x`` and costs nothing extra: cards that scale with X are not
     supported by the engine, and the set compiler marks them so.
+
+    A "two-brid" pip ``{2/W}`` is kept in ``twobrid`` (one entry per pip, the
+    color): it is payable as that color or as two generic, so a cost that has
+    one is really a small set of ordinary costs. :meth:`variants` enumerates
+    them, cheapest first, and the payment solver tries them in that order.
     """
 
     generic: int = 0
     pips: tuple[tuple[str, int], ...] = ()
     has_x: bool = False
+    twobrid: tuple[str, ...] = ()
 
     @staticmethod
     def parse(text: str) -> ManaCost:
@@ -122,6 +128,7 @@ class ManaCost:
                 symbols.append(digits)
         generic = 0
         has_x = False
+        twobrid: list[str] = []
         counts: Counter[str] = Counter()
         for sym in symbols:
             if sym.isdigit():
@@ -130,31 +137,35 @@ class ManaCost:
                 has_x = True
             elif sym in MANA_SYMBOLS:
                 counts[sym] += 1
+            elif "/" in sym and sym.split("/")[0] == "2" and sym.split("/")[1] in MANA_SYMBOLS:
+                twobrid.append(sym.split("/")[1])
             elif "/" in sym and all(part in MANA_SYMBOLS for part in sym.split("/")):
                 counts["/".join(sorted(sym.split("/"), key=MANA_SYMBOLS.index))] += 1
             else:
                 raise ValueError(f"unparseable mana symbol {sym!r} in {text!r}")
-        return ManaCost(generic=generic, pips=tuple(sorted(counts.items())), has_x=has_x)
+        return ManaCost(generic=generic, pips=tuple(sorted(counts.items())), has_x=has_x,
+                        twobrid=tuple(sorted(twobrid, key=MANA_SYMBOLS.index)))
 
     @property
     def mana_value(self) -> int:
         """Converted mana cost."""
-        return self.generic + sum(n for _, n in self.pips)
+        return self.generic + sum(n for _, n in self.pips) + 2 * len(self.twobrid)
 
     @property
     def colors(self) -> frozenset[Color]:
-        return frozenset(Color(part) for sym, _ in self.pips for part in sym.split("/")
+        pips = frozenset(Color(part) for sym, _ in self.pips for part in sym.split("/")
                          if part != COLORLESS)
+        return pips | frozenset(Color(c) for c in self.twobrid if c != COLORLESS)
 
     def reduced(self, amount: int) -> ManaCost:
         """This cost with up to ``amount`` generic mana taken off."""
-        return ManaCost(max(0, self.generic - amount), self.pips, self.has_x)
+        return ManaCost(max(0, self.generic - amount), self.pips, self.has_x, self.twobrid)
 
     def plus(self, other: ManaCost) -> ManaCost:
         merged: Counter[str] = Counter(dict(self.pips))
         merged.update(dict(other.pips))
         return ManaCost(self.generic + other.generic, tuple(sorted(merged.items())),
-                        self.has_x or other.has_x)
+                        self.has_x or other.has_x, self.twobrid + other.twobrid)
 
     def __str__(self) -> str:
         if self.mana_value == 0 and not self.has_x:
@@ -162,7 +173,28 @@ class ManaCost:
         head = "{X}" if self.has_x else ""
         head += f"{{{self.generic}}}" if self.generic else ""
         tail = "".join(f"{{{sym}}}" * n for sym, n in self.pips)
+        tail += "".join(f"{{2/{c}}}" for c in self.twobrid)
         return head + tail
+
+    def variants(self) -> list[ManaCost]:
+        """Every way to settle this cost's two-brid pips, cheapest first.
+
+        Paying a pip with its color costs one mana instead of two, so the
+        variants are ordered by mana value: the solver takes the first it can
+        actually pay, which is the cheapest payable way to cast the spell.
+        """
+        if not self.twobrid:
+            return [self]
+        plain = ManaCost(self.generic, self.pips, self.has_x)
+        out = []
+        for mask in range(1 << len(self.twobrid)):
+            cost = plain
+            for i, color in enumerate(self.twobrid):
+                cost = (cost.plus(ManaCost(pips=((color, 1),))) if mask >> i & 1
+                        else cost.plus(ManaCost(generic=2)))
+            out.append(cost)
+        out.sort(key=lambda c: c.mana_value)
+        return out
 
 
 def pip_options(pip: str) -> tuple[str, ...]:

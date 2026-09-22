@@ -34,6 +34,7 @@ from .effects import (
     Condition,
     Context,
     Effect,
+    SacrificeSelf,
     TokenSpec,
 )
 from .state import GameState
@@ -197,6 +198,23 @@ class Game:
             return static.condition.holds(self, ctx)
         return True
 
+    def global_flag(self, flag: str) -> bool:
+        """Is a rule-changing static with ``flag`` on the battlefield?
+
+        These are statics written ``"affects": "game"``: they change a rule for
+        everyone rather than buffing a set of permanents (Karn, Argent Defender
+        turning off enter-the-battlefield triggers).
+        """
+        for src in self._statics():
+            if self._lost_abilities(src):
+                continue
+            for static in src.spec.statics:
+                if static.affects == "game" and flag in static.flags:
+                    if static.condition is None or static.condition.holds(
+                            self, Context(controller=src.controller, source_id=src.id)):
+                        return True
+        return False
+
     def statics_on(self, obj: GameObject) -> list[tuple[GameObject, Static]]:
         """Static abilities that apply to ``obj``. While they are being worked
         out, a filter that asks for ``obj``'s power or toughness sees its value
@@ -297,6 +315,22 @@ class Game:
             power += self._static_amount(static.power, src)
         return max(0, power)
 
+    def combat_power(self, obj: GameObject) -> int:
+        """The damage a creature assigns in combat.
+
+        Normally its power, but two Reality Fracture cards change the rule:
+        ``damage_by_toughness`` (Ghalta the Immovable) assigns by toughness when
+        that is greater, and ``abs_power_damage`` (Loot, the Anomaly) assigns
+        negative power as though it were positive.
+        """
+        power = self.power_of(obj)
+        flags = self.flags_of(obj)
+        if "damage_by_toughness" in flags:
+            power = max(power, self.toughness_of(obj))
+        if "abs_power_damage" in flags and power < 0:
+            power = -power
+        return power
+
     def toughness_of(self, obj: GameObject) -> int:
         _, tough = self._base_pt(obj)
         tough += obj.temp_toughness + obj.counters
@@ -361,9 +395,20 @@ class Game:
             return len(types)
         if value == "life_gained":
             return self.state.players[ctx.controller].life_gained_this_turn
+        if value == "distinct_powers":
+            return len({self.power_of(o) for o in self.creatures_of(ctx.controller)})
+        if value == "max_toughness":
+            return max((self.toughness_of(o) for o in self.creatures_of(ctx.controller)),
+                       default=0)
         if value == "full_graveyards":
             return sum(1 for p in self.state.players if len(p.graveyard) >= 7)
         head, _, rest = value.partition(":")
+        if head == "milled":
+            return sum(self.state.players[seat].milled_this_turn
+                       for seat in ctx.players(self, rest))
+        if head == "counters":
+            objs = ctx.objects(self, rest)
+            return objs[0].counters if objs else 0
         if head == "mul":
             factor, _, inner = rest.partition(":")
             return int(factor) * self.amount(inner, ctx)
@@ -402,6 +447,8 @@ class Game:
             return player.draws_this_turn >= cond.n
         if kind == "creature_died_this_turn":
             return self.state.creature_died_this_turn
+        if kind == "library_empty":
+            return len(player.library) <= cond.n - 1
         if kind == "life_gained_this_turn":
             return player.life_gained_this_turn >= cond.n
         if kind == "opponent_noncombat_damaged":
@@ -563,6 +610,7 @@ class Game:
             self.move_to_zone(obj.id, "graveyard")
             milled.append(obj)
         if milled:
+            player.milled_this_turn += len(milled)
             self.state.record(f"{player.name} mills {len(milled)}")
         return milled
 
@@ -649,6 +697,38 @@ class Game:
         obj = self._new_object(spec, seat, is_token=True)
         self.put_onto_battlefield(obj, seat)
         return obj
+
+    def token_copy_of(self, source: GameObject, seat: int, keywords=frozenset(),
+                      sacrifice_at_end: bool = False) -> GameObject:
+        """A token that's a copy of ``source``, under ``seat``'s control.
+
+        Copies the printed card, not the counters or damage on it, which is what
+        "a token that's a copy of that creature" means.
+        """
+        import dataclasses
+        spec = source.spec
+        if keywords:
+            spec = dataclasses.replace(spec, keywords=spec.keywords | frozenset(keywords))
+        obj = self._new_object(spec, seat, is_token=True)
+        self.put_onto_battlefield(obj, seat)
+        if sacrifice_at_end:
+            self._delayed.append(("next_end_step", self.state.turn,
+                                  (SacrificeSelf(),),
+                                  Context(controller=seat, source_id=obj.id)))
+        return obj
+
+    def win_game(self, seat: int, reason: str) -> None:
+        """End the game with ``seat`` as the winner, whatever else is pending."""
+        state = self.state
+        player = state.players[seat]
+        player.lost = False
+        player.loss_reason = ""
+        state.players[1 - seat].lost = True
+        state.players[1 - seat].loss_reason = reason
+        state.over = True
+        state.winner = seat
+        state.result_reason = f"{player.name} wins: {reason}"
+        state.record(state.result_reason)
 
     def reveal_until(self, seat: int, filter_text: str, max_mv_to_battlefield: int) -> None:
         player = self.state.players[seat]
@@ -1058,12 +1138,22 @@ class Game:
                        paying_for: GameObject | None = None):
         """Find sources to tap (and floating mana to spend) that pay ``cost``.
 
+        A cost with two-brid pips ({2/W}) is really several costs; they are
+        tried cheapest first, so a five-color deck pays {W}{U}{B}{R}{G} and a
+        two-color deck pays the colors it has and two generic for the rest.
+
         Pips are matched by search, fewest-options first; the generic remainder
         is then filled from whatever is left, where any mana is interchangeable.
         Lands are preferred over creatures (tapping a creature also costs an
         attack), and sacrifice sources like Treasure come last. Returns
         ``(sources, floating spent)`` or None.
         """
+        if cost.twobrid:
+            for variant in cost.variants():
+                plan = self._solve_payment(seat, variant, exclude, paying_for)
+                if plan is not None:
+                    return plan
+            return None
         pool = self.state.players[seat].pool
         sources = self._mana_sources(seat, exclude, paying_for)
         order = sorted(range(len(sources)),
@@ -1443,10 +1533,12 @@ class Game:
         if kicked and spec.kicker is not None:
             cost = cost.plus(spec.kicker)
         if spec.cost_reduction:
-            applies = spec.cost_reduction_if is None or spec.cost_reduction_if.holds(
-                self, Context(controller=seat, targets=targets, source_id=obj.id))
+            ctx = Context(controller=seat, targets=targets, source_id=obj.id)
+            applies = spec.cost_reduction_if is None or spec.cost_reduction_if.holds(self, ctx)
             if applies:
-                cost = cost.reduced(spec.cost_reduction)
+                # An amount expression, so "costs {X} less, where X is the
+                # greatest toughness among creatures you control" can be data.
+                cost = cost.reduced(self.amount(spec.cost_reduction, ctx))
         for src in self._statics():
             for static in src.spec.statics:
                 change = (static.your_spells if src.controller == seat
@@ -1849,6 +1941,10 @@ class Game:
     def _fire(self, event: str, subject: GameObject | None = None,
               controller: int | None = None, amount: int = 0) -> None:
         """Queue every triggered ability that ``event`` sets off."""
+        if (event in ("etb", "other_etb") and subject is not None
+                and (subject.spec.is_creature or CardType.ARTIFACT in subject.spec.types)
+                and self.global_flag("no_etb_triggers")):
+            return  # Karn, Argent Defender
         watchers = [o for o in self.battlefield() if o.spec.triggers]
         if event == "dies" and subject is not None and subject not in watchers \
                 and subject.spec.triggers:
@@ -1993,6 +2089,7 @@ class Game:
                 p.noncombat_damage_this_turn = 0
                 p.copy_next = ""
                 p.surveilled_this_turn = False
+                p.milled_this_turn = 0
             for obj in self.state.zone_objects(seat, "battlefield"):
                 obj.activations = {}
                 if obj.tapped and "doesnt_untap" in self.flags_of(obj):
@@ -2111,7 +2208,7 @@ class Game:
         for attacker in [o for o in self.all_creatures() if o.attacking]:
             if not strikes_now(attacker):
                 continue
-            power = self.power_of(attacker)
+            power = self.combat_power(attacker)
             blockers = [self.state.obj(i) for i in attacker.blocked_by
                         if self.state.obj(i).zone == "battlefield"]
             if not attacker.was_blocked:
@@ -2140,7 +2237,7 @@ class Game:
             attacker = self.object_by_id(blocker.blocking)
             if attacker is None or attacker.zone != "battlefield":
                 continue
-            assignments.append((Target("object", attacker.id), self.power_of(blocker),
+            assignments.append((Target("object", attacker.id), self.combat_power(blocker),
                                 blocker.id))
 
         for target, amount, source_id in assignments:

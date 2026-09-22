@@ -111,6 +111,8 @@ EFFECTS: dict[str, type[fx.Effect]] = {
     "add_loyalty": fx.AddLoyalty,
     "set_prepared": fx.SetPrepared,
     "stun": fx.Stun,
+    "win_game": fx.WinGame,
+    "token_copy": fx.TokenCopy,
 }
 
 NAMED_TOKENS = {
@@ -173,8 +175,8 @@ CONDITIONS = {
     "cast_from_graveyard", "cast_this_turn", "control", "creature_died_this_turn",
     "drawn_this_turn", "enduring_story", "graveyard", "it_matches", "kicked",
     "noncreature_cast_this_turn", "opponent_noncombat_damaged",
-    "life_gained_this_turn", "opponent_controls", "prepared", "surveilled_this_turn",
-    "target_matches", "your_turn"
+    "library_empty", "life_gained_this_turn", "opponent_controls", "prepared",
+    "surveilled_this_turn", "target_matches", "your_turn"
 }
 
 

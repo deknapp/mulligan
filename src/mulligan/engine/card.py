@@ -225,7 +225,7 @@ class CardSpec:
     flashback: ManaCost | None = None
     kicker: ManaCost | None = None
     additional_costs: tuple[Cost, ...] = ()   # choose one of these, if any
-    cost_reduction: int = 0
+    cost_reduction: int | str = 0
     cost_reduction_if: Condition | None = None
     adventure: CardSpec | None = None
     chapters: tuple[Chapter, ...] = ()
@@ -438,6 +438,9 @@ class Player:
         self.noncombat_damage_this_turn = 0
         self.copy_next: str = ""  # "when you next cast <filter> this turn, copy it"
         self.surveilled_this_turn = False
+        # Cards put into this graveyard from this library this turn: what
+        # "cards milled this turn" counts (Cruel Calculations).
+        self.milled_this_turn = 0
 
     def zone(self, name: str) -> list[int]:
         return getattr(self, name)

@@ -131,12 +131,14 @@ class AddMana(Effect):
     only_for: str = ""
 
     def resolve(self, game: Game, ctx: Context) -> None:
-        for symbol in self.symbols:
-            game.state.players[ctx.controller].pool.add(game.pick_mana_color(ctx.controller,
-                                                                             symbol))
+        pool = game.state.players[ctx.controller].pool
+        for _ in range(max(0, game.amount(self.amount, ctx))):
+            for symbol in self.symbols:
+                pool.add(game.pick_mana_color(ctx.controller, symbol))
 
     def describe(self) -> str:
-        return "add " + "".join(f"{{{s}}}" for s in self.symbols)
+        body = "".join(f"{{{s}}}" for s in self.symbols)
+        return f"add {body}" if self.amount == 1 else f"add {body} for each {self.amount}"
 
 
 # ------------------------------------------------------------ damage & life
@@ -983,3 +985,42 @@ class Delayed(Effect):
     def describe(self) -> str:
         return f"at the {self.when.replace('_', ' ')}, " + ", ".join(
             e.describe() for e in self.effects)
+
+
+@dataclass(frozen=True)
+class WinGame(Effect):
+    """"You win the game." Ends the game immediately for ``who``.
+
+    It outranks a loss already pending from an empty library, which is what
+    Fblthp, Impossibly Lost is for: you draw from nothing and win anyway.
+    """
+
+    who: str = "you"
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for seat in ctx.players(game, self.who):
+            game.win_game(seat, f"{ctx.source_name} wins the game")
+
+    def describe(self) -> str:
+        return "you win the game"
+
+
+@dataclass(frozen=True)
+class TokenCopy(Effect):
+    """Create a token that's a copy of each object ``of`` names.
+
+    ``keywords`` are granted to the copies and ``sacrifice_at_end`` gives them
+    the usual "sacrifice it at the beginning of the next end step" rider, which
+    is how Face Yourself borrows a board for one swing.
+    """
+
+    of: str = "target"
+    keywords: frozenset = frozenset()
+    sacrifice_at_end: bool = False
+
+    def resolve(self, game: Game, ctx: Context) -> None:
+        for obj in _on_battlefield(ctx.objects(game, self.of)):
+            game.token_copy_of(obj, ctx.controller, self.keywords, self.sacrifice_at_end)
+
+    def describe(self) -> str:
+        return f"create a token copy of {self.of}"
