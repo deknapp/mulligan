@@ -51,13 +51,59 @@ def creature_value(power: int, toughness: int, keywords) -> float:
     return max(value, 0.5)
 
 
+# What a card is worth beyond its body or its cost, by what it can do. These
+# are deliberately coarse: they decide which card to pitch or keep, not how to
+# play a turn, and a set-specific correction is learned on top of them.
+SPELL_VALUE = {
+    fx.Destroy: 4.5, fx.Exile: 4.5, fx.Fight: 3.5, fx.DealDamage: 3.0,
+    fx.CounterSpell: 3.0, fx.ReturnToHand: 2.0, fx.ReturnToBattlefield: 3.5,
+    fx.DrawCards: 2.0, fx.Recruit: 2.0, fx.SearchLibrary: 1.5, fx.Impulse: 1.5,
+    fx.LookAtTop: 1.5, fx.CreateToken: 2.5, fx.AddCounters: 1.5, fx.Pump: 1.0,
+    fx.Sacrifice: 3.0, fx.Discard: 1.5, fx.GainLife: 0.5, fx.Scry: 0.4,
+    fx.Mill: 0.3, fx.Tap: 1.0, fx.Amass: 2.0, fx.Flicker: 1.0,
+}
+
+MANA_ABILITY_VALUE = 1.5
+"""A creature that taps for mana ramps and fixes, which its body does not say.
+Without this the engine happily trades a mana creature off for a vanilla one of
+the same size, and rates every ramp card as though it were a bear."""
+
+
+def _mana_ability_bonus(spec: CardSpec) -> float:
+    return MANA_ABILITY_VALUE if any(
+        a.is_mana_ability for a in spec.abilities) else 0.0
+
+
+def effects_worth(effects) -> float:
+    """A rough, targetless worth for what a spell does, used where the real
+    targets are not known yet (mulligans, discards, what to counter)."""
+    total = 0.0
+    for effect in effects:
+        if isinstance(effect, fx.If):
+            total += 0.7 * effects_worth(effect.then)
+            continue
+        if isinstance(effect, fx.MayPay):
+            total += 0.8 * effects_worth(effect.then)
+            continue
+        if isinstance(effect, fx.CreateToken):
+            total += SPELL_VALUE[fx.CreateToken] + creature_value(
+                effect.token.power, effect.token.toughness, effect.token.keywords) * 0.5
+            continue
+        for cls, worth in SPELL_VALUE.items():
+            if isinstance(effect, cls):
+                total += worth
+                break
+    return total
+
+
 def permanent_value(perm: PermanentView) -> float:
     if isinstance(perm, Combatant):
         return perm.base
     if perm.is_planeswalker and not perm.is_creature:
         return 2.0 + 0.8 * perm.loyalty
     if perm.is_creature:
-        return creature_value(perm.power, perm.toughness, perm.keywords)
+        return (creature_value(perm.power, perm.toughness, perm.keywords)
+                + _mana_ability_bonus(perm.spec))
     if perm.is_land:
         return 1.0
     return 1.0 + perm.spec.cost.mana_value * 0.5
@@ -79,8 +125,15 @@ def spec_value(spec: CardSpec) -> float:
         power = spec.power if spec.power is not None else (3 if spec.power_expr else 0)
         tough = spec.toughness if spec.toughness is not None else (
             3 if spec.toughness_expr else 0)
-        return creature_value(power, tough, spec.keywords)
-    return 1.0 + spec.cost.mana_value * 0.6
+        return (creature_value(power, tough, spec.keywords)
+                + _mana_ability_bonus(spec)
+                + 0.5 * sum(effects_worth(t.effects) for t in spec.triggers
+                            if t.when == "etb"))
+    # A spell's worth is what it does. Cost alone made a six-mana do-nothing
+    # look better than a two-mana removal spell every time one had to be
+    # discarded, kept through a mulligan, or chosen as a counterspell target.
+    modal = max((effects_worth(m.effects) for m in spec.modes), default=0.0)
+    return 1.0 + max(effects_worth(spec.on_resolve), modal) + spec.cost.mana_value * 0.2
 
 
 # ------------------------------------------------------------------- combat
