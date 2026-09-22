@@ -168,26 +168,26 @@ def main() -> None:
     top_all = sorted(rated, key=lambda n: -shrunk(run, n))[:15]
     print("top overall:", [(n, _rarity(run.data, n)[0], round(rated[n][0], 3)) for n in top_all])
     write(OUT, P + "uncommons", card_table(run, [
-        "Thalia, the Survivor", "Tetsuko Umezawa, Pursuer", "Kiora of Fire and Ashes",
-        "Vigorbloom Vanguard", "Bloombrute", "Your Fate Ends Here", "Desperate Futurescribe",
-        "Titanbones, Towering Heart"]))
+        "Kiora of Fire and Ashes", "Thalia, the Survivor", "Tetsuko Umezawa, Pursuer",
+        "Ghalta the Unstoppable", "Craftwork Crusher", "Twisted Fates",
+        "Ghalta the Immovable", "Your Fate Ends Here"]))
     write(OUT, P + "sleepers", card_table(run, [
-        "Way of the Warlord", "Way of the Wildspeaker", "Tam's Resistance",
-        "Garruk, Curse Breaker", "Overwrite the Multiverse"], note={
-        "Way of the Warlord": "A 5-loyalty Jace that can -4 to kill a creature and hit face",
-        "Way of the Wildspeaker": "A 7-loyalty Jace that makes a 4/4 trampler the turn it lands",
-        "Tam's Resistance": "Two mana: a counter and a 4-loyalty Jace, in green or blue",
+        "Garruk, Curse Breaker", "Garruk, Veiled Butcher", "Overwrite the Multiverse",
+        "Way of the Wildspeaker", "Multiply by Zero"], note={
         "Garruk, Curse Breaker": "A 4/4 every other turn, and cards off your big creatures",
+        "Garruk, Veiled Butcher": "Kills a creature on the way down and keeps making them",
         "Overwrite the Multiverse": "Six-mana wrath that leaves you a huge Jace",
+        "Way of the Wildspeaker": "A 7-loyalty Jace that makes a 4/4 trampler the turn it lands",
+        "Multiply by Zero": "Cheap interaction the bots keep passing",
     }))
     write(OUT, P + "traps", card_table(run, [
-        "Proft, Sinister Mastermind", "Ghalta the Unstoppable", "Flickering Hound",
-        "Germinate Recruits", "Loyal Tutor"], note={
+        "Emrakul, the Exigent Doom", "Proft, Sinister Mastermind", "Germinate Recruits",
+        "Flickering Hound", "Return to the Light Realms"], note={
+        "Emrakul, the Exigent Doom": "Ten mana. The bots take it first pick and lose with it",
         "Proft, Sinister Mastermind": "Needs seven cards in your graveyard to cast",
-        "Ghalta the Unstoppable": "Simplified: no cost reduction here. Discount this one",
-        "Flickering Hound": "A 2/2 for four whose trigger rarely matters",
         "Germinate Recruits": "Blank unless you gained life this turn",
-        "Loyal Tutor": "Does nothing in a deck without planeswalker cards",
+        "Flickering Hound": "A 2/2 for four whose trigger rarely matters",
+        "Return to the Light Realms": "Seven mana for an effect that does not stabilise",
     }))
     ways = [n for n in rated if n.startswith("Way of the")]
     if ways:

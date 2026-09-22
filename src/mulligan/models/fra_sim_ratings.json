@@ -1,874 +1,870 @@
 {
-"Bestial Incursion": [
-0.5714,
-21564
-],
 "Tether Technician": [
-0.5421,
-11388
-],
-"Sureshot Sower": [
-0.5152,
-23778
-],
-"Pompous Battlemage": [
-0.4641,
-697
+0.537,
+11427
 ],
 "Hallway Heckler": [
-0.4802,
-9782
+0.4716,
+9790
 ],
-"Marwyn, the Clearcutter": [
-0.498,
-3528
-],
-"Forest": [
-0.5091,
-81161
-],
-"Violent Echoes": [
-0.4778,
-1127
-],
-"Greenhouse Propagator": [
-0.5459,
-17987
-],
-"Mountain": [
-0.5098,
-28510
+"Sureshot Sower": [
+0.5228,
+22890
 ],
 "Emrakul, the Exigent Doom": [
-0.4351,
-1726
+0.4134,
+1681
 ],
 "Yoshimaru, Scrappy Stray": [
-0.4781,
-7242
+0.4989,
+6560
 ],
-"Terminal Criticism": [
-0.4737,
-6974
+"Mountain": [
+0.5056,
+28438
 ],
-"Theorix Metamage": [
-0.4807,
-21374
+"Marwyn, the Clearcutter": [
+0.4877,
+3530
 ],
-"Swamp": [
-0.4885,
-71593
+"Bestial Incursion": [
+0.5709,
+20995
 ],
-"Cast Away Doubt": [
-0.4771,
-15887
+"Pompous Battlemage": [
+0.4443,
+691
 ],
-"Verdant Kraken": [
-0.4211,
-4247
+"Greenhouse Propagator": [
+0.5384,
+17322
 ],
-"Proft, Sinister Mastermind": [
-0.4241,
-6762
+"Forest": [
+0.5104,
+78601
 ],
-"Apex Witchstalker": [
-0.5007,
-24494
-],
-"Theoretical Necromancer": [
-0.4997,
-24393
+"Violent Echoes": [
+0.4684,
+1141
 ],
 "Blessed Ghoul": [
-0.5118,
-22072
+0.5167,
+21909
 ],
-"Keeper of the Quiet Hour": [
-0.5202,
-29411
+"Theoretical Necromancer": [
+0.4855,
+22742
+],
+"Terminal Criticism": [
+0.4655,
+6426
+],
+"Cast Away Doubt": [
+0.4775,
+15295
+],
+"Theorix Metamage": [
+0.4682,
+20424
+],
+"Verdant Kraken": [
+0.4089,
+4236
 ],
 "Screeching Soulbreaker": [
-0.5546,
-19013
+0.5474,
+18190
 ],
-"Void Extrapolator": [
-0.4917,
-15470
+"Apex Witchstalker": [
+0.4931,
+23633
+],
+"Keeper of the Quiet Hour": [
+0.5164,
+29276
+],
+"Proft, Sinister Mastermind": [
+0.414,
+6778
+],
+"Swamp": [
+0.4819,
+67503
 ],
 "Formidable Commons": [
-0.4722,
-9561
+0.4685,
+8915
 ],
-"Vinelasher Adept": [
-0.5247,
-21252
+"Void Extrapolator": [
+0.4841,
+14327
 ],
 "Wrecking Gecko": [
-0.5536,
-21912
+0.5488,
+21845
 ],
-"Island": [
-0.4857,
-26586
-],
-"Divining Duelist": [
-0.4832,
-9511
-],
-"Emergency Phytomedic": [
-0.4987,
-7561
+"Vinelasher Adept": [
+0.5256,
+20718
 ],
 "Konstrari Improviser": [
-0.4815,
-19632
+0.4865,
+17639
 ],
-"Arcane Amphisbaena": [
-0.5267,
-13114
-],
-"Cryotheory Adept": [
-0.4245,
-4105
+"Divining Duelist": [
+0.4771,
+9765
 ],
 "Ruric Thar, Biomagus": [
-0.4897,
-3704
+0.499,
+4200
 ],
-"Semester Foreseer": [
-0.4886,
-10486
+"Arcane Amphisbaena": [
+0.5229,
+12047
 ],
-"Traxos, Academy Guardian": [
-0.5362,
-3590
+"Emergency Phytomedic": [
+0.4908,
+7590
 ],
-"Undulating Witness": [
-0.506,
-10009
+"Cryotheory Adept": [
+0.424,
+4044
 ],
-"Memory Trap": [
-0.5386,
-4743
-],
-"Germinate Recruits": [
-0.4521,
-261
-],
-"Winter, Tormented Loner": [
-0.4097,
-6824
-],
-"Blossom-Blessed Angel": [
-0.6402,
-9087
-],
-"Surgical Precision": [
-0.6213,
-7110
-],
-"Unflinching Hortimancer": [
-0.5482,
-8555
-],
-"Campus Crier": [
-0.5681,
-8095
-],
-"Plains": [
-0.5555,
-27655
-],
-"Living Library": [
-0.431,
-11790
-],
-"Last Gasp": [
-0.448,
-3472
-],
-"Inspired Tethermage": [
-0.481,
-18631
-],
-"Teyo, Diamondblade Mage": [
-0.4859,
-3512
-],
-"Silence the Echo": [
-0.4982,
-17841
-],
-"Rampart Hunter": [
-0.5128,
-19367
-],
-"Karn, Argent Defender": [
-0.3441,
-1539
-],
-"Vraska, the Cutting Glare": [
-0.6027,
-1957
-],
-"Flourishing Grapple": [
-0.4019,
-2676
-],
-"Refute Destiny": [
-0.5923,
-1609
-],
-"Shatterwing Pegasus": [
-0.5378,
-8644
-],
-"Koth of the Homestead": [
-0.5376,
-1157
-],
-"Ruric Thar, Magecrusher": [
-0.5723,
-5398
-],
-"Marwyn, the Preserver": [
-0.4936,
-7861
-],
-"Titanbones, Towering Heart": [
-0.5508,
-6067
-],
-"Graft Surgeon": [
-0.5404,
-3858
-],
-"Vigorbloom Vanguard": [
-0.5746,
-8434
-],
-"Bloombrute": [
-0.683,
-2336
-],
-"Thalia, the Survivor": [
-0.6162,
-3119
-],
-"Whiplash Wordsmith": [
-0.494,
-20489
-],
-"Essence Burn": [
-0.5758,
-1833
-],
-"Awaken the Inferno": [
-0.5708,
-6627
-],
-"Konstrari Annex": [
-0.459,
-3343
-],
-"Pia, Determined Rebuilder": [
-0.5549,
-1893
-],
-"Heartstring Puller": [
-0.548,
-7577
-],
-"Fatehold Chronologist": [
-0.5351,
-11987
-],
-"Gideon the Oathless": [
-0.4933,
-1952
-],
-"Yargle, Goliath of Otaria": [
-0.4688,
-5378
-],
-"Gallia, Tragic Host": [
-0.5006,
-5471
+"Island": [
+0.489,
+27097
 ],
 "Tetsuko Umezawa, Fugitive": [
-0.4993,
-4955
+0.5059,
+4682
 ],
-"Ghalta the Unstoppable": [
-0.578,
-10225
+"Semester Foreseer": [
+0.4871,
+10295
 ],
-"Roiling Canopy": [
-0.4759,
-3590
+"Uldaros Theorix": [
+0.5722,
+1308
 ],
-"Woodwork Prodigy": [
-0.4779,
-8059
+"Infinite Coursework": [
+0.4951,
+7422
 ],
-"Fblthp, Impossibly Lost": [
-0.4501,
-1783
+"Living Library": [
+0.4336,
+10573
 ],
-"Afterthought Sentry": [
-0.4916,
-25554
+"Undulating Witness": [
+0.5128,
+10045
 ],
-"Sphinx of False Conclusions": [
-0.541,
-987
+"Traxos, Academy Guardian": [
+0.5377,
+4239
+],
+"Unflinching Hortimancer": [
+0.5508,
+9639
+],
+"Plains": [
+0.5576,
+33794
+],
+"Your Fate Ends Here": [
+0.6108,
+2807
+],
+"Campus Crier": [
+0.5807,
+9504
+],
+"Blossom-Blessed Angel": [
+0.6436,
+10268
+],
+"Winter, Tormented Loner": [
+0.4215,
+6163
+],
+"Memory Trap": [
+0.5486,
+6047
+],
+"Last Gasp": [
+0.4616,
+2969
+],
+"Silence the Echo": [
+0.4921,
+16900
+],
+"Rampart Hunter": [
+0.5017,
+18924
+],
+"Inspired Tethermage": [
+0.4778,
+18582
 ],
 "Danitha, Spear of Agony": [
-0.4161,
-4448
+0.4151,
+4219
 ],
-"Hungering Puppetbeast": [
-0.5564,
-4474
+"Vraska, the Cutting Glare": [
+0.5779,
+1976
 ],
-"Kwia Vigorbloom": [
-0.6073,
-247
+"Rise of the Deathbringer": [
+0.3479,
+240
+],
+"Shatterwing Pegasus": [
+0.5444,
+11434
+],
+"Surgical Precision": [
+0.6195,
+9377
+],
+"Koth of the Homestead": [
+0.546,
+1401
+],
+"Refute Destiny": [
+0.5892,
+2432
+],
+"Ruric Thar, Magecrusher": [
+0.5818,
+5074
+],
+"Titanbones, Towering Heart": [
+0.5634,
+5810
+],
+"Marwyn, the Preserver": [
+0.5004,
+7600
+],
+"Graft Surgeon": [
+0.5491,
+5184
+],
+"Bloombrute": [
+0.6787,
+2320
+],
+"Vigorbloom Vanguard": [
+0.5679,
+8374
+],
+"Thalia, the Survivor": [
+0.6253,
+3105
+],
+"Essence Burn": [
+0.5655,
+1634
+],
+"Heartstring Puller": [
+0.5433,
+7662
+],
+"Whiplash Wordsmith": [
+0.4857,
+19182
+],
+"Konstrari Annex": [
+0.4561,
+3337
+],
+"Pia, Determined Rebuilder": [
+0.5372,
+1896
+],
+"Awaken the Inferno": [
+0.5759,
+6363
+],
+"Yargle, Goliath of Otaria": [
+0.4736,
+5380
+],
+"Fatehold Chronologist": [
+0.5335,
+13020
+],
+"Gallia, Tragic Host": [
+0.4809,
+5026
+],
+"Gideon the Oathless": [
+0.5154,
+1684
+],
+"Sphinx of False Conclusions": [
+0.5353,
+977
+],
+"Fblthp, Impossibly Lost": [
+0.4358,
+1714
+],
+"Ghalta the Unstoppable": [
+0.5784,
+9896
+],
+"Roiling Canopy": [
+0.4694,
+3540
+],
+"Woodwork Prodigy": [
+0.4712,
+8031
+],
+"Loot, the Anomaly": [
+0.3881,
+3846
 ],
 "Budding Insurgent": [
-0.5106,
-19552
+0.5127,
+19116
+],
+"Kwia Vigorbloom": [
+0.561,
+246
 ],
 "Jiang Yanggu, Never Alone": [
-0.548,
-7799
+0.5497,
+7571
 ],
 "Solarium Sentry": [
-0.5452,
-941
+0.5563,
+933
 ],
 "Simulacrum Shaper": [
-0.5259,
-2221
-],
-"Rescue Girl, First Responder": [
-0.4918,
-2553
+0.5156,
+1949
 ],
 "Vigorbloom Charm": [
-0.5442,
-1574
+0.5478,
+1570
 ],
-"Overgrown Farmland": [
-0.4676,
-447
+"Afterthought Sentry": [
+0.4939,
+25479
+],
+"Bloodline Recollector": [
+0.5211,
+473
+],
+"Karn, Argent Defender": [
+0.3629,
+1302
 ],
 "Tetsuko Umezawa, Pursuer": [
-0.5803,
-2616
+0.5684,
+2633
 ],
-"Winter, Team Player": [
-0.4417,
-2016
+"Wrath of the Bloodmane": [
+0.5101,
+6105
 ],
 "Eardrum Rattler": [
-0.4836,
-8638
+0.4864,
+8240
 ],
 "Dark Matter Manipulator": [
-0.5027,
-2364
-],
-"Primal Witchstalker": [
-0.4615,
-5785
+0.4852,
+2335
 ],
 "Massacre Girl, Most Wanted": [
-0.548,
-6673
+0.5392,
+6088
+],
+"Primal Witchstalker": [
+0.4527,
+5095
 ],
 "Twisted Fates": [
-0.5708,
-1201
+0.573,
+1583
 ],
 "Meticulous Commons": [
-0.519,
-2997
+0.4876,
+3030
 ],
 "Liliana the Repentant": [
-0.5419,
-2078
+0.5433,
+1811
+],
+"Rescue Girl, First Responder": [
+0.5031,
+3046
 ],
 "Fateshaper Aspirant": [
-0.557,
-7009
-],
-"Yargle, Glutton of Urborg": [
-0.4627,
-8827
+0.5491,
+8343
 ],
 "Hapatra, the Desert Fang": [
-0.4932,
-4617
+0.4841,
+4147
 ],
-"Rank Rat": [
-0.4373,
-2958
+"Yargle, Glutton of Urborg": [
+0.4538,
+8547
 ],
 "Surveillance Phantasm": [
-0.4728,
-7393
-],
-"Mabel, Bitter Recluse": [
-0.4971,
-5285
+0.4746,
+7128
 ],
 "Null Summoner": [
-0.5336,
-1058
+0.5327,
+1054
+],
+"Mabel, Bitter Recluse": [
+0.4879,
+5293
+],
+"Rank Rat": [
+0.4441,
+2496
 ],
 "Repurposed Enforcer": [
-0.6438,
-758
+0.5948,
+765
 ],
 "Hexhaven Battalion": [
-0.5794,
-8478
-],
-"Tomik, Orzhov Lawmage": [
-0.5815,
-2350
-],
-"Skilled Battlecarver": [
-0.5119,
-4080
+0.568,
+10009
 ],
 "No Admittance": [
-0.5009,
+0.4865,
 4580
 ],
 "Lyra, Archangel of Dawn": [
-0.6633,
-1093
+0.6586,
+1359
 ],
-"Grim Repriser": [
-0.4498,
-1862
+"Tomik, Orzhov Lawmage": [
+0.5699,
+2354
+],
+"Skilled Battlecarver": [
+0.5061,
+4029
 ],
 "Extended Absence": [
-0.5648,
-13162
+0.5584,
+11867
 ],
 "Stingerquill Annex": [
-0.4463,
-1966
+0.4542,
+1725
+],
+"Grim Repriser": [
+0.4532,
+1601
 ],
 "Jiang Yanggu, Alone": [
-0.4048,
+0.3991,
 961
 ],
-"Gallia, the Merrymaker": [
-0.5086,
-2721
-],
 "Master of Barbs": [
-0.4786,
-888
-],
-"Frostbite Pyromental": [
-0.3988,
-1127
-],
-"Craftwork Crusher": [
-0.5673,
-2452
-],
-"Draconic Visitor": [
-0.5885,
-1886
-],
-"Fblthp, Knows the Way": [
-0.4718,
-6125
-],
-"Kiora of Fire and Ashes": [
-0.5677,
-2598
-],
-"Fulminous Forte": [
-0.5461,
-3245
-],
-"Wrath of the Bloodmane": [
-0.5225,
-5066
-],
-"Geist of Saint Thalia": [
-0.5136,
-2061
-],
-"Uldaros Theorix": [
-0.582,
-1299
-],
-"Theorix Annex": [
-0.4269,
-2031
-],
-"Traxos, Scourge Eternal": [
-0.5501,
-6820
-],
-"Academic Ascent": [
-0.388,
-732
-],
-"Liliana the Faultless": [
-0.511,
+0.5011,
 906
 ],
-"Yuriko, Blade of the Mighty": [
-0.3681,
-633
+"Gallia, the Merrymaker": [
+0.5075,
+2719
 ],
-"Koth, the Geomancer": [
-0.4784,
-3221
+"Frostbite Pyromental": [
+0.4207,
+1350
 ],
-"Avatar of Burgeoning Echoes": [
-0.6711,
-225
+"Fblthp, Knows the Way": [
+0.4646,
+5597
 ],
-"Infinite Coursework": [
-0.4889,
-7212
+"Kiora of Fire and Ashes": [
+0.5693,
+2352
 ],
-"Hunter's Axe": [
-0.4488,
-254
+"Draconic Visitor": [
+0.5859,
+1879
 ],
-"Compel Brutality": [
-0.4475,
-3669
+"Fulminous Forte": [
+0.5252,
+3249
 ],
-"Karn, Gilded Guardian": [
-0.4268,
-3812
-],
-"Stingerquill Charm": [
-0.469,
-677
-],
-"Proft, Consulting Detective": [
-0.4809,
-3742
-],
-"Kiora of Salt and Sand": [
-0.451,
-928
-],
-"Mindseeker Oculus": [
-0.5246,
-1384
-],
-"Generous Revival": [
-0.4763,
-718
-],
-"Paradox Shaper": [
-0.4281,
-3145
-],
-"Edgar, Moonlit Sovereign": [
-0.504,
-5043
-],
-"Archive Arbiter": [
-0.5561,
-10398
-],
-"Shipwreck Marsh": [
-0.4909,
-493
-],
-"Stingerquill Voxmancer": [
-0.5025,
-6103
-],
-"Yoshimaru, Beloved Companion": [
-0.4846,
-1690
-],
-"Saheeli, Consul of Oversight": [
-0.5814,
-3699
-],
-"Ajani's Anguish": [
-0.4989,
-905
-],
-"Codie, Ravenous Codex": [
-0.4865,
-3178
+"Craftwork Crusher": [
+0.5552,
+2456
 ],
 "Chandra's Emberling": [
-0.4682,
-4843
+0.4676,
+4432
 ],
-"Prudent Fateseer": [
-0.5181,
-3775
+"Traxos, Scourge Eternal": [
+0.5518,
+6752
 ],
-"Lyra, Tolarian Archangel": [
-0.5242,
-1033
+"Theorix Annex": [
+0.4246,
+2015
 ],
-"Transformative Commons": [
-0.4765,
-1727
+"Liliana the Faultless": [
+0.5276,
+925
 ],
-"Teyo, Lightshield Expert": [
-0.4989,
-933
+"Academic Ascent": [
+0.4096,
+481
 ],
-"Prophesied End": [
-0.5349,
-1647
+"Yuriko, Blade of the Mighty": [
+0.4081,
+887
 ],
-"Theorist's Sanctum": [
-0.3867,
-1532
+"Koth, the Geomancer": [
+0.4739,
+3198
 ],
-"Your Fate Ends Here": [
-0.6207,
-2547
+"Geist of Saint Thalia": [
+0.5004,
+2699
+],
+"Ghalta the Immovable": [
+0.6329,
+4236
 ],
 "Edgar, Ancient Bloodlord": [
-0.506,
-1246
-],
-"Hapatra, the Desert Frost": [
-0.5309,
-3716
-],
-"Command the Stage": [
-0.488,
-1080
-],
-"Darklight Phoenix": [
-0.5567,
-1253
-],
-"Aerid Konstrari": [
-0.7,
-450
-],
-"Proctor of Potential": [
-0.6687,
-495
-],
-"Pyre Rhymer": [
-0.4404,
-470
-],
-"Innovative Commons": [
-0.4169,
-866
-],
-"Hexhaven Invigorator": [
-0.5762,
-1502
-],
-"Rockfall Vale": [
-0.5103,
-726
-],
-"Bloodline Recollector": [
-0.4745,
-746
-],
-"Tinybones, Pocket Nuisance": [
-0.4916,
-2135
-],
-"Vraska's Final Mercy": [
-0.5175,
-2690
-],
-"Carnivorous Cultivator": [
-0.6087,
-2387
-],
-"Curse-Marred Demon": [
-0.5647,
-1901
-],
-"Konstrari Charm": [
-0.5218,
-918
-],
-"Tarmogoyf": [
-0.4317,
-989
-],
-"Tomik, Izzet Sparkmage": [
-0.5256,
-234
-],
-"Heartwood Crafter": [
-0.4256,
-1942
-],
-"Yuriko, Hope from the Shadows": [
-0.373,
-441
-],
-"Variable Chaser": [
-0.5687,
-772
-],
-"Arni, Humble Scribe": [
-0.4312,
-1939
-],
-"Charge the Sanctum": [
-0.4289,
-457
-],
-"Theorist's Proxy": [
-0.5907,
-259
+0.5136,
+1507
 ],
 "Break Under Pressure": [
-0.4623,
-770
+0.4598,
+746
 ],
-"Tethermage's Advantage": [
-0.3919,
-1355
+"Karn, Gilded Guardian": [
+0.442,
+3842
 ],
-"Recursive Recruitment": [
-0.4534,
-515
+"Ajani's Anguish": [
+0.4843,
+921
 ],
-"Twinned Vision": [
-0.5318,
-267
+"Proft, Consulting Detective": [
+0.4643,
+3727
 ],
-"Mind Meanderer": [
-0.5187,
-1629
+"Mindseeker Oculus": [
+0.5546,
+970
 ],
-"Haunted Ridge": [
-0.4183,
-465
+"Kiora of Salt and Sand": [
+0.4476,
+944
 ],
-"Samut, Hazoret's Champion": [
-0.5156,
-673
+"Generous Revival": [
+0.4841,
+1007
 ],
-"Desperate Futurescribe": [
-0.6146,
-493
+"Paradox Shaper": [
+0.4257,
+3231
+],
+"Edgar, Moonlit Sovereign": [
+0.4889,
+4787
+],
+"Archive Arbiter": [
+0.5441,
+10379
+],
+"Shipwreck Marsh": [
+0.469,
+484
+],
+"Stingerquill Voxmancer": [
+0.507,
+5799
+],
+"Flourishing Grapple": [
+0.3834,
+2753
+],
+"Saheeli, Consul of Oversight": [
+0.577,
+4467
+],
+"Compel Brutality": [
+0.4412,
+3077
+],
+"Yoshimaru, Beloved Companion": [
+0.4799,
+1644
+],
+"Codie, Ravenous Codex": [
+0.4801,
+3160
 ],
 "Sanctum Lurker": [
-0.6421,
-2470
+0.6285,
+2456
 ],
-"Enlightened Confidant": [
-0.4435,
-487
+"Teyo, Lightshield Expert": [
+0.4996,
+1196
+],
+"Prudent Fateseer": [
+0.5466,
+4199
+],
+"Lyra, Tolarian Archangel": [
+0.5303,
+972
+],
+"Transformative Commons": [
+0.4708,
+1473
+],
+"Prophesied End": [
+0.5369,
+2409
+],
+"Theorist's Sanctum": [
+0.3927,
+1542
+],
+"Teyo, Diamondblade Mage": [
+0.4727,
+3293
+],
+"Winter, Team Player": [
+0.3949,
+1337
+],
+"Command the Stage": [
+0.4847,
+1081
+],
+"Darklight Phoenix": [
+0.5596,
+1234
+],
+"Aerid Konstrari": [
+0.6805,
+457
+],
+"Proctor of Potential": [
+0.626,
+786
+],
+"Desperate Futurescribe": [
+0.5931,
+494
+],
+"Pyre Rhymer": [
+0.4307,
+469
+],
+"Innovative Commons": [
+0.4102,
+863
+],
+"Hexhaven Invigorator": [
+0.5653,
+1493
+],
+"Hungering Puppetbeast": [
+0.5606,
+4473
 ],
 "Pia, Aether Ascetic": [
-0.3804,
-3195
+0.4177,
+2881
 ],
-"Tam, the Possibility": [
-0.4756,
-1231
+"Rockfall Vale": [
+0.4952,
+728
 ],
-"Warrior's Blades": [
-0.5772,
-836
+"Tinybones, Pocket Nuisance": [
+0.4744,
+1387
 ],
-"Arni, Renowned Champion": [
-0.5373,
-2424
+"Vraska's Final Mercy": [
+0.5119,
+2431
 ],
-"Dedicated Commons": [
-0.5808,
-260
+"Carnivorous Cultivator": [
+0.6037,
+2397
 ],
-"Craterclaw Colossus": [
-0.4736,
-473
+"Curse-Marred Demon": [
+0.5421,
+1863
 ],
-"Diviner of Victory": [
-0.4446,
-487
+"Hapatra, the Desert Frost": [
+0.5092,
+3705
+],
+"Recursive Recruitment": [
+0.4843,
+540
+],
+"Konstrari Charm": [
+0.4967,
+910
+],
+"Tarmogoyf": [
+0.4214,
+980
+],
+"Tomik, Izzet Sparkmage": [
+0.5152,
+231
+],
+"Heartwood Crafter": [
+0.4484,
+1820
+],
+"Yuriko, Hope from the Shadows": [
+0.3616,
+430
+],
+"Arni, Humble Scribe": [
+0.4198,
+1957
+],
+"Variable Chaser": [
+0.5458,
+753
 ],
 "Fatehold Annex": [
-0.5321,
-483
+0.5301,
+1495
 ],
-"Gideon's Memorial": [
-0.4465,
-691
+"Theorist's Proxy": [
+0.5467,
+289
 ],
-"Rise of the Deathbringer": [
-0.3537,
-229
+"Charge the Sanctum": [
+0.4074,
+459
 ],
-"Medic's Kitesail": [
+"Mind Meanderer": [
+0.5173,
+1390
+],
+"Saheeli, Jewel of Avishkar": [
+0.4924,
+264
+],
+"Twinned Vision": [
+0.5245,
+265
+],
+"Arni, Renowned Champion": [
+0.5311,
+2636
+],
+"Enlightened Confidant": [
+0.4421,
+484
+],
+"Tam, the Possibility": [
+0.4831,
+1004
+],
+"Warrior's Blades": [
+0.6521,
+822
+],
+"Overgrown Farmland": [
+0.4558,
+453
+],
+"Samut, Hazoret's Champion": [
+0.5088,
+682
+],
+"Vigorbloom Annex": [
+0.5786,
+922
+],
+"Haunted Ridge": [
 0.4847,
 229
 ],
-"Vigorbloom Annex": [
-0.5604,
-712
+"Dedicated Commons": [
+0.583,
+247
+],
+"Stingerquill Charm": [
+0.4695,
+672
+],
+"Craterclaw Colossus": [
+0.4675,
+477
+],
+"Diviner of Victory": [
+0.3621,
+203
+],
+"Tethermage's Advantage": [
+0.3692,
+1051
+],
+"Gideon's Memorial": [
+0.4436,
+691
 ],
 "Danitha, Sword of Hope": [
-0.497,
-1177
+0.5149,
+1171
 ],
 "Rewrite Regrets": [
-0.4568,
-243
+0.4631,
+244
 ],
 "Vindictive Triumph": [
-0.5373,
-255
-],
-"Ingris Stingerquill": [
-0.351,
-245
-],
-"Stingcaster Mage": [
-0.5209,
-215
-],
-"Artifist Acumen": [
-0.52,
-250
-],
-"Predictive Preparations": [
-0.5618,
-251
-],
-"Seasoned Cryomancer": [
-0.5107,
-281
-],
-"Denzilore Fatehold": [
-0.716,
+0.5681,
 257
 ],
-"Tam's Resistance": [
-0.3792,
-240
-],
-"The Theorist, Jace Beleren": [
-0.4564,
+"Stingcaster Mage": [
+0.555,
 218
+],
+"Artifist Acumen": [
+0.5184,
+245
+],
+"Predictive Preparations": [
+0.5366,
+246
+],
+"Avatar of Burgeoning Echoes": [
+0.5975,
+236
+],
+"Deserted Beach": [
+0.6769,
+229
+],
+"Denzilore Fatehold": [
+0.7451,
+255
+],
+"Tam's Resistance": [
+0.3957,
+235
+],
+"Seasoned Cryomancer": [
+0.5388,
+258
 ]
 }
