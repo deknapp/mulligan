@@ -25,7 +25,8 @@ Each claim is tagged with how much to trust it:
 Want a specific card or pack? The [card ratings](../tools/cards.html),
 [pick helper](../tools/pick.html) and [color pairs](../tools/pairs.html) tools
 use the same data. Once the set is out, they switch to real 17Lands results by
-themselves.
+themselves. Drafting on Arena? The [live pick helper](../live.html) runs on your
+computer and reads each pack for you.
 
 ## The short version
 

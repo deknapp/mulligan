@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live pick helper</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="mulligan: simulated Limited" href="feed.xml">
+<script async src="https://deknapp.github.io/gc.js"></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">mulligan</a>
+<nav><a href="index.html">Primer</a><a href="tools/cards.html">Card ratings</a><a href="tools/pick.html">Pick helper</a><a href="tools/pairs.html">Color pairs</a><a href="live.html">Live helper</a>
+<a href="method.html">How it works</a>
+<a href="https://github.com/deknapp/mulligan">Code</a></nav></header>
+<main>
+<article><h1>Live pick helper</h1>
+<p><strong>Pick advice while you draft on MTG Arena, on your own computer.</strong></p>
+<p>The <a href="tools/pick.html">pick helper</a> on this site needs you to type in the pack.
+The local version reads it for you. Arena writes every pack it shows you and
+every pick you make to a log file on your computer. <code>mulligan live</code> watches that
+file, and each time a new pack arrives it ranks the cards in a terminal window
+next to the game:</p>
+<pre><code>PremierDraft_FRA_20261002   Pack 1, pick 5   4 cards taken
+Your picks lean Red-Green (R 2.1, G 2.0, B 1.2).
+    grade  card                    score  sim     17Lands
+ 1  A      Blossom-Blessed Angel W  +7.5  59.4%   –
+           +8.5 pts vs. the average card. One color outside your RG lane.
+ 2  B-     Restore with Empathy  G  +0.7  51.5%   –
+           Fits your RG picks. In simulated RG decks: 52.6% (1,394 games).
+ ...
+</code></pre>
+<p>It only reads the log file. It doesn't touch the game or send anything anywhere,
+and it's the same log that 17Lands' and other draft overlays read.</p>
+<h2>Where the advice comes from</h2>
+<p>Each card gets one rating, blended from two sources:</p>
+<ul>
+<li><strong>The simulator.</strong> Its win rate when drawn, from the latest run of simulated
+  drafts: the numbers behind the <a href="index.html">primer</a> and the
+  <a href="tools/cards.html">card ratings</a>. This is all there is on release day.</li>
+<li><strong>17Lands.</strong> Real players' win rate when drawn, fetched from
+  <a href="https://www.17lands.com">17Lands</a> when you start (and at most every three
+  hours), for the format you're in: Premier, Quick or Traditional draft.</li>
+</ul>
+<p>The blend counts the simulator as worth 500 real games. So a card with no real
+games yet is rated by the simulator alone, one with 500 is half and half, and
+one with 5,000 is almost all real data. Real win rates run a few points higher
+than simulated ones, because 17Lands users are better than the average player,
+so they're shifted onto the simulator's scale before the two are mixed. Early
+on, while 17Lands only has numbers for a handful of cards, the helper sticks to
+the simulator and says so.</p>
+<p>From there it works like the website's pick helper. <strong>Score</strong> is how many
+points more often you win when the card is drawn than with an average card,
+minus a penalty for colors outside the two your picks lean toward. The penalty
+is zero at pick one and grows until the middle of pack two. The <strong>why</strong> column
+also says how the card did in simulated decks of your colors, whether it's
+removal, and whether it usually goes late enough to come back to you.</p>
+<p>It doesn't know about your curve or synergies. If two cards are within a
+point or two, take the one your deck needs.</p>
+<h2>Install</h2>
+<p>You need about five minutes and a terminal (Terminal on a Mac, PowerShell on
+Windows). It works on macOS and Windows, and on Linux if Arena runs under
+Steam.</p>
+<p><strong>1. Install uv</strong>, a Python installer. It fetches the right Python by itself,
+so you don't need Python already.</p>
+<p>On a Mac or Linux:</p>
+<pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh
+</code></pre>
+<p>On Windows, in PowerShell:</p>
+<pre><code>powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
+</code></pre>
+<p>Then close the terminal and open a new one.</p>
+<p><strong>2. Install mulligan:</strong></p>
+<pre><code>uv tool install git+https://github.com/deknapp/mulligan
+</code></pre>
+<p><strong>3. Turn on Arena's detailed logs.</strong> In Arena, go to Options → Account and
+check <strong>Detailed Logs (Plugin Support)</strong>, then restart Arena. Without this,
+Arena doesn't log packs. You only have to do this once.</p>
+<p><strong>4. Run it</strong> before or during a draft, and keep the window beside Arena:</p>
+<pre><code>mulligan live
+</code></pre>
+<p>When a pack shows up in Arena, it shows up here, best pick in green. Ctrl-C
+stops it. If you start it partway through a draft, it catches up on the picks
+you've already made from the log.</p>
+<p><strong>To update</strong> to the newest simulated data and fixes:</p>
+<pre><code>uv tool upgrade mulligan
+</code></pre>
+<h2>If something's off</h2>
+<ul>
+<li><strong>"No draft yet" while you're drafting:</strong> detailed logs are probably off (step
+  3), or Arena wasn't restarted after turning them on.</li>
+<li><strong>"No Arena Player.log found":</strong> Arena keeps its log somewhere unusual on
+  your machine. Point at it with <code>mulligan live --log "path/to/Player.log"</code>.</li>
+<li><strong>Card names like <code>#91234</code>:</strong> the helper couldn't find Arena's card database
+  or look the card up online. Set <code>MTGA_CARD_DB</code> to the <code>Raw_CardDatabase_….mtga</code>
+  file in Arena's <code>Downloads/Raw</code> folder.</li>
+<li><strong>No internet:</strong> <code>mulligan live --offline</code> uses the data from the last time
+  it ran.</li>
+<li><strong>Other sets:</strong> the simulator covers Reality Fracture. In a set it hasn't
+  simulated, the helper runs on 17Lands alone, once 17Lands has data for it.</li>
+</ul>
+<p>Once the draft is done, <code>mulligan build log:latest</code> suggests a deck from the
+cards you took. The <a href="https://github.com/deknapp/mulligan">code and full README</a>
+cover the rest of what the tool does.</p></article>
+</main>
+<footer>Simulated with <a href="https://github.com/deknapp/mulligan">mulligan</a>, an open-source Magic: The Gathering
+Limited simulator. Card data from Scryfall; real-game comparisons from
+<a href="https://www.17lands.com">17Lands</a>' public data. Not affiliated with
+Wizards of the Coast.
+Built by <a href="https://deknapp.github.io/">Nathan Knapp</a> &middot; <a href="https://www.linkedin.com/in/nathan-knapp-63012741">LinkedIn</a>.</footer>
+</body>
+</html>

@@ -128,10 +128,29 @@ than printed, never stronger (a stronger one inflates its rating: Proft,
 Sinister Mastermind rated 60.5% until its casting restriction was modelled,
 then 41.8%).
 
+## Live pick advice during an Arena draft
+
+```
+$ mulligan live
+PremierDraft_FRA_20261002   Pack 1, pick 5   4 cards taken
+Your picks lean Red-Green (R 2.1, G 2.0, B 1.2).
+ 1  A   Blossom-Blessed Angel  W  +7.5  sim 59.4%  17Lands –   One color outside your RG lane ...
+```
+
+Watches Arena's log while you draft (Premier, Quick or Traditional) and ranks
+each pack as it arrives. A card's rating blends the latest simulated draft with
+17Lands' live win rates: the simulator counts as 500 real games, and real rates
+are shifted onto the simulator's scale by the median gap first. A set with no
+simulation runs on 17Lands alone. Then the same off-color penalty as the
+website's pick helper. Card names come from Arena's local card database, so it
+works on release day. Install and use without cloning:
+[deknapp.github.io/mulligan/live.html](https://deknapp.github.io/mulligan/live.html).
+
 ## Commands
 
 | command | what it does |
 |---|---|
+| `mulligan live` | pick advice during an Arena draft, read live from the log |
 | `mulligan decks` | your event decks from the MTG Arena log |
 | `mulligan build log:N` | best build of your drafted/opened pool vs what you played (deck model) |
 | `mulligan versus A B` | two decks (`log:N`, `clipboard`, or a file): deck model, then simulation |

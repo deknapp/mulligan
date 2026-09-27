@@ -33,6 +33,8 @@ CURRENT_SET = "fra"      # the format the tools cover
 TOOLS = [("cards", "Card ratings", "Every card graded, filterable by color, rarity and pair."),
          ("pick", "Pick helper", "Paste a pack and your picks; get the pick and why."),
          ("pairs", "Color pairs", "Which pairs win, their best cards, a sample deck.")]
+LIVE_BLURB = "Runs on your computer during an Arena draft and ranks each pack as it opens."
+PAGES = [("method", "How it works"), ("live", "Live pick helper")]   # blog/<slug>.md
 FIGURE = re.compile(r"\{\{\s*figure\s+([\w-]+)\s*\}\}")
 
 
@@ -102,7 +104,8 @@ def _page(title: str, body: str, depth: int = 0, description: str = "",
 </head>
 <body{body_attrs}>
 <header class="top"><a class="brand" href="{up}index.html">mulligan</a>
-<nav><a href="{up}index.html">Primer</a>{tools}<a href="{up}method.html">How it works</a>
+<nav><a href="{up}index.html">Primer</a>{tools}<a href="{up}live.html">Live helper</a>
+<a href="{up}method.html">How it works</a>
 <a href="{REPO}">Code</a></nav></header>
 <main>
 {body}
@@ -118,7 +121,7 @@ Built by <a href="https://deknapp.github.io/">Nathan Knapp</a> &middot; <a href=
 
 
 def build(blog: Path = BLOG, site: Path = SITE) -> list[Path]:
-    """Render every post, the index, the method page and the feed."""
+    """Render every post, the index, the standalone pages and the feed."""
     posts = load_posts(blog)
     figures = blog / "figures"
     if site.exists():
@@ -139,16 +142,19 @@ def build(blog: Path = BLOG, site: Path = SITE) -> list[Path]:
         f"</span></a></li>" for p in posts)
     intro = (blog / "intro.md").read_text() if (blog / "intro.md").exists() else ""
     import markdown
-    cards = "".join(f'<a href="tools/{slug}.html"><strong>{name}</strong><span>{escape(blurb)}'
-                    f"</span></a>" for slug, name, blurb in TOOLS)
+    cards = "".join(f'<a href="{href}"><strong>{name}</strong><span>{escape(blurb)}'
+                    f"</span></a>" for href, name, blurb in
+                    [(f"tools/{slug}.html", name, blurb) for slug, name, blurb in TOOLS]
+                    + [("live.html", "Live pick helper", LIVE_BLURB)])
     index = (f'<section class="intro">{markdown.markdown(intro)}</section>'
              f'<h2 class="list-head">Tools</h2><div class="toolcards">{cards}</div>'
              f'<h2 class="list-head">Posts</h2><ul class="posts">{items}</ul>')
     (site / "index.html").write_text(_page(TITLE, index, description=TITLE))
-    method = blog / "method.md"
-    if method.exists():
-        body = f"<article>{markdown.markdown(method.read_text(), extensions=['tables'])}</article>"
-        (site / "method.html").write_text(_page("How it works", body))
+    for slug, title in PAGES:
+        page = blog / f"{slug}.md"
+        if page.exists():
+            html = markdown.markdown(page.read_text(), extensions=["tables", "fenced_code"])
+            (site / f"{slug}.html").write_text(_page(title, f"<article>{html}</article>"))
     (site / "feed.xml").write_text(_feed(posts))
     (site / ".nojekyll").write_text("")
     return written + [site / "index.html"]
@@ -168,7 +174,9 @@ def _tools(blog: Path, site: Path) -> None:
         "cards": "Every card in the set, graded by how often its owner wins when it's drawn. "
                  "Filter by color, rarity or the color pair it was played in.",
         "pick": "Type the cards in your pack, and optionally what you've taken so far. "
-                "It ranks the pack by card quality and how well each card fits your colors.",
+                "It ranks the pack by card quality and how well each card fits your colors. "
+                'Drafting on Arena? The <a href="../live.html">live pick helper</a> reads '
+                "the pack for you.",
         "pairs": "How each two-color pair did in simulated drafts, what its decks looked "
                  "like, and its best cards.",
     }

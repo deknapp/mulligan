@@ -125,6 +125,124 @@ def decks_cmd():
                   "'clipboard' after Arena's Export)[/dim]")
 
 
+DRAFT_FORMATS = ("PremierDraft", "QuickDraft", "TradDraft")
+
+
+def _pick_view(state, names, ratings, note: str):
+    """The live pick table for one pack."""
+    from rich.console import Group
+    from rich.table import Table
+
+    from .pick_advice import COLORS, advise, lane
+    picks = names(state.picked)
+    pack = names(state.cards)
+    head = [f"[bold]{state.event}[/bold]   Pack {state.pack}, pick {state.pick}   "
+            f"{len(picks)} cards taken"]
+    weight, top = lane(ratings, picks)
+    if not picks:
+        head.append("First pick: color doesn't matter yet, take the best card.")
+    elif top:
+        lean = ", ".join(f"{k} {v:.1f}" for k, v in sorted(weight.items(), key=lambda kv: -kv[1])
+                         if v > 0)
+        head.append(f"Your picks lean {'-'.join(COLORS[k] for k in top)} ({lean}).")
+    if state.waiting:
+        head.append("[dim]Picked; waiting for the next pack.[/dim]")
+    table = Table(box=None, pad_edge=False, header_style="bold")
+    for col, justify in (("", "right"), ("grade", "left"), ("card", "left"), ("", "left"),
+                         ("score", "right"), ("sim", "right"), ("17Lands", "right"),
+                         ("why", "left")):
+        table.add_column(col, justify=justify, overflow="fold")
+    taken = state.picks.get((state.pack, state.pick))
+    for i, a in enumerate(advise(ratings, pack, picks, state.pick)):
+        c = a.card
+        sim = f"{c.sim:.1%} [dim]{c.sim_games:,}[/dim]" if c.sim is not None else "–"
+        real = f"{c.real:.1%} [dim]{c.real_games:,}[/dim]" if c.real is not None else "–"
+        score = "" if a.score is None else f"{100 * a.score:+.1f}"
+        mark = "✓" if taken is not None and names([taken])[0] == c.name else ""
+        style = "bold green" if i == 0 and a.score is not None else None
+        table.add_row(f"{mark}{i + 1}", c.grade or "–", c.name, c.colors or "C", score, sim,
+                      real, " ".join(a.why), style=style)
+    return Group(*head, table, f"[dim]{note}[/dim]")
+
+
+@app.command("live")
+def live_cmd(
+    log: str = typer.Option(None, help="Player.log, or its folder (default: Arena's)."),
+    set_code: str = typer.Option(None, "--set", help="Override the set from the event name."),
+    once: bool = typer.Option(False, help="Show the current pick and exit."),
+    offline: bool = typer.Option(False, help="Don't fetch 17Lands or the site's data."),
+    interval: float = typer.Option(0.5, help="Seconds between log checks."),
+):
+    """Pick advice during an Arena draft: reads the log as you draft and ranks
+    each pack by the simulator's card ratings blended with 17Lands' real ones."""
+    from rich.live import Live
+
+    from .draft_log import CardNames, DraftTracker, LogFollower, find_player_log
+    from .pick_advice import build_ratings, load_real, load_sim
+    from .site.build import CURRENT_SET
+
+    path = find_player_log(log)
+    if path is None:
+        console.print("No Arena Player.log found. Is MTG Arena installed? Pass --log PATH.")
+        raise typer.Exit(1)
+    tracker = DraftTracker()
+    prev = path.with_name("Player-prev.log")
+    if prev.exists() and prev != path:     # a draft can span an Arena restart
+        for line in prev.read_text(errors="replace").splitlines():
+            tracker.feed(line)
+    follower = LogFollower(path, tracker)
+    follower.poll()
+    names = CardNames()
+    loaded: dict[tuple, tuple] = {}
+
+    def ratings_for(state):
+        code = (set_code or state.set_code or CURRENT_SET).lower()
+        fmt = next((f for f in DRAFT_FORMATS if f in state.event), "PremierDraft")
+        if (code, fmt) not in loaded:
+            sim = load_sim(code, fetch=not offline)
+            real = load_real(code, fmt, fetch=not offline)
+            ratings = build_ratings(sim, real)
+            bits = [f"simulated draft of {ratings.sim_run}" if sim else
+                    f"no simulated data for {code.upper()}"]
+            if ratings.real_used:
+                bits.append(f"17Lands {fmt} ({ratings.real_used} cards, fetched "
+                            f"{ratings.real_fetched[:16].replace('T', ' ')}; shifted "
+                            f"{100 * ratings.shift:+.1f} pts onto the sim's scale)")
+            elif ratings.real_rows:
+                bits.append(f"17Lands {fmt} has win rates for only {ratings.real_rows} cards, "
+                            "too few to blend in yet")
+            else:
+                bits.append(f"no 17Lands {fmt} data yet"
+                            + (f" (starts {ratings.real_start})" if ratings.real_start else ""))
+            note = ("Score: points above the average card, minus an off-color penalty that "
+                    "grows through the draft. Data: " + "; ".join(bits) + ".")
+            loaded[(code, fmt)] = (ratings, note)
+        return loaded[(code, fmt)]
+
+    def view():
+        state = tracker.state
+        if not state.cards:
+            return (f"Watching {path}\nNo draft yet. Start one in Arena; the pack shows up "
+                    "here as soon as Arena logs it.")
+        if state.complete:
+            return (f"{state.event}: draft complete, {len(state.picked)} cards. "
+                    "Build it with: mulligan build log:latest")
+        return _pick_view(state, names, *ratings_for(state))
+
+    if once:
+        console.print(view())
+        return
+    console.print(f"[dim]Watching {path}. Ctrl-C to stop.[/dim]")
+    try:
+        with Live(view(), console=console, auto_refresh=False) as live:
+            while True:
+                if follower.poll():
+                    live.update(view(), refresh=True)
+                time.sleep(interval)
+    except KeyboardInterrupt:
+        pass
+
+
 @app.command("versus")
 def versus_cmd(
     deck_a: str = typer.Argument(..., help="log:N, log:latest, clipboard, or a decklist file."),
