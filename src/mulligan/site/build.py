@@ -32,7 +32,9 @@ TITLE = "mulligan: simulated Limited"
 CURRENT_SET = "fra"      # the format the tools cover
 TOOLS = [("cards", "Card ratings", "Every card graded, filterable by color, rarity and pair."),
          ("pick", "Pick helper", "Paste a pack and your picks; get the pick and why."),
-         ("pairs", "Color pairs", "Which pairs win, their best cards, a sample deck.")]
+         ("pairs", "Color pairs", "Which pairs win, their best cards, a sample deck."),
+         ("synergy", "Card pairs", "Which two cards win more together than apart."),
+         ("experts", "Experts", "What the podcasts say, next to the simulation.")]
 LIVE_BLURB = "Runs on your computer during an Arena draft and ranks each pack as it opens."
 PAGES = [("method", "How it works"), ("live", "Live pick helper")]   # blog/<slug>.md
 FIGURE = re.compile(r"\{\{\s*figure\s+([\w-]+)\s*\}\}")
@@ -168,6 +170,9 @@ def _tools(blog: Path, site: Path) -> None:
     set_name = load_set(CURRENT_SET).name
     if write(blog, site, CURRENT_SET) is None:
         return
+    experts = blog / "data" / f"{CURRENT_SET}-experts.json"
+    if experts.exists():   # podcast reviews, see mulligan.experts
+        shutil.copy(experts, site / "data" / experts.name)
     shutil.copy(Path(__file__).with_name("tools.js"), site / "tools.js")
     (site / "tools").mkdir(exist_ok=True)
     notes = {
@@ -179,6 +184,11 @@ def _tools(blog: Path, site: Path) -> None:
                 "the pack for you.",
         "pairs": "How each two-color pair did in simulated drafts, what its decks looked "
                  "like, and its best cards.",
+        "experts": "What Limited Resources and Limited Level-Ups said in their set reviews, "
+                   "synthesized: the format, colors, pairs, and every card they graded, "
+                   "next to the simulator's numbers.",
+        "synergy": "Cards that win more together than each does alone, and pairs that "
+                   "get in each other's way. Look up a card to see what to draft around it.",
     }
     for slug, name, _ in TOOLS:
         body = (f'<p class="date">{set_name}</p><h1>{name}</h1>'

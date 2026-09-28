@@ -43,7 +43,43 @@ async function load() {
     const r = await fetch(`../data/${set}-17lands.json`);
     if (r.ok) real = await r.json();
   } catch (_) { /* before release there is no file */ }
-  return prepare(sim, real);
+  let experts = null;
+  try {
+    const r = await fetch(`../data/${set}-experts.json`);
+    if (r.ok) experts = await r.json();
+  } catch (_) { /* no expert reviews yet */ }
+  const state = prepare(sim, real);
+  addExperts(state, experts);
+  return state;
+}
+
+// Expert grades (podcast set reviews): each card's grades averaged on a
+// 0-12 scale (F..A+), then put on the same z-scale as the simulator's grades.
+const LETTERS = ["F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"];
+function addExperts(state, experts) {
+  state.experts = experts;
+  if (!experts) return;
+  const graded = [];
+  for (const [name, x] of Object.entries(experts.cards)) {
+    const c = state.byName.get(name);
+    if (!c) continue;
+    c.takes = x.takes;
+    c.grades = x.grades;
+    const pts = x.grades.map((t) => LETTERS.indexOf(t.grade)).filter((i) => i >= 0);
+    if (!pts.length) continue;
+    c.ex = pts.reduce((a, b) => a + b, 0) / pts.length;
+    c.exGrade = LETTERS[Math.round(c.ex)];
+    graded.push(c);
+  }
+  const m = graded.reduce((a, c) => a + c.ex, 0) / graded.length;
+  const sd = Math.sqrt(graded.reduce((a, c) => a + (c.ex - m) ** 2, 0) / graded.length) || 1;
+  for (const c of graded) c.ez = (c.ex - m) / sd;
+}
+
+function expertBadge(c) {
+  if (c.exGrade == null) return el("span", { class: "muted" }, "");
+  const title = c.grades.map((t) => `${t.host} (${t.show}): ${t.said || t.grade}`).join("\n");
+  return el("span", { class: `grade g-${c.exGrade[0].toLowerCase()} expert`, title }, c.exGrade);
 }
 
 // Each card gets one working estimate: the simulator's win rate shrunk toward
@@ -215,6 +251,7 @@ function cardsTool(state) {
       el("td", { class: "barcell" }, rate == null ? "" : intervalBar(lo, hi, rate, state.sim.mean)),
       el("td", { class: "num" }, g ? g.toLocaleString() : ""),
       el("td", { class: "num" }, c.ata ? c.ata.toFixed(1) : ""),
+      state.experts ? el("td", {}, expertBadge(c)) : null,
       state.live ? el("td", { class: "num" }, c.real ? pct(c.real.gih) : "") : null);
   }
 
@@ -231,6 +268,7 @@ function cardsTool(state) {
     const head = el("tr", {}, el("th", {}, "Grade"), el("th", {}, "Card"), el("th", {}, "Cost"), el("th", {}, "Rar."),
       el("th", { class: "num" }, f.pair ? `Win rate in ${f.pair}` : "Win rate when drawn"), el("th", {}, ""),
       el("th", { class: "num" }, "Games"), el("th", { class: "num" }, "Avg pick"),
+      state.experts ? el("th", { title: "Average of the podcast hosts' grades; hover for each" }, "Experts") : null,
       state.live ? el("th", { class: "num" }, "17Lands") : null);
     table.replaceChildren(el("thead", {}, head), el("tbody", {}, cards.map(row)));
     count.textContent = `${cards.length} cards`;
@@ -300,8 +338,12 @@ function pickTool(state) {
     // How much color matters grows over the draft: nothing at pick 1, most
     // by the middle of pack two. This mirrors how the simulator's bots draft.
     const commit = Math.min(1, picks.length / 14);
+    // Before 17Lands has real data, expert grades are the only other opinion
+    // there is: average them in with the simulator's, half and half.
+    const blend = !state.live && state.experts;
     const scored = pack.map((c) => {
-      const base = c.est == null ? null : c.est - state.mean;
+      let base = c.est == null ? null : c.est - state.mean;
+      if (blend && c.ez != null) base = base == null ? c.ez * state.sd : ((c.z + c.ez) / 2) * state.sd;
       const off = top.length === 2 ? c.c.split("").filter((k) => !top.includes(k)).length : 0;
       const inLane = c.c && top.length && c.c.split("").every((k) => top.includes(k));
       const penalty = off * commit * 0.035;
@@ -315,6 +357,7 @@ function pickTool(state) {
         .map(([p, r]) => [p, (r[0] + 100 * state.sim.mean) / (r[1] + 100)]).sort((a, b) => b[1] - a[1])[0];
       if (best && c.c.length === 1) why.push(`Best in ${PAIR_NAMES[best[0]]} (${best[0]}).`);
       if (c.rm) why.push("Removal.");
+      if (blend && c.exGrade) why.push(`Experts: ${c.exGrade} (${c.grades.map((t) => `${t.host} ${t.grade}`).join(", ")}); averaged in.`);
       return { c, score: base == null ? -1 : base - penalty, why };
     }).sort((a, b) => b.score - a.score);
     const laneText = picks.length ? (top.length ? `Your picks lean ${top.map((k) => COLORS[k]).join("-")} (${Object.entries(weight).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v.toFixed(1)}`).join(", ")}).` : "Your picks are colorless so far.") : "Pack 1, pick 1: color doesn't matter yet, take the best card.";
@@ -323,7 +366,7 @@ function pickTool(state) {
         el("div", { class: "rhead" }, gradeBadge(s.c), " ", pips(s.c.c), " ", hoverCard(el("strong", {}, s.c.n), state, s.c),
           el("span", { class: "score" }, s.score === -1 ? "" : `${pts(s.score)} pts`)),
         el("div", { class: "why" }, s.why.join(" "))))),
-      el("p", { class: "caption" }, "Score = how much more often you win when this card is drawn than when an average card is, minus a penalty for colors you aren't in, which grows through the draft. It doesn't know about your curve or synergies: if two picks are within a point or two, take the one your deck needs."));
+      el("p", { class: "caption" }, (blend ? "Until real 17Lands data arrives, the score averages the simulator's rating with the podcast hosts' grades. " : "") + "Score = how much more often you win when this card is drawn than when an average card is, minus a penalty for colors you aren't in, which grows through the draft. It doesn't know about your curve or synergies: if two picks are within a point or two, take the one your deck needs."));
   }
   draw();
 }
@@ -382,9 +425,122 @@ function pairsTool(state) {
   show(rows[0], false);
 }
 
+// ---- card pairs ---------------------------------------------------------
+
+// Pairs that win more (or less) together than the two cards do separately.
+// Numbers come in tenths of a point: [card a, card b, estimate, se, games].
+function synergyTool(state) {
+  const root = $("#tool");
+  const syn = state.sim.syn;
+  root.append(freshness(state));
+  if (!syn) { root.append(el("p", {}, "No card-pair data in this run yet.")); return; }
+  const cards = state.sim.cards;
+  const pairs = syn.p.map(([a, b, est, se, n]) => ({ a: cards[a], b: cards[b], est: est / 1000, se: se / 1000, n }));
+  const out = el("div", { class: "synout" });
+  let focus = null;
+  const input = nameInput(state, "What goes with… (card name)", (c) => { focus = c; draw(); });
+  const clear = el("button", { type: "button", class: "linkish", onclick: () => { focus = null; draw(); } }, "Show the whole set");
+  root.append(el("p", {}, `How to read it: +3 means that when you have drawn both cards, you win 3 percentage points more than the two cards' separate effects add up to. Across ${syn.pairs.toLocaleString()} pairs the real effects spread about ±${syn.tau.toFixed(1)} points; most pairs simply add up, so anything beyond ±1 is a notable pairing.`),
+    el("div", { class: "filters" }, input, clear), out,
+    el("p", { class: "caption" }, "Method: take every game by a deck holding both cards and split it by which of the two was drawn: both, only one, or neither. The four groups come from the same decks, so deck strength cancels out. Synergy = WR(both) − WR(only A) − WR(only B) + WR(neither), measured against the typical pair and shrunk toward it by how noisy each pair is (a random-effects estimate), so a pair needs many games to stand out. Games = games by decks holding both. On real Hobbit games (17Lands) the same method finds the obvious pairs at the top, such as Beorn's Hospitality + Wood Elves and The Chief Warg + Warg Tactics."));
+
+  const table = (rows, other) => el("table", { class: "cards" },
+    el("thead", {}, el("tr", {}, el("th", { class: "num" }, "Synergy"), el("th", {}, other ? "Partner" : "Pair"), el("th", { class: "num" }, "± (1 s.e.)"), el("th", { class: "num" }, "Games"))),
+    el("tbody", {}, rows.map((r) => {
+      const partner = other ? (r.a === other ? r.b : r.a) : null;
+      const name = (c) => el("span", {}, pips(c.c), " ", hoverCard(el("span", {}, c.n), state, c));
+      return el("tr", {},
+        el("td", { class: "num" }, el("strong", {}, pts(r.est))),
+        el("td", { class: "namecell" }, partner ? name(partner) : [name(r.a), el("span", { class: "muted" }, " + "), name(r.b)]),
+        el("td", { class: "num muted" }, (100 * r.se).toFixed(1)),
+        el("td", { class: "num" }, r.n.toLocaleString()));
+    })));
+
+  function draw() {
+    const rows = focus ? pairs.filter((r) => r.a === focus || r.b === focus) : pairs;
+    const best = rows.filter((r) => r.est > 0).sort((x, y) => y.est - x.est).slice(0, 20);
+    const worst = rows.filter((r) => r.est < 0).sort((x, y) => x.est - y.est).slice(0, 12);
+    if (focus && !rows.length) {
+      out.replaceChildren(el("p", { class: "muted" }, `${focus.n}: not enough games alongside other cards to say.`));
+      return;
+    }
+    out.replaceChildren(
+      el("h2", {}, focus ? [pips(focus.c), " ", `Goes well with ${focus.n}`] : "Best pairs in the set"),
+      best.length ? el("div", { class: "table scroll" }, table(best, focus)) : el("p", { class: "muted" }, "None stand out."),
+      el("h2", {}, focus ? "Works against it" : "Pairs that get in each other's way"),
+      worst.length ? el("div", { class: "table scroll" }, table(worst, focus)) : el("p", { class: "muted" }, "None stand out."));
+  }
+  draw();
+}
+
+// ---- what the experts say -----------------------------------------------
+
+function expertsTool(state) {
+  const root = $("#tool");
+  const x = state.experts;
+  if (!x) { root.append(el("p", {}, "No expert reviews yet.")); return; }
+  const syn = x.synthesis;
+  const paras = (text) => text.split(/\n\s*\n/).map((p) => el("p", {}, p));
+  const list = (items) => el("ul", {}, items.map((t) => el("li", {}, t)));
+  const eps = el("ul", { class: "episodes muted" }, x.episodes.map((e) =>
+    el("li", {}, el("a", { href: e.url }, e.show), `: ${e.title} (${e.date}; ${e.hosts.join(", ")})`)));
+  const colorRows = syn.colors.map((c) => el("tr", {}, el("td", {}, pips(c.color), " ", COLORS[c.color]), el("td", {}, c.take)));
+  const simPair = (p) => { const r = state.sim.pairs[p]; return r ? pct(r.w / r.g) : "–"; };
+  const pairRows = syn.pairs.map((p) => el("tr", {},
+    el("td", {}, pips(p.pair), " ", PAIR_NAMES[p.pair], el("div", { class: "muted" }, `sim ${simPair(p.pair)}`)),
+    el("td", {}, p.experts), el("td", { class: "muted" }, p.sim)));
+  root.append(
+    el("p", { class: "fresh" }, `From ${x.episodes.length} podcast episodes, summarized and paraphrased; listen to the shows for the real thing. Nothing here is quoted. The "sim" numbers are this site's simulated drafts.`),
+    eps,
+    el("section", { class: "synout" },
+      el("h2", {}, "The format in short"), ...paras(syn.overview),
+      el("p", {}, el("strong", {}, "Speed: "), syn.speed),
+      el("h2", {}, "What everyone agrees on"), list(syn.consensus),
+      el("h2", {}, "Where they differ"), list(syn.debates),
+      el("h2", {}, "Drafting advice"), list(syn.advice),
+      el("h2", {}, "Colors"), el("div", { class: "table" }, el("table", { class: "cards prose" }, el("tbody", {}, colorRows))),
+      el("h2", {}, "Color pairs: experts vs. the simulation"),
+      el("div", { class: "table" }, el("table", { class: "cards prose" },
+        el("thead", {}, el("tr", {}, el("th", {}, "Pair"), el("th", {}, "Experts"), el("th", {}, "Simulation"))), el("tbody", {}, pairRows))),
+      el("h2", {}, "Where the simulation disagrees"),
+      el("ul", {}, syn.sim_vs_experts.map((d) => {
+        const c = state.byName.get(d.card);
+        return el("li", {}, c ? [gradeBadge(c), " ", expertBadge(c), " ", hoverCard(el("strong", {}, d.card), state, c)] : el("strong", {}, d.card), ` ${d.note}`);
+      }))),
+    cardGrades(state));
+}
+
+// Every card the hosts graded: their grades and takes next to the simulator's.
+function cardGrades(state) {
+  const box = el("section", { class: "synout" });
+  const f = { q: "", sort: "gap" };
+  const search = el("input", { type: "search", placeholder: "Search cards", "aria-label": "Search", oninput: (e) => { f.q = e.target.value.toLowerCase(); draw(); } });
+  const sort = el("select", { "aria-label": "Sort", onchange: (e) => { f.sort = e.target.value; draw(); } },
+    el("option", { value: "gap" }, "Biggest expert/sim disagreement"), el("option", { value: "ex" }, "Experts' favorites"),
+    el("option", { value: "name" }, "Name"));
+  const table = el("table", { class: "cards" });
+  box.append(el("h2", {}, "Card by card"), el("p", { class: "muted" }, "Sim = the simulator's grade; Experts = the hosts' average. Each take is a paraphrase."),
+    el("div", { class: "filters" }, search, sort), el("div", { class: "table scroll" }, table));
+  function draw() {
+    let cards = state.sim.cards.filter((c) => c.grades && (c.grades.length || c.takes.length));
+    if (f.q) cards = cards.filter((c) => c.n.toLowerCase().includes(f.q));
+    const key = { gap: (c) => -(c.ez != null && c.z != null ? Math.abs(c.ez - c.z) : -1), ex: (c) => -(c.ex ?? -1), name: (c) => c.n }[f.sort];
+    cards.sort((a, b) => (key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0));
+    table.replaceChildren(el("thead", {}, el("tr", {}, el("th", {}, "Sim"), el("th", {}, "Experts"), el("th", {}, "Card"), el("th", {}, "What they said"))),
+      el("tbody", {}, cards.map((c) => el("tr", {},
+        el("td", {}, gradeBadge(c)), el("td", {}, expertBadge(c)),
+        el("td", { class: "namecell" }, pips(c.c), " ", hoverCard(el("span", {}, c.n), state, c)),
+        el("td", { class: "takes" },
+          el("div", { class: "muted" }, c.grades.map((g) => `${g.host} ${g.grade}`).join(" · ")),
+          c.takes.map((t) => el("div", {}, el("strong", {}, `${t.host === "both" ? t.show : t.host}: `), t.take)))))));
+  }
+  draw();
+  return box;
+}
+
 load().then((state) => {
   const tool = document.body.dataset.tool;
-  ({ cards: cardsTool, pick: pickTool, pairs: pairsTool })[tool](state);
+  ({ cards: cardsTool, pick: pickTool, pairs: pairsTool, synergy: synergyTool, experts: expertsTool })[tool](state);
 }).catch((err) => {
   $("#tool").append(el("p", {}, `Couldn't load the data: ${err}`));
 });

@@ -1,0 +1,2158 @@
+{
+ "show": "Limited Level-Ups",
+ "title": "Reality Fracture Common + Uncommon Set Review",
+ "date": "2026-09-22",
+ "url": "https://limitedlevelups.libsyn.com/",
+ "hosts": [
+  "Marc",
+  "Alex"
+ ],
+ "scale": "Letter grades A+ through F; C+ means nearly uncuttable in its colors, C is good filler or an archetype pillar, D+ is under-supported synergy, F is never playable. Sideboard-only cards get a separate sideboard grade.",
+ "cards": [
+  {
+   "card": "Fatehold Chronologist",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A cheap flyer with a prepared spell that adds a 2/2 and a surveil, so it helps the WU flyers deck on both halves."
+  },
+  {
+   "card": "Semester Foreseer",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A 3/4 that surveils on entry and again through its prepared spell, giving small incremental advantage."
+  },
+  {
+   "card": "Fatehold Charm",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Its broad modes (cantrip plus Empower Jace 2, tempo bounce, or a team pump that closes games with flyers) fit WU well and could creep into B-."
+  },
+  {
+   "card": "Prudent Fateseer",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A 1/4 body walls the ground and the once-per-turn pump is modest; it would have been much better with flying."
+  },
+  {
+   "card": "Desperate Futurescribe",
+   "host": "Marc",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A four-toughness flyer that dodges common removal and can grow a creature permanently on its first turn with a Jace token around; better than some rares."
+  },
+  {
+   "card": "Desperate Futurescribe",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Has immediate and lasting impact, and a 3/4 flyer for four is fine on its own."
+  },
+  {
+   "card": "Void Extrapolator",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A needed two-drop for UB that later becomes a 3/3, though the prepared mill doesn't affect the board."
+  },
+  {
+   "card": "Void Extrapolator",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A late 3/3 with no keyword isn't very relevant, and the mill spell doesn't touch the board."
+  },
+  {
+   "card": "Theorix Metamage",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A 3-mana 2/3 is too weak on curve, and you'd rather fill this enabler role with two-drops, even though a threshold 3/3 flyer is nice."
+  },
+  {
+   "card": "Theorix Metamage",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "The threshold flying makes it a reasonable mid-game body in UB."
+  },
+  {
+   "card": "Theorix Charm",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Solid but plays like two mana's worth of card; the instant-speed mill can switch on threshold mid-combat."
+  },
+  {
+   "card": "Paradox Shaper",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "It points toward a non-combat decking-yourself plan that Jace pressure may not give you time for."
+  },
+  {
+   "card": "Paradox Shaper",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Respects the chance that milling down and stacking your library becomes a real UB engine."
+  },
+  {
+   "card": "Recursive Recruitment",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Two 2/2s is a passable front half, and the flashback makes huge tokens late; could also be splashed in BG."
+  },
+  {
+   "card": "Recursive Recruitment",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Low confidence, but affecting the board early buys time to cash in the expensive flashback, like Molten Note did."
+  },
+  {
+   "card": "Hallway Heckler",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Rummaging on a three-drop is okay card selection, but it's worse than the two-drop versions."
+  },
+  {
+   "card": "Hallway Heckler",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A 3-mana 2/3 rummager whose ping payoff is weak; best when discarding flashback cards."
+  },
+  {
+   "card": "Whiplash Wordsmith",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Plays like a 5-mana hasty flyer when enabled, but you must re-enable it every turn and it's terrible on defense."
+  },
+  {
+   "card": "Stingerquill Voxmancer",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Gives the designers the benefit of the doubt as a repeatable ping enabler for RB payoffs."
+  },
+  {
+   "card": "Stingerquill Voxmancer",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A fragile 1/2 that does nothing else, and paying a mana per ping is far worse than free pingers."
+  },
+  {
+   "card": "Grim Repriser",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A two-mana prowess body that recurs when you ping, so opponents dislike trading with it, but it gets outscaled late."
+  },
+  {
+   "card": "Stingerquill Charm",
+   "host": "Marc",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "An excellent spread: kill a small thing, win combat against a big thing, or add a hasty body; possibly the best charm."
+  },
+  {
+   "card": "Stingerquill Charm",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Very efficient modes, docked slightly because the surrounding RB cards look weak."
+  },
+  {
+   "card": "Konstrari Improviser",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A solid ramp and artifact enabler that also fixes, though you often cast the prepared spell on turn four alongside a two-drop."
+  },
+  {
+   "card": "Heartwood Crafter",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A one-drop that ramps on turn two feels incredible in the opener, and its mana works for flashback, exile, and prepared cards."
+  },
+  {
+   "card": "Heartwood Crafter",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Strong turn-one ramp and fixing for RG, but it is a weak top deck."
+  },
+  {
+   "card": "Konstrari Charm",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "The counters-plus-trample mode alone makes it a great trick, and the flyer-kill mode is a useful bonus."
+  },
+  {
+   "card": "Woodwork Prodigy",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A mana sink that keeps making artifact mana each turn to fuel artifact payoffs."
+  },
+  {
+   "card": "Woodwork Prodigy",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Nice upside, but extra Heartwood tokens have diminishing returns and it still needs to fight in combat."
+  },
+  {
+   "card": "Craftwork Crusher",
+   "host": "both",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A 7/5 trampler that removes something and adds a card or body at uncommon; it pulls you back from almost any board and effectively ends games."
+  },
+  {
+   "card": "Emergency Phytomedic",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Its prepared spell is nearly worth its cost and beats the RB pinging plan; both hosts could see it reaching C+."
+  },
+  {
+   "card": "Blossom-Blessed Angel",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A four-toughness flying vigilance body that becomes a 3/5 or gives haste-turn value at five mana; possibly underrated."
+  },
+  {
+   "card": "Vigorbloom Charm",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Protection, draw plus life, and a counter-plus-fight are all good rates, and the lifegain mode triggers GW payoffs."
+  },
+  {
+   "card": "Vigorbloom Vanguard",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A reasonable enter-the-battlefield three-drop whose vigilance anthem really needs a GW or RW counters deck."
+  },
+  {
+   "card": "Bloombrute",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A 4-mana 4/4 that draws on lifegain is great when it sticks, and it can draw immediately on turn five with a prepared spell."
+  },
+  {
+   "card": "Bloombrute",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Lifegain enablers are thinner than they look, so you won't reliably draw after untapping."
+  },
+  {
+   "card": "Edgar, Ancient Bloodlord",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A good-rate two-drop that touches lifegain, counters, and sacrifice, with a threat of activation, though menace is awkward on it."
+  },
+  {
+   "card": "Twisted Fates",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Kills any nonland permanent and grows your team, which is a huge combat swing; triple pips keep it in WB."
+  },
+  {
+   "card": "Blessed Ghoul",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Recursion with lifelink could matter given how much self-mill there is."
+  },
+  {
+   "card": "Blessed Ghoul",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "The buyback is expensive and there isn't enough sacrifice synergy; you'll rarely play it."
+  },
+  {
+   "card": "Clash of Elements",
+   "host": "Marc",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A cheaper top-or-bottom removal that punishes topping; fits tempo UR."
+  },
+  {
+   "card": "Clash of Elements",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Strong tempo removal; when it targets your token, don't top it, just take the two."
+  },
+  {
+   "card": "Saheeli, Jewel of Avishkar",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A solid spells payoff that also makes artifacts, but it is likely to underperform Murmuring Mystic given fewer spells."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Basically a better Think Twice, and the loot-style flashback is great glue for UR and graveyard decks."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Good glue, but tempered because card advantage is plentiful in this set."
+  },
+  {
+   "card": "Primal Witchstalker",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A good-rate menace three-drop that fills the graveyard and returns a land."
+  },
+  {
+   "card": "Primal Witchstalker",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Good BG graveyard midrange piece, and the land return doesn't have to come from the milled cards."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Kills almost anything once a six-drop landcycler is in the graveyard, and the -1/-1 counters stick."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "Alex",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Strong enter-the-battlefield removal on a body; triple pips keep it in BG."
+  },
+  {
+   "card": "Ferocity of the Hunt",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A permanent deathtouch aura that is great on first strikers and tramplers, and can save a creature to reuse its entry effect."
+  },
+  {
+   "card": "Ferocity of the Hunt",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Was talked up on its synergies but still wouldn't grade it higher, partly because Unsummon blows it out."
+  },
+  {
+   "card": "Mabel, Valley Hero",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A cheap counter source that fits RW, GW, and white counter synergies."
+  },
+  {
+   "card": "Mabel, Valley Hero",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "It is just a 1/2 that grows itself on entry, closer to the underwhelming unicorn from Foundations."
+  },
+  {
+   "card": "Warrior's Blades",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A four-mana Lightning Helix that leaves a stat-boosting equipment, similar to Crude Bent Blade."
+  },
+  {
+   "card": "Warrior's Blades",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Expensive to cast and equip, and the discount only applies to already-boosted creatures."
+  },
+  {
+   "card": "Kiora of Salt and Sand",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "An upside trap, because saving loyalty for the 8/8 means doing nothing, so it mostly happens when you're already winning."
+  },
+  {
+   "card": "Kiora of Salt and Sand",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Initially saw potential in UG, but was talked down and would drop it a tier."
+  },
+  {
+   "card": "Mind Meanderer",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Essentially Indrik Stomphowler with flying; it will nearly always fight something relevant."
+  },
+  {
+   "card": "Mind Meanderer",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Strong but expensive, and the prevalence of deathtouch reduces its good fight targets."
+  },
+  {
+   "card": "Tam's Resistance",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A strange card: a counter, vigilance, and Empower Jace 4 that shines only in UG with ways to spend big loyalty."
+  },
+  {
+   "card": "Living Library",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Very slow, and a 0/4 can't pressure Jace tokens."
+  },
+  {
+   "card": "Living Library",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A blocker that becomes expensive removal is fine in defensive decks, but the rate is poor."
+  },
+  {
+   "card": "Medic's Kitesail",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Clunky, but it gives repeat lifegain triggers and evasion that shine in board stalls; never play two."
+  },
+  {
+   "card": "Afterthought Sentry",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A filler two-drop with a little evasion and graveyard hate that fills out curves."
+  },
+  {
+   "card": "Murmuring Volume",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A mana rock plus rummage, only worth it for multicolor fixing or ramp decks."
+  },
+  {
+   "card": "Keeper of the Quiet Hour",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Filler that Empower Jace and surveil decks actually want."
+  },
+  {
+   "card": "Keeper of the Quiet Hour",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A fine-ish filler 3/2 that empowers Jace."
+  },
+  {
+   "card": "Eye of Jace",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Repeated surveil for one mana plus a late drain is sneakily good in WU surveil decks."
+  },
+  {
+   "card": "Eye of Jace",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Great on turn one but a poor top deck; rewards skilled players who manipulate their library."
+  },
+  {
+   "card": "Traxos, Scourge Eternal",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A four-mana 5/4 trampler that untaps easily enough to play like pseudo-vigilance."
+  },
+  {
+   "card": "Traxos, Scourge Eternal",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Staying tapped is a real cost, and it is still a four-drop with no protection or entry effect."
+  },
+  {
+   "card": "Archive Arbiter",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A 4/4 flyer that kills a Jace or Way, or gains four life, is a fine top end."
+  },
+  {
+   "card": "Archive Arbiter",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Slightly below rate, but its modes punish Jace-stockpiling decks."
+  },
+  {
+   "card": "Room of Refuge",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A flexible choose-a-color land with a late mana sink, taken at about the rate of the duals."
+  },
+  {
+   "card": "Hexhaven Dueling Arena",
+   "host": "Alex",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Repeats the terrible Strixhaven prepare land with an even worse cost."
+  },
+  {
+   "card": "Hexhaven Dueling Arena",
+   "host": "Marc",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "Gave it the coward's D- just to create chaos."
+  },
+  {
+   "card": "Tethermage's Advantage",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A good one-mana trick that shines when a Jace token baits blocks, but Jace is less common than first expected."
+  },
+  {
+   "card": "Tethermage's Advantage",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A tried-and-true cheap pump with untap that always overperforms."
+  },
+  {
+   "card": "Sureshot Sower",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A respectable three-power two-drop; the flyer-kill mode is mostly redundant."
+  },
+  {
+   "card": "Sureshot Sower",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A good-stats two-drop that can occasionally be held to kill a flyer."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Likely the two-drop of choice, since deathtouch protects the Jace it creates."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Cool design, and still fine even if the Jace gets attacked."
+  },
+  {
+   "card": "Something Worth Saving",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A Cash Grab variant that digs for your strong uncommons and rares and gains instant-speed life; play one or two."
+  },
+  {
+   "card": "Compel Brutality",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "An instant punch that can use planeswalker loyalty as the damage, which avoids some risk."
+  },
+  {
+   "card": "Greenhouse Propagator",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "An all-purpose ramp piece with consistent lifegain that GW especially appreciates."
+  },
+  {
+   "card": "Greenhouse Propagator",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Three-mana dorks are usually weak, but the lifegain and good ramp targets make up for it."
+  },
+  {
+   "card": "Budding Insurgent",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A fine but unexciting 3/3 that won't make the cut in an uncommon-heavy format."
+  },
+  {
+   "card": "Budding Insurgent",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A hedge in case Way enchantments are central to the format."
+  },
+  {
+   "card": "Inspired Tethermage",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "It grows too slowly to protect the planeswalkers that trigger it, so it is counterproductive."
+  },
+  {
+   "card": "Bestial Incursion",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A 4/4 trampler with flashback is great card advantage, but Unsummon is a big risk."
+  },
+  {
+   "card": "Wrecking Gecko",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A ward 5/5 with a big pump is hard to kill cleanly, but the format's expensive slots are strong."
+  },
+  {
+   "card": "Wrecking Gecko",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Fine, but outclassed at its cost in this set."
+  },
+  {
+   "card": "Vinelasher Adept",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "One of the lesser landcyclers, and the ramp doesn't make up for its modest impact."
+  },
+  {
+   "card": "Vinelasher Adept",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Its counters create good attacks and the landcycling fixes, and green ramp helps cast it early."
+  },
+  {
+   "card": "Hunter's Axe",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Adaptively grants deathtouch or trample, so it is occasionally playable."
+  },
+  {
+   "card": "Hunter's Axe",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Equipment with no body or value attached historically underperforms and does nothing on defense."
+  },
+  {
+   "card": "Flourishing Grapple",
+   "host": "both",
+   "grade_said": "sideboard",
+   "grade": "none",
+   "take": "A color-hate sideboard card that is not worth maindecking in best-of-one."
+  },
+  {
+   "card": "Marwyn, the Preserver",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Good early stats with a late threat of land-based card advantage."
+  },
+  {
+   "card": "Marwyn, the Preserver",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A two-mana 3/2 whose land recursion matters with milling and discard."
+  },
+  {
+   "card": "Yoshimaru, Scrappy Stray",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Lots of play as a fight-removal body that pressures a response and can reach B range."
+  },
+  {
+   "card": "Yoshimaru, Scrappy Stray",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Fight effects are deceptively bad because they need an already-bigger creature."
+  },
+  {
+   "card": "Fblthp, Knows the Way",
+   "host": "Marc",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Draws multiple lands, fixes everything, and scales at five mana; worth running off-color basics for domain."
+  },
+  {
+   "card": "Fblthp, Knows the Way",
+   "host": "Alex",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Great card advantage and fixing, held back by the double green."
+  },
+  {
+   "card": "Way of the Paradox",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A synergy card for UG draw decks that gains life and extra land drops each time you use Jace."
+  },
+  {
+   "card": "Loot, the Nexus",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A three-mana dork that explodes with varied powers, but that is hard to engineer reliably."
+  },
+  {
+   "card": "Loot, the Nexus",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Really solid because there are great big things to ramp into, and it makes any color."
+  },
+  {
+   "card": "Pia, Aether Ascetic",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Turns a dead card into a strong Way or removal enchantment."
+  },
+  {
+   "card": "Pia, Aether Ascetic",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Understatted and requires a discard, so it needs top enchantments to fetch."
+  },
+  {
+   "card": "Restore with Empathy",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Only good if your deck has great cards to return."
+  },
+  {
+   "card": "Restore with Empathy",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Slow and the format has to be slow for it to work."
+  },
+  {
+   "card": "Jiang Yanggu, Never Alone",
+   "host": "Marc",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Five power and toughness across two bodies for four mana is a great rate."
+  },
+  {
+   "card": "Jiang Yanggu, Never Alone",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Lots of stats, and it untaps Heartwood tokens as a small bonus."
+  },
+  {
+   "card": "Titanbones, Towering Heart",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "A big dummy with three toughness, vulnerable to the format's cheap removal."
+  },
+  {
+   "card": "Titanbones, Towering Heart",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Admits it should be closer to D+."
+  },
+  {
+   "card": "Edgar, Moonlit Sovereign",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A five-mana flash 4/4 whose growth asks you to skip casting spells and gets punished by cheap removal and Unsummon."
+  },
+  {
+   "card": "Edgar, Moonlit Sovereign",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Can get big, but is slow and unconvincing."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Like an Owlbear, and it makes every future Empower Jace card threaten another 4/4."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "One of the best Ways, but Unsummon punishes the tokens."
+  },
+  {
+   "card": "Ruric Thar, Magecrusher",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "An uncounterable, hexproof-ish 7/7 is a great ramp payoff despite deathtouch and edicts."
+  },
+  {
+   "card": "Ruric Thar, Magecrusher",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A strong Karakyk Guardian-like top end; would move up to B-."
+  },
+  {
+   "card": "Ghalta the Unstoppable",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Castable for around five with a 4/4 out, and it is huge when it lands."
+  },
+  {
+   "card": "Ghalta the Unstoppable",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Probably too low, but the risk of it rotting in hand is real."
+  },
+  {
+   "card": "Artifist Acumen",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "A below-replacement cantrip only for UR spells decks."
+  },
+  {
+   "card": "Artifist Acumen",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "At least it can simply cycle on turn one."
+  },
+  {
+   "card": "Skilled Battlecarver",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "One of the few red two-drops that attacks well all game; good in aggressive red decks, not ramp."
+  },
+  {
+   "card": "Blazing Crescendo",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Only for low-curve, front-foot red decks."
+  },
+  {
+   "card": "Blazing Crescendo",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A clean two-for-one when attacking, and it pairs with cast-from-exile cards."
+  },
+  {
+   "card": "Eardrum Rattler",
+   "host": "Marc",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "A weak two-drop; paying mana for the unblockable ability kills it."
+  },
+  {
+   "card": "Eardrum Rattler",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Only fills a two-drop gap."
+  },
+  {
+   "card": "No Admittance",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Efficient three damage to any target plus Empower Jace 1."
+  },
+  {
+   "card": "No Admittance",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A very solid, efficient removal common."
+  },
+  {
+   "card": "Chandra's Emberling",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Power-crept, and haste doesn't fix it starting too small."
+  },
+  {
+   "card": "Chandra's Emberling",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Would be more interesting with trample."
+  },
+  {
+   "card": "Wrath of the Bloodmane",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Often costs two because packs are full of legends, making it premium burn."
+  },
+  {
+   "card": "Wrath of the Bloodmane",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Graded as a plain three-mana deal-four at first and underrated the legendary discount."
+  },
+  {
+   "card": "Heartstring Puller",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Two differently sized bodies give flexibility, and the trampler is a great deathtouch-aura target."
+  },
+  {
+   "card": "Awaken the Inferno",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Big removal plus a counter makes it good even ignoring the landcycling, like Cut In."
+  },
+  {
+   "card": "Tether Technician",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A 4/5 reach body that turns a spare card into a free shock for a tempo swing."
+  },
+  {
+   "card": "Tether Technician",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Costs a card for two damage on an only-okay statted body."
+  },
+  {
+   "card": "Marwyn, the Clearcutter",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A one-drop with good early stats that turns into card advantage late."
+  },
+  {
+   "card": "Marwyn, the Clearcutter",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A useful one-drop that is still decent to top deck."
+  },
+  {
+   "card": "Tomik, Izzet Sparkmage",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Can turn pings into shocks and combos with Fulminous Forte."
+  },
+  {
+   "card": "Tomik, Izzet Sparkmage",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Its rewards are temporary and small, so too many things need to go right."
+  },
+  {
+   "card": "Essence Burn",
+   "host": "both",
+   "grade_said": "sideboard",
+   "grade": "none",
+   "take": "An efficient color-hate burn spell for the sideboard."
+  },
+  {
+   "card": "Gallia, the Merrymaker",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Understatted and much better on the play; pairs with Mabel as an RW haste enabler."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "On turn two it ramps into four and gives an upticking Jace that the opponent must keep attacking."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Worried about its bad floor when drawn late, but was talked up to C."
+  },
+  {
+   "card": "Command the Stage",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Probably the best ping payoff, recurring to build a growing wizard army in a grindier RB."
+  },
+  {
+   "card": "Command the Stage",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Slow to start, but it pumps all wizard tokens from multiple sources."
+  },
+  {
+   "card": "Fulminous Forte",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Three-mana deal five, or an instant-speed one-damage sweeper against a format full of 2/2s and 1/1s."
+  },
+  {
+   "card": "Koth, the Geomancer",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Only acceptable in heavy-red decks."
+  },
+  {
+   "card": "Koth, the Geomancer",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A fragile 3/2 whose landfall isn't helped by Heartwood ramp."
+  },
+  {
+   "card": "Way of the Warlord",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "On turn three it kills a two-drop and deals two to face; the one-loyalty leftover can be sacrificed."
+  },
+  {
+   "card": "Way of the Warlord",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Two damage for most of the loyalty is a poor ability."
+  },
+  {
+   "card": "Pia, Determined Rebuilder",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A 2/2 plus a 1/1 flyer is a great floor, with an artifact-scaling pump."
+  },
+  {
+   "card": "Arni, Renowned Champion",
+   "host": "both",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "A 1/5 that only grows conditionally for a turn."
+  },
+  {
+   "card": "Tetsuko Umezawa, Pursuer",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A double-striking prowess threat that is scary with tricks and trample."
+  },
+  {
+   "card": "Tetsuko Umezawa, Pursuer",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Boom-or-bust with no value if killed; maybe better than graded."
+  },
+  {
+   "card": "Violent Echoes",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Six damage that usually cantrips via excess damage; nearly an A-."
+  },
+  {
+   "card": "Violent Echoes",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Good removal, but against big targets it won't cantrip."
+  },
+  {
+   "card": "Winter, Team Player",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Needs too many levers to work."
+  },
+  {
+   "card": "Winter, Team Player",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A creature-heavy build-around that doesn't come together."
+  },
+  {
+   "card": "Jiang Yanggu, Alone",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A menace 4/4 that loots, grows, and draws when you're empty-handed, with good wording that still triggers when others attack Jace."
+  },
+  {
+   "card": "Kiora of Fire and Ashes",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Two must-kill threats, with more dragons at eight mana; an excellent ramp target."
+  },
+  {
+   "card": "Kiora of Fire and Ashes",
+   "host": "Alex",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A great six-drop, and should probably be B+."
+  },
+  {
+   "card": "Rank Rat",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "The 1/1 body can't pressure Jace and there is little sacrifice, so it is weaker than usual."
+  },
+  {
+   "card": "Silence the Echo",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Playable at one copy, since you can sacrifice a spent Jace."
+  },
+  {
+   "card": "Silence the Echo",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "The two-mana cost makes the sacrifice-removal template bad again."
+  },
+  {
+   "card": "Last Gasp",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Great-rate instant removal."
+  },
+  {
+   "card": "Last Gasp",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Solid, cheap removal."
+  },
+  {
+   "card": "Solve for Disappointment",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "The nonland-permanent restriction makes it much worse late, but it adds sacrifice fodder via Jace."
+  },
+  {
+   "card": "Theoretical Necromancer",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "The graveyard recursion costs too much mana for the effect."
+  },
+  {
+   "card": "Screeching Soulbreaker",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A 1/4 flyer that pings and gains life each attack could be a pillar of RB."
+  },
+  {
+   "card": "Screeching Soulbreaker",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Weak combat stats and poor at pressuring Jace."
+  },
+  {
+   "card": "Cast Away Doubt",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Hitting both players is slight upside."
+  },
+  {
+   "card": "Cast Away Doubt",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Draw-two-and-take-damage cards are never good."
+  },
+  {
+   "card": "Extended Absence",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Instant exile removal with a drain; possibly how RB and control decks want to play."
+  },
+  {
+   "card": "Extended Absence",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "The drain rider lifts it above plain four-mana removal."
+  },
+  {
+   "card": "Rampart Hunter",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "The deathtouch-granting entry effect guarantees an attack."
+  },
+  {
+   "card": "Rampart Hunter",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Unlikely to make a deck with this many good cards."
+  },
+  {
+   "card": "Apex Witchstalker",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A solid landcycler that fixes any color and is a reanimation target."
+  },
+  {
+   "card": "Apex Witchstalker",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Worse than Troll of Khazad-dûm, but fine."
+  },
+  {
+   "card": "Mabel, Bitter Recluse",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A deathtouch one-drop that stays useful late by stripping counters or Jace loyalty."
+  },
+  {
+   "card": "Multiply by Zero",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "One-mana instant removal that still shrinks countered creatures to 1/1; could be B+."
+  },
+  {
+   "card": "Terminal Criticism",
+   "host": "both",
+   "grade_said": "sideboard",
+   "grade": "none",
+   "take": "A color-hate sideboard removal spell."
+  },
+  {
+   "card": "Gallia, Tragic Host",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A menace two-drop that repeatedly recurs from the graveyard, fueled by the set's self-mill."
+  },
+  {
+   "card": "Way of the Necromancer",
+   "host": "Alex",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Tied for the worst Way."
+  },
+  {
+   "card": "Way of the Necromancer",
+   "host": "Marc",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "Very weak."
+  },
+  {
+   "card": "Loot, the Anomaly",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Essentially a vanilla 2/4; wishes threshold granted a keyword."
+  },
+  {
+   "card": "Loot, the Anomaly",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Has cute combos with Tetsuko and negative-power effects but isn't good."
+  },
+  {
+   "card": "Break Under Pressure",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "An instant edict that takes their biggest creature and gains two life; possibly underrated."
+  },
+  {
+   "card": "Winter, Tormented Loner",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Sacrifice a spent Jace to make them sacrifice a real creature, and it grows large in graveyard decks."
+  },
+  {
+   "card": "Winter, Tormented Loner",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Low confidence and possibly too low."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Fits black's attrition plan of trading small creatures up to 4/4s."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "There are few creatures you actually want to sacrifice."
+  },
+  {
+   "card": "Proft, Sinister Mastermind",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A build-around for UB and BG; a three-mana 5/5 menace with a removal-ish discard mode."
+  },
+  {
+   "card": "Proft, Sinister Mastermind",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Usually only castable around turn six, so it isn't board-dominating."
+  },
+  {
+   "card": "Danitha, Spear of Agony",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A first strike two-drop that grows off targeted spells, including the RB ping."
+  },
+  {
+   "card": "Danitha, Spear of Agony",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Forgot the ping targets opponents; would raise it to D+."
+  },
+  {
+   "card": "Tinybones, Pocket Nuisance",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Discard plus pings on any player's looting or rummaging, with cute RB synergies."
+  },
+  {
+   "card": "Teyo, Diamondblade Mage",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A flash trick-plus-body that is better as a trick than as a body."
+  },
+  {
+   "card": "Rewrite Regrets",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Four-mana reanimation plus Empower Jace 2, with landcyclers as targets; it has a higher ceiling."
+  },
+  {
+   "card": "Massacre Girl, Most Wanted",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Drain effects are overrated and it's understatted."
+  },
+  {
+   "card": "Massacre Girl, Most Wanted",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Low confidence, but not a card you'll want much."
+  },
+  {
+   "card": "Yargle, Glutton of Urborg",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "A vanilla 9/3 for five."
+  },
+  {
+   "card": "Unsummon",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "One of the best commons because of the many big tokens and big creatures to bounce."
+  },
+  {
+   "card": "Cryotheory Adept",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "A weak 2/1, and its graveyard ability is too expensive."
+  },
+  {
+   "card": "Cryotheory Adept",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Doesn't come together even in UR prowess."
+  },
+  {
+   "card": "Surveillance Phantasm",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "The best defender-flyer template yet: easily enabled, protects Jace, and pressures; beware attacking into tricks while tapped out."
+  },
+  {
+   "card": "Icy Reception",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A soft counter for creatures, Ways, and walkers, or -5/-0, which is strong against deathtouch."
+  },
+  {
+   "card": "Sphinx's Approach",
+   "host": "both",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "An overcosted draw two whose Sphinx meme needs five copies."
+  },
+  {
+   "card": "Divining Duelist",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Flexible flash filler."
+  },
+  {
+   "card": "Divining Duelist",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Filler outside of the Splinter Twin combo."
+  },
+  {
+   "card": "Mindseeker Oculus",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A great two-for-one, though Empower 4 isn't always better than 3 for double activations."
+  },
+  {
+   "card": "Infinite Coursework",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Few answers to it beyond Unsummon and an untap trick, so it is solid removal."
+  },
+  {
+   "card": "Infinite Coursework",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Wary of the ways around the aura."
+  },
+  {
+   "card": "Protege's Awakening",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Doesn't protect the Jace it builds, so it needs UG ways to spend big loyalty."
+  },
+  {
+   "card": "Protege's Awakening",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A middling placeholder grade."
+  },
+  {
+   "card": "Undulating Witness",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Probably the worst landcycler."
+  },
+  {
+   "card": "Undulating Witness",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Medium, but you'll play it for fixing."
+  },
+  {
+   "card": "Yuriko, Hope from the Shadows",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A flash shrink effect that is great against deathtouch."
+  },
+  {
+   "card": "Yuriko, Hope from the Shadows",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Weak early and not a combat-centric format, but fine."
+  },
+  {
+   "card": "Perfected Theory",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A pushed one-mana trick that shrinks or grows."
+  },
+  {
+   "card": "Perfected Theory",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Non-cantripping blue tricks get cut for better cards."
+  },
+  {
+   "card": "Precise Redaction",
+   "host": "both",
+   "grade_said": "sideboard",
+   "grade": "none",
+   "take": "A color-hate counterspell for the sideboard."
+  },
+  {
+   "card": "Fblthp, Impossibly Lost",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "The draw two needs player damage and doesn't work against Jace; it is more interesting than good."
+  },
+  {
+   "card": "Geist of Saint Thalia",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A cost reducer that is fine in spell-heavy decks."
+  },
+  {
+   "card": "Geist of Saint Thalia",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Mostly a UR card, and weak in control."
+  },
+  {
+   "card": "Tetsuko Umezawa, Fugitive",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Easy to underrate unblockable enabler."
+  },
+  {
+   "card": "Tetsuko Umezawa, Fugitive",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Great at pressuring Jace tokens and combos with many cards."
+  },
+  {
+   "card": "Proft, Consulting Detective",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Clue-like growth that is hard to use before the later turns."
+  },
+  {
+   "card": "Countersculpt",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Often a two-mana hard counter that empowers Jace; great in a set with strong expensive cards."
+  },
+  {
+   "card": "Arni, Humble Scribe",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A looter with real combat stats that untaps, useful for threshold and flashback."
+  },
+  {
+   "card": "Arni, Humble Scribe",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Selection is abundant and blue needs combat bodies, though was persuaded upward."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Copying cheap removal repeatedly is a scary lingering threat."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Hard to time the empowerment and the spell together, which limits what you copy."
+  },
+  {
+   "card": "Plan for All Outcomes",
+   "host": "Marc",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Removal that then adds roughly a surveil to nearly every spell afterward."
+  },
+  {
+   "card": "Plan for All Outcomes",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Sold on it and would join Mark at B."
+  },
+  {
+   "card": "Traxos, Academy Guardian",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Often cast for two alongside a prepared spell, and it is a great body for protecting Jace."
+  },
+  {
+   "card": "Traxos, Academy Guardian",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Great at two mana but poor at four."
+  },
+  {
+   "card": "Hapatra, the Desert Frost",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A beefy Frost Lynx with immediate impact."
+  },
+  {
+   "card": "Hapatra, the Desert Frost",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Three toughness worries him; it enables an infinite combo with Loot."
+  },
+  {
+   "card": "Way of the Mind Sculptor",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "The draw threat on every future empower terrifies opponents."
+  },
+  {
+   "card": "Way of the Mind Sculptor",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Could be overkill card draw."
+  },
+  {
+   "card": "Yargle, Goliath of Otaria",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "A vanilla 3/9."
+  },
+  {
+   "card": "Ruric Thar, Biomagus",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A protected six-drop flyer that is fine."
+  },
+  {
+   "card": "Ruric Thar, Biomagus",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Blue will win by out-carding rather than with a six-drop."
+  },
+  {
+   "card": "Predictive Preparations",
+   "host": "Marc",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "An expensive flashback, and it can't stack counters on one creature."
+  },
+  {
+   "card": "Predictive Preparations",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Weak even in counters decks."
+  },
+  {
+   "card": "Unflinching Hortimancer",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A pillar of GW that grows fast off prepared spells and Kitesail."
+  },
+  {
+   "card": "Unflinching Hortimancer",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "C+ within GW specifically."
+  },
+  {
+   "card": "Surgical Precision",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Like Murdock's Crusade, with a better cycle-for-life mode."
+  },
+  {
+   "card": "Surgical Precision",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Premium removal, though with slightly fewer big unprotected targets."
+  },
+  {
+   "card": "Campus Crier",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "An instant-speed Empower 2 from the graveyard; use it after they kill your Jace, not to protect it."
+  },
+  {
+   "card": "Academic Ascent",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A two-mana flying pump whose Empower 2 almost cantrips."
+  },
+  {
+   "card": "Graft Surgeon",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A textbook C- that passes its counters on when it dies."
+  },
+  {
+   "card": "Shatterwing Pegasus",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "The five-mana pump is far worse than four would be."
+  },
+  {
+   "card": "Shatterwing Pegasus",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Filler flyer for WU."
+  },
+  {
+   "card": "Memory Trap",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Classic enchantment removal."
+  },
+  {
+   "card": "Memory Trap",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A good removal spell."
+  },
+  {
+   "card": "Fateshaper Aspirant",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Sometimes returns a great legend."
+  },
+  {
+   "card": "Fateshaper Aspirant",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "The definition of filler five-drop."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Three 2/2s plus Empower Jace with landcycling is one of the best landcyclers ever."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Close to Imperial Oath, but not splashable and has no vigilance."
+  },
+  {
+   "card": "Tomik, Orzhov Lawmage",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A solid two-mana flyer that grants flying to countered creatures and limits attacks on walkers."
+  },
+  {
+   "card": "Refute Destiny",
+   "host": "both",
+   "grade_said": "sideboard",
+   "grade": "none",
+   "take": "A color-hate exile spell for the sideboard."
+  },
+  {
+   "card": "Teyo, Lightshield Expert",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Like Cryptic Coat-style flash value: protection, a counter or loyalty, and can turn Jace into a draw."
+  },
+  {
+   "card": "Prophesied End",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Planeswalkers make even control decks attack into it, so it hits reliably."
+  },
+  {
+   "card": "Prophesied End",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Fine for WU flyers that don't mind killing attackers."
+  },
+  {
+   "card": "Your Fate Ends Here",
+   "host": "Marc",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Clean instant removal with a surveil that answers mythic walkers."
+  },
+  {
+   "card": "Your Fate Ends Here",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Hits nearly everything you care about."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "Alex",
+   "grade_said": "C (leaning C+)",
+   "grade": "C",
+   "take": "A deck-specific inevitability engine for slow white decks, rebuying Ways and entry effects."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Needs to untap, is easy to misuse, and is very tricky."
+  },
+  {
+   "card": "Koth of the Homestead",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Good in heavy white with lifegain and counters each land drop."
+  },
+  {
+   "card": "Koth of the Homestead",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A bad top deck, and weak unless heavy white."
+  },
+  {
+   "card": "Yoshimaru, Beloved Companion",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Not exciting on curve."
+  },
+  {
+   "card": "Yoshimaru, Beloved Companion",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Easy to get the first counter, but should probably be lower."
+  },
+  {
+   "card": "Way of the Mentor",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Lifegain decks want to beat down, not stockpile Jace."
+  },
+  {
+   "card": "Way of the Mentor",
+   "host": "Marc",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "Poor fit for the deck it targets."
+  },
+  {
+   "card": "Danitha, Sword of Hope",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "First strike plus draw off prepared spells and tricks; great with the deathtouch aura."
+  },
+  {
+   "card": "Danitha, Sword of Hope",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Solid with targeting synergy."
+  },
+  {
+   "card": "Generous Revival",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "WB attrition recursion that combos with Sinister Mastermind; not for every deck."
+  },
+  {
+   "card": "Thalia, the Survivor",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A lifelink 3/4 whose tax on noncreature spells acts like ward and slows their Ways."
+  },
+  {
+   "card": "Yuriko, Blade of the Mighty",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "A small body whose symmetric combat lock is weak."
+  },
+  {
+   "card": "Yuriko, Blade of the Mighty",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Not very good power-wise."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Alex",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "The best Way: a -2 for a 2/2 plus surveil makes every Jace activation great."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Insane; every activation becomes a -2."
+  },
+  {
+   "card": "Saheeli, Consul of Oversight",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Strong if you reliably have a Jace token, otherwise a vanilla 4/4 flyer."
+  },
+  {
+   "card": "Ghalta the Immovable",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Works with high-toughness blue creatures in WU."
+  },
+  {
+   "card": "Ghalta the Immovable",
+   "host": "Marc",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "Far worse than green Ghalta with no trample, and it rots in hand."
+  }
+ ],
+ "format": {
+  "summary": "A complex, balanced set built around Empower Jace, which creates or loads a Jace planeswalker token with -1 surveil 1 and -3 draw a card. Ten archetypes: five allied 'school' pairs on rails with hybrid prepared spells, and five broader enemy pairs for experienced drafters. Packs have fewer commons (71 in set) plus three mirrored/echo-pair legends, so decks are uncommon- and rare-heavy with high average power. Play skill and deckbuilding matter a lot, so stats may diverge between top players and all players.",
+  "speed": "Likely midrange to grindy rather than fast. Red lacks aggressive two-drops and the RB ping plan looks weak, but you need early creatures, ideally 2-power or evasive, to pressure opposing Jace tokens and protect your own.",
+  "colors": [
+   {
+    "color": "U",
+    "take": "Possibly the best color at common and uncommon, with strong card advantage, surveil enablers, Countersculpt, and Unsummon."
+   },
+   {
+    "color": "G",
+    "take": "Strong uncommons, solid commons, and great ramp payoffs; no broken commons."
+   },
+   {
+    "color": "R",
+    "take": "Better than expected thanks to great removal and a strong top end, but short on good aggressive two-drops."
+   },
+   {
+    "color": "B",
+    "take": "Called the worst color, but only narrowly: its removal is excellent, it is attrition-focused, and it has a mini sacrifice theme; a good support color."
+   },
+   {
+    "color": "W",
+    "take": "Called the second-worst color, with good removal but lacking the usual busted rares at lower rarity."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "WU",
+    "take": "Aggro-tempo flyers built around surveil; possibly one of the strongest because its cards all pull the same way."
+   },
+   {
+    "pair": "UB",
+    "take": "Flexible graveyard-value deck: good-stuff control, turbo self-mill, or threshold beatdown."
+   },
+   {
+    "pair": "BR",
+    "take": "Pinging for non-combat damage; the most dubious archetype, probably better built grindy around Command the Stage than as burn-aggro."
+   },
+   {
+    "pair": "RG",
+    "take": "Ramp and artifacts via Heartwood tokens, deliberately easy to play; Craftwork Crusher is a premium payoff, and it can also build aggressively with charms."
+   },
+   {
+    "pair": "WG",
+    "take": "Lifegain and +1/+1 counters; looks pushed and scary, though lifegain payoffs are fewer than they appear."
+   },
+   {
+    "pair": "WB",
+    "take": "Attrition, sacrifice, and counters; Twisted Fates is a standout."
+   },
+   {
+    "pair": "UR",
+    "take": "A broad spells/prowess deck; Clash of Elements and Twinned Vision are glue."
+   },
+   {
+    "pair": "BG",
+    "take": "Graveyard midrange with Hapatra; the advertised deathtouch-plus-trample theme looks thin."
+   },
+   {
+    "pair": "WR",
+    "take": "Counters-matter with haste enablers like Mabel and Gallia."
+   },
+   {
+    "pair": "UG",
+    "take": "Wants maximum Empower Jace and multiple Way enchantments; Kiora's 8/8 plan is a trap."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace",
+    "take": "A great balancing knob: Empower 3 is about a card, Empower 2 about two-thirds. You can activate Jace only once per turn, so empowering again only gives a second activation if the first one used up all the loyalty; even numbers like 2 and 4 create interesting tension."
+   },
+   {
+    "name": "Prepared",
+    "take": "Each school's common/uncommon hybrid prepared spell is unique to that pair. The GW spell is closest to worth its cost, while the UB and RB one-mana spells don't affect the board. You've seen every copy of each once you've seen the multicolor section, so don't overestimate their density."
+   },
+   {
+    "name": "Way enchantments",
+    "take": "Legendary enchantments that empower Jace and grant new walker abilities or triggers; they linger and make every later empower threatening. Way of the Healer is the best; Necromancer and Mentor are the worst."
+   },
+   {
+    "name": "Echo/mirrored pairs",
+    "take": "Three per pack: one full pair plus half of another, often rares. Seeing which pair is missing lets you infer what the drafter who passed you likely took."
+   },
+   {
+    "name": "Threshold",
+    "take": "Seven or more cards in the graveyard; it rewards stats on commons but lacks keywords, and can be turned on at instant speed with the charm and mill."
+   },
+   {
+    "name": "Planeswalker dual lands",
+    "take": "Ten tapped duals that enter untapped if you control a planeswalker, graded C+; two-mana fixing lands are no longer needed."
+   },
+   {
+    "name": "Basic landcycling",
+    "take": "Two-mana landcyclers with mana value 6 fetch any basic and are good reanimation and Hapatra enablers; costly to use on turn two in this format."
+   },
+   {
+    "name": "Color-hate cycle",
+    "take": "Efficient sideboard cards hitting two colors."
+   }
+  ],
+  "advice": [
+   "When attacking a Jace token, send one awkward-to-block creature at it and the rest at the opponent's face; don't overcommit damage to a low-loyalty Jace.",
+   "Attacking down a Jace is effectively like gaining life, so pressure it, but prioritize face when the opponent is low.",
+   "Prioritize strong uncommons and rares: roughly half of each draft's cards are commons, so decks are high-powered.",
+   "Draft early two-drops that can attack to pressure opposing Jace tokens.",
+   "In enemy pairs, draft good stuff first and lean into synergies only as they appear.",
+   "Triple-pipped gold uncommons are meant for their pair, so don't expect to splash them easily.",
+   "Unsummon is premium in a format full of big tokens.",
+   "Use Campus Crier's graveyard ability after the opponent kills your Jace rather than to protect it.",
+   "Don't attack with Surveillance Phantasm while tapped out into green reach or white flying tricks.",
+   "When an opponent targets your token with Clash of Elements, choose not to put it on top and take the two damage.",
+   "Play at most one Medic's Kitesail."
+  ]
+ }
+}

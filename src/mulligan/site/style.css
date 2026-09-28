@@ -75,7 +75,7 @@ footer { max-width: 760px; margin: 0 auto; padding: 24px 16px 40px; color: var(-
 /* ---- format tools ---- */
 body.tool main { max-width: 1040px; }
 body.tool header.top { max-width: 1040px; }
-.sans, .filters, .fresh, .pickcols, .pickout, .pairdetail, table.cards, table.pairs {
+.sans, .filters, .fresh, .pickcols, .pickout, .pairdetail, .synout, table.cards, table.pairs {
   font-family: ui-sans-serif, system-ui, sans-serif; }
 .fresh { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
@@ -157,3 +157,8 @@ ul.decklist { columns: 2; font-size: 15px; padding-left: 18px; }
   .barcell, .ibar { width: 90px; }
 }
 body.tool footer { max-width: 1040px; }
+.filters .nameinput { flex: 1 1 260px; }
+.grade.expert { outline: 1px dashed currentColor; outline-offset: 1px; }
+td.takes div { margin: 2px 0; font-size: 14px; line-height: 1.4; }
+table.prose td { vertical-align: top; line-height: 1.45; }
+ul.episodes { font-size: 14px; }

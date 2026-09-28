@@ -635,6 +635,27 @@ def synergy_cmd(
         console.print(f"[dim]wrote {out}[/dim]")
 
 
+@app.command("experts")
+def experts_cmd(
+    set_code: str = typer.Option(..., "--set"),
+    episode: list[str] = typer.Option(None, help="Episodes to (re)extract; default: new ones."),
+    synthesize: bool = typer.Option(True, help="Rewrite the overview afterwards."),
+):
+    """Podcast set reviews -> per-card grades and a format overview (Claude API;
+    needs ANTHROPIC_API_KEY, e.g. in .env). Transcripts must already be in
+    data/raw/podcasts/<episode>.txt."""
+    from . import experts
+    todo = episode or [s for s in experts.EPISODES[set_code]
+                       if (experts.RAW / f"{s}.txt").exists()
+                       and not (experts.OUT / "experts" / set_code / f"{s}.json").exists()]
+    for slug in todo:
+        console.print(f"extracting {slug}")
+        console.print(f"[dim]wrote {experts.extract(set_code, slug)}[/dim]")
+    if synthesize:
+        console.print("synthesizing")
+        console.print(f"[dim]wrote {experts.synthesize(set_code)}[/dim]")
+
+
 @app.command("site")
 def site_cmd():
     """Render the findings site (blog/ -> site/). Needs the 'site' extra."""

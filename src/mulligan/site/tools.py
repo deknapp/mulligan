@@ -14,10 +14,12 @@ import json
 import re
 from pathlib import Path
 
+from ..limited.synergy import synergies
 from .figures import DraftRun, _colors
 
 MIN_PAIR_GAMES = 60        # a card's record inside one pair is shown from this many games
 PRIOR_GAMES = 200          # shrink card win rates toward the set average by this many games
+PAIRS_PER_CARD = 12        # card-pair synergies kept per card, from each end
 REMOVAL_OPS = {"destroy", "exile", "damage", "fight", "bounce", "stun"}
 
 
@@ -59,6 +61,26 @@ def deck_profile(run: DraftRun, names: list[str]) -> dict[str, float]:
         "twos": sum(run.data.playable[e["name"]].cost.mana_value <= 2 and "Creature" in e["types"]
                     for e in spells),
     }
+
+
+def synergy_export(cells: dict, index: dict[str, int]) -> dict | None:
+    """Card-pair synergies for the site, compact: [card a, card b, estimate and
+    standard error in tenths of a point, games with both in the deck]. Keeps
+    each card's strongest pairs both ways, which is what the page can show."""
+    result = synergies(cells)
+    rows = [r for r in result["pairs"] if r["a"] in index and r["b"] in index]
+    if not rows:
+        return None
+    keep: set[int] = set()
+    by_card: dict[str, list[int]] = {}
+    for i, r in enumerate(rows):
+        by_card.setdefault(r["a"], []).append(i)
+        by_card.setdefault(r["b"], []).append(i)
+    for ids in by_card.values():   # rows are sorted best first
+        keep.update(ids[:PAIRS_PER_CARD] + ids[-PAIRS_PER_CARD:])
+    return {"tau": round(1000 * result["tau"]) / 10, "pairs": len(rows),
+            "p": [[index[r["a"]], index[r["b"]], round(1000 * r["est"]),
+                   round(1000 * r["se"]), r["n"]] for i, r in enumerate(rows) if i in keep]}
 
 
 def export(run_path: Path) -> dict:
@@ -106,6 +128,8 @@ def export(run_path: Path) -> dict:
         "mean": round(mean, 4), "prior": PRIOR_GAMES,
         "play": run.raw.get("on_the_play"), "cards": cards, "pairs": pairs,
         "pc": pair_cards,
+        "syn": synergy_export(run.raw.get("card_pairs", {}),
+                              {c["n"]: i for i, c in enumerate(cards)}),
     }
 
 
