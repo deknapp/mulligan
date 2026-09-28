@@ -1,0 +1,331 @@
+{
+ "show": "Limited Level-Ups",
+ "title": "#261: Reality Fracture First Impressions",
+ "date": "2026-09-18",
+ "url": "https://limitedlevelups.libsyn.com/",
+ "hosts": [
+  "Marc",
+  "Alex"
+ ],
+ "scale": "No grades given; this is a first-impressions episode, and the show normally grades in its full set review.",
+ "cards": [
+  {
+   "card": "Way of the Healer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Seems pretty good, because a -2 that makes a 2/2 and surveils 1 is usually a better use of Jace than the base -3 draw a card."
+  },
+  {
+   "card": "Compel Brutality",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Looks really strong: targeting your own planeswalker makes it hard to blow out, and a high-loyalty Jace can turn it into a two-mana deal-eight."
+  },
+  {
+   "card": "Craftwork Crusher",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A seven-mana 7/5 trampler with two modes on entry; the ramp deck will often cast it on turn six, and it would have been a rare a few years ago."
+  },
+  {
+   "card": "Konstrari Charm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Quite good, mainly because two +1/+1 counters plus trample is a strong mode, while the flyer-kill and ritual modes are good situationally."
+  },
+  {
+   "card": "Bloombrute",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Usually wary of expensive creatures without immediate impact, but expects this to draw a card right away fairly often thanks to enter-and-gain-life effects."
+  },
+  {
+   "card": "Greenhouse Propagator",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Could go either way: a three-mana dork that only makes green is unexciting, but gaining four or five life over a game is real, even in ramp decks."
+  },
+  {
+   "card": "Unflinching Hortimancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A nice common life-gain payoff that trades a point of toughness for Ward 1, which is slightly unfavorable but fine, and it pairs well with Medic's Kitesail."
+  },
+  {
+   "card": "Medic's Kitesail",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Gives GW an evasive attacker that gains life every turn, growing Hortimancer and triggering Bloombrute right away."
+  },
+  {
+   "card": "Surgical Precision",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Predicted to be one of the best commons: better than Murdock's Crusade because the good mode gains life and the draw mode works like cycling when there is no target."
+  },
+  {
+   "card": "Denzilore Fatehold",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A four-mana 3/4 flyer that pumps another attacker each combat, or gives it a permanent counter after a scry or surveil; a pretty good aggressive WU payoff."
+  },
+  {
+   "card": "Surveillance Phantasm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A nice take on the two-mana blue defender that can attack once you've scried or surveilled, which WU and Jace tokens enable easily."
+  },
+  {
+   "card": "Eye of Jace",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Reads weak but gives steady filtering and surveil triggers, then burns for two, and surveiling into flashback cards may make it worth a card; could be sneaky good or among the worst in the set."
+  },
+  {
+   "card": "Recursive Recruitment",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A good gold card: four mana for two 2/2s up front, and the expensive flashback later makes much bigger tokens in the self-mill deck."
+  },
+  {
+   "card": "Loot, the Anomaly",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A strange design that plays like a three-mana 2/4 you can pump at threshold, with a cute combo alongside Tetsuko Umezawa for big unblockable hits."
+  },
+  {
+   "card": "Clash of Elements",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A nice removal spell: a top-or-bottom tuck that costs a mana less than usual and punishes opponents who keep the card on top."
+  },
+  {
+   "card": "Saheeli, Jewel of Avishkar",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A pretty good UR gold card: a 2/4 that makes hasty flying Thopters off noncreature spells."
+  },
+  {
+   "card": "Unsummon",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Has been good for decades and is exactly what UR wants, helping it keep pace and move big blockers out of the way."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A pretty good common for UR: a cheap cantrip that triggers spell payoffs twice and nets real card advantage through flashback."
+  },
+  {
+   "card": "Edgar, Ancient Bloodlord",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A really good WB attrition gold card that gains life on deaths and turns sacrifices into counters and menace."
+  },
+  {
+   "card": "Twisted Fates",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A clearly pushed gold card: unconditional removal of any nonland permanent plus counters on your team."
+  },
+  {
+   "card": "Lich's Relic",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Basically a better, correctly-rare version of an equipment that was a top attrition card in The Hobbit: removal on entry plus +2/+1; expected to be one of the best rares."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Good on its own, since it comes in and kills or badly shrinks a creature, which is ideal for BG midrange."
+  },
+  {
+   "card": "Primal Witchstalker",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A solid standalone BG body with menace whose mill-four and land-return give value and graveyard synergy."
+  },
+  {
+   "card": "Bestial Incursion",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A pretty good common flashback card: a 4/4 trampler now and another later for six."
+  },
+  {
+   "card": "Warrior's Blades",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Another very strong gold card: three damage to any target plus three life on entry, then a +2/+1 equip that gets cheaper on countered creatures."
+  },
+  {
+   "card": "Mabel, Valley Hero",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Part of the strong-gold-card trend, handing out +1/+1 counters as creatures enter in RW aggro."
+  },
+  {
+   "card": "Kiora of Salt and Sand",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Likes the look of this 2/4 that makes attackers unblockable and gives planeswalkers a big Leviathan ultimate, but unsure how good it is."
+  },
+  {
+   "card": "Mind Meanderer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A confident banger: a 4/4 flyer that fights on entry, and its GUU cost stops green ramp decks from easily splashing it."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Would be playable even without basic landcycling, since six mana for three 2/2s plus Empower Jace 2 is solid, and cycling makes it flexible."
+  },
+  {
+   "card": "Awaken the Inferno",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Likely to be overlooked as clunky six-damage removal, but the +1/+1 counter adds stats to the board and landcycling makes it the second-best of the cycle."
+  }
+ ],
+ "format": {
+  "summary": "A complex, full-size set with 10 color pairs, built around paired Multiverse/Echoverse legends and the Empower Jace mechanic. The five allied pairs are Strixhaven-style schools with clear enabler/payoff themes, while the enemy pairs are looser traditional archetypes; drafts expected to split roughly 60/40 between schools and enemy pairs, unlike Lorwyn Eclipsed's roughly 90/10. Gold cards and charms look notably pushed.",
+  "speed": "Not directly stated. Aggressive decks exist (UB-free RW, WU, BR aggro), alongside ramp and midrange; how often players should attack opposing Jace tokens versus racing is an open question.",
+  "colors": [
+   {
+    "color": "W",
+    "take": "Has strong commons like Surgical Precision and supports life gain, and landcycling spells like Hexhaven Battalion."
+   },
+   {
+    "color": "U",
+    "take": "Has strong blue staples like Unsummon plus scry/surveil tools, and anchors Empower Jace and the spells decks."
+   },
+   {
+    "color": "B",
+    "take": "Supports attrition and self-mill; Lich's Relic stands out as a top rare."
+   },
+   {
+    "color": "R",
+    "take": "Has removal like Awaken the Inferno and supports pinging and spells aggro."
+   },
+   {
+    "color": "G",
+    "take": "Supports ramp, life gain and counters, with flashback threats like Bestial Incursion."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "RG",
+    "take": "Konstrari: a true dedicated ramp deck using Heartwood mana tokens to power out big payoffs like Craftwork Crusher a turn early."
+   },
+   {
+    "pair": "BR",
+    "take": "Stingerquill: aggro that cares about noncombat damage and pinging the opponent, death by a thousand cuts, with Grim Repriser recursion."
+   },
+   {
+    "pair": "WG",
+    "take": "Vigorbloom: a creature deck built on life gain, with +1/+1 counters as a secondary theme; key pieces are Bloombrute, Unflinching Hortimancer and Medic's Kitesail."
+   },
+   {
+    "pair": "WU",
+    "take": "Fatehold: aggro that cares about scrying and surveilling, with plenty of triggers available, including Jace's -1."
+   },
+   {
+    "pair": "UB",
+    "take": "Theorix: self-mill feeding flashback and threshold (seven or more cards in the graveyard) payoffs like Recursive Recruitment."
+   },
+   {
+    "pair": "UR",
+    "take": "Spellslingers; one of the cooler-looking decks, helped by Unsummon, flashback and cheap card-draw commons. It is easy to build wrong by mixing red aggressive and blue controlling spell payoffs, so commit to one."
+   },
+   {
+    "pair": "WB",
+    "take": "Attrition, with strong gold cards: sacrifice fodder, discard creatures and 1.5-for-1 effects that grind out an advantage."
+   },
+   {
+    "pair": "BG",
+    "take": "Midrange, wanting cards that are good on their own, with some graveyard and flashback flavor."
+   },
+   {
+    "pair": "WR",
+    "take": "Aggro with +1/+1 counters and strong gold cards like Warrior's Blades."
+   },
+   {
+    "pair": "UG",
+    "take": "Empower Jace; more a multicolor shell that splashes the Way enchantments to stack abilities on a Jace token, with Mind Meanderer a standout."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Echoed pairs (Multiverse/Echoverse legends)",
+    "take": "Legends appear as two differently colored versions. Packs show a full pair plus one extra half-pair, which hides what the neighboring drafter took."
+   },
+   {
+    "name": "Empower Jace",
+    "take": "Adds loyalty to a Jace token (-1 surveil 1, -3 draw a card). Roughly, Empower Jace 3 is about a card, but the value arrives over time and the token can be attacked or burned."
+   },
+   {
+    "name": "Way enchantments",
+    "take": "A double uncommon cycle, two per color, that empowers Jace and grants your planeswalkers new abilities, often better than the base ones."
+   },
+   {
+    "name": "Prepared (school hybrid cards)",
+    "take": "Each school's hybrid uncommon becomes prepared with a shared school-specific spell, keeping each archetype's strategy consistent."
+   },
+   {
+    "name": "Flashback and threshold",
+    "take": "Support graveyard strategies and help self-mill, UR spells and value cards like Eye of Jace."
+   },
+   {
+    "name": "Charms and gold cards",
+    "take": "Noticeably pushed and stronger than Strixhaven's."
+   },
+   {
+    "name": "Fixing lands",
+    "take": "A cycle of duals that enter untapped with a planeswalker, a common choose-a-color land, and spells with basic landcycling for any basic."
+   }
+  ],
+  "advice": [
+   "Expect roughly 60% of decks to be allied school pairs, but enemy pairs are viable if you read signals and know how to assemble archetypes like midrange or aggro yourself.",
+   "Prioritize the pushed gold uncommons and charms.",
+   "Treat Empower Jace 3 as roughly a card, but remember the draw is spread over turns and the token can be attacked.",
+   "Consider attacking opposing Jace tokens versus simply racing; this is still an open question.",
+   "In UR, commit to either red-based spells aggro or blue-based control, not a mix of both payoffs.",
+   "Surgical Precision is likely one of the best commons.",
+   "Value landcyclers that are playable on their own, like Hexhaven Battalion and Awaken the Inferno.",
+   "Don't overlook stats added to the board, like the counter on Awaken the Inferno."
+  ]
+ }
+}

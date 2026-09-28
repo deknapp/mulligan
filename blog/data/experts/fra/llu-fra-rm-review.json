@@ -1,0 +1,978 @@
+{
+ "show": "Limited Level-Ups",
+ "title": "Reality Fracture Rare + Mythic Set Review",
+ "date": "2026-09-25",
+ "url": "https://limitedlevelups.libsyn.com/",
+ "hosts": [
+  "Marc",
+  "Alex"
+ ],
+ "scale": "Letter grades (A+ to F), plus 'build-around' and 'sideboard' tags",
+ "cards": [
+  {
+   "card": "Proctor of Potential",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Efficient two-drop that surveils on each creature entering and can return itself the same turn, making it both enabler and payoff in blue-white surveil decks."
+  },
+  {
+   "card": "Denzilore Fatehold",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Four-mana flyer that pumps your whole team on every scry or surveil and wins fast if it sticks, though flash matters less since most surveils come from main-phase Jace activations."
+  },
+  {
+   "card": "Null Summoner",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A 4/2 that permanently strips their best card (killing it doesn't return the card), with threshold letting you eventually cast it, and it gets better when recurred."
+  },
+  {
+   "card": "Uldaros Theorix",
+   "host": "Marc",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Six-mana 5/5 flyer that recasts graveyard spells for free; gross even with minor targets, and he conceded Alex's higher grade is probably right."
+  },
+  {
+   "card": "Uldaros Theorix",
+   "host": "Alex",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "Recasting a removal spell plus a creature on top of a 5/5 flyer is a massive game swing."
+  },
+  {
+   "card": "Stinging Vitriol",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Solid discard-plus-burn, but timing is awkward in aggressive red-black where you want to trigger non-combat damage payoffs first."
+  },
+  {
+   "card": "Stinging Vitriol",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Taking their best card early and two damage late both matter, especially with payoffs, though it's among the weaker gold rares."
+  },
+  {
+   "card": "Ingris Stingerquill",
+   "host": "Alex",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A flying Hellrider that also makes hasty tokens and demands an immediate answer, but its all-colored pips make it hard to cast outside dedicated red-black."
+  },
+  {
+   "card": "Ingris Stingerquill",
+   "host": "Marc",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Cast on curve it can win the game, and it's a reason to prioritize the matching dual lands."
+  },
+  {
+   "card": "Tenured Tethermage",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "He moved it up after seeing it play: it ramps, makes two artifacts, and grows at instant speed into a huge threat you must answer."
+  },
+  {
+   "card": "Tenured Tethermage",
+   "host": "Alex",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A card that ramps you and then becomes a must-answer threat is the sign of a great card."
+  },
+  {
+   "card": "Aerid Konstrari",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A 5/4 flyer for four that makes artifacts on entering and dying and has a late-game pump sink; could even be A+."
+  },
+  {
+   "card": "Solarium Sentry",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A fine 3/3 for two that taxes cheap spells, but in a slow grindy format a few two-life triggers rarely decide games; best in aggressive green-white."
+  },
+  {
+   "card": "Kwia Vigorbloom",
+   "host": "Marc",
+   "grade_said": "A, dropping to A-",
+   "grade": "A-",
+   "take": "Huge six-drop stats, but with no enters trigger it was repeatedly bounced and eventually exiled by the plentiful removal."
+  },
+  {
+   "card": "Kwia Vigorbloom",
+   "host": "Alex",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Probably the weakest of the Sphinxes, since ward two doesn't offset being a six-mana card in a removal-heavy set."
+  },
+  {
+   "card": "Vindictive Triumph",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Plays like a hard-to-cast Murder, with small upside from stealing cheap creatures or casting it on their end step to attack."
+  },
+  {
+   "card": "Frostbite Pyromental",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "In his controlling blue-red deck it rarely connected and just traded off, making it a clunky Divination at best."
+  },
+  {
+   "card": "Frostbite Pyromental",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Low-confidence grade; he thinks it's better in a front-foot tempo deck where the damage and cards come through."
+  },
+  {
+   "card": "Vraska, the Cutting Glare",
+   "host": "both",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A deathtouch 4/4 for three that later destroys any permanent, though the six-land requirement is slower than it looks since heartwoods don't count."
+  },
+  {
+   "card": "Solitary Cell",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Mostly a two-mana exile for a cheap permanent that red-white will almost always play, with the legend-rummage occasionally relevant."
+  },
+  {
+   "card": "Solitary Cell",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Cheap interaction that hits a lot of things, with rummaging away a weak legend sometimes useful."
+  },
+  {
+   "card": "Tam, the Possibility",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Almost exclusively a vanilla 2/4 with irrelevant planeswalker text; people will be tricked by it."
+  },
+  {
+   "card": "Entrust the Spark",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "A planeswalker tutor is a dead card whenever you've already drawn your walker and is not worth the deck slot."
+  },
+  {
+   "card": "Avatar of Burgeoning Echoes",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A two-mana 2/3 that empowers Jace two on each land drop is strong, and the ultimate becomes realistic with big empower cards."
+  },
+  {
+   "card": "Avatar of Burgeoning Echoes",
+   "host": "Alex",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Strong for its cheap landfall empower, with the -10 ability almost flavor text."
+  },
+  {
+   "card": "Vraska, Soul of Stone",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A three-color token maker that's mostly worse than the blue-red Saheeli and not worth the effort to cast."
+  },
+  {
+   "card": "Karn, Gilded Guardian",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Niche top end for two-color ramp decks that pay some pips via heartwoods, making it roughly a seven-mana 5/5 trampler that draws two."
+  },
+  {
+   "card": "Karn, Argent Defender",
+   "host": "both",
+   "grade_said": "sideboard",
+   "grade": "none",
+   "take": "A constructed hoser that's at best a sideboard card in limited."
+  },
+  {
+   "card": "Codie, Ravenous Codex",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Needs everything to line up, like copying blue-white prepared spells or a self-mill deck, and the activated ability isn't worth using."
+  },
+  {
+   "card": "Codie, Ravenous Codex",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "A dream card for decks with many prepared spells, including higher-rarity ones, or turbo self-mill blue-black."
+  },
+  {
+   "card": "The Echoverse Fulcrum",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A seven-mana wrath is maybe playable in this slow format, but the loot fights with needing to hit seven lands."
+  },
+  {
+   "card": "The Echoverse Fulcrum",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Playable in a grindy format, and it's a colorless wrath that anyone could have."
+  },
+  {
+   "card": "Emrakul, the Exigent Doom",
+   "host": "Alex",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Effectively a nine-mana card that doesn't reliably win when cast, and opponents can sac lands to ward and see it coming."
+  },
+  {
+   "card": "Emrakul, the Exigent Doom",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A late pick for heartwood ramp decks lacking top end, since a 12/12 is hard to kill and it doubles as a weak ramp spell."
+  },
+  {
+   "card": "Hall of Echoes",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Just clears the bar as a colorless utility land that can copy your best creature or legend, but skip it in aggro or heavy-pip decks."
+  },
+  {
+   "card": "Roiling Canopy",
+   "host": "Alex",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Needing five other forests for a mere +3/+3 isn't worth running a tapped land."
+  },
+  {
+   "card": "Roiling Canopy",
+   "host": "Marc",
+   "grade_said": "D-, moving to F",
+   "grade": "F",
+   "take": "Even with Verdant Kraken he didn't run it, since it does nothing until around turn seven even in mono-green."
+  },
+  {
+   "card": "Deserted Beach",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Nearly always enters untapped, making it better than the common duals and a fine mid-pack pick."
+  },
+  {
+   "card": "Haunted Ridge",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Nearly always enters untapped, making it better than the common duals and a fine mid-pack pick."
+  },
+  {
+   "card": "Overgrown Farmland",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Nearly always enters untapped, making it better than the common duals and a fine mid-pack pick."
+  },
+  {
+   "card": "Rockfall Vale",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Nearly always enters untapped, making it better than the common duals and a fine mid-pack pick."
+  },
+  {
+   "card": "Shipwreck Marsh",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Nearly always enters untapped, making it better than the common duals and a fine mid-pack pick."
+  },
+  {
+   "card": "Theorist's Sanctum",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "An Island with an instant-speed empower Jace mana sink that every blue deck should play."
+  },
+  {
+   "card": "Puppet Crafting",
+   "host": "both",
+   "grade_said": "build-around C",
+   "grade": "C",
+   "take": "A buyback Ensoul Artifact that turns heartwoods or Eye of Jace into 5/5s, wanting at least six or seven artifact or enchantment targets."
+  },
+  {
+   "card": "Carnivorous Cultivator",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A deathtouch 2/3 for two that deters blocks and returns lands, which reach the graveyard often through milling."
+  },
+  {
+   "card": "Gardenize",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Dismissed as a constructed card; just playing a basic land does more."
+  },
+  {
+   "card": "Simulacrum Shaper",
+   "host": "both",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A one-mana-cheaper Solemn Simulacrum that ramps, replaces itself, and felt great every time."
+  },
+  {
+   "card": "Hungering Puppetbeast",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A beefy five-drop that's nearly impossible to kill thanks to sac-for-hexproof, and it grows with trample to push damage."
+  },
+  {
+   "card": "Verdant Kraken",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Makes a 3/3 land creature every upkeep, providing both bodies and mana for the set's many sinks."
+  },
+  {
+   "card": "Tarmogoyf",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A growing two-drop that most green decks will happily play, better with self-mill."
+  },
+  {
+   "card": "Hexhaven Invigorator",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Graded assuming you have the needed green sources, which heartwoods help with; 12 is the bare minimum."
+  },
+  {
+   "card": "Hexhaven Invigorator",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Graded on how often decks will actually have enough sources for quadruple green."
+  },
+  {
+   "card": "Garruk, Curse Breaker",
+   "host": "Alex",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Even the floor of a 4/4 trampler plus a card with a leftover walker is very strong."
+  },
+  {
+   "card": "Garruk, Curse Breaker",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Still Owlbear-plus value even when it's immediately attacked."
+  },
+  {
+   "card": "Omnipresence",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Quickly dismissed as unplayable in limited."
+  },
+  {
+   "card": "Ajani's Anguish",
+   "host": "Alex",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A Fireball with meaningful trample upside that's great to reuse with Rescue Girl."
+  },
+  {
+   "card": "Ajani's Anguish",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Pre-combat face burn plus trample creates real lethal, and it's a great Pia tutor target."
+  },
+  {
+   "card": "Pompous Battlemage",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "An efficient looting one-drop that reads like a good common and belongs mainly in aggressive red decks."
+  },
+  {
+   "card": "Samut, Hazoret's Champion",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Giving everything haste is good, but it's ultimately a 2/2 torn between attacking and staying alive for the effect."
+  },
+  {
+   "card": "Samut, Hazoret's Champion",
+   "host": "Marc",
+   "grade_said": "B-, moving to C+",
+   "grade": "C+",
+   "take": "After playing he agreed it's a fine but fragile 2/2 haste enabler."
+  },
+  {
+   "card": "Master of Barbs",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A strong payoff for aggressive red-black non-combat damage, and nuts with Ingris Stingerquill."
+  },
+  {
+   "card": "Pyre Rhymer",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A solid aggressive 3/3 prowess whose instant-speed prepared spell adds a threatening combat pump."
+  },
+  {
+   "card": "Pyre Rhymer",
+   "host": "Marc",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Its mana spell needs three mountains to do more than trigger prowess."
+  },
+  {
+   "card": "Identity Echo",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Not for limited; only try it if the polymorph will actually win the game."
+  },
+  {
+   "card": "Curse-Marred Demon",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A well-statted 4/4 flying trampler whose tutor-then-random-discard creates interesting decisions."
+  },
+  {
+   "card": "Draconic Visitor",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Often just a vanilla 5/5 flyer, but with artifact token makers like the red-green hybrid uncommon it can churn out dragons."
+  },
+  {
+   "card": "Face Yourself",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Swingy seven-drop that works best with a planeswalker or empower-Jace support to keep the copies, and can target either player."
+  },
+  {
+   "card": "Stingcaster Mage",
+   "host": "Marc",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "People will underestimate how many valid instants and sorceries you need, but with enough it's good."
+  },
+  {
+   "card": "Stingcaster Mage",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Great in a removal-heavy red-black control build packed with spells."
+  },
+  {
+   "card": "Chandra, Torch of Defiance",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Still a banger thanks to card advantage, burn, mana, removal, and a quick ultimate."
+  },
+  {
+   "card": "Ajani Unrelenting",
+   "host": "both",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "Makes a token with every activation, pumps and hastes the team, refills your hand, or one-sided wipes; extremely hard to beat."
+  },
+  {
+   "card": "Craterclaw Colossus",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A red Craterhoof that's castable in this slow format and goes from medium to quite strong with one artifact; B+ range in red-green artifacts."
+  },
+  {
+   "card": "Lich's Relic",
+   "host": "both",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Essentially a better Bent Blade that destroys a targeted creature and leaves a useful equipment."
+  },
+  {
+   "card": "Dark Matter Manipulator",
+   "host": "Alex",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Mostly a 1/2 that mills three and eventually grows, playable but unexciting."
+  },
+  {
+   "card": "Dark Matter Manipulator",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "The early mill has a good chance to hit something useful and it grows later."
+  },
+  {
+   "card": "Extrapolate the Impossible",
+   "host": "Alex",
+   "grade_said": "D-",
+   "grade": "D-",
+   "take": "Can fetch a basic early or a sideboard bomb late, but the black common landcycler is better."
+  },
+  {
+   "card": "Extrapolate the Impossible",
+   "host": "Marc",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Not worth playing in limited."
+  },
+  {
+   "card": "Vraska's Final Mercy",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A modal sorcery-speed kill spell or Sign in Blood, with a tough double-black cost."
+  },
+  {
+   "card": "Liliana the Repentant",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A self-milling two-drop with a strong reanimation exhaust that won games alongside land recursion, though you must watch your library."
+  },
+  {
+   "card": "Sanctum Lurker",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Great planeswalker play pattern, but a bit worse than it looks since the body must stay out of combat to keep benefits."
+  },
+  {
+   "card": "Sanctum Lurker",
+   "host": "Alex",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Pinging and then cashing in for a card while keeping a zero-loyalty walker around is excellent value."
+  },
+  {
+   "card": "Gideon the Oathless",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A sticky 3/3 with discard ward whose incidental pings add up; stronger than it looks."
+  },
+  {
+   "card": "Rise of the Deathbringer",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Instant-speed -3/-3 sweepers can be set up after combat or at end step, and it draws cards when you're ahead."
+  },
+  {
+   "card": "Rise of the Deathbringer",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Worries there are spots where neither mode is what you want, though he conceded Marc may be right."
+  },
+  {
+   "card": "Bloodline Recollector",
+   "host": "Alex",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Three deaths in a turn is a real hoop, though the instant draw-three payoff is strong."
+  },
+  {
+   "card": "Bloodline Recollector",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "In stalled boards it's plausible for three creatures to die in a turn, especially with sac-removal."
+  },
+  {
+   "card": "Darklight Phoenix",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A fine 3/2 flying haste for four; recursion needs a sac outlet since it only checks at beginning of combat."
+  },
+  {
+   "card": "Garruk, Veiled Butcher",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A dominant walker that can take over grindy games for many turns."
+  },
+  {
+   "card": "Overwrite the Multiverse",
+   "host": "both",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A one-sided-feeling exile wrath that also empowers Jace, which is feared in this board-stalling format."
+  },
+  {
+   "card": "Diviner of Victory",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Bouncing big tokens feels great, but he agreed it's noticeably worse than typical bounce creatures."
+  },
+  {
+   "card": "Diviner of Victory",
+   "host": "Alex",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A double-blue functional 1/1 that can't hit expensive cards, fitting best in tempo decks."
+  },
+  {
+   "card": "Samut, Tyrant of Naktamun",
+   "host": "Alex",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Functionally a vanilla 2/1 for two in limited."
+  },
+  {
+   "card": "Samut, Tyrant of Naktamun",
+   "host": "Marc",
+   "grade_said": "sideboard",
+   "grade": "none",
+   "take": "Could come in against opponents showing multiple counterspells."
+  },
+  {
+   "card": "Theorist's Proxy",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A cheaper, flash Hard Evidence that empowers Jace three; pretty good without being amazing."
+  },
+  {
+   "card": "Theorist's Proxy",
+   "host": "Marc",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Slightly low impact; would like it more with more toughness."
+  },
+  {
+   "card": "Variable Chaser",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Mostly a three-mana flying prowess 2/3, with a wheel prepared spell that's great in hand-dumping aggressive blue-red."
+  },
+  {
+   "card": "Cruel Calculations",
+   "host": "Alex",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Needs heavy self-mill pairing and most of the time is an overpriced draw three."
+  },
+  {
+   "card": "Cruel Calculations",
+   "host": "Marc",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Needs around seven or eight of the weak blue-black prepared mill creatures to work reliably."
+  },
+  {
+   "card": "Lyra, Tolarian Archangel",
+   "host": "both",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A 3/3 flyer that enables its own angel token with card draw like flashback looting, but needs heavy blue."
+  },
+  {
+   "card": "Jace's Machinations",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A souped-up Divination via empower eight, great with Kiora, but you see fewer cards when looking for gas."
+  },
+  {
+   "card": "Sphinx of False Conclusions",
+   "host": "Marc",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "His pick for best rare: a flash 4/2 flyer that loots on attack and returns as a token copy."
+  },
+  {
+   "card": "Sphinx of False Conclusions",
+   "host": "Alex",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Really strong whether used aggressively or as a trading ambusher."
+  },
+  {
+   "card": "Jace, Reality Sculptor",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Fine but the weakest walker; its big minus can't be repeated and the plus depends heavily on island count."
+  },
+  {
+   "card": "Seasoned Cryomancer",
+   "host": "Alex",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A skill-testing blue Seasoned Pyromancer that locks down creatures and is great to mill for later value."
+  },
+  {
+   "card": "Seasoned Cryomancer",
+   "host": "Marc",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Strong card-filtering value, with the graveyard draw-two a great late-game fallback."
+  },
+  {
+   "card": "Chandra, Chill of Compliance",
+   "host": "both",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Playable but much worse than its mirror, as the surveil plus rarely hits a noncreature spell, though it triggers surveil payoffs."
+  },
+  {
+   "card": "The Theorist, Jace Beleren",
+   "host": "both",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "Draws on each opponent's turn, protects itself with tokens, and has bounce and a big ultimate; a floor of four-mana 1/1 plus a card."
+  },
+  {
+   "card": "Guiding Hydra",
+   "host": "both",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "White's best rare, an X-drop that spreads counters across the team each combat and takes over games."
+  },
+  {
+   "card": "Loyal Tutor",
+   "host": "both",
+   "grade_said": "build-around D",
+   "grade": "D",
+   "take": "Only worth it with multiple planeswalkers including a game-winning one like Ajani or Jace."
+  },
+  {
+   "card": "Liliana the Faultless",
+   "host": "Marc",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Fun, skill-intensive card, though he could play around the protection by forcing taps or discards."
+  },
+  {
+   "card": "Liliana the Faultless",
+   "host": "Alex",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Soul Sister plus Mother of Runes; both abilities historically perform very well."
+  },
+  {
+   "card": "Gideon's Memorial",
+   "host": "both",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Mostly a mediocre removal spell with niche modes, though it's brutal with token-making planeswalkers like Ajani Unrelenting."
+  },
+  {
+   "card": "Repurposed Enforcer",
+   "host": "both",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A 3/2 whose attack empower forces awkward blocks, plays well with tricks, and can be traded for a card."
+  },
+  {
+   "card": "Germinate Recruits",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Willing to dream on this boom-or-bust card, best paired with the green-white charm for multiple instant-speed tokens."
+  },
+  {
+   "card": "Germinate Recruits",
+   "host": "Alex",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Lifegain comes in small chunks in this set, so it rarely makes enough tokens to be worth it."
+  },
+  {
+   "card": "Lyra, Archangel of Dawn",
+   "host": "both",
+   "grade_said": "B-, should be C+",
+   "grade": "C+",
+   "take": "A single-pipped 3/3 flyer is a good baseline, but with few angels to grow it's worse than the blue Lyra."
+  },
+  {
+   "card": "Flickering Hound",
+   "host": "Marc",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A slow four-mana 2/2 with dream upside blinking strong enters creatures like the red-green boar."
+  },
+  {
+   "card": "Flickering Hound",
+   "host": "Alex",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Tough to get working despite its high ceiling."
+  },
+  {
+   "card": "Kindred Judgment",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "No deep creature-type deck exists, but it can be a pure wrath or spare something, and wraths play up in this slow format."
+  },
+  {
+   "card": "Kindred Judgment",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A powerful seven-mana wrath that can usually spare at least one of your creatures."
+  },
+  {
+   "card": "Enlightened Confidant",
+   "host": "Alex",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Gaining even one life lets it surveil and pull back lands, which is solid value."
+  },
+  {
+   "card": "Enlightened Confidant",
+   "host": "Marc",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "Pretty good but not a bomb, since lifegain comes in small amounts."
+  },
+  {
+   "card": "Ajani Resolute",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "Tuned for constructed; slow to produce a Pridemate, offers no defense, and is a bad topdeck, especially on the draw."
+  },
+  {
+   "card": "Return to the Light Realms",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Too expensive to justify when it won't reliably win the game on resolution."
+  },
+  {
+   "card": "Charge the Sanctum",
+   "host": "both",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Neither pump mode is worth the mana, though it shows up in some go-wide red aggro decks."
+  }
+ ],
+ "format": {
+  "summary": "A grindy, deep format where every pack offers several playable options and decks in the same color pair can be built very differently. Rares show up often and games go long, so you see many rares, but the true bombs are mostly mythics. Much of the power sits in heavily pipped gold cards, and splashing is viable via heartwood tokens, land cyclers, and the mana rock, though strong narrow payoffs keep it from becoming soup.",
+  "speed": "Slow and grindy; few aggressive two-drops, games are decided on turn six and later, boards stall, and decking occasionally happens given self-mill.",
+  "colors": [
+   {
+    "color": "W",
+    "take": "No stack of busted white bombs this time; Guiding Hydra is its best rare, and green-white can win going wide with token makers like Hexhaven Battalion."
+   },
+   {
+    "color": "U",
+    "take": "Deep in surveil, card draw, and planeswalkers, with standouts Sphinx of False Conclusions, The Theorist, and Seasoned Cryomancer; double-blue three-drops need about 10-11 blue sources."
+   },
+   {
+    "color": "B",
+    "take": "Supports grindy graveyard recursion, great removal, and strong wraths like Overwrite the Multiverse that punish stalled boards."
+   },
+   {
+    "color": "R",
+    "take": "Has the top rare in Ajani Unrelenting plus Chandra, with non-combat damage payoffs for aggressive red-black."
+   },
+   {
+    "color": "G",
+    "take": "Heartwood ramp, mana sinks, and value creatures like Simulacrum Shaper and Verdant Kraken shine; mono-green payoffs exist but need many forests."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "RG",
+    "take": "Marc's early vote for best pair, strong with heartwood artifacts and ramp."
+   },
+   {
+    "pair": "WU",
+    "take": "Impressive, with builds ranging from surveil flyers aggro to more controlling Jace decks."
+   },
+   {
+    "pair": "BG",
+    "take": "Impressive grindy recursion deck that loops strong rares from the graveyard."
+   },
+   {
+    "pair": "BR",
+    "take": "Possibly a bit weaker, but its gold cards have no generic pips, so a committed drafter gets them all; aggro non-combat-damage and removal-heavy control builds both exist."
+   },
+   {
+    "pair": "UG",
+    "take": "Gets extra rares, but both gold rares (Tam and Entrust the Spark) are unplayable in limited."
+   },
+   {
+    "pair": "WG",
+    "take": "Fine; can be built go-wide without leaning on lifegain."
+   },
+   {
+    "pair": "UR",
+    "take": "Fine; controlling builds exist, though some cards want a tempo-aggro approach."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Activated abilities / mana sinks",
+    "take": "Overperformed because the slow format rewards having things to do with mana late."
+   },
+   {
+    "name": "Empower Jace",
+    "take": "Drives planeswalker synergies, and cards like Repurposed Enforcer and Avatar make it threatening."
+   },
+   {
+    "name": "Heartwood tokens",
+    "take": "Provide ramp, fixing for splashes, and artifact counts for payoffs like Craterclaw Colossus and Puppet Crafting."
+   },
+   {
+    "name": "Surveil/scry",
+    "take": "The blue-white engine can surveil nearly every turn, powering Proctor and Denzilore."
+   },
+   {
+    "name": "Prepared spells",
+    "take": "Add flexible value; some rares like Codie or Cruel Calculations need many prepared cards to shine."
+   },
+   {
+    "name": "Self-mill",
+    "take": "Common enough to put lands in the graveyard, fuel Tarmogoyf and recursion, and occasionally deck players."
+   }
+  ],
+  "advice": [
+   "Prioritize the dual lands highly because many gold cards have heavy color requirements.",
+   "Splashing a single-pip bomb is well supported via heartwoods, land cyclers, and mana rocks; Marc splashed in four of five drafts.",
+   "Value mana sinks and late-game abilities, since games go long.",
+   "Count sources for heavy pips: around 10-11 for double-blue three-drops and at least 12 for quadruple-colored cards.",
+   "Respect wraths like Overwrite the Multiverse when overextending into stalled boards.",
+   "Build-around rares like Codie or Germinate Recruits are fine to try, but only when the specific support is there."
+  ]
+ }
+}
