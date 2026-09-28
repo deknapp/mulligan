@@ -160,5 +160,7 @@ body.tool footer { max-width: 1040px; }
 .filters .nameinput { flex: 1 1 260px; }
 .grade.expert { outline: 1px dashed currentColor; outline-offset: 1px; }
 td.takes div { margin: 2px 0; font-size: 14px; line-height: 1.4; }
-table.prose td { vertical-align: top; line-height: 1.45; }
+table.prose td { vertical-align: top; line-height: 1.45; white-space: normal; }
+table.prose { table-layout: auto; width: 100%; }
 ul.episodes { font-size: 14px; }
+table.cards td.takes { white-space: normal; min-width: 360px; }
