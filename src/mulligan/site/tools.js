@@ -53,27 +53,33 @@ async function load() {
   return state;
 }
 
-// Expert grades (podcast set reviews): each card's grades averaged on a
-// 0-12 scale (F..A+), then put on the same z-scale as the simulator's grades.
+// Expert grades (podcast set reviews): shown as the average letter; for
+// blending, each host's grades are first standardized (shows use the scale
+// differently: Limited Resources' B is Limited Level-Ups' C+), then averaged.
 const LETTERS = ["F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"];
 function addExperts(state, experts) {
   state.experts = experts;
   if (!experts) return;
-  const graded = [];
+  const byHost = {};
   for (const [name, x] of Object.entries(experts.cards)) {
     const c = state.byName.get(name);
     if (!c) continue;
     c.takes = x.takes;
-    c.grades = x.grades;
-    const pts = x.grades.map((t) => LETTERS.indexOf(t.grade)).filter((i) => i >= 0);
-    if (!pts.length) continue;
+    c.grades = x.grades.filter((g) => LETTERS.includes(g.grade));
+    for (const g of c.grades) (byHost[`${g.show}|${g.host}`] ||= []).push(LETTERS.indexOf(g.grade));
+  }
+  const norm = {};
+  for (const [h, xs] of Object.entries(byHost)) {
+    const m = xs.reduce((a, b) => a + b, 0) / xs.length;
+    norm[h] = [m, Math.sqrt(xs.reduce((a, b) => a + (b - m) ** 2, 0) / xs.length) || 1];
+  }
+  for (const c of state.sim.cards) {
+    if (!c.grades || !c.grades.length) continue;
+    const pts = c.grades.map((g) => LETTERS.indexOf(g.grade));
     c.ex = pts.reduce((a, b) => a + b, 0) / pts.length;
     c.exGrade = LETTERS[Math.round(c.ex)];
-    graded.push(c);
+    c.ez = c.grades.reduce((a, g) => { const [m, sd] = norm[`${g.show}|${g.host}`]; return a + (LETTERS.indexOf(g.grade) - m) / sd; }, 0) / c.grades.length;
   }
-  const m = graded.reduce((a, c) => a + c.ex, 0) / graded.length;
-  const sd = Math.sqrt(graded.reduce((a, c) => a + (c.ex - m) ** 2, 0) / graded.length) || 1;
-  for (const c of graded) c.ez = (c.ex - m) / sd;
 }
 
 function expertBadge(c) {
