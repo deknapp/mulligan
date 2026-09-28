@@ -609,8 +609,8 @@ def synergy_cmd(
     import json
 
     from .cards.sets import load_set
-    from .limited.synergy import from_17lands, synergies
     from .deckmodel import _download
+    from .limited.synergy import from_17lands, synergies
     data = load_set(set_code)
     path = _download(set_code, fmt)
     spells = {n for n, spec in data.playable.items() if not spec.is_land}
