@@ -591,7 +591,47 @@ def draft_cmd(
                           round(stats.ata(n), 2), len(stats.taken_at.get(n, []))]
                       for n in set(stats.card_games) | set(stats.taken_at)},
             "pair_cards": {f"{n}|{pair}": rec for (n, pair), rec in stats.pair_cards.items()},
+            # card pair -> [wins, games] both seen / first only / second only / neither
+            "card_pairs": stats.synergy.to_json(),
         }))
+        console.print(f"[dim]wrote {out}[/dim]")
+
+
+@app.command("synergy")
+def synergy_cmd(
+    set_code: str = typer.Option(..., "--set"),
+    fmt: str = typer.Option("PremierDraft", help="17Lands format of the game data."),
+    out: Path = typer.Option(None, help="Save the pair tally as JSON."),
+    top: int = typer.Option(15, help="Pairs to print from each end."),
+):
+    """Card-pair synergy from 17Lands' public game data (real games): which
+    pairs win more together than the two cards do separately."""
+    import json
+
+    from .cards.sets import load_set
+    from .limited.synergy import from_17lands, synergies
+    from .deckmodel import _download
+    data = load_set(set_code)
+    path = _download(set_code, fmt)
+    spells = {n for n, spec in data.playable.items() if not spec.is_land}
+    spells |= {n for n, e in data.entries.items()
+               if n not in data.playable and "Land" not in e.get("types", [])}
+    start = time.time()
+    cells = from_17lands(path, keep=spells).to_json()
+    result = synergies(cells)
+    console.print(f"[bold]{data.name}: {len(result['pairs'])} pairs from 17Lands "
+                  f"{fmt} ({time.time() - start:.0f}s); true spread "
+                  f"{result['tau']:.3f}[/bold]")
+    rows = result["pairs"]
+    for r in rows[:top] + [None] + rows[-top:] if len(rows) > 2 * top else rows:
+        if r is None:
+            console.print("  ...")
+            continue
+        console.print(f"  {r['est']:+.3f}  (raw {r['raw']:+.3f} +- {r['se']:.3f}, "
+                      f"{r['n']} games)  {r['a']} + {r['b']}", markup=False)
+    if out:
+        out.write_text(json.dumps({"set": set_code, "source": f"17lands {fmt}",
+                                   "card_pairs": cells}))
         console.print(f"[dim]wrote {out}[/dim]")
 
 

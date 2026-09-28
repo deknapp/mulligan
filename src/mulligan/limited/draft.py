@@ -30,6 +30,7 @@ from ..cards.sets import SetData, load_set
 from .build import build_deck
 from .pools import booster
 from .rating import static_rating
+from .synergy import PairTally
 
 DRAFTERS = 8
 PACKS = 3
@@ -126,6 +127,7 @@ class DraftStats:
     play_records: list[float] = field(default_factory=lambda: [0.0, 0])  # on the play [wins, games]
     # (card, color pair of the deck it was in) -> [wins, games] when drawn
     pair_cards: dict[tuple[str, str], list[float]] = field(default_factory=dict)
+    synergy: PairTally = field(default_factory=PairTally)  # card pairs, see limited.synergy
 
     def gih(self, name: str) -> float:
         return self.card_wins[name] / self.card_games[name] if self.card_games[name] else 0.0
@@ -182,11 +184,13 @@ def simulate_draft(set_code: str, pods: int = 25, games: int = 20000, seed: int 
     deck_records = [[0.0, 0] for _ in decks]
     play = [0.0, 0]
     pair_cards: dict[tuple[str, str], list[float]] = defaultdict(lambda: [0.0, 0])
+    synergy = PairTally()
     with ProcessPoolExecutor(max_workers=workers) as ex:
-        for g, w, res, seen in ex.map(_play_with_results, [set_code] * len(chunks),
+        for g, w, res, seen, tally in ex.map(_play_with_results, [set_code] * len(chunks),
                                       [names] * len(chunks), chunks, [agent] * len(chunks)):
             card_games.update(g)
             card_wins.update(w)
+            synergy.merge(tally)
             for (a, b, score, _), (seen_a, seen_b) in zip(res, seen, strict=True):
                 for idx, s, cards in ((a, score, seen_a), (b, 1 - score, seen_b)):
                     for name in cards:
@@ -204,7 +208,7 @@ def simulate_draft(set_code: str, pods: int = 25, games: int = 20000, seed: int 
                 play[0] += score if game_seed % 2 == 0 else 1 - score
                 play[1] += 1
     return DraftStats(set_code, pods, games, card_games, card_wins, dict(taken), decks,
-                      dict(records), deck_records, play, dict(pair_cards))
+                      dict(records), deck_records, play, dict(pair_cards), synergy)
 
 
 def _play_with_results(set_code: str, decks: list[list[str]],
@@ -214,6 +218,8 @@ def _play_with_results(set_code: str, decks: list[list[str]],
     from ..match import play_game
     data = load_set(set_code)
     built = [[data.playable[n] for n in names] for names in decks]
+    spells = [sorted({c.name for c in deck if not c.is_land}) for deck in built]
+    tally = PairTally()
     games: Counter = Counter()
     wins: Counter = Counter()
     results, seen = [], []
@@ -223,9 +229,11 @@ def _play_with_results(set_code: str, decks: list[list[str]],
         score = 0.5 if result.winner is None else float(result.winner == 0)
         results.append((a, b, score, seed))
         seen.append((set(result.seen[0]), set(result.seen[1])))
+        tally.add(spells[a], seen[-1][0], score)
+        tally.add(spells[b], seen[-1][1], 1 - score)
         for seat, s in ((0, score), (1, 1 - score)):
             for name in set(result.seen[seat]):
                 games[name] += 1
                 wins[name] += s
-    return games, wins, results, seen
+    return games, wins, results, seen, tally
 
