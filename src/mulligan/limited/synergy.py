@@ -42,11 +42,15 @@ MIN_CELL = 20          # games needed in each of the four cells
 CELLS = ("both", "a", "b", "neither")
 
 
+def _cell() -> list[float]:   # module-level so a tally can cross process boundaries
+    return [0.0] * 8
+
+
 class PairTally:
     """Per pair (a, b), a < b: [wins, games] for both / a only / b only / neither."""
 
     def __init__(self) -> None:
-        self.cells: dict[tuple[str, str], list[float]] = defaultdict(lambda: [0.0] * 8)
+        self.cells: dict[tuple[str, str], list[float]] = defaultdict(_cell)
 
     def add(self, deck: list[str], seen: set[str], score: float) -> None:
         """One game from one side. ``deck`` = the distinct nonland cards, sorted."""

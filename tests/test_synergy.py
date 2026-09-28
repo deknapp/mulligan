@@ -54,3 +54,10 @@ def test_reads_17lands_rows(tmp_path):
         w.writerow(["False", 1, 0, 17, 0, 0, 0, 0, 3, 2])
     t = from_17lands(path, keep={"A", "B"})
     assert dict(t.cells) == {("A", "B"): [1.0, 1, 0, 0, 0, 0, 0, 0]}
+
+
+def test_tally_pickles_for_worker_processes():
+    import pickle
+    t = PairTally()
+    t.add(["A", "B"], {"A"}, 1.0)
+    assert pickle.loads(pickle.dumps(t)).cells == t.cells
