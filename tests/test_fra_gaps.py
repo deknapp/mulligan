@@ -298,3 +298,26 @@ def test_the_agent_will_not_pay_a_life_cost_that_kills_it():
                      if game.state.obj(o.card_id).name == "Rise of the Deathbringer"
                      and o.mode == 0)
     assert agent.score(view, draw_mode) < 0, "drawing 8 at 3 life kills you"
+
+
+def test_mana_is_counted_with_the_spell_already_on_the_stack():
+    # Loot makes one mana per distinct power. With a sorcery, a creature and a
+    # land in the graveyard Tarmogoyf is 3 and Loot 2: two powers, six mana
+    # with the lands. Flashing back the sorcery moves it to the stack before
+    # mana is paid, Tarmogoyf drops to 2, and only five are left for {5}{G}.
+    # (A 300,000-game run once crashed on this.)
+    game = scene(Side(battlefield=["Tarmogoyf", "Loot, the Nexus"],
+                      graveyard=["Bestial Incursion", "Heartstring Puller", "Forest"],
+                      lands={"G": 2, "W": 2}))
+    goyf = named(game, "Tarmogoyf", 0)[0]
+    assert game.power_of(goyf) == 3
+    assert not castable(game, "Bestial Incursion")
+
+
+def test_the_stack_check_puts_the_card_back():
+    game = scene(Side(battlefield=["Tarmogoyf", "Loot, the Nexus"],
+                      graveyard=["Bestial Incursion"], lands={"G": 2, "W": 2}))
+    before = list(game.state.players[0].graveyard)
+    assert castable(game, "Bestial Incursion")
+    assert game.state.players[0].graveyard == before
+    assert all(game.state.obj(i).zone == "graveyard" for i in before)

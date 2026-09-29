@@ -1530,18 +1530,36 @@ class Game:
                         cost = self._spell_cost(seat, spec, base_cost, combo, extra, kicked,
                                                 obj)
                         if not base_cost.has_x:
-                            if self.can_pay(seat, cost, paying_for=obj):
+                            if self._can_pay_cast(seat, cost, obj):
                                 found.append(act.CastSpell(obj.id, combo, mode, face, kicked,
                                                            extra_index))
                             continue
                         # One option per affordable X (X = 0 is never worth offering).
                         for x in range(1, MAX_X + 1):
-                            if not self.can_pay(seat, cost.plus(ManaCost(generic=x)),
-                                                paying_for=obj):
+                            if not self._can_pay_cast(seat, cost.plus(ManaCost(generic=x)), obj):
                                 break
                             found.append(act.CastSpell(obj.id, combo, mode, face, kicked,
                                                        extra_index, x))
         return found
+
+    def _can_pay_cast(self, seat: int, cost: ManaCost, obj: GameObject) -> bool:
+        """``can_pay`` as it will be when the spell is cast: the card is already
+        on the stack by the time mana is paid (CR 601.2a), and leaving its zone
+        can change what the mana sources make (Loot, the Nexus counts distinct
+        powers; flashing back a sorcery can shrink a Tarmogoyf)."""
+        player = self.state.players[seat]
+        zone = obj.zone
+        cards = player.zone(zone) if zone in ("hand", "exile", "graveyard") else None
+        if cards is None or obj.id not in cards:
+            return self.can_pay(seat, cost, paying_for=obj)
+        index = cards.index(obj.id)
+        cards.remove(obj.id)
+        obj.zone = "stack"
+        try:
+            return self.can_pay(seat, cost, paying_for=obj)
+        finally:
+            cards.insert(index, obj.id)
+            obj.zone = zone
 
     def _spell_cost(self, seat: int, spec: CardSpec, base_cost: ManaCost,
                     targets: tuple[Target, ...], extra: Cost | None, kicked: bool,
