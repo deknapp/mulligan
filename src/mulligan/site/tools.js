@@ -123,7 +123,46 @@ function prepare(sim, real) {
     c.z = z;
     c.grade = GRADES.find(([cut]) => z >= cut)[1];
   }
-  return { sim, real, byName, mean, sd, shift, live: both.length >= 20 };
+  // For the pick helper's pool rules (the same ones as `mulligan live`).
+  for (const c of sim.cards) {
+    c.shrunk = c.g ? (c.w + sim.prior * sim.mean) / (c.g + sim.prior) : null;
+    c.pipCount = pipCount(c.cost);
+    c.makes = /Land/.test(c.t || "") ? landColors(c.o) : "";
+  }
+  const sums = {};
+  for (const byPair of Object.values(sim.pc || {})) {
+    for (const [p, [w, g]] of Object.entries(byPair)) { const acc = (sums[p] ||= [0, 0]); acc[0] += w; acc[1] += g; }
+  }
+  const pairMean = Object.fromEntries(Object.entries(sums).filter(([, [, g]]) => g).map(([p, [w, g]]) => [p, w / g]));
+  const synergy = new Map();
+  const flat = (sim.syn && sim.syn.a) || [];
+  for (let i = 0; i + 2 < flat.length; i += 3) {
+    const a = sim.cards[flat[i]].n, b = sim.cards[flat[i + 1]].n;
+    synergy.set(a < b ? `${a}|${b}` : `${b}|${a}`, flat[i + 2] / 1000);
+  }
+  return { sim, real, byName, mean, sd, shift, live: both.length >= 20, pairMean, synergy };
+}
+
+// Colored pips per color; a hybrid pip counts half toward each side, a {2/W}
+// pip nothing (generic mana pays for it).
+function pipCount(costText) {
+  const out = {};
+  for (const [, sym] of (costText || "").matchAll(/\{([^}]+)\}/g)) {
+    const parts = sym.split("/").filter((p) => "WUBRG".includes(p) && p);
+    if (sym.startsWith("2/") || !parts.length) continue;
+    for (const k of parts) out[k] = (out[k] || 0) + 1 / parts.length;
+  }
+  return out;
+}
+
+// The colors a land's mana abilities make: "{T}: Add {R} or {W}." -> "WR".
+function landColors(oracle) {
+  const made = new Set();
+  for (const [, clause] of (oracle || "").matchAll(/Add ([^.]*)/g)) {
+    for (const [, k] of clause.matchAll(/\{([WUBRG])\}/g)) made.add(k);
+    if (clause.includes("any color")) "WUBRG".split("").forEach((k) => made.add(k));
+  }
+  return "WUBRG".split("").filter((k) => made.has(k)).join("");
 }
 
 // ---- small pieces -------------------------------------------------------
@@ -311,6 +350,116 @@ function lane(state, picks) {
   return { weight, top: order.slice(0, 2).filter((k) => weight[k] > 0) };
 }
 
+// The pool rules: a port of src/mulligan/pick_advice.py (advise), the helper
+// `mulligan live` uses, so the two rank a pack the same way. Keep them in step.
+const LANE_PENALTY = 0.035, COMMIT_PICKS = 14, PAIR_MIN_GAMES = 150, PAIR_PRIOR_GAMES = 300,
+  PAIR_WEIGHT = 0.5, DRAWN_TOGETHER = 0.4, SYNERGY_WEIGHT = 0.5, LATE_PICKS = 28, LATE_DISCOUNT = 0.6,
+  UNDECIDED_IN_DECK = 0.5, OFF_LANE_IN_DECK = 0.1, PLAYABLE_Z = -1.0, UNPLAYABLE_IN_DECK = 0.3,
+  DECK_PLAYABLES = 23, TOTAL_PICKS = 42, ON_LANE_SHARE = 0.3, NEED_BONUS = 0.03,
+  DUAL_LAND = -0.025, SPLASH_LAND = -0.012, SPLASH_Z = 1.0;
+
+// 0 to 1: how settled your colors are. Grows with picks, and only as far as
+// your picks actually concentrate in two colors.
+function commitment(weight, n) {
+  const vals = Object.values(weight), total = vals.reduce((a, b) => a + b, 0);
+  if (!total) return 0;
+  const share = vals.sort((a, b) => a - b).slice(-2).reduce((a, b) => a + b, 0) / total;
+  return Math.min(1, n / COMMIT_PICKS) * Math.min(1, Math.max(0, (share - 0.5) / 0.3));
+}
+
+function advise(state, pack, picks, blend) {
+  const { weight, top } = lane(state, picks);
+  const commit = commitment(weight, picks.length);
+  const pair = top.length === 2 ? "WUBRG".split("").filter((k) => top.includes(k)).join("") : "";
+  const fits = (c) => top.length === 2 && c.c.split("").every((k) => top.includes(k));
+  const fixes = new Set(picks.filter((p) => p.makes.length >= 2).flatMap((p) => p.makes.split("")));
+  const splash = {};
+  for (const p of picks) if ((p.z ?? 0) >= SPLASH_Z && !p.makes) for (const k of p.c) if (!top.includes(k)) splash[k] = p.n;
+  const isPlayable = (c) => !c.makes && c.un !== "land" && c.est != null && (c.z ?? 0) >= PLAYABLE_Z;
+  const have = picks.filter((c) => isPlayable(c) && (!c.c || fits(c))).length;
+  const left = Math.max(0, TOTAL_PICKS - picks.length);
+  const need = Math.min(1, Math.max(0, (DECK_PLAYABLES - have - ON_LANE_SHARE * left) / DECK_PLAYABLES));
+  const inDeck = (c) => {
+    if (c.makes || c.un === "land") return 0;
+    const fit = !c.c || fits(c) ? 1 : OFF_LANE_IN_DECK;
+    return (commit * fit + (1 - commit) * UNDECIDED_IN_DECK) * ((c.z ?? 0) >= PLAYABLE_Z ? 1 : UNPLAYABLE_IN_DECK);
+  };
+  const pickNumber = (picks.length % 14) + 1;
+
+  const scored = pack.map((c) => {
+    const why = [];
+    if (c.makes.length >= 2) {                     // a dual land
+      const made = c.makes.split("");
+      if (top.length < 2 || commit === 0) return { c, score: DUAL_LAND - LANE_PENALTY, why: [`Dual land (${c.makes}): take it late once you know your colors.`] };
+      if (made.every((k) => top.includes(k))) return { c, score: DUAL_LAND, why: [`Dual land in your ${pair} colors: smoother mana.`] };
+      const extra = made.filter((k) => !top.includes(k));
+      if (made.filter((k) => top.includes(k)).length === 1 && splash[extra[0]]) return { c, score: SPLASH_LAND, why: [`Taps for your colors and ${extra[0]}: lets you splash ${splash[extra[0]]}.`] };
+      return { c, score: null, why: [`Dual land (${c.makes}) outside your ${pair} colors.`] };
+    }
+    let base = c.est == null ? null : c.est - state.mean;
+    if (blend && c.ez != null) base = base == null ? c.ez * state.sd : ((c.z + c.ez) / 2) * state.sd;
+    if (base == null) return { c, score: null, why: [c.un ? `Not simulated (${c.un}).` : "No data."] };
+    let score = base;
+    why.push(`${c.src === "17lands" ? "Real" : "Simulated"} win rate when drawn ${pts(base)} pts vs. the average card${c.src === "sim" && c.g < 300 ? ` (only ${c.g} games)` : ""}.`);
+
+    const off = top.length === 2 ? c.c.split("").filter((k) => !top.includes(k)) : [];
+    if (off.length && commit > 0) {
+      // Late on, an off-color card is mostly a card you won't play.
+      const late = LATE_DISCOUNT * Math.min(1, picks.length / LATE_PICKS) * commit;
+      let penalty = Math.max(0, base) * late * (off.every((k) => fixes.has(k)) ? 0.5 : 1);
+      for (const k of off) {
+        const heavy = 1 + 0.5 * Math.max(0, (c.pipCount[k] ?? 1) - 1);
+        penalty += LANE_PENALTY * commit * heavy * (fixes.has(k) ? 0.5 : 1);
+      }
+      score -= penalty;
+      let note = `${off.length === 1 ? "One color" : "Both colors"} outside your ${pair} lane: −${(100 * penalty).toFixed(1)} pts this far in`;
+      if (off.some((k) => (c.pipCount[k] ?? 1) >= 2)) note += " (heavy on off-color mana)";
+      else if (off.every((k) => fixes.has(k))) note += " (your pool fixes for it)";
+      why.push(note + ".");
+    } else if (c.c && top.length && c.c.split("").every((k) => top.includes(k)) && picks.length) {
+      why.push(`Fits your ${top.join("")} picks.`);
+    } else if (!c.c) why.push("Colorless: fits any deck.");
+
+    const pc = (state.sim.pc || {})[c.n] || {};
+    if (pair && pc[pair] && pc[pair][1] >= PAIR_MIN_GAMES && c.shrunk != null) {
+      const [w, g] = pc[pair];
+      const inPair = (w + PAIR_PRIOR_GAMES * c.shrunk) / (g + PAIR_PRIOR_GAMES);
+      const delta = (inPair - (state.pairMean[pair] ?? state.sim.mean)) - (c.shrunk - state.sim.mean);
+      const bonus = PAIR_WEIGHT * commit * delta;
+      score += bonus;
+      if (Math.abs(bonus) >= 0.001) why.push(`In simulated ${pair} decks: ${(100 * w / g).toFixed(1)}% (${g.toLocaleString()} games), ${pts(bonus)} pts for your pair.`);
+    } else if (c.c.length === 1) {
+      const best = Object.entries(pc).filter(([, r]) => r[1] >= PAIR_MIN_GAMES)
+        .map(([p, r]) => [p, (r[0] + 100 * state.sim.mean) / (r[1] + 100)]).sort((a, b) => b[1] - a[1])[0];
+      if (best) why.push(`Best in ${PAIR_NAMES[best[0]]} (${best[0]}).`);
+    }
+
+    const parts = [];
+    for (const p of picks) {
+      const e = state.synergy.get(c.n < p.n ? `${c.n}|${p.n}` : `${p.n}|${c.n}`);
+      if (e) parts.push([p.n, SYNERGY_WEIGHT * DRAWN_TOGETHER * e * inDeck(p)]);
+    }
+    const syn = parts.reduce((a, [, v]) => a + v, 0);
+    score += syn;
+    if (Math.abs(syn) >= 0.001) {
+      const names = [...new Set(parts.sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).filter(([, v]) => v * syn > 0).map(([n]) => n))].slice(0, 3);
+      why.push(`Synergy with your pool: ${pts(syn)} pts (${names.join(", ")}).`);
+    }
+
+    if (need && commit && (!c.c || fits(c)) && (c.z ?? 0) >= PLAYABLE_Z) {
+      const bonus = NEED_BONUS * need * commit;
+      score += bonus;
+      if (bonus >= 0.0005) why.push(`You have ${have} ${pair} playables with ${left} picks left: ${pts(bonus)} pts.`);
+    }
+    if (c.rm) why.push("Removal.");
+    if (blend && c.exGrade) why.push(`Experts: ${c.exGrade} (${c.grades.map((t) => `${t.host} ${t.grade}`).join(", ")}); averaged in.`);
+    const ata = c.realAta || c.ata;
+    if (ata && pack.length > 8 && ata >= pickNumber + 8.5) why.push(`Usually taken around pick ${Math.round(ata)}: may come back.`);
+    return { c, score, why };
+  }).sort((a, b) => (b.score ?? -Infinity) - (a.score ?? -Infinity));
+  return { top, weight, scored };
+}
+
 function pickTool(state) {
   const root = $("#tool");
   const pack = [], picks = [];
@@ -340,39 +489,15 @@ function pickTool(state) {
     if (picks.length) hash.set("picks", picks.map((c) => c.n).join("|"));
     history.replaceState(null, "", hash.toString() ? "#" + hash : location.pathname);
     if (!pack.length) { out.replaceChildren(el("p", { class: "muted" }, "Add at least two cards from the pack.")); return; }
-    const { top, weight } = lane(state, picks);
-    // How much color matters grows over the draft: nothing at pick 1, most
-    // by the middle of pack two. This mirrors how the simulator's bots draft.
-    const commit = Math.min(1, picks.length / 14);
-    // Before 17Lands has real data, expert grades are the only other opinion
-    // there is: average them in with the simulator's, half and half.
     const blend = !state.live && state.experts;
-    const scored = pack.map((c) => {
-      let base = c.est == null ? null : c.est - state.mean;
-      if (blend && c.ez != null) base = base == null ? c.ez * state.sd : ((c.z + c.ez) / 2) * state.sd;
-      const off = top.length === 2 ? c.c.split("").filter((k) => !top.includes(k)).length : 0;
-      const inLane = c.c && top.length && c.c.split("").every((k) => top.includes(k));
-      const penalty = off * commit * 0.035;
-      const why = [];
-      if (base == null) why.push(c.un ? `Not simulated (${c.un}).` : "No data.");
-      else why.push(`${c.src === "17lands" ? "Real" : "Simulated"} win rate when drawn ${pts(base)} pts vs. the average card${c.src === "sim" && c.g < 300 ? ` (only ${c.g} games)` : ""}.`);
-      if (off && commit > 0) why.push(`${off === 1 ? "One color" : "Both colors"} outside your ${top.join("")} lane: −${(penalty * 100).toFixed(1)} pts this far into the draft.`);
-      else if (inLane && picks.length) why.push(`Fits your ${top.join("")} picks.`);
-      else if (!c.c) why.push("Colorless: fits any deck.");
-      const best = Object.entries(state.sim.pc[c.n] || {}).filter(([, r]) => r[1] >= 150)
-        .map(([p, r]) => [p, (r[0] + 100 * state.sim.mean) / (r[1] + 100)]).sort((a, b) => b[1] - a[1])[0];
-      if (best && c.c.length === 1) why.push(`Best in ${PAIR_NAMES[best[0]]} (${best[0]}).`);
-      if (c.rm) why.push("Removal.");
-      if (blend && c.exGrade) why.push(`Experts: ${c.exGrade} (${c.grades.map((t) => `${t.host} ${t.grade}`).join(", ")}); averaged in.`);
-      return { c, score: base == null ? -1 : base - penalty, why };
-    }).sort((a, b) => b.score - a.score);
+    const { top, weight, scored } = advise(state, pack, picks, blend);
     const laneText = picks.length ? (top.length ? `Your picks lean ${top.map((k) => COLORS[k]).join("-")} (${Object.entries(weight).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v.toFixed(1)}`).join(", ")}).` : "Your picks are colorless so far.") : "Pack 1, pick 1: color doesn't matter yet, take the best card.";
     out.replaceChildren(el("p", { class: "lane" }, laneText),
       el("ol", { class: "ranked" }, scored.map((s, i) => el("li", { class: i === 0 ? "top" : "" },
         el("div", { class: "rhead" }, gradeBadge(s.c), " ", pips(s.c.c), " ", hoverCard(el("strong", {}, s.c.n), state, s.c),
-          el("span", { class: "score" }, s.score === -1 ? "" : `${pts(s.score)} pts`)),
+          el("span", { class: "score" }, s.score == null ? "" : `${pts(s.score)} pts`)),
         el("div", { class: "why" }, s.why.join(" "))))),
-      el("p", { class: "caption" }, (blend ? "Until real 17Lands data arrives, the score averages the simulator's rating with the podcast hosts' grades. " : "") + "Score = how much more often you win when this card is drawn than when an average card is, minus a penalty for colors you aren't in, which grows through the draft. It doesn't know about your curve or synergies: if two picks are within a point or two, take the one your deck needs."));
+      el("p", { class: "caption" }, (blend ? "Until real 17Lands data arrives, the score averages the simulator's rating with the podcast hosts' grades. " : "") + "Score = how much more often you win when this card is drawn than when an average card is, then adjusted for your picks: a penalty for colors you aren't in (heavier for double pips, lighter when your pool has a dual land for it, and growing as your colors settle), how the card does in simulated decks of your pair, its simulated synergy with the cards you've taken, a nudge toward playables when your colors are short, and dual lands that fit or enable a splash. It doesn't know your curve: if two picks are within a point or two, take the one your deck needs."));
   }
   draw();
 }

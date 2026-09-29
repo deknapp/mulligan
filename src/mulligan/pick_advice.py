@@ -20,9 +20,11 @@ A pick's score, in win-rate points against the average card:
 * lands: a dual land in your colors is worth a late pick, more when it lets you
   splash a strong card you've taken.
 
-The card ratings follow the website's pick helper (``site/tools.js``), except
-that the website swaps in a 17Lands number once it has 500 games, while this
-blends the two; the pool adjustments above are this helper's own. The
+The website's pick helper (``site/tools.js``) ports the pool adjustments
+above line for line (``tests/test_site_pick.py`` holds the two to the same
+ranking); its card ratings differ in that it swaps in a 17Lands number once it
+has 500 games, where this blends the two, and it averages in expert grades
+until real data arrives. The
 simulator is treated as a prior worth
 ``REAL_PRIOR_GAMES`` real games, so on release day a card is rated by the
 simulator alone, at 500 real games half and half, and at 5,000 almost entirely
@@ -400,8 +402,9 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
         if need and commit and (not c.colors or _fits(c, top)) and (c.z or 0) >= PLAYABLE_Z:
             bonus = NEED_BONUS * need * commit
             score += bonus
-            why.append(f"You have {have} {pair} playables with {left} picks left: "
-                       f"{_pts(bonus)} pts.")
+            if bonus >= 0.0005:
+                why.append(f"You have {have} {pair} playables with {left} picks left: "
+                           f"{_pts(bonus)} pts.")
 
         if c.removal:
             why.append("Removal.")
