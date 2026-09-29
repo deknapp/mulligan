@@ -1,6 +1,7 @@
 """What the experts say: podcast set reviews, distilled into grades and takes.
 
-Limited Resources and Limited Level-Ups review every set card by card. This
+Limited Resources, Limited Level-Ups and Lords of Limited review every set
+card by card, and TCGplayer publishes written grades. This
 turns those episodes into data the site can put next to the simulator:
 
 1. Transcribe each episode locally with Whisper (``data/raw/podcasts``; the
@@ -31,6 +32,8 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F
 COLORS = ["W", "U", "B", "R", "G"]
 PAIRS = ["WU", "UB", "BR", "RG", "WG", "WB", "UR", "BG", "WR", "UG"]
 
+LOL_HOSTS = ["Ethan", "Ben"]
+
 # Episodes per set: transcript stem -> where it came from.
 EPISODES = {
     "fra": {
@@ -50,6 +53,24 @@ EPISODES = {
             "show": "Limited Level-Ups", "title": "Reality Fracture Rare + Mythic "
             "Set Review", "date": "2026-09-25", "url": "https://limitedlevelups.libsyn.com/",
             "hosts": ["Marc", "Alex"]},
+        "lol-496-fra-first-impressions": {
+            "show": "Lords of Limited", "title": "#496: Our First Impressions of Reality "
+            "Fracture", "date": "2026-09-14", "url": "https://audioboom.com/posts/8952669",
+            "hosts": LOL_HOSTS},
+        "lol-497-fra-prerelease": {
+            "show": "Lords of Limited", "title": "#497: Our Prerelease Guide for Reality "
+            "Fracture", "date": "2026-09-21", "url": "https://audioboom.com/posts/8955341",
+            "hosts": LOL_HOSTS},
+        "lol-498-fra-early-guide": {
+            "show": "Lords of Limited", "title": "#498: This is the Way! Reality Fracture "
+            "Early Limited Guide", "date": "2026-09-28",
+            "url": "https://audioboom.com/posts/8958057", "hosts": LOL_HOSTS},
+        # Written, not audio: the six color articles fetched as one text file.
+        "tcg-fra-set-review": {
+            "show": "TCGplayer", "title": "Reality Fracture Limited Set Reviews",
+            "date": "2026-09-25", "url": "https://www.tcgplayer.com/content/article/"
+            "Reality-Fracture-Limited-Magic-The-Gathering-Set-Review-White/"
+            "96d152d7-f0f7-498a-a6e2-fd1f738f0641/", "hosts": ["LSV", "Martin"]},
     },
 }
 
@@ -63,7 +84,10 @@ TIER_URL = "https://www.17lands.com/card_tiers/data/{id}"
 
 EXTRACT_SYSTEM = """You turn a Magic: The Gathering Limited podcast transcript into data.
 
-The transcript is automatic speech recognition: card names are often misheard
+A written article instead of a transcript has exact card names, and each
+section says who wrote it; attribute by that.
+
+A transcript is automatic speech recognition: card names are often misheard
 ("Ghoulta" for "Ghalta"), speakers are not labeled, and hosts talk over each
 other. Match every card discussed to its exact name from the card list; skip
 anything you cannot match with confidence.
@@ -296,7 +320,8 @@ def _sim_summary(set_code: str) -> str:
 def synthesize(set_code: str, client=None) -> Path:
     """Every extracted episode + the simulation -> one overview of the format."""
     folder = OUT / "experts" / set_code
-    episodes = [json.loads(p.read_text()) for p in sorted(folder.glob("*.json"))]
+    episodes = [json.loads((folder / f"{slug}.json").read_text())
+                for slug in EPISODES[set_code] if (folder / f"{slug}.json").exists()]
     notes = json.dumps(episodes, ensure_ascii=False)
     user = (f"<expert_notes>\n{notes}\n</expert_notes>\n\n"
             f"<simulation>\n{_sim_summary(set_code)}\n</simulation>")
