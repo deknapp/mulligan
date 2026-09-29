@@ -27,6 +27,7 @@ from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 
 from ..cards.sets import SetData, load_set
+from ..engine.game import IllegalAction
 from .build import build_deck
 from .pools import booster
 from .rating import static_rating
@@ -128,6 +129,9 @@ class DraftStats:
     # (card, color pair of the deck it was in) -> [wins, games] when drawn
     pair_cards: dict[tuple[str, str], list[float]] = field(default_factory=dict)
     synergy: PairTally = field(default_factory=PairTally)  # card pairs, see limited.synergy
+    # Games the engine could not finish: (deck a, deck b, game seed, error). They
+    # are left out of every count; replay one with the seed to debug it.
+    errors: list[tuple[int, int, int, str]] = field(default_factory=list)
 
     def gih(self, name: str) -> float:
         return self.card_wins[name] / self.card_games[name] if self.card_games[name] else 0.0
@@ -185,12 +189,14 @@ def simulate_draft(set_code: str, pods: int = 25, games: int = 20000, seed: int 
     play = [0.0, 0]
     pair_cards: dict[tuple[str, str], list[float]] = defaultdict(lambda: [0.0, 0])
     synergy = PairTally()
+    errors: list[tuple[int, int, int, str]] = []
     with ProcessPoolExecutor(max_workers=workers) as ex:
-        for g, w, res, seen, tally in ex.map(_play_with_results, [set_code] * len(chunks),
+        for g, w, res, seen, tally, errs in ex.map(_play_with_results, [set_code] * len(chunks),
                                       [names] * len(chunks), chunks, [agent] * len(chunks)):
             card_games.update(g)
             card_wins.update(w)
             synergy.merge(tally)
+            errors.extend(errs)
             for (a, b, score, _), (seen_a, seen_b) in zip(res, seen, strict=True):
                 for idx, s, cards in ((a, score, seen_a), (b, 1 - score, seen_b)):
                     for name in cards:
@@ -208,7 +214,7 @@ def simulate_draft(set_code: str, pods: int = 25, games: int = 20000, seed: int 
                 play[0] += score if game_seed % 2 == 0 else 1 - score
                 play[1] += 1
     return DraftStats(set_code, pods, games, card_games, card_wins, dict(taken), decks,
-                      dict(records), deck_records, play, dict(pair_cards), synergy)
+                      dict(records), deck_records, play, dict(pair_cards), synergy, errors)
 
 
 def _play_with_results(set_code: str, decks: list[list[str]],
@@ -222,10 +228,14 @@ def _play_with_results(set_code: str, decks: list[list[str]],
     tally = PairTally()
     games: Counter = Counter()
     wins: Counter = Counter()
-    results, seen = [], []
+    results, seen, errors = [], [], []
     for a, b, seed in pairings:
-        result = play_game((make_agent(agent, seed * 2), make_agent(agent, seed * 2 + 1)),
-                           (built[a], built[b]), seed=seed, on_the_play=seed % 2)
+        try:
+            result = play_game((make_agent(agent, seed * 2), make_agent(agent, seed * 2 + 1)),
+                               (built[a], built[b]), seed=seed, on_the_play=seed % 2)
+        except IllegalAction as err:   # an engine bug in one game must not sink the run
+            errors.append((a, b, seed, str(err)))
+            continue
         score = 0.5 if result.winner is None else float(result.winner == 0)
         results.append((a, b, score, seed))
         seen.append((set(result.seen[0]), set(result.seen[1])))
@@ -235,5 +245,5 @@ def _play_with_results(set_code: str, decks: list[list[str]],
             for name in set(result.seen[seat]):
                 games[name] += 1
                 wins[name] += s
-    return games, wins, results, seen, tally
+    return games, wins, results, seen, tally, errors
 

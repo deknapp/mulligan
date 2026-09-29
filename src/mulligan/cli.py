@@ -566,6 +566,10 @@ def draft_cmd(
     data = load_set(set_code)
     console.print(f"[bold]{data.name}: {pods} simulated pods, {games} games[/bold] "
                   f"({time.time() - start:.0f}s)")
+    if stats.errors:
+        a, b, seed, err = stats.errors[0]
+        console.print(f"[yellow]{len(stats.errors)} games hit an engine error and were left "
+                      f"out; first: decks {a} v {b}, seed {seed}: {err}[/yellow]")
     for pair, (wins, n) in sorted(stats.records.items(), key=lambda kv: -kv[1][0] / kv[1][1]):
         decks = sum(1 for c, _ in stats.decks if c == pair)
         console.print(f"  {pair}  {wins / n:6.1%}  {n:6d} games  {decks:3d} decks")
@@ -593,6 +597,7 @@ def draft_cmd(
             "pair_cards": {f"{n}|{pair}": rec for (n, pair), rec in stats.pair_cards.items()},
             # card pair -> [wins, games] both seen / first only / second only / neither
             "card_pairs": stats.synergy.to_json(),
+            "errors": stats.errors,
         }))
         console.print(f"[dim]wrote {out}[/dim]")
 
