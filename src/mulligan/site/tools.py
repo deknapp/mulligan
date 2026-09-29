@@ -59,9 +59,44 @@ def _ops(node) -> set[str]:
 
 
 def is_removal(entry: dict) -> bool:
-    """A spell or ability that can deal with an opposing creature."""
-    text = json.dumps(entry.get("targets", [])) + json.dumps(entry.get("modes", []))
-    return "creature" in text and bool(_ops(entry) & REMOVAL_OPS)
+    """A spell, trigger or ability that can deal with an opposing creature:
+    a removal op (or a -X/-X that shrinks toughness) aimed at targets that can
+    be a creature. Targets carry down from a spell or mode to its effects."""
+    def hits(targets) -> bool:
+        for t in targets:
+            sel = json.dumps(t)
+            if "any_target" in sel:
+                return True
+            mine = ("yours" in sel and "theirs" not in sel) or "zone=" in sel
+            if mine or "!type=creature" in sel:
+                continue
+            if any(k in sel for k in ("creature", "nonland", "permanent")):
+                return True
+        return False
+
+    def kills(eff: dict) -> bool:
+        op = eff.get("op")
+        if op == "pump":
+            return (eff.get("toughness") or 0) < 0
+        if op == "set_base_pt":
+            return eff.get("toughness") == 0
+        return op in REMOVAL_OPS
+
+    def walk(node, targets) -> bool:
+        if isinstance(node, list):
+            return any(walk(v, targets) for v in node)
+        if not isinstance(node, dict):
+            return False
+        targets = node.get("targets", targets)
+        for eff in node.get("effects", []):
+            if kills(eff) and hits(targets):
+                return True
+            if (eff.get("op") == "sacrifice" and "opponent" in str(eff.get("who"))
+                    and "creature" in str(eff.get("filter"))):
+                return True   # an edict needs no target
+        return any(walk(v, targets) for k, v in node.items() if k not in ("effects", "targets"))
+
+    return walk(entry, [])
 
 
 def deck_profile(run: DraftRun, names: list[str]) -> dict[str, float]:
