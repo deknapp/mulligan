@@ -141,6 +141,9 @@ def scatter(points: list[tuple[str, float, float, str]], label: str, x_label: st
         while any(abs(ly - oy) < 14 and abs(px(x) - ox) < 160 for ox, oy in placed):
             ly += 14
         placed.append((px(x), ly))
+        if ly - (py(y) + 4) > 1:   # nudged: a leader line back to its point
+            body.append(f'<line x1="{px(x):.1f}" y1="{py(y):.1f}" x2="{px(x) + dx * 0.6:.1f}" '
+                        f'y2="{ly - 4:.1f}" class="leader"/>')
         body.append(_text(px(x) + dx, ly, name, "callout", anchor))
     return _svg(width, height, body, label)
 
@@ -191,4 +194,72 @@ def bars(rows: list[tuple[str, float, str]], label: str, fmt=lambda v: f"{v:.1f}
                     f"<title>{escape(name)}: {fmt(v)}</title></rect>")
         body.append(_text(b + 5 if v >= zero else a - 5, y + row_h / 2 + 4, fmt(v), "tick",
                           "start" if v >= zero else "end"))
+    return _svg(width, height, body, label)
+
+
+def versus(rows: list[tuple], label: str, reference: float = 0.5,
+           fmt=lambda v: f"{v:.0%}", left: int = 90,
+           legend: tuple[str, str] = ("Simulation (95% interval)", "Experts")) -> str:
+    """Two estimates per row on one scale: (row label, value, low, high,
+    colors, other value, other low, other high, note). The first is drawn like
+    ``interval_bars``; the second as a hollow diamond over a shaded band (its
+    range, e.g. from the most to the least bullish expert). ``other`` may be
+    None for a row the second source says nothing about."""
+    width, row_h, right, top = 640, 30, 30, 16
+    height = top + row_h * len(rows) + 58
+    vals = [reference] + [v for r in rows for v in (r[2], r[3], r[6], r[7]) if v is not None]
+    lo, hi = min(vals), max(vals)
+    pad = (hi - lo) * 0.06 or 0.01
+    lo, hi = lo - pad, hi + pad
+
+    def x(v: float) -> float:
+        return left + (v - lo) / (hi - lo) * (width - left - right)
+
+    base = height - 52
+    body = []
+    for t in _ticks(lo, hi):
+        body.append(f'<line x1="{x(t):.1f}" x2="{x(t):.1f}" y1="{top - 6}" y2="{base}" '
+                    f'class="grid"/>')
+        body.append(_text(x(t), base + 16, fmt(t), "tick", "middle"))
+    body.append(f'<line x1="{x(reference):.1f}" x2="{x(reference):.1f}" y1="{top - 6}" '
+                f'y2="{base}" class="ref"/>')
+    for i, (name, v, a, b, colors, ov, oa, ob, note) in enumerate(rows):
+        y = top + row_h * i + row_h / 2
+        body.append(_text(left - 10, y + 4, name, "label", "end"))
+        if ov is not None:
+            tip = escape(f"{name}, {legend[1].lower()}: {fmt(ov)}"
+                         + (f" (range {fmt(oa)}–{fmt(ob)})" if ob > oa else "")
+                         + (f". {note}" if note else ""))
+            if ob > oa:
+                body.append(f'<rect x="{x(oa):.1f}" y="{y - 7:.1f}" width="{x(ob) - x(oa):.1f}"'
+                            f' height="14" rx="7" class="xband"><title>{tip}</title></rect>')
+            d = 7
+            body.append(f'<path d="M{x(ov):.1f},{y - d:.1f} L{x(ov) + d:.1f},{y:.1f} '
+                        f'L{x(ov):.1f},{y + d:.1f} L{x(ov) - d:.1f},{y:.1f} Z" class="xpt">'
+                        f"<title>{tip}</title></path>")
+        body.append(f'<line x1="{x(a):.1f}" x2="{x(b):.1f}" y1="{y:.1f}" y2="{y:.1f}" '
+                    f'class="whisker"/>')
+        parts = list(colors) or ["C"]
+        tip = f"<title>{escape(name)}: {fmt(v)} (95% interval {fmt(a)}–{fmt(b)})</title>"
+        r = 6
+        if len(parts) == 1:
+            body.append(f'<circle cx="{x(v):.1f}" cy="{y:.1f}" r="{r}" fill="{MANA[parts[0]]}" '
+                        f'class="dot">{tip}</circle>')
+        else:
+            cx = x(v)
+            body.append(f'<g class="dot">{tip}'
+                        f'<path d="M{cx:.1f},{y - r:.1f} A{r},{r} 0 0 0 {cx:.1f},{y + r:.1f} Z" '
+                        f'fill="{MANA[parts[0]]}"/>'
+                        f'<path d="M{cx:.1f},{y - r:.1f} A{r},{r} 0 0 1 {cx:.1f},{y + r:.1f} Z" '
+                        f'fill="{MANA[parts[1]]}"/>'
+                        f'<circle cx="{cx:.1f}" cy="{y:.1f}" r="{r}" fill="none" '
+                        f'class="outline"/></g>')
+    ly = height - 14
+    body.append(f'<circle cx="{left + 6}" cy="{ly - 4}" r="5" fill="{MANA["C"]}" class="dot"/>')
+    body.append(_text(left + 16, ly, legend[0], "tick"))
+    lx = left + 250
+    body.append(f'<rect x="{lx - 12}" y="{ly - 11}" width="24" height="14" rx="7" class="xband"/>')
+    body.append(f'<path d="M{lx},{ly - 11} L{lx + 7},{ly - 4} L{lx},{ly + 3} L{lx - 7},{ly - 4} Z"'
+                f' class="xpt"/>')
+    body.append(_text(lx + 18, ly, legend[1], "tick"))
     return _svg(width, height, body, label)

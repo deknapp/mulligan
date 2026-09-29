@@ -111,6 +111,160 @@ def bucket_chart(rows, label, x_label):
                                  for r in rows], label, reference=0.5, left=230)
 
 
+PAIR_NAMES = {"WU": "Azorius", "UB": "Dimir", "BR": "Rakdos", "RG": "Gruul", "WG": "Selesnya",
+              "WB": "Orzhov", "UR": "Izzet", "BG": "Golgari", "WR": "Boros", "UG": "Simic"}
+COLOR_NAMES = {"W": "White", "U": "Blue", "B": "Black", "R": "Red", "G": "Green"}
+
+
+def color_records(run: DraftRun) -> dict[str, tuple[float, int]]:
+    out = {}
+    for c in "WUBRG":
+        w = sum(r[0] for p, r in run.records.items() if c in p)
+        g = sum(r[1] for p, r in run.records.items() if c in p)
+        out[c] = (w, int(g))
+    return out
+
+
+def spearman(xs, ys):
+    def ranks(v):
+        order = sorted(range(len(v)), key=lambda i: v[i])
+        r = [0.0] * len(v)
+        i = 0
+        while i < len(order):
+            j = i
+            while j + 1 < len(order) and v[order[j + 1]] == v[order[i]]:
+                j += 1
+            for k in range(i, j + 1):
+                r[order[k]] = (i + j) / 2
+            i = j + 1
+        return r
+    rx, ry = ranks(xs), ranks(ys)
+    mx, my = sum(rx) / len(rx), sum(ry) / len(ry)
+    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry, strict=True))
+    den = math.sqrt(sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry))
+    return num / den if den else 0.0
+
+
+def expert_versus(run: DraftRun, kind: str):
+    """Experts' expected strength per pair (or color) on the simulator's
+    win-rate scale. Each host scored -2..+2 (experts.rate); the hosts' mean is
+    mapped linearly so the experts' spread across pairs equals the
+    simulation's. The level and spread are borrowed; the order and the gaps
+    between pairs are the experts' own."""
+    from mulligan import experts
+    exp = experts.expected("fra")[kind]
+    recs = run.records if kind == "pairs" else color_records(run)
+    keys = [k for k in recs if k in exp]
+    sim = {k: recs[k][0] / recs[k][1] for k in recs}
+    xs = [exp[k]["score"] for k in keys]
+    ys = [sim[k] for k in keys]
+    mx, my = sum(xs) / len(xs), sum(ys) / len(ys)
+    sx = math.sqrt(sum((x - mx) ** 2 for x in xs) / len(xs))
+    sy = math.sqrt(sum((y - my) ** 2 for y in ys) / len(ys))
+    scale = sy / sx if sx else 0.0
+
+    def to_wr(score):
+        return my + (score - mx) * scale
+
+    rows = []
+    for k in sorted(recs, key=lambda k: -sim[k]):
+        w, g = recs[k]
+        lo, hi = wilson(w, int(g))
+        name = f"{k} {PAIR_NAMES[k]}" if kind == "pairs" else COLOR_NAMES[k]
+        if k in exp:
+            hs = list(exp[k]["hosts"].values())
+            who = ", ".join(f"{h.split('|')[1]} {v:+d}" for h, v in exp[k]["hosts"].items())
+            rows.append((f"{name} ({len(hs)})", sim[k], lo, hi, k, to_wr(exp[k]["score"]),
+                         to_wr(min(hs)), to_wr(max(hs)), f"Scores: {who}"))
+        else:
+            rows.append((f"{name} (0)", sim[k], lo, hi, k, None, None, None, ""))
+    rho = spearman(xs, ys)
+    label = ("Color pairs" if kind == "pairs" else "Colors") + ": simulation vs. experts"
+    svg = charts.versus(rows, label, reference=my, left=150 if kind == "pairs" else 110,
+                        legend=("Simulation (95% interval)", "Experts (band: range of hosts)"))
+    return svg, rho, {k: (exp[k]["score"], to_wr(exp[k]["score"])) for k in keys}
+
+
+def expert_grades(run: DraftRun):
+    """Scatter: each card's average expert grade against its simulated win
+    rate when drawn; the biggest disagreements are labelled."""
+    import json
+
+    from mulligan import experts
+    data = json.loads((ROOT / "blog/data/fra-experts.json").read_text())["cards"]
+    pts = []
+    for name, x in data.items():
+        g = [experts.grade_points(r["grade"]) for r in x["grades"]]
+        g = [v for v in g if v is not None]
+        if len(g) < 2 or name not in run.cards or run.cards[name][1] < 300:
+            continue
+        pts.append((name, sum(g) / len(g), shrunk(run, name),
+                    charts.color_key(_colors(run.data, name))))
+    xs, ys = [p[1] for p in pts], [p[2] for p in pts]
+    n = len(pts)
+    mx, my = sum(xs) / n, sum(ys) / n
+    slope = sum((a - mx) * (b - my) for a, b in zip(xs, ys, strict=True)) / \
+        sum((a - mx) ** 2 for a in xs)
+    resid = {p[0]: p[2] - (my + slope * (p[1] - mx)) for p in pts}
+    sim_higher = sorted(resid, key=lambda k: -resid[k])[:5]
+    experts_higher = sorted(resid, key=lambda k: resid[k])[:5]
+    letters = experts.GRADES[::-1]
+
+    def letter(v):
+        i = round(v)
+        return letters[i] if 0 <= i < len(letters) and abs(v - i) < 0.01 else ""
+
+    svg = charts.scatter(pts, "Expert grade vs. simulated win rate when drawn",
+                         "Average expert grade", "Simulated win rate when drawn",
+                         callouts=set(sim_higher + experts_higher), x_fmt=letter,
+                         y_ref=run.mean_gih())
+    return svg, spearman(xs, ys), n, sim_higher, experts_higher
+
+
+def depth_by_color(run: DraftRun):
+    """Per color: how many of its commons beat the set's average card when
+    drawn. The commons are what you see all draft, so this is how deep a color
+    runs."""
+    mean = run.mean_gih()
+    rated = {n for n, _, _, _ in run.rated(300)}
+    counts = {c: [0, 0] for c in "WUBRG"}
+    for n in rated:
+        cols = _colors(run.data, n)
+        if len(cols) == 1 and _rarity(run.data, n) == "common":
+            counts[cols][1] += 1
+            counts[cols][0] += shrunk(run, n) > mean
+    rows = sorted(((f"{COLOR_NAMES[c]} ({v[0]} of {v[1]})", v[0], c)
+                   for c, v in counts.items()), key=lambda r: -r[1])
+    return charts.bars(rows, "Commons that beat the average card, by color",
+                       fmt=lambda v: f"{v:.0f}"), counts
+
+
+def glance(run: DraftRun, pair_exp: dict, color_rho: float, pair_rho: float) -> str:
+    """The format in six numbers, as tiles."""
+    from html import escape
+    recs = {p: w / g for p, (w, g) in run.records.items()}
+    best = max(recs, key=recs.get)
+    worst = min(recs, key=recs.get)
+    exp_best = max(pair_exp, key=lambda k: pair_exp[k][0])
+    w, g = run.raw["on_the_play"]
+    rated = {n: r for n, r, _, _ in run.rated(300)}
+    commons = [n for n in rated if _rarity(run.data, n) == "common"]
+    top_common = max(commons, key=lambda n: shrunk(run, n))
+    tiles = [
+        ("Best pair (sim)", f"{best} {PAIR_NAMES[best]}", f"{recs[best]:.1%} win rate"),
+        ("Experts' favorite", f"{exp_best} {PAIR_NAMES[exp_best]}",
+         "highest average host score"),
+        ("Pair to avoid (sim)", f"{worst} {PAIR_NAMES[worst]}", f"{recs[worst]:.1%} win rate"),
+        ("Play or draw", "Play", f"{w / g:.1%} on the play"),
+        ("Best common (sim)", top_common, f"{rated[top_common]:.1%} when drawn"),
+        ("Experts vs. sim on pairs", f"ρ = {pair_rho:+.2f}",
+         "rank agreement (1 = same order)"),
+    ]
+    return '<div class="glance">' + "".join(
+        f'<div><span class="k">{escape(k)}</span><strong>{escape(v)}</strong>'
+        f'<span class="s">{escape(s)}</span></div>' for k, v, s in tiles) + "</div>"
+
+
 def main() -> None:
     if RUN is None:
         raise SystemExit("no blog/data/fra-draft-*.json to read")
@@ -129,6 +283,24 @@ def main() -> None:
                                              "Deck win rate by creature count", "creatures"))
     write(OUT, P + "twos", bucket_chart(shape["buckets"]["twos"],
                                         "Deck win rate by two-drop creatures", "two-drops"))
+
+    svg, pair_rho, pair_exp = expert_versus(run, "pairs")
+    write(OUT, P + "pairs-experts", svg)
+    svg, color_rho, color_exp = expert_versus(run, "colors")
+    write(OUT, P + "colors-experts", svg)
+    print(f"experts vs sim, pairs rho {pair_rho:+.2f}:",
+          {k: (round(v[0], 2), round(v[1], 3)) for k, v in pair_exp.items()})
+    print(f"experts vs sim, colors rho {color_rho:+.2f}:",
+          {k: (round(v[0], 2), round(v[1], 3)) for k, v in color_exp.items()})
+    svg, grade_rho, graded, sim_higher, experts_higher = expert_grades(run)
+    write(OUT, P + "grades", svg)
+    print(f"expert grade vs sim: rho {grade_rho:+.2f} over {graded} cards")
+    print("  sim likes more:", sim_higher)
+    print("  experts like more:", experts_higher)
+    svg, depth = depth_by_color(run)
+    write(OUT, P + "depth", svg)
+    print("commons above average (above, of):", depth)
+    write(OUT, P + "glance", glance(run, pair_exp, color_rho, pair_rho))
 
     print(f"mean GIH {mean:.3f}; decks {len(run.decks)}; games {run.raw['games']}")
     w, g = run.raw["on_the_play"]

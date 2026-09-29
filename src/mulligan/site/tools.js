@@ -36,7 +36,7 @@ function wilson(w, n, z = 1.96) {
 }
 
 async function load() {
-  const set = document.body.dataset.set;
+  const set = document.querySelector("[data-set]").dataset.set;
   const sim = await (await fetch(`../data/${set}.json`)).json();
   let real = null;
   try {
@@ -480,42 +480,7 @@ function synergyTool(state) {
   draw();
 }
 
-// ---- what the experts say -----------------------------------------------
-
-function expertsTool(state) {
-  const root = $("#tool");
-  const x = state.experts;
-  if (!x) { root.append(el("p", {}, "No expert reviews yet.")); return; }
-  const syn = x.synthesis;
-  const paras = (text) => text.split(/\n\s*\n/).map((p) => el("p", {}, p));
-  const list = (items) => el("ul", {}, items.map((t) => el("li", {}, t)));
-  const eps = el("ul", { class: "episodes muted" }, x.episodes.map((e) =>
-    el("li", {}, el("a", { href: e.url }, e.show), `: ${e.title} (${e.date}; ${e.hosts.join(", ")})`)));
-  const colorRows = syn.colors.map((c) => el("tr", {}, el("td", {}, pips(c.color), " ", COLORS[c.color]), el("td", {}, c.take)));
-  const simPair = (p) => { const r = state.sim.pairs[p]; return r ? pct(r.w / r.g) : "–"; };
-  const pairRows = syn.pairs.map((p) => el("tr", {},
-    el("td", {}, pips(p.pair), " ", PAIR_NAMES[p.pair], el("div", { class: "muted" }, `sim ${simPair(p.pair)}`)),
-    el("td", {}, p.experts), el("td", { class: "muted" }, p.sim)));
-  root.append(
-    el("p", { class: "fresh" }, `From ${x.episodes.length} podcast episodes, summarized and paraphrased; listen to the shows for the real thing. Nothing here is quoted. The "sim" numbers are this site's simulated drafts.`),
-    eps,
-    el("section", { class: "synout" },
-      el("h2", {}, "The format in short"), ...paras(syn.overview),
-      el("p", {}, el("strong", {}, "Speed: "), syn.speed),
-      el("h2", {}, "What everyone agrees on"), list(syn.consensus),
-      el("h2", {}, "Where they differ"), list(syn.debates),
-      el("h2", {}, "Drafting advice"), list(syn.advice),
-      el("h2", {}, "Colors"), el("div", { class: "table" }, el("table", { class: "cards prose" }, el("tbody", {}, colorRows))),
-      el("h2", {}, "Color pairs: experts vs. the simulation"),
-      el("div", { class: "table" }, el("table", { class: "cards prose" },
-        el("thead", {}, el("tr", {}, el("th", {}, "Pair"), el("th", {}, "Experts"), el("th", {}, "Simulation"))), el("tbody", {}, pairRows))),
-      el("h2", {}, "Where the simulation disagrees"),
-      el("ul", {}, syn.sim_vs_experts.map((d) => {
-        const c = state.byName.get(d.card);
-        return el("li", {}, c ? [gradeBadge(c), " ", expertBadge(c), " ", hoverCard(el("strong", {}, d.card), state, c)] : el("strong", {}, d.card), ` ${d.note}`);
-      }))),
-    cardGrades(state));
-}
+// ---- what the experts say (embedded in the primer) ------------------------
 
 // Every card the hosts graded: their grades and takes next to the simulator's.
 function cardGrades(state) {
@@ -546,8 +511,9 @@ function cardGrades(state) {
 }
 
 load().then((state) => {
-  const tool = document.body.dataset.tool;
-  ({ cards: cardsTool, pick: pickTool, pairs: pairsTool, synergy: synergyTool, experts: expertsTool })[tool](state);
+  const tool = document.querySelector("[data-tool]").dataset.tool;
+  ({ cards: cardsTool, pick: pickTool, pairs: pairsTool, synergy: synergyTool,
+     cardgrades: (s) => $("#tool").append(cardGrades(s)) })[tool](state);
 }).catch((err) => {
   $("#tool").append(el("p", {}, `Couldn't load the data: ${err}`));
 });

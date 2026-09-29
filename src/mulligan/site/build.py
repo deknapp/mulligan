@@ -33,11 +33,12 @@ CURRENT_SET = "fra"      # the format the tools cover
 TOOLS = [("cards", "Card ratings", "Every card graded, filterable by color, rarity and pair."),
          ("pick", "Pick helper", "Paste a pack and your picks; get the pick and why."),
          ("pairs", "Color pairs", "Which pairs win, their best cards, a sample deck."),
-         ("synergy", "Card pairs", "Which two cards win more together than apart."),
-         ("experts", "Experts", "What the podcasts say, next to the simulation.")]
+         ("synergy", "Card pairs", "Which two cards win more together than apart.")]
 LIVE_BLURB = "Runs on your computer during an Arena draft and ranks each pack as it opens."
 PAGES = [("method", "How it works"), ("live", "Live pick helper")]   # blog/<slug>.md
 FIGURE = re.compile(r"\{\{\s*figure\s+([\w-]+)\s*\}\}")
+TOOL = re.compile(r"\{\{\s*tool\s+([\w-]+)\s*\}\}")   # a tools.js view inside a post
+MOVED = {"experts": "../posts/2026-09-21-reality-fracture-primer.html#experts"}
 
 
 @dataclass
@@ -80,7 +81,9 @@ def _render(post: Post, figures: Path) -> str:
 
     html = markdown.markdown(post.body, extensions=["tables", "fenced_code", "sane_lists"])
     # Figures are block-level: unwrap the paragraph Markdown puts around them.
-    html = re.sub(r"<p>\s*(\{\{\s*figure\s+[\w-]+\s*\}\})\s*</p>", r"\1", html)
+    html = re.sub(r"<p>\s*(\{\{\s*(?:figure|tool)\s+[\w-]+\s*\}\})\s*</p>", r"\1", html)
+    html = TOOL.sub(lambda m: f'<div id="tool" data-tool="{m.group(1)}" data-set="{CURRENT_SET}">'
+                    "<noscript>This needs JavaScript.</noscript></div>", html)
     return FIGURE.sub(figure, html)
 
 
@@ -135,7 +138,9 @@ def build(blog: Path = BLOG, site: Path = SITE) -> list[Path]:
         body = (f'<article><p class="date">{_date(post.date)}</p>'
                 f"<h1>{escape(post.title)}</h1>{_render(post, figures)}</article>")
         path = site / "posts" / f"{post.slug}.html"
-        path.write_text(_page(post.title, body, depth=1, description=post.summary))
+        scripts = '<script src="../tools.js" defer></script>\n' if TOOL.search(post.body) else ""
+        path.write_text(_page(post.title, body, depth=1, description=post.summary,
+                              scripts=scripts))
         written.append(path)
     _tools(blog, site)
     items = "\n".join(
@@ -184,9 +189,6 @@ def _tools(blog: Path, site: Path) -> None:
                 "the pack for you.",
         "pairs": "How each two-color pair did in simulated drafts, what its decks looked "
                  "like, and its best cards.",
-        "experts": "What Limited Resources and Limited Level-Ups said in their set reviews, "
-                   "synthesized: the format, colors, pairs, and every card they graded, "
-                   "next to the simulator's numbers.",
         "synergy": "Cards that win more together than each does alone, and pairs that "
                    "get in each other's way. Look up a card to see what to draft around it.",
     }
@@ -198,6 +200,16 @@ def _tools(blog: Path, site: Path) -> None:
         (site / "tools" / f"{slug}.html").write_text(_page(
             f"{name}: {set_name}", body, depth=1, description=notes[slug],
             body_attrs=attrs, scripts='<script src="../tools.js" defer></script>\n'))
+    _moved(site)
+
+
+def _moved(site: Path) -> None:
+    """Old tool pages that became part of the primer: a redirect each."""
+    for slug, target in MOVED.items():
+        (site / "tools" / f"{slug}.html").write_text(
+            f'<!doctype html><meta charset="utf-8"><title>Moved</title>'
+            f'<meta http-equiv="refresh" content="0; url={target}">'
+            f'<link rel="canonical" href="{target}"><a href="{target}">Moved to the primer.</a>')
 
 
 def _rfc822(d: str) -> str:
