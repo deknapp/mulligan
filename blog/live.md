@@ -60,15 +60,28 @@ so they're shifted onto the simulator's scale before the two are mixed. Early
 on, while 17Lands only has numbers for a handful of cards, the helper sticks to
 the simulator and says so.
 
-From there it works like the website's pick helper. **Score** is how many
-points more often you win when the card is drawn than with an average card,
-minus a penalty for colors outside the two your picks lean toward. The penalty
-is zero at pick one and grows until the middle of pack two. The **why** column
-also says how the card did in simulated decks of your colors, whether it's
-removal, and whether it usually goes late enough to come back to you.
+From there it works like the website's pick helper, which uses the same rules.
+**Score** is how many points more often you win when the card is drawn than
+with an average card, then adjusted for what you've taken:
 
-It doesn't know about your curve or synergies. If two cards are within a
-point or two, take the one your deck needs.
+- **Colors.** A penalty per color outside the two your picks lean toward. It
+  grows as your colors settle (from zero at pick one), is heavier for a card
+  needing two of that color's mana, and halves when your pool has a dual land
+  for it. Into pack two an off-color card also loses most of its edge, since
+  you're unlikely to play it.
+- **Your pair.** How the card did in simulated decks of your two colors,
+  against how it does everywhere.
+- **Synergy.** The card's simulated interaction with each card you've taken,
+  counted by how likely that card is to make your deck.
+- **Playables.** When your colors are short of a deck's worth of playables for
+  the picks left, on-color playables gain a little.
+- **Dual lands** in your colors are worth a late pick, more when they let you
+  splash a strong card you've taken.
+
+The **why** column spells each of these out, and says whether a card is
+removal and whether it usually goes late enough to come back to you. It still
+doesn't know your curve: if two cards are within a point or two, take the one
+your deck needs.
 
 ## Install
 
