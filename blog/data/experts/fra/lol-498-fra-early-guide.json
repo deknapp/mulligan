@@ -1,0 +1,571 @@
+{
+ "show": "Lords of Limited",
+ "title": "#498: This is the Way! Reality Fracture Early Limited Guide",
+ "date": "2026-09-28",
+ "url": "https://audioboom.com/posts/8958057",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "scale": "Letter grades (A-F), used only occasionally; most cards were discussed as movers up or down without a grade.",
+ "cards": [
+  {
+   "card": "Extrapolate the Impossible",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A very fun sealed card; with a nearly five-color manabase he could pull almost his whole sideboard with it."
+  },
+  {
+   "card": "Curse-Marred Demon",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Obnoxiously powerful: a 4/4 flying trampler that tutors a card, with a fun risk that the random discard hits the card you fetched."
+  },
+  {
+   "card": "Hungering Puppetbeast",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "One of the better rares and a rate monster, though the big green decks can go over the top of a 5/5 in this grindy format."
+  },
+  {
+   "card": "Hungering Puppetbeast",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Nuts because you can only kill it while the Heartwood trigger is on the stack; otherwise it sacrifices the token for hexproof and effectively needs two removal spells."
+  },
+  {
+   "card": "Enlightened Confidant",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The card-advantage clause is hard to trigger, so he mostly ran it as a plain two-mana 2/1 lifelinker."
+  },
+  {
+   "card": "Medic's Kitesail",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An all-star in his sealed deck, since granting a cheap +1/+1 and flying plus life gain is strong in limited."
+  },
+  {
+   "card": "Kiora of Fire and Ashes",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Absurd and one of the best uncommons: you must answer the 5/5 flyer and then Kiora herself before the eight-mana dragon engine takes over, and eight mana is easy in red-green."
+  },
+  {
+   "card": "Command the Stage",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A mover down: building around it was too small-ball, slow and fussy for the format's power level, so it is at best a late reward for a red-black deck and may simply be bad."
+  },
+  {
+   "card": "Twisted Fates",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Broken in half; every time it was cast against him the game was effectively over."
+  },
+  {
+   "card": "Twisted Fates",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Without a wide board it often played as a five-mana kill spell for him, but it was still an early pick that pulled him into white-black."
+  },
+  {
+   "card": "Greenhouse Propagator",
+   "host": "Ben",
+   "grade_said": "C+ (C/C- without life gain)",
+   "grade": "C+",
+   "take": "His biggest mover up from a D: its mana ramps into the format's mana-hungry top end, and its life gain buys time and fuels the life gain synergies."
+  },
+  {
+   "card": "Inspired Tethermage",
+   "host": "Ben",
+   "grade_said": "C+ to B-, B- with Way cards",
+   "grade": "B-",
+   "take": "A common that matters: it quickly grows once loyalty counters start going on Jace and becomes a repeatable six-mana Empower Jace sink, making it the best partner for Way of the Pyromancer."
+  },
+  {
+   "card": "Inspired Tethermage",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not ready to co-sign it; the strong curves described sound more like evidence that Way of the Pyromancer is great."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Great late-game filtering with flashback that kept his Boros deck from flooding, with bonus prowess upside."
+  },
+  {
+   "card": "Hallway Heckler",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Its repeatable loot kept his aggro deck making impactful plays late in games."
+  },
+  {
+   "card": "Ruric Thar, Magecrusher",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A very castable, very powerful mana-sink top end and one of the better green uncommons."
+  },
+  {
+   "card": "Violent Echoes",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Insane and effectively a mythic uncommon: four mana kills almost anything or kills something and Empowers Jace a lot with the excess damage."
+  },
+  {
+   "card": "No Admittance",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A fine cheap burn spell that works as deal three plus surveil one, but it is worse than Violent Echoes; the host who took it over Echoes thinks he chose wrong."
+  },
+  {
+   "card": "Campus Crier",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Went up in estimation because exiling it at instant speed for Empower Jace 2 at end step sets up strong Jace turns."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "He argues it is the best Way card: a very high floor, since it is at least a 2/2 plus a card plus a surveil, and it stays around to boost every future Jace."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very good and one of the pushed Way cards despite costing four."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "He is confident it is the best Way card because it is the only one that ticks Jace up on its own, which is excellent in red-green ramp."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Incredible and extremely fun play patterns; once a Jace token exists your opponent has to deal with it."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A high performer that simply does its thing; he found facing 4/4 tramplers from it miserable."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "High floor but low ceiling, because a 4/4 is small potatoes against big green decks and it costs five."
+  },
+  {
+   "card": "Way of the Paradox",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Better than Wildspeaker and basically Uro: extra land drops plus life gain let green decks bury opponents in mana, with a very high ceiling alongside mana sinks and land-to-hand effects."
+  },
+  {
+   "card": "Way of the Paradox",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Sold on it after Ben's explanation of the ramp and life gain play patterns."
+  },
+  {
+   "card": "Titanbones, Towering Heart",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not a great card on its own, but it grows quickly when curved into from Way of the Paradox's life gain."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very powerful, worth splashing: three mana for a Jace with extra loyalty plus a 4/4 trampler."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A rate monster at three mana that pairs nicely with Way of the Necromancer."
+  },
+  {
+   "card": "Rank Rat",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A big mover up that has never been bad for him, especially when rebought with Rescue Girl or curved into Way of the Deathbringer."
+  },
+  {
+   "card": "Rank Rat",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "He expected the discard effect to be weak here, but he was unhappy every time it was cast against him."
+  },
+  {
+   "card": "Way of the Necromancer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Combos with sacrifice effects like Deathbringer to cut the effective loyalty cost; leave Jace tokens at one loyalty so it can tick them up."
+  },
+  {
+   "card": "Way of the Warlord",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Weaker than the other three-mana Way cards because the minus-four ability burns nearly all the loyalty it gives you."
+  },
+  {
+   "card": "Way of the Mind Sculptor",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "His pick for the worst Way card: an inefficient rate for five mana."
+  },
+  {
+   "card": "Way of the Mind Sculptor",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Only as good as your ability to protect Jace, since five mana to draw two is not a good rate."
+  },
+  {
+   "card": "Way of the Mentor",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "High on it in theory as a green-white card that loops with Way of the Paradox and Inspired Tethermage; the floor is terrible, so it should come late."
+  },
+  {
+   "card": "Way of the Mentor",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very niche with a low floor, but he can see a green-white life gain home where it uptics planeswalkers."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "His pick for the worst Way card: you do not want it on turn three, and copying a spell for minus three is not much better than drawing a card."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A rate monster at three mana for five loyalty and a blue-red gold card; copying No Admittance on turn five retops Jace."
+  },
+  {
+   "card": "Prudent Fateseer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A mover up that powers blue-white go-wide surveil, with the team pumps stacking across multiple copies."
+  },
+  {
+   "card": "Fatehold Chronologist",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Still a phenomenal common two-mana flyer that carries Peer Review."
+  },
+  {
+   "card": "Ghalta the Immovable",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A real build-around in white-blue alongside high-toughness flyers, Traxos and Tetsuko, especially if you can protect it or have multiples."
+  },
+  {
+   "card": "Unsummon",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "They haven't played it, but it plausibly performs as a tempo play whose card loss Empower Jace recoups, and it is great against 4/4 beast tokens and Ferocity of the Hunt; multiples may be unnecessary in a slow format."
+  },
+  {
+   "card": "Something Worth Saving",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Green decks want to dig for their strong top end, and the one life matters with life gain synergies, so he's in."
+  },
+  {
+   "card": "Emergency Phytomedic",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not a high pick, but a nice Seed Suture synergy piece for green-white life gain that also works well with Rescue Girl."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Broken and likely the best white uncommon, because rebuying Rank Rats, Way enchantments and enters effects is enormous value."
+  },
+  {
+   "card": "Blessed Ghoul",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Annoying recursive lifelinker that grows with Seed Suture and pairs with Way of the Necromancer."
+  },
+  {
+   "card": "Blessed Ghoul",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not co-signing: he has faced it several times and never found a recurring 1/1 impressive."
+  },
+  {
+   "card": "Ferocity of the Hunt",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A mean combat trick that swings games, especially on big green creatures."
+  },
+  {
+   "card": "Ferocity of the Hunt",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The threat of it makes every double block against green feel like it could lose you the game."
+  },
+  {
+   "card": "Danitha, Sword of Hope",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Better than expected because Seed Suture makes it a reward card, and turning it into a card-drawing first striker makes it must-answer."
+  },
+  {
+   "card": "Ghalta the Unstoppable",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Good because green decks get big, so it usually costs around four or five mana."
+  },
+  {
+   "card": "Marwyn, the Preserver",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Better than it looks: the land recursion pairs with Something Worth Saving, Jace surveil and Way of the Paradox as a mana sink."
+  },
+  {
+   "card": "Marwyn, the Preserver",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "He was impressed after stealing it with a white-black removal spell and using it to recover lands he needed."
+  },
+  {
+   "card": "Restore with Empathy",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Actually good this time: four life is a lot, there are many strong permanents to rebuy, and it pairs well with Something Worth Saving."
+  },
+  {
+   "card": "Fateshaper Aspirant",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not a high pick, but it plays like Gravedigger plus given the number of legends, and the indestructible mode can protect a big trampler."
+  },
+  {
+   "card": "Fateshaper Aspirant",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Also impressed; he nearly put it on his own movers-up list despite its clunkiness."
+  },
+  {
+   "card": "Geist of Saint Thalia",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Cheapens Way enchantments, Peer Reviews and removal, saving a lot of mana, and its flying body can pressure opposing Jace tokens."
+  },
+  {
+   "card": "Bestial Incursion",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Still likes it this week."
+  },
+  {
+   "card": "Bestial Incursion",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Lower on it than Ben."
+  },
+  {
+   "card": "Surveillance Phantasm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A mover down: you do not surveil as often as expected because Jace tokens aren't always activated, so it is only for surveil-heavy blue-white decks."
+  },
+  {
+   "card": "Heartstring Puller",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A mover down: it has a high floor but is too small-ball and has little impact on games at this power level."
+  },
+  {
+   "card": "Gallia, the Merrymaker",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A mover down because ground 2/1s aren't where this format is at."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The best of the land cyclers and good, but the cyclers are mostly filler in draft, where splashing is hard; they are much better in sealed."
+  },
+  {
+   "card": "Stingerquill Voxmancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The body does nothing and dies easily, stranding a Vicious Verse build; it now looks far worse than six-drops like Kiora."
+  }
+ ],
+ "format": {
+  "summary": "The hosts call it an all-time great, high-synergy, high-power, high-complexity format that plays like a cube, with many viable lanes. Power is concentrated in rares and uncommons, especially appropriately pipped gold uncommons and the Way enchantments. Empower Jace creates rich decisions in both draft and sealed, and sealed pools are complex and swingy.",
+  "speed": "Slow and grindy when both players curve out and play removal: games reach seven- and eight-drops and decks are mana hungry. You still must affect the board early and interact, and boards see lots of trading rather than pure stalls.",
+  "colors": [
+   {
+    "color": "G",
+    "take": "Ben's biggest mover up; he now calls himself a green stan because of its ramp, mana sinks, huge top end and life gain synergies."
+   },
+   {
+    "color": "W",
+    "take": "Ethan's biggest mover up; he now has it third."
+   },
+   {
+    "color": "B",
+    "take": "Ethan still ranks it fifth but concedes it has improved and its many removal spells matter a lot."
+   },
+   {
+    "color": "R",
+    "take": "Ethan still ranks it first; Way of the Pyromancer and the burn removal are key."
+   },
+   {
+    "color": "U",
+    "take": "Ethan ranks it second; blue-red good cards and white-blue decks performed well."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "RG",
+    "take": "Red-green ramp and good cards is one of the best decks, with Way of the Pyromancer, Kiora and big mana sinks."
+   },
+   {
+    "pair": "WB",
+    "take": "Good cards with sacrifice synergy overperformed, and Twisted Fates is extremely strong."
+   },
+   {
+    "pair": "WU",
+    "take": "Go-wide surveil with Prudent Fateseer, Chronologist and Peer Review impressed but is not a premier strategy; a white Ghalta build is also real."
+   },
+   {
+    "pair": "WG",
+    "take": "Life gain with Seed Suture is real and good, tied together by the card-drawing gold uncommon; Way of the Mentor could fit here."
+   },
+   {
+    "pair": "UR",
+    "take": "Good cards is a very strong deck, and Way of the Cryomancer may belong here."
+   },
+   {
+    "pair": "UB",
+    "take": "The mill deck has not impressed."
+   },
+   {
+    "pair": "BR",
+    "take": "The Vicious Verse noncombat-damage deck is fussy and falls apart if its engine creatures die."
+   },
+   {
+    "pair": "BG",
+    "take": "On the fence because it is split between self-mill recursion and deathtouch-trample, and may end up more Sultai."
+   },
+   {
+    "pair": "UG",
+    "take": "Slightly worse than hoped; the five-color Way deck is untested."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace",
+    "take": "A clean, great mechanic that matters much more in draft than in sealed. It works fine with two instances and gets better with ten plus Way cards. Don't auto-activate tokens, because sitting at one loyalty can be right, and attack opposing Jace tokens aggressively."
+   },
+   {
+    "name": "Way of enchantments",
+    "take": "The meat of the format. The cheap ones (Pyromancer, Paradox, Deathbringer, Healer, Cryomancer) are rate monsters, while Warlord and Mind Sculptor are less efficient. Pyromancer, Necromancer and Mentor need an existing Jace token to tick it up."
+   },
+   {
+    "name": "Prepared spells (Seed Suture, Peer Review, Heartwood, Vicious Verse, Omit Variables)",
+    "take": "A clever way to seed synergy, but let those decks come to you. Seed Suture, Peer Review and Heartwood are better than Vicious Verse and Omit Variables, and Omit Variables did occasionally enable stacking your library in long games."
+   },
+   {
+    "name": "Land cyclers",
+    "take": "Much bigger in sealed; in draft they are mostly filler because splashing is hard and many cards are double-pipped."
+   },
+   {
+    "name": "Mirrored pairs",
+    "take": "They can create very high-powered sealed pools and make pod power levels vary."
+   }
+  ],
+  "advice": [
+   "Prioritize raw power and rare/uncommon hooks; don't let commons steer your draft.",
+   "Take the best card in the first four or five packs and stay open, drafting 'the hard way' rather than forcing a color.",
+   "Avoid half-baked synergy decks, especially Vicious Verse noncombat damage, unless the lane is clearly open.",
+   "Value mana sinks, card filtering and repeatable late-game advantages because games go long.",
+   "Don't activate every Jace token automatically; consider holding at one loyalty for Way uptick effects.",
+   "Attack opposing Jace tokens off the board unless you are hyper-aggressive.",
+   "Once you commit to a synergy, supporting commons like Inspired Tethermage rise sharply in value.",
+   "Removal is premium; don't end up removal-light."
+  ]
+ }
+}

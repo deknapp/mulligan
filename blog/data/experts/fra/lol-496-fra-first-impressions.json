@@ -1,0 +1,530 @@
+{
+ "show": "Lords of Limited",
+ "title": "#496: Our First Impressions of Reality Fracture",
+ "date": "2026-09-14",
+ "url": "https://audioboom.com/posts/8952669",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "scale": "Mostly ungraded first-impression discussion with occasional letter grades (e.g. C, B-, D+), plus a 'Great or Garbage' binary verdict segment",
+ "cards": [
+  {
+   "card": "Protege's Awakening",
+   "host": "Ben",
+   "grade_said": "seems fine",
+   "grade": "none",
+   "take": "High risk, high reward: awful on an empty board but powerful on a stable one, and weaker than Empower Jace cards that also affect the board."
+  },
+  {
+   "card": "Protege's Awakening",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Turbo-charged Jace fuel that can be four mana draw three, but it does nothing to the board so it depends on already protecting your Jace."
+  },
+  {
+   "card": "Academic Ascent",
+   "host": "both",
+   "grade_said": "D+",
+   "grade": "D+",
+   "take": "A Mighty Leap-style trick that is only fine, though the Empower Jace 2 adds partial card value and the flying can let you kill an opposing Jace token."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Ethan",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A cheap deathtouch body that walls the ground to protect your Jace while adding counters, and he expects Empower Jace cards to play better than they look."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Ben",
+   "grade_said": "C (C+ would be cool)",
+   "grade": "C",
+   "take": "Likes it as a solid Jace protector that draws partial card value but would be surprised if it reached top-common B- territory."
+  },
+  {
+   "card": "Campus Crier",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A decent 3/1 that fits self-mill decks, and exiling it from the graveyard lets you time the Empower Jace for when your board can protect it."
+  },
+  {
+   "card": "Countersculpt",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A two-mana counterspell that tops up your Jace, so it could be close to counterspell plus draw a card and busted if you reliably have a Jace out."
+  },
+  {
+   "card": "Inspired Tethermage",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Mostly a vanilla 3/2 that will get traded off before it grows, with a clunky six-mana activation."
+  },
+  {
+   "card": "Keeper of the Quiet Hour",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An efficient colorless 3/2 that can approach three mana draw a card in Jace-heavy decks, so it is a strong Golden Egg candidate."
+  },
+  {
+   "card": "No Admittance",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Called bonkers: flexible three damage removal that also adds a loyalty counter, pairing nicely with Empower 2 cards."
+  },
+  {
+   "card": "Rewrite Regrets",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A Zombify-style card that looks good if Dimir or another deck supports reanimation, but much less exciting without a graveyard archetype."
+  },
+  {
+   "card": "Solve for Disappointment",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Only hits permanent cards, which makes it much worse than it first reads, so it likely won't make many decks."
+  },
+  {
+   "card": "Violent Echoes",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very strong removal, since killing a smaller creature turns the excess damage into Jace counters and effectively a card."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Usually just a card draw on the turn you cast it, but late game copying removal while fueling Jace looks juicy."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Lets your Jace make a 2/2 Cadet for only minus two, so it can protect itself at a nice rate."
+  },
+  {
+   "card": "Way of the Necromancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A cheap way to keep upticking your Jaces whenever your creatures die."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Adds a sacrifice-for-a-4/4-trampler ability, which fits a sacrifice-oriented deck."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The plus one lets Jace sustain itself, so on turn two it looks broken, and even late it nearly cycles itself."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Empower Jace 7 plus a minus four for a 4/4 trampler makes it large and impactful."
+  },
+  {
+   "card": "Prudent Fateseer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A fine but unexciting defensive uncommon that is likely Azorius-only, and clearly worse than the common Fatehold Chronologist."
+  },
+  {
+   "card": "Fatehold Chronologist",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Significantly better than the uncommon because it has evasion to pressure Jaces and its Peer Review curves into itself."
+  },
+  {
+   "card": "Fatehold Charm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "All three modes are good, making it one of the better charms."
+  },
+  {
+   "card": "Paradox Shaper",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Intriguing library-stacking loops card, and they are optimistic the self-mill loop strategy is real this time."
+  },
+  {
+   "card": "Theorix Charm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A very fine, flexible charm that is hard to go wrong with."
+  },
+  {
+   "card": "Stingerquill Voxmancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A repeatable enabler whose weak Vicious Verse spell becomes good if Rakdos cares about casting prepared spells."
+  },
+  {
+   "card": "Whiplash Wordsmith",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Can enable its own flying and haste as a five-mana play and gains evasion from other noncombat damage, fitting Rakdos synergy."
+  },
+  {
+   "card": "Stingerquill Charm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "All modes are good, like the rest of the charm cycle."
+  },
+  {
+   "card": "Woodwork Prodigy",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A 3/3 that keeps re-preparing to churn out Heartwood tokens, which is a nice thing to be doing in RG."
+  },
+  {
+   "card": "Heartwood Crafter",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Looks extremely powerful: a one-drop that makes a Heartwood token on turn two and remains a useful mana source for abilities, flashback and prepared spells."
+  },
+  {
+   "card": "Konstrari Charm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Weaker than the other charms, and you will mostly use the counters-plus-trample mode."
+  },
+  {
+   "card": "Vigorbloom Vanguard",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A very aggressive rate on a two-drop for a counters-matter Selesnya deck."
+  },
+  {
+   "card": "Emergency Phytomedic",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A fine little one-mana twist on the 1/1 that puts a counter on something."
+  },
+  {
+   "card": "Vigorbloom Charm",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Quite good, since every mode is strong, including a counter-plus-fight removal mode."
+  },
+  {
+   "card": "Clash of Elements",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very strong, because it is cheaper than usual top-or-bottom removal, is an instant and also deals two damage."
+  },
+  {
+   "card": "Warrior's Blades",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very powerful: four mana for three damage and three life that leaves behind an equipment which gets cheaper with counters."
+  },
+  {
+   "card": "Mabel, Bitter Recluse",
+   "host": "both",
+   "grade_said": "fine card",
+   "grade": "none",
+   "take": "A fine one-drop deathtouch body with some counter-removal upside."
+  },
+  {
+   "card": "Charge the Sanctum",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Flexible because it can be a team pump or a winning trick, but three mana is expensive for a trick."
+  },
+  {
+   "card": "Edgar, Ancient Bloodlord",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An incredible two-mana rate: a 2/3 drain-style body that can sacrifice spent Jaces to grow and gain menace to pressure planeswalkers."
+  },
+  {
+   "card": "Edgar, Moonlit Sovereign",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A flash 4/4 that grows itself and could do busted things spreading counters across a board already carrying +1/+1 counters."
+  },
+  {
+   "card": "Kiora of Salt and Sand",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Plays offense and defense around Jaces, and making 8/8 hexproof Leviathans gives UG a more well-rounded plan than typical ramp, though the minus eight was debated."
+  },
+  {
+   "card": "Kiora of Fire and Ashes",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A six-drop that makes a 5/5 flying Dragon plus a mana sink, which Heartwood decks will love."
+  },
+  {
+   "card": "Tam's Resistance",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Deceptively powerful, since Empower Jace 4 plus a counter effectively draws a card and leaves a surveil behind."
+  },
+  {
+   "card": "Compel Brutality",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A cool twist on the fight spell that can also use a big Jace's loyalty as damage."
+  },
+  {
+   "card": "Infinite Coursework",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "About as dead as you can make a creature without removing it, and it also shuts off prepared spells and activated abilities."
+  },
+  {
+   "card": "Memory Trap",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An O-Ring-style removal effect that is always good."
+  },
+  {
+   "card": "Last Gasp",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A solid returning cheap instant removal spell."
+  },
+  {
+   "card": "Wrath of the Bloodmane",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Good removal, but they guessed No Admittance will be better unless four damage proves to be the magic number."
+  },
+  {
+   "card": "Greenhouse Propagator",
+   "host": "both",
+   "grade_said": "Garbage",
+   "grade": "none",
+   "take": "Three-mana ramp creatures are weak, and you'd rather spend three mana making Heartwood tokens."
+  },
+  {
+   "card": "Icy Reception",
+   "host": "Ben",
+   "grade_said": "Garbage",
+   "grade": "none",
+   "take": "The -5/-0 mode is bait that rarely wins combat, and a counter limited to creature or legendary spells is too narrow."
+  },
+  {
+   "card": "Icy Reception",
+   "host": "Ethan",
+   "grade_said": "Great",
+   "grade": "none",
+   "take": "Essentially a flexible Essence Scatter-style counter or combat trick, which he considers great."
+  },
+  {
+   "card": "Perfected Theory",
+   "host": "both",
+   "grade_said": "Great",
+   "grade": "none",
+   "take": "A one-mana instant that shrinks or embiggens a creature is exactly what a combat trick should do, and belongs in blue decks."
+  },
+  {
+   "card": "Prophesied End",
+   "host": "both",
+   "grade_said": "Split: one Great, one Garbage",
+   "grade": "none",
+   "take": "One host sees it as great in controlling decks because it kills anything, while the other finds killing only attackers too narrow and the cantrip downside too costly."
+  },
+  {
+   "card": "Restore with Empathy",
+   "host": "both",
+   "grade_said": "Split: one Great, one Garbage",
+   "grade": "none",
+   "take": "One host loves it as a Pulse of Tsarasa-style value card for self-mill loops, while the other calls it an overpriced Raise Dead that doesn't do enough."
+  },
+  {
+   "card": "Something Worth Saving",
+   "host": "both",
+   "grade_said": "Split: one Great, one Garbage",
+   "grade": "none",
+   "take": "One host argues these mill-four-and-grab effects are always at least good, while the other thinks the hype is a data-driven overreaction."
+  },
+  {
+   "card": "Wrecking Gecko",
+   "host": "both",
+   "grade_said": "Garbage (but liked)",
+   "grade": "none",
+   "take": "A 5/5 ward 2 with a big mana sink looks strong, but a five-mana common without a real ETB was judged hard to call great."
+  },
+  {
+   "card": "Semester Foreseer",
+   "host": "both",
+   "grade_said": "Garbage",
+   "grade": "none",
+   "take": "Clunky next to the flyer, though it resembles overperforming four-mana 3/4 surveil creatures, so it could surprise."
+  },
+  {
+   "card": "Hallway Heckler",
+   "host": "both",
+   "grade_said": "Garbage (Great or Garbage segment; no letter grade)",
+   "grade": "none",
+   "take": "A 2/3 with a free rummage plus Vicious Verse is likable and pretty good, but likely not a common that matters much."
+  },
+  {
+   "card": "Ghalta the Immovable",
+   "host": "both",
+   "grade_said": "Garbage",
+   "grade": "none",
+   "take": "A cool high-toughness side quest, but white does not seem to have enough big-toughness creatures to enable it."
+  },
+  {
+   "card": "Shatterwing Pegasus",
+   "host": "both",
+   "grade_said": "Great",
+   "grade": "none",
+   "take": "A three-mana 2/3 flyer with a team-pump activation could be a common that matters for go-wide WU or RW decks."
+  }
+ ],
+ "format": {
+  "summary": "Reality Fracture is a large set with ten supported color pairs built around Empower Jace, which creates or loads a Jace token with minus one surveil and minus three draw abilities. It also features Heartwood mana tokens, five shared prepared spells at common and uncommon, echoed-pair pack slots and a Way-of cycle that gives Jaces new abilities. The hosts are very excited because it is a genuinely new puzzle to solve.",
+  "speed": "Not directly assessed, but they expect a board-presence format like War of the Spark where you must develop early to attack opposing Jaces and defend your own.",
+  "colors": [
+   {
+    "color": "W",
+    "take": "White looks to have solid removal-style effects (Memory Trap, Prophesied End) and good go-wide commons like Shatterwing Pegasus."
+   },
+   {
+    "color": "U",
+    "take": "Blue gets Jace-fueling card draw, strong cheap interaction like Countersculpt and Perfected Theory, and looks like a base for loops and Jace strategies."
+   },
+   {
+    "color": "B",
+    "take": "Black has Last Gasp, possible reanimation with Rewrite Regrets, and two Way enchantments that seem sacrifice- and death-oriented."
+   },
+   {
+    "color": "R",
+    "take": "Red has strong burn that also empowers Jace, such as No Admittance and Violent Echoes, plus Wrath of the Bloodmane."
+   },
+   {
+    "color": "G",
+    "take": "Green has Heartwood Crafter, which looked extremely powerful, plus Arcane Amphisbaena as a Jace protector, a fight variant and several self-mill value spells."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "WU",
+    "take": "Surveil and go-wide Cadet tokens via Peer Review, the strongest-looking prepared spell, with the common Fatehold Chronologist outshining the uncommon."
+   },
+   {
+    "pair": "UB",
+    "take": "Self-mill and graveyard loops via Omit Variables, which may finally be a real strategy this time."
+   },
+   {
+    "pair": "BR",
+    "take": "Casting the prepared spell Vicious Verse to turn on synergies such as flying and haste, making it greater than the sum of its parts."
+   },
+   {
+    "pair": "RG",
+    "take": "Heartwood tokens, artifacts and big mana sinks via Soul Tether."
+   },
+   {
+    "pair": "WG",
+    "take": "+1/+1 counters via Seed Suture, with aggressive two-drops."
+   },
+   {
+    "pair": "UR",
+    "take": "Only Clash of Elements has been previewed, and it looked very strong."
+   },
+   {
+    "pair": "WR",
+    "take": "Counters and possible go-wide themes, with Warrior's Blades and Mabel previewed."
+   },
+   {
+    "pair": "WB",
+    "take": "Sacrifice and aristocrats-style play, headlined by the excellent Edgar, Ancient Bloodlord."
+   },
+   {
+    "pair": "UG",
+    "take": "High-loyalty Jaces cashed in for 8/8 hexproof Leviathans, which looks more well-rounded than typical UG ramp."
+   },
+   {
+    "pair": "BG",
+    "take": "No cards previewed yet, though they speculated it might be graveyard-based."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace",
+    "take": "Works like amass for a Jace token that can only downtick, and resembles Ring tempting: a few copies are incidental, but the more you have, the better you can reach minus three to draw cards. Cards that also affect the board will be premium, and killing opposing Jaces will matter most of the game."
+   },
+   {
+    "name": "Prepare",
+    "take": "Only five prepared spells exist at common and uncommon (Peer Review, Vicious Verse, Omit Variables, Soul Tether, Seed Suture), which they call genius design for seeding synergy. Peer Review looks best and Vicious Verse or Omit Variables weakest, depending on support."
+   },
+   {
+    "name": "Heartwood tokens",
+    "take": "Red/green mana artifacts reminiscent of Kaldheim's Icy Manalith and Powerstones, used to fuel many expensive activated abilities."
+   },
+   {
+    "name": "Echoed pairs",
+    "take": "Three pack slots contain echoed pairs, two of which match, so pick-two information can tell you which of two cards was taken. They disagreed on how much that information matters."
+   },
+   {
+    "name": "Way of the ___ enchantments",
+    "take": "Legendary enchantments that empower Jace and grant new loyalty abilities, with the red plus-one version looking potentially broken early."
+   },
+   {
+    "name": "Charms",
+    "take": "The allied-color charm cycle is uniformly strong, apart from the weaker RG charm."
+   }
+  ],
+  "advice": [
+   "Prioritize board presence so you can both pressure opposing Jaces and protect your own.",
+   "Try to kill opposing Jace tokens on sight for most of the game until you can race.",
+   "If you are drafting Empower Jace cards, commit and collect many, since the effect scales with density.",
+   "Favor Empower Jace cards that also affect the board over pure card-draw ones like Protege's Awakening.",
+   "Don't cast Jace-only cards like Protege's Awakening onto an empty board.",
+   "Think about Empower increments, since Empower 2 and 1 combinations reach the minus three draw threshold.",
+   "Evasive creatures are valuable for pecking at opposing Jaces.",
+   "Use pack-one pick-two echoed-pair information to infer what the drafter to your right took."
+  ]
+ }
+}

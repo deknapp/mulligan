@@ -1,0 +1,2011 @@
+{
+ "show": "TCGplayer",
+ "title": "Reality Fracture Limited Set Reviews",
+ "date": "2026-09-25",
+ "url": "https://www.tcgplayer.com/content/article/Reality-Fracture-Limited-Magic-The-Gathering-Set-Review-White/96d152d7-f0f7-498a-a6e2-fd1f738f0641/",
+ "hosts": [
+  "LSV",
+  "Martin"
+ ],
+ "scale": "0-5 numeric scale (5.0 best in set, 3.0-3.5 good commons, 4.0+ good rares); ranges or split grades given for build-arounds, sideboard cards and Draft vs Sealed",
+ "cards": [
+  {
+   "card": "Academic Ascent",
+   "host": "Martin",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "A serviceable combat trick, though adding a planeswalker at instant speed means planning what stays back on defense if you use it offensively."
+  },
+  {
+   "card": "Ajani Resolute",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A cheap walker that is slow to make a creature and can't protect itself early, but it is a free lifegain engine that could be very strong in the right White-Green deck."
+  },
+  {
+   "card": "Blossom-Blessed Angel",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Solid filler that guards your Jace token and pressures theirs, with Seed Suture adding flexibility and a cheap lifegain trigger."
+  },
+  {
+   "card": "Campus Crier",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A very solid curve-filler that leaves value behind and can trade up with three power, and few commons make the small tokens it is weak to."
+  },
+  {
+   "card": "Danitha, Sword of Hope",
+   "host": "Martin",
+   "grade_said": "1.5 - 3.5",
+   "grade": "C+",
+   "take": "Underwhelming stats but a strong value engine if your deck has many ways to target your own creatures, like Seed Suture or Predictive Preparations."
+  },
+  {
+   "card": "Enlightened Confidant",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A cheap lifelinker that pairs with the format's passive lifegain to generate surveil and cards, and even one or two extra cards justify it."
+  },
+  {
+   "card": "Fateshaper Aspirant",
+   "host": "Martin",
+   "grade_said": "Draft 2.0, Sealed 2.5",
+   "grade": "C",
+   "take": "Weak stats for a five-drop, but the huge number of legendary cards in the set makes it reasonable, flexible filler, especially in Sealed."
+  },
+  {
+   "card": "Flickering Hound",
+   "host": "Martin",
+   "grade_said": "1.0 - 3.5",
+   "grade": "C",
+   "take": "A four-mana 2/2 that costs momentum, so it only shines in decks packed with prepared or enters-the-battlefield creatures and should not go in every white deck."
+  },
+  {
+   "card": "Generous Revival",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A situational two-for-one that is awkward against bounce and exile, but it synergizes well with surveil and has flashback."
+  },
+  {
+   "card": "Germinate Recruits",
+   "host": "Martin",
+   "grade_said": "0.0",
+   "grade": "F",
+   "take": "A total blank without a same-turn way to gain lots of life while holding up three mana, which Limited rarely offers."
+  },
+  {
+   "card": "Gideon's Memorial",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A cheap bit of combat interaction via its discard ability, with a static ability that matters thanks to Cadet tokens and token makers in the set."
+  },
+  {
+   "card": "Ghalta the Immovable",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Effectively a 7/7 that gets cheap with a four-toughness creature and works poorly with fight spells, a decent top-end that shouldn't be picked highly."
+  },
+  {
+   "card": "Graft Surgeon",
+   "host": "Martin",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "A fine curve-filler that synergizes with Seed Suture and the many +1/+1 counter sources."
+  },
+  {
+   "card": "Guiding Hydra",
+   "host": "Martin",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "A repeatable board buff with a flexible cost that is also a big standalone threat, splashable and very strong."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "Martin",
+   "grade_said": "Draft 3.0, Sealed 3.5",
+   "grade": "B",
+   "take": "Three bodies plus a planeswalker are strong in go-wide decks or against one-for-one removal, and landcycling gives it utility despite the high cost."
+  },
+  {
+   "card": "Kindred Judgment",
+   "host": "Martin",
+   "grade_said": "Limited 2.0-4.0 (Draft 1.5-3.0, Sealed 2.5-4.0)",
+   "grade": "B",
+   "take": "A clunky seven-mana sweeper that needs setup around creature types, but it can win out of nowhere and should be better in slow Sealed and as a sideboard card."
+  },
+  {
+   "card": "Koth of the Homestead",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A cheap creature that combines lifegain and a value engine, with even one Plains trigger making it worthwhile."
+  },
+  {
+   "card": "Liliana the Faultless",
+   "host": "Martin",
+   "grade_said": "2.5 - 4.0",
+   "grade": "B",
+   "take": "An upgraded Soul Warden with weak stats that becomes quite good with a few lifegain cards like Unflinching Hortimancer and can protect creatures or walkers."
+  },
+  {
+   "card": "Loyal Tutor",
+   "host": "Martin",
+   "grade_said": "0.0 - 1.5",
+   "grade": "D-",
+   "take": "Card disadvantage that only makes sense when you have a busted planeswalker or key synergy piece, since drawing the walker naturally leaves it dead."
+  },
+  {
+   "card": "Lyra, Archangel of Dawn",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A 3/3 flier for three is ahead of rate regardless of lifegain or Angels, good early and late."
+  },
+  {
+   "card": "Memory Trap",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Sorcery-speed one-for-one removal is less impactful against modern value creatures, but exiling any permanent is still premium."
+  },
+  {
+   "card": "Predictive Preparations",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A Travel Preparations variant with a pricier flashback that is still good in aggressive decks and synergizes with surveil."
+  },
+  {
+   "card": "Prophesied End",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Two-mana removal outside combat is an excellent rate despite the drawback, and it can target your own creatures in a pinch."
+  },
+  {
+   "card": "Refute Destiny",
+   "host": "Martin",
+   "grade_said": "Bo1 0.5, Bo3 3.0",
+   "grade": "C-",
+   "take": "An excellent sideboard card with an exile upside, rarely worth mainboarding."
+  },
+  {
+   "card": "Repurposed Enforcer",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "An above-rate two-drop that creates a planeswalker token when it attacks."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "Martin",
+   "grade_said": "2.0 - 4.0",
+   "grade": "B",
+   "take": "Weak stats and sorcery-speed use make her situational, but with even two or three strong enters-the-battlefield cards like Way of the Healer she can be very effective in grindy games."
+  },
+  {
+   "card": "Return to the Light Realms",
+   "host": "Martin",
+   "grade_said": "0.5",
+   "grade": "D-",
+   "take": "Nine mana is too much to reliably reach and the payoff isn't guaranteed even with a stocked graveyard."
+  },
+  {
+   "card": "Saheeli, Consul of Oversight",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Good stats plus a Thopter-making engine that Jace token surveils consistently trigger."
+  },
+  {
+   "card": "Shatterwing Pegasus",
+   "host": "Martin",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "Medium filler with below-rate stats and a pricey mana sink, improved by go-wide decks and cheap fliers' value against planeswalkers."
+  },
+  {
+   "card": "Surgical Precision",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Conditional removal that never rots in hand; possibly slow for Draft but never cut in Sealed, and Seed Suture can hit opposing creatures."
+  },
+  {
+   "card": "Teyo, Lightshield Expert",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A versatile two-mana flash card that protects, wins combat, adds loyalty, or comes down as a 2/2 ambusher, giving it a high floor."
+  },
+  {
+   "card": "Thalia, the Survivor",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Unexciting stats, but lifelink, taxing prepared spells and synergy with Seed Suture counters make it good in context."
+  },
+  {
+   "card": "Tomik, Orzhov Lawmage",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A flying two-drop that pressures Jace tokens while its restriction protects yours, and it enables big late-game swings."
+  },
+  {
+   "card": "Unflinching Hortimancer",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A solid white lifegain piece that grows into a real threat with Seed Suture."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Martin",
+   "grade_said": "4.25",
+   "grade": "A-",
+   "take": "Turning loyalty into 2/2 tokens massively upgrades every Jace token, and it pairs well with Rescue Girl for recurring value."
+  },
+  {
+   "card": "Way of the Mentor",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Always replaces itself for a great floor, and can become a bomb in White-Green lifegain."
+  },
+  {
+   "card": "Yoshimaru, Beloved Companion",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "A slow, expensive synergy piece that is great with Predictive Preparations in the right deck."
+  },
+  {
+   "card": "Yuriko, Blade of the Mighty",
+   "host": "Martin",
+   "grade_said": "2.0 - 3.5",
+   "grade": "C+",
+   "take": "An expensive repeatable double-striker enabler best with evasive or lifelink attackers, whose combat restriction can also turn off your own tricks."
+  },
+  {
+   "card": "Your Fate Ends Here",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Good removal that often trades up, but the mana-value restriction means it can't hit cheap threats or zero-cost Jace tokens."
+  },
+  {
+   "card": "Arni, Humble Scribe",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Rips through your deck without needing the untap ability, great in Blue-Black and playable in any blue deck."
+  },
+  {
+   "card": "Chandra, Chill of Compliance",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A cheap walker that protects herself with stun counters and provides extra cards and mana if you have enough noncreature spells."
+  },
+  {
+   "card": "Countersculpt",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A Cancel with upside through cost reduction and Empower Jace, which also encourages casting spells before attacking."
+  },
+  {
+   "card": "Cruel Calculations",
+   "host": "LSV",
+   "grade_said": "0.0",
+   "grade": "F",
+   "take": "Far too situational, usually drawing zero or one card."
+  },
+  {
+   "card": "Cryotheory Adept",
+   "host": "LSV",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "A good pressure creature for aggressive decks with a last push from the graveyard, but avoid it in control."
+  },
+  {
+   "card": "Diviner of Victory",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A one-mana prowess creature bundled with a momentum spell, best in assertive decks and fine to first-pick."
+  },
+  {
+   "card": "Divining Duelist",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "The definition of filler that always does something but is rarely great, better in faster games."
+  },
+  {
+   "card": "Fblthp, Impossibly Lost",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "A payoff for connecting with the opponent that worked well in Blue-White fliers, though the alternate win isn't worth pursuing."
+  },
+  {
+   "card": "Geist of Saint Thalia",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Pays for itself quickly with enough noncreature spells, a great curve play likely at home in Blue-Black and Blue-Red."
+  },
+  {
+   "card": "Hapatra, the Desert Frost",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A 4/3 for four that makes stun counters, great for assertive decks and weaker the more controlling you are."
+  },
+  {
+   "card": "Icy Reception",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "At least as good as Essence Scatter, trading late-game strength for hitting legendary noncreatures and combat-trick use."
+  },
+  {
+   "card": "Infinite Coursework",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Blue's best removal, locking down nearly anything, vulnerable only to enchantment removal or bounce."
+  },
+  {
+   "card": "Jace's Machinations",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "An end-of-turn big Jace that draws immediately and again after untapping, strong value especially with other Jace payoffs."
+  },
+  {
+   "card": "Jace, Reality Sculptor",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Can't protect himself every turn, but his -3 effectively skips their combat and he draws cards."
+  },
+  {
+   "card": "Lyra, Tolarian Archangel",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A massive self-fueling threat that can trigger off card draw and must be answered."
+  },
+  {
+   "card": "Mindseeker Oculus",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A top common giving a 2/1, a card and a Jace for three mana, with no real cap on how many to play."
+  },
+  {
+   "card": "Perfected Theory",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "A combat trick that often falls flat, but the 4/5 or shrink options make it reasonable for aggressive decks."
+  },
+  {
+   "card": "Plan for All Outcomes",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A grindy engine giving free surveils every turn, and it rewards instants by empowering Jace on both turns."
+  },
+  {
+   "card": "Precise Redaction",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.5",
+   "grade": "C",
+   "take": "A great sideboard card against white or black, not a mainboard card."
+  },
+  {
+   "card": "Proft, Consulting Detective",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Too pricey to use to be a must-kill, but accumulates value, best in Blue-White."
+  },
+  {
+   "card": "Protege's Awakening",
+   "host": "LSV",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "A clunky but powerful card-draw engine netting at least two cards and three life, more if you defend Jace."
+  },
+  {
+   "card": "Ruric Thar, Biomagus",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Hits hard and punishes targeting, usually a strong way to close games unless you're too far behind."
+  },
+  {
+   "card": "Samut, Tyrant of Naktamun",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "Mostly a curve-filler since opponents rarely respond to your spells enough for the ability to matter."
+  },
+  {
+   "card": "Seasoned Cryomancer",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Packed with unflashy value from looting, stun counters, a body and extra cards, and a very high pick."
+  },
+  {
+   "card": "Semester Foreseer",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A mana sink that smooths draws, makes a token and surveils, though extra copies drop in value."
+  },
+  {
+   "card": "Sphinx of False Conclusions",
+   "host": "LSV",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "A four-power flier with an attack trigger that returns once for free, nearly impossible to answer favorably except by countering."
+  },
+  {
+   "card": "Sphinx's Approach",
+   "host": "LSV",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "A double-blue Divination is much worse than single blue and the Sphinx text rarely matters."
+  },
+  {
+   "card": "Surveillance Phantasm",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Justifies itself alone, plays good defense and gets better in the right deck."
+  },
+  {
+   "card": "Tetsuko Umezawa, Fugitive",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Applies more pressure than expected, especially with X/1s, a legit threat for blue aggro."
+  },
+  {
+   "card": "The Theorist, Jace Beleren",
+   "host": "LSV",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "Every mode is strong, giving steady cards and interaction, best with a developed battlefield."
+  },
+  {
+   "card": "Theorist's Proxy",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "An 0/3 flash creature that replaces itself by empowering Jace for three is an easy inclusion."
+  },
+  {
+   "card": "Traxos, Academy Guardian",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A massive flying vigilance body that often costs two in a good spells deck."
+  },
+  {
+   "card": "Undulating Witness",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A landcycler that is also worth casting, smoothing out your deck."
+  },
+  {
+   "card": "Unsummon",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Cheap enough that tempo from bouncing an expensive creature makes up for the card, and it can save or reuse your own creatures."
+  },
+  {
+   "card": "Variable Chaser",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A 2/3 flying prowess worth playing anyway, with a somewhat win-more alternate mode."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "The ability is too hard to use, making it far narrower than hoped."
+  },
+  {
+   "card": "Way of the Mind Sculptor",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Turns every Jace token into a -3 draw-two, a huge boost worth building around."
+  },
+  {
+   "card": "Yargle, Goliath of Otaria",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Passable if you need the stats but not exciting."
+  },
+  {
+   "card": "Yuriko, Hope from the Shadows",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "More than worth one mana in assertive decks, wanting many creatures for its ability."
+  },
+  {
+   "card": "Apex Witchstalker",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A high-impact body that can landcycle when you don't want to cast it, and he's happy to play multiples."
+  },
+  {
+   "card": "Bloodline Recollector",
+   "host": "LSV",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Hard to set up but powerful, best cast post-combat after trades alongside a removal spell."
+  },
+  {
+   "card": "Break Under Pressure",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Efficient removal that kills most targets and gains a bit of life."
+  },
+  {
+   "card": "Cast Away Doubt",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "The first copy is fine but it's not a priority and you won't want many."
+  },
+  {
+   "card": "Danitha, Spear of Agony",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A solid, easily-growing aggressive creature, best in Black-Red Stingerquill."
+  },
+  {
+   "card": "Dark Matter Manipulator",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "Solid in mill or threshold decks and garbage otherwise."
+  },
+  {
+   "card": "Darklight Phoenix",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Graded mostly for three power with haste, with occasional runaway value and synergy with Silence the Echo."
+  },
+  {
+   "card": "Extended Absence",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Unconditional instant removal with a little lifegain, a top black common."
+  },
+  {
+   "card": "Extrapolate the Impossible",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Effectively a basic land or your second-best sideboard card, which is rarely good enough."
+  },
+  {
+   "card": "Gallia, Tragic Host",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A good turn-two play with late relevance that fits most decks."
+  },
+  {
+   "card": "Garruk, Veiled Butcher",
+   "host": "LSV",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "High loyalty, removal options and turning weak creatures into 4/4s make him a fantastic start to a draft."
+  },
+  {
+   "card": "Gideon the Oathless",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Punishes opponents whether or not they try to kill him, a lot for three mana."
+  },
+  {
+   "card": "Last Gasp",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Always works and slots in whenever you need interaction, with no cap on copies."
+  },
+  {
+   "card": "Lich's Relic",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Cheap removal for any creature that leaves behind solid equipment."
+  },
+  {
+   "card": "Liliana the Repentant",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A powerful ability that fuels synergies, playable anywhere but shining in Blue-Black."
+  },
+  {
+   "card": "Loot, the Anomaly",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Basically a 2/4 with text that only works after threshold."
+  },
+  {
+   "card": "Mabel, Bitter Recluse",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A cheap deathtouch creature that can also eat a Jace token."
+  },
+  {
+   "card": "Massacre Girl, Most Wanted",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Gets out of control and affects the board outside combat, though as a five-drop she sometimes just dies."
+  },
+  {
+   "card": "Multiply by Zero",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "One of the most efficient removal spells, only missing creatures with +1/+1 counters."
+  },
+  {
+   "card": "Overwrite the Multiverse",
+   "host": "LSV",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "A permanent sweeper that leaves a potentially huge Jace token, one of the best sweepers in a while."
+  },
+  {
+   "card": "Proft, Sinister Mastermind",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A nice split of cheap removal and a solid late-game creature that has impressed him."
+  },
+  {
+   "card": "Rampart Hunter",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Fine stats but does nothing most decks want, only passable if short on creatures."
+  },
+  {
+   "card": "Rank Rat",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A two-drop that forces a discard with a high floor, and there's enough sacrifice support."
+  },
+  {
+   "card": "Rewrite Regrets",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Enough value to run with good targets, even with the mana value cap."
+  },
+  {
+   "card": "Rise of the Deathbringer",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A flexible sweeper or card draw that rewards big creatures, pushing toward Green-Black."
+  },
+  {
+   "card": "Sanctum Lurker",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Grows and pings with Jace tokens without needing to defend them, lots of value for little mana."
+  },
+  {
+   "card": "Screeching Soulbreaker",
+   "host": "LSV",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "A vaguely aggressive flier with good stats that doesn't always find a home but helps lifegain decks."
+  },
+  {
+   "card": "Silence the Echo",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A fine removal spell that improves with good sacrifice fodder, occasionally clunky."
+  },
+  {
+   "card": "Solve for Disappointment",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Roughly even when it hits and a disaster when it misses, mostly a sideboard card against an expensive bomb."
+  },
+  {
+   "card": "Terminal Criticism",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.5",
+   "grade": "C",
+   "take": "A great sideboard card and a horrible mainboard one."
+  },
+  {
+   "card": "Teyo, Diamondblade Mage",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Often forces a trade and leaves a 3/1, solid but not incredible."
+  },
+  {
+   "card": "Theoretical Necromancer",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "Clunky in practice with each half an okay deal, not advancing most archetypes."
+  },
+  {
+   "card": "Tinybones, Pocket Nuisance",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Chips at their hand and deals recurring damage, a lot for three mana."
+  },
+  {
+   "card": "Void Extrapolator",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "Feast or famine: great in a dedicated self-mill deck and unwanted otherwise."
+  },
+  {
+   "card": "Vraska's Final Mercy",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Solid for two mana, usually used as removal though card draw is preferred when ahead."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "Needs ample sacrifice and empower support before it becomes strong, so most decks won't want it."
+  },
+  {
+   "card": "Way of the Necromancer",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "Only for the cheap sacrifice deck."
+  },
+  {
+   "card": "Winter, Tormented Loner",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Never bad in creature-heavy decks, solid by the midgame though often trading fodder for fodder."
+  },
+  {
+   "card": "Yargle, Glutton of Urborg",
+   "host": "LSV",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "Horrible stats and no abilities."
+  },
+  {
+   "card": "Ajani's Anguish",
+   "host": "Martin",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "An upgraded, easily splashable Fireball that handles creatures or walkers and closes games, especially good in slower Sealed."
+  },
+  {
+   "card": "Ajani Unrelenting",
+   "host": "Martin",
+   "grade_said": "4.75",
+   "grade": "A",
+   "take": "Expensive but makes Cadets whenever any planeswalker activates, defends himself, clears boards and draws cards to win stalls."
+  },
+  {
+   "card": "Arni, Renowned Champion",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Situational filler that needs follow-up big creatures and is a poor late draw."
+  },
+  {
+   "card": "Artifist Acumen",
+   "host": "Martin",
+   "grade_said": "Spell decks 2.5, otherwise 1.75",
+   "grade": "C",
+   "take": "A cheap cantrip team first-strike effect best in Blue-Red spell decks and great with deathtouch."
+  },
+  {
+   "card": "Awaken the Inferno",
+   "host": "Martin",
+   "grade_said": "Sealed 3.0, Draft 2.5",
+   "grade": "C+",
+   "take": "Expensive, flexible removal that can fix mana, splashable in Sealed but too slow for multiples in Draft."
+  },
+  {
+   "card": "Blazing Crescendo",
+   "host": "Martin",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "A trick you only play when the draft goes badly and you lack playables."
+  },
+  {
+   "card": "Chandra, Torch of Defiance",
+   "host": "Martin",
+   "grade_said": "5.0",
+   "grade": "A+",
+   "take": "Defends herself, gives card advantage and ramp, and has a game-winning ultimate, a true bomb."
+  },
+  {
+   "card": "Chandra's Emberling",
+   "host": "Martin",
+   "grade_said": "Spell decks 2.5, otherwise 1.0",
+   "grade": "C-",
+   "take": "Average filler in normal decks that becomes a threat in spell-heavy Red-Black or Red-Blue."
+  },
+  {
+   "card": "Command the Stage",
+   "host": "Martin",
+   "grade_said": "1.0 - 2.0",
+   "grade": "C-",
+   "take": "Slow but a repeatable card advantage source in the right deck, best with Viscous Verse cards in Red-Black."
+  },
+  {
+   "card": "Craterclaw Colossus",
+   "host": "Martin",
+   "grade_said": "2.5 - 4.5",
+   "grade": "B+",
+   "take": "Needs only a couple of other artifacts to end the game, best in Red-Green with Heartwood tokens and possibly a bomb in slow Sealed."
+  },
+  {
+   "card": "Curse-Marred Demon",
+   "host": "Martin",
+   "grade_said": "4.25",
+   "grade": "A-",
+   "take": "A four-mana 4/4 trampling flier is an exceptional rate, worth the gamble of its forced random discard."
+  },
+  {
+   "card": "Draconic Visitor",
+   "host": "Martin",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "A premium flier on stats alone, best in Red-Green turning Heartwood tokens into Dragons."
+  },
+  {
+   "card": "Eardrum Rattler",
+   "host": "Martin",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "An unexciting two-drop you play only if desperate."
+  },
+  {
+   "card": "Essence Burn",
+   "host": "Martin",
+   "grade_said": "Mainboard 0.5, Sideboard 3.5",
+   "grade": "C",
+   "take": "An incredible sideboard card, maybe maindeckable in Sealed if green and black dominate, and red can loot it away."
+  },
+  {
+   "card": "Face Yourself",
+   "host": "Martin",
+   "grade_said": "Draft 4.0, Sealed 4.5",
+   "grade": "A-",
+   "take": "Expensive but can win on the spot since Jace tokens make having a planeswalker easy, likely a haymaker in Sealed."
+  },
+  {
+   "card": "Fulminous Forte",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Solid instant removal for most creatures, and its first mode combos with Tomik for a one-sided sweep."
+  },
+  {
+   "card": "Gallia, the Merrymaker",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Fine anywhere but best in aggressive Red-White counters decks, with haste to pressure walkers."
+  },
+  {
+   "card": "Hallway Heckler",
+   "host": "Martin",
+   "grade_said": "2.25",
+   "grade": "C",
+   "take": "Decent synergistic filler for Red-Black ping or Red-Blue prowess with weak stats."
+  },
+  {
+   "card": "Heartstring Puller",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Five power across two bodies for four mana, good against removal and in go-wide decks."
+  },
+  {
+   "card": "Identity Echo",
+   "host": "Martin",
+   "grade_said": "0.0",
+   "grade": "F",
+   "take": "Costs seven mana and a permanent for an unpredictable, often off-rate result."
+  },
+  {
+   "card": "Jiang Yanggu, Alone",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A strong filler whose ability is narrower than it looks, not an early pick given limited expensive slots."
+  },
+  {
+   "card": "Kiora of Fire and Ashes",
+   "host": "Martin",
+   "grade_said": "Sealed 4.5, Draft 4.0",
+   "grade": "A-",
+   "take": "Two threats in one with an immediate 5/5 Dragon and more later, incredible in slow formats."
+  },
+  {
+   "card": "Koth, the Geomancer",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Mana acceleration plus incremental damage and reach, best in Red-Black though it trades down with two toughness."
+  },
+  {
+   "card": "Master of Barbs",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A great aggressive two-drop for Red-Black and Red-Blue that pressures Jace tokens with menace."
+  },
+  {
+   "card": "Marwyn, the Clearcutter",
+   "host": "Martin",
+   "grade_said": "3.25",
+   "grade": "B",
+   "take": "A good aggressive creature that trades up and provides late value with Heartwood token makers."
+  },
+  {
+   "card": "No Admittance",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Efficient removal that adds a Jace token and can go face for reach, red's best common."
+  },
+  {
+   "card": "Pia, Determined Rebuilder",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Two creatures for one card, good on offense and defense with a Thopter to pressure Jace tokens."
+  },
+  {
+   "card": "Pompous Battlemage",
+   "host": "Martin",
+   "grade_said": "UR 3.5, BR 3.0, elsewhere 2.0",
+   "grade": "C+",
+   "take": "Strong in Blue-Red prowess and decent in Red-Black, but not for decks that can't trigger prowess."
+  },
+  {
+   "card": "Pyre Rhymer",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Solid prowess stats with mana generation for big spells, but wants nine or more Mountains."
+  },
+  {
+   "card": "Samut, Hazoret's Champion",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A good red two-drop granting haste, best in proactive aggressive decks."
+  },
+  {
+   "card": "Skilled Battlecarver",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A very solid two-drop that attacks freely early and pressures Jace tokens."
+  },
+  {
+   "card": "Stingcaster Mage",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A cheap two-for-one with removal like No Admittance that pairs well with surveil."
+  },
+  {
+   "card": "Tether Technician",
+   "host": "Martin",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "A defensive body with a costly Shock option, underwhelming for five mana."
+  },
+  {
+   "card": "Tetsuko Umezawa, Pursuer",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Solid filler for Blue-Red and Black-Red prowess decks with cheap spells."
+  },
+  {
+   "card": "Tomik, Izzet Sparkmage",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Excellent in Blue-Red and Red-Black with Viscous Verse and noncombat damage, improving burn spells."
+  },
+  {
+   "card": "Violent Echoes",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Instant-speed six damage kills nearly anything and empowers Jace."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A two-mana planeswalker that ramps with three abilities, possibly the best turn-two play."
+  },
+  {
+   "card": "Way of the Warlord",
+   "host": "Martin",
+   "grade_said": "3.25",
+   "grade": "B",
+   "take": "Five Jace loyalty is almost two cards, but three mana for a Shock may be slow in Draft; always played at Prerelease."
+  },
+  {
+   "card": "Winter, Team Player",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "A go-wide payoff best in White-Red and fine in most red pairs except Red-Green."
+  },
+  {
+   "card": "Wrath of the Bloodmane",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Often costs two due to many legendary creatures, a solid removal spell."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Nearly draws a card and deathtouch combos with Compel Brutality, often trading up."
+  },
+  {
+   "card": "Bestial Incursion",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A 4/4 trample for four that usually returns later for card advantage."
+  },
+  {
+   "card": "Budding Insurgent",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Solid filler that answers the set's many artifacts and enchantments."
+  },
+  {
+   "card": "Carnivorous Cultivator",
+   "host": "Martin",
+   "grade_said": "3.75",
+   "grade": "B+",
+   "take": "Good stats plus deathtouch, best in Green-Black graveyard recursion."
+  },
+  {
+   "card": "Compel Brutality",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A solid instant fight spell that shines with small deathtouch creatures, green's top common."
+  },
+  {
+   "card": "Edgar, Moonlit Sovereign",
+   "host": "Martin",
+   "grade_said": "Sealed 4.0, Draft 3.5",
+   "grade": "B+",
+   "take": "A five-mana flash 4/4 that ambushes and takes over stalls, especially with Green-White counters."
+  },
+  {
+   "card": "Fblthp, Knows the Way",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "At worst a Civic Wayfinder, good for fixing and ensuring land drops in top-heavy decks."
+  },
+  {
+   "card": "Flourishing Grapple",
+   "host": "Martin",
+   "grade_said": "Bo1 0.5, Bo3 3.25",
+   "grade": "C",
+   "take": "An excellent sideboard color hoser."
+  },
+  {
+   "card": "Gardenize",
+   "host": "Martin",
+   "grade_said": "0.0",
+   "grade": "F",
+   "take": "Does nothing on the turn played and takes too long to pay off."
+  },
+  {
+   "card": "Garruk, Curse Breaker",
+   "host": "Martin",
+   "grade_said": "5.0",
+   "grade": "A+",
+   "take": "Protects himself, adds a threat, wins long games and can ult for lethal."
+  },
+  {
+   "card": "Ghalta the Unstoppable",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Easily a six-mana 8/8 trampler, an acceptable top-end."
+  },
+  {
+   "card": "Greenhouse Propagator",
+   "host": "Martin",
+   "grade_said": "3.25",
+   "grade": "B",
+   "take": "A three-mana ramp creature fine in a slower format whose lifegain matters in Green-White."
+  },
+  {
+   "card": "Heartwood Crafter",
+   "host": "Martin",
+   "grade_said": "3.25",
+   "grade": "B",
+   "take": "Ramps with a Heartwood token and its mana helps pay for landcycling, flashback and abilities."
+  },
+  {
+   "card": "Hexhaven Invigorator",
+   "host": "Martin",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Great stats but the four-Forest requirement means it's often cast very late, so don't speculate on it."
+  },
+  {
+   "card": "Hungering Puppetbeast",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A great curve-topper, best in Red-Green, and hexproof makes it hard to answer."
+  },
+  {
+   "card": "Hunter's Axe",
+   "host": "Martin",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "A waste of a card in green, better suited to aggressive evasive decks."
+  },
+  {
+   "card": "Inspired Tethermage",
+   "host": "Martin",
+   "grade_said": "Sealed 2.0, Draft 1.5",
+   "grade": "C-",
+   "take": "Filler mana sink too fragile with two toughness unless your deck has lots of planeswalker action."
+  },
+  {
+   "card": "Jiang Yanggu, Never Alone",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Five power and toughness for four mana, and untapping tokens synergizes with Heartwood mana sinks."
+  },
+  {
+   "card": "Loot, the Nexus",
+   "host": "Martin",
+   "grade_said": "3.25",
+   "grade": "B",
+   "take": "Fixes mana on a fragile body; prioritize when splashing or top-heavy."
+  },
+  {
+   "card": "Marwyn, the Preserver",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Baseline stats make it solid anywhere, with land recursion useful in Green-Black."
+  },
+  {
+   "card": "Omnipresence",
+   "host": "Martin",
+   "grade_said": "0.0",
+   "grade": "F",
+   "take": "Eight mana for an effect you could just replicate by casting creatures with that mana."
+  },
+  {
+   "card": "Pia, Aether Ascetic",
+   "host": "Martin",
+   "grade_said": "0.5 - 4.0",
+   "grade": "C",
+   "take": "Unplayable or very good depending on how many strong enchantments you have."
+  },
+  {
+   "card": "Puppet Crafting",
+   "host": "Martin",
+   "grade_said": "0.5",
+   "grade": "D-",
+   "take": "Only maybe playable in dedicated Heartwood decks, and too much mana leads to flooding."
+  },
+  {
+   "card": "Restore with Empathy",
+   "host": "Martin",
+   "grade_said": "Sealed 3.0, Draft 2.5",
+   "grade": "C+",
+   "take": "Best against removal-heavy slow decks or with haymakers, fitting Green-Black self-mill and Green-White lifegain."
+  },
+  {
+   "card": "Ruric Thar, Magecrusher",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Expensive but stabilizes and wins, with hexproof and ramp to cast it early."
+  },
+  {
+   "card": "Simulacrum Shaper",
+   "host": "Martin",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "Three cards for one that ramps and fixes, incredible value for its cost."
+  },
+  {
+   "card": "Something Worth Saving",
+   "host": "Martin",
+   "grade_said": "Sealed 2.5, Draft 1.5",
+   "grade": "C-",
+   "take": "Filler card selection best in Green-Black self-mill, with costly momentum loss."
+  },
+  {
+   "card": "Sureshot Sower",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "A great two-drop with reach that trades up and can act as an expensive Plummet."
+  },
+  {
+   "card": "Tarmogoyf",
+   "host": "Martin",
+   "grade_said": "GB 4.0, elsewhere 3.0",
+   "grade": "B+",
+   "take": "Small early but great in Green-Black where the graveyard fills quickly."
+  },
+  {
+   "card": "Titanbones, Towering Heart",
+   "host": "Martin",
+   "grade_said": "Lifegain 4.0, elsewhere 3.0",
+   "grade": "B+",
+   "take": "A strong Green-White lifegain payoff and a fine four-power reach body in any green deck."
+  },
+  {
+   "card": "Tethermage's Advantage",
+   "host": "Martin",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Classic filler combat trick with a minor untap ambush bonus."
+  },
+  {
+   "card": "Verdant Kraken",
+   "host": "Martin",
+   "grade_said": "Sealed 5.0, Draft 4.5",
+   "grade": "A",
+   "take": "An easy way to win the long games expected in this format, castable with ramp."
+  },
+  {
+   "card": "Vinelasher Adept",
+   "host": "Martin",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Solid filler as a 5/6 reach or a buff, with landcycling for flexibility."
+  },
+  {
+   "card": "Way of the Paradox",
+   "host": "Martin",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Replaces itself and leaves a walker, best as a Green-White lifegain enabler."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "Martin",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "At least a 4/4 for five plus a Jace token, easily splashable."
+  },
+  {
+   "card": "Wrecking Gecko",
+   "host": "Martin",
+   "grade_said": "1.75",
+   "grade": "C-",
+   "take": "Fine expensive curve-filler that doubles as a mana sink."
+  },
+  {
+   "card": "Yoshimaru, Scrappy Stray",
+   "host": "Martin",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "An upgraded sorcery fight spell with a small body and mana sink attached."
+  },
+  {
+   "card": "Aerid Konstrari",
+   "host": "LSV",
+   "grade_said": "5.0",
+   "grade": "A+",
+   "take": "A four-mana 5/4 flier that leaves value when it dies and pumps Heartwood tokens, cheap and removal-resistant."
+  },
+  {
+   "card": "Avatar of Burgeoning Echoes",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Empowering Jace by two per land drop draws lots of cards and can threaten a big finish."
+  },
+  {
+   "card": "Blessed Ghoul",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "Resilient lifelink fodder that gets bought back in slow games."
+  },
+  {
+   "card": "Bloombrute",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A huge beater that is an enabler and payoff for lifegain all at once."
+  },
+  {
+   "card": "Charge the Sanctum",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "A medium trick whose two modes aren't different enough."
+  },
+  {
+   "card": "Clash of Elements",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A great removal spell with face damage if they save their creature."
+  },
+  {
+   "card": "Craftwork Crusher",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A hard-to-cast build-around for Heartwood decks that makes a huge impact, reachable in Red-Green."
+  },
+  {
+   "card": "Denzilore Fatehold",
+   "host": "LSV",
+   "grade_said": "4.5",
+   "grade": "A",
+   "take": "Gigantic for its cost with a game-winning ability, great in any Blue-White deck."
+  },
+  {
+   "card": "Desperate Futurescribe",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Frequently gets counters from free triggers and has real evasion."
+  },
+  {
+   "card": "Edgar, Ancient Bloodlord",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A good value creature for Black-White with a bonus in sacrifice decks."
+  },
+  {
+   "card": "Emergency Phytomedic",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A cheap, multi-mechanic one-drop that improves most decks."
+  },
+  {
+   "card": "Entrust the Spark",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.5",
+   "grade": "C",
+   "take": "A great payoff only if you have Garruk, Curse Breaker or Ajani Unrelenting and Jace makers."
+  },
+  {
+   "card": "Fatehold Charm",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Flexible modes with an impactful +1/+2 mode, a great one to play."
+  },
+  {
+   "card": "Fatehold Chronologist",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A perfect curve in one card with hybrid mana, easy to take early."
+  },
+  {
+   "card": "Ferocity of the Hunt",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "A decent trick granting deathtouch and trample, good with enters-the-battlefield effects."
+  },
+  {
+   "card": "Frostbite Pyromental",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Fantastic in aggressive Blue-Red prowess builds."
+  },
+  {
+   "card": "Grim Repriser",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Hits hard, forces trades and returns easily in Red-Black."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "An awesome five-drop that eats creatures, better in graveyard strategies."
+  },
+  {
+   "card": "Ingris Stingerquill",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Deals tons of damage for three mana and must be answered."
+  },
+  {
+   "card": "Karn, Gilded Guardian",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.5",
+   "grade": "C",
+   "take": "A strong build-around for Red-Green Heartwood ramp."
+  },
+  {
+   "card": "Kiora of Salt and Sand",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "A difficult build-around that relies on other cards for loyalty, but has decent stats."
+  },
+  {
+   "card": "Konstrari Charm",
+   "host": "LSV",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "The weakest Charm, but still worth playing."
+  },
+  {
+   "card": "Konstrari Improviser",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A smooth curve in one card that fits many decks and Red-Green synergies."
+  },
+  {
+   "card": "Kwia Vigorbloom",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A massive six-mana haymaker with lifelink, ward and a Lotus token."
+  },
+  {
+   "card": "Mabel, Valley Hero",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A steady stream of +1/+1 counters for creature-heavy aggressive decks."
+  },
+  {
+   "card": "Mind Meanderer",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A hard-to-cast but massive flier that eats one of their creatures."
+  },
+  {
+   "card": "Null Summoner",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Permanently takes a card and later lets you cast it, a two-for-one at worst."
+  },
+  {
+   "card": "Paradox Shaper",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.5",
+   "grade": "C",
+   "take": "A high-end build-around that enables threshold and can loop your best card after milling your deck."
+  },
+  {
+   "card": "Primal Witchstalker",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "An easy two-for-one ramping a land and adding a menace body."
+  },
+  {
+   "card": "Proctor of Potential",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Free surveil enabler that becomes a payoff when it dies."
+  },
+  {
+   "card": "Prudent Fateseer",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "An impactful team buff in creature-heavy decks with hybrid mana, a risk-free early pick."
+  },
+  {
+   "card": "Recursive Recruitment",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A fantastic self-mill finisher that also provides early board presence."
+  },
+  {
+   "card": "Saheeli, Jewel of Avishkar",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A must-kill Thopter engine that quickly wins and attacks Jace tokens."
+  },
+  {
+   "card": "Solarium Sentry",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Great stats and a free ability that sometimes triggers lifegain."
+  },
+  {
+   "card": "Solitary Cell",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Good on removal alone, fine once you're in Red-White but not a reason to move in."
+  },
+  {
+   "card": "Stingerquill Charm",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Lightning Bolt alone makes it great, with bonus modes."
+  },
+  {
+   "card": "Stingerquill Voxmancer",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Enables the Black-Red deal-one-damage deck perfectly and is a reason to go into it."
+  },
+  {
+   "card": "Stinging Vitriol",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A Thoughtseize where they pay the life, good if primarily Rakdos but not splashable."
+  },
+  {
+   "card": "Tam, the Possibility",
+   "host": "LSV",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "A 2/4 for three that does little else."
+  },
+  {
+   "card": "Tam's Resistance",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Only worth it if deep into Empower Jace synergies."
+  },
+  {
+   "card": "Tenured Tethermage",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Ramps, provides card advantage and grows into a threat."
+  },
+  {
+   "card": "Theorix Charm",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Spell Pierce, Disfigure and a pushed Thought Scour is a fantastic trio."
+  },
+  {
+   "card": "Theorix Metamage",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "Fine in self-mill decks, avoid otherwise."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "LSV",
+   "grade_said": "2.5",
+   "grade": "C+",
+   "take": "Small synergies that net a card, enough for most decks."
+  },
+  {
+   "card": "Twisted Fates",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Kills anything and puts lots of stats in play, a near-bomb."
+  },
+  {
+   "card": "Uldaros Theorix",
+   "host": "LSV",
+   "grade_said": "5.0",
+   "grade": "A+",
+   "take": "A massive threat fueled by a naturally full graveyard, his pick for the best card in the set."
+  },
+  {
+   "card": "Vraska, Soul of Stone",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Basically a worse three-color Saheeli, still solid if the mana works."
+  },
+  {
+   "card": "Vraska, the Cutting Glare",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "Fantastic early and better late, never cut."
+  },
+  {
+   "card": "Vigorbloom Charm",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Consistently useful modes that fit Green-White, happy to take early."
+  },
+  {
+   "card": "Vigorbloom Vanguard",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A creature, prepared spell and static all in one, a great reason to go Green-White."
+  },
+  {
+   "card": "Vindictive Triumph",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "A temporary steal that is still good with the right target and can be cast at their end step for an attack."
+  },
+  {
+   "card": "Warrior's Blades",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A Lightning Helix plus strong equipment, a premium Red-White uncommon."
+  },
+  {
+   "card": "Whiplash Wordsmith",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "Solid filler for Red-Black that few other decks want."
+  },
+  {
+   "card": "Woodwork Prodigy",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "A less clean curve than the common but multiple Heartwood tokens make it a reason to draft ramp."
+  },
+  {
+   "card": "Emrakul, the Exigent Doom",
+   "host": "LSV",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "Too expensive for what it offers even with its colorless ramp."
+  },
+  {
+   "card": "Afterthought Sentry",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Forgettable and not worth playing."
+  },
+  {
+   "card": "Archive Arbiter",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "One copy covers many bases, wrecks Jace tokens and leaves a relevant body."
+  },
+  {
+   "card": "Codie, Ravenous Codex",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.5",
+   "grade": "C",
+   "take": "A great amplifier in Blue-White Peer Review decks but doesn't fix a medium deck."
+  },
+  {
+   "card": "The Echoverse Fulcrum",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Smooths draws and holds a visible reset button, making opponents commit little."
+  },
+  {
+   "card": "Eye of Jace",
+   "host": "LSV",
+   "grade_said": "1.0 // 3.0",
+   "grade": "C",
+   "take": "Only for dedicated Blue-White surveil decks."
+  },
+  {
+   "card": "Karn, Argent Defender",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Usually has a good effect since most decks have enters-the-battlefield creatures."
+  },
+  {
+   "card": "Keeper of the Quiet Hour",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "Unexciting but never wrong filler."
+  },
+  {
+   "card": "Living Library",
+   "host": "LSV",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "Costs too much to use and rarely exchanges favorably."
+  },
+  {
+   "card": "Medic's Kitesail",
+   "host": "LSV",
+   "grade_said": "2.0",
+   "grade": "C",
+   "take": "Lifegain decks will always play it and it's fine in aggressive builds."
+  },
+  {
+   "card": "Murmuring Volume",
+   "host": "LSV",
+   "grade_said": "1.5",
+   "grade": "C-",
+   "take": "Looks too clunky for now despite five-color control dreams."
+  },
+  {
+   "card": "Traxos, Scourge Eternal",
+   "host": "LSV",
+   "grade_said": "3.0",
+   "grade": "B",
+   "take": "Easy to untap and hits hard in creature-heavy decks."
+  },
+  {
+   "card": "Deserted Beach",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Rare slow lands are great fixing for multicolor decks."
+  },
+  {
+   "card": "Haunted Ridge",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Rare slow lands are great fixing for multicolor decks."
+  },
+  {
+   "card": "Shipwreck Marsh",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Rare slow lands are great fixing for multicolor decks."
+  },
+  {
+   "card": "Overgrown Farmland",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Rare slow lands are great fixing for multicolor decks."
+  },
+  {
+   "card": "Rockfall Vale",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Rare slow lands are great fixing for multicolor decks."
+  },
+  {
+   "card": "Hall of Echoes",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "Relevant in long games and playable as an extra land in most decks."
+  },
+  {
+   "card": "Hexhaven Dueling Arena",
+   "host": "LSV",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "Not enough payoff for the colorless mana risk."
+  },
+  {
+   "card": "Roiling Canopy",
+   "host": "LSV",
+   "grade_said": "1.0",
+   "grade": "D",
+   "take": "Barely functional outside mono-green."
+  },
+  {
+   "card": "Room of Refuge",
+   "host": "LSV",
+   "grade_said": "3.5",
+   "grade": "B+",
+   "take": "On par with the common duals with a little extra value."
+  },
+  {
+   "card": "Theorist's Sanctum",
+   "host": "LSV",
+   "grade_said": "4.0",
+   "grade": "A-",
+   "take": "A reasonable-cost card-draw backup plan that pressures opponents to be assertive."
+  }
+ ],
+ "format": {
+  "summary": "A Jace-token-heavy format where many cards Empower Jace, creating planeswalkers to protect and attack, alongside prepared creatures, landcyclers, surveil, Heartwood tokens, self-mill/threshold, lifegain and ten two-color archetypes; LSV calls it sweet with lots of themes and fantastic cards, and Uldaros Theorix his pick for best card.",
+  "speed": "Martin expects the format to be on the slower side, especially Sealed, making expensive bombs, grindy value and late-game threats better; Draft is expected to be faster than Sealed.",
+  "colors": [
+   {
+    "color": "W",
+    "take": "Martin thinks white is good, with four removal spells that each need just one white pip, making it popular and splashable in Sealed."
+   },
+   {
+    "color": "U",
+    "take": "LSV thinks blue is doing well, combining card advantage and speed with strong commons like Mindseeker Oculus and Infinite Coursework."
+   },
+   {
+    "color": "B",
+    "take": "LSV rates black's commons awesome, with good removal, a strong landcycler and solid creatures, though its creatures skew small."
+   },
+   {
+    "color": "R",
+    "take": "Martin likes red's efficient removal but notes many cards only work in one or two pairs, and aggro/prowess cards are weaker in Sealed."
+   },
+   {
+    "color": "G",
+    "take": "Martin thinks green is very strong with ramp, synergy, mana sinks, fight removal and big late threats, despite several unplayable cards."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "WG",
+    "take": "Lifegain and +1/+1 counters archetype with payoffs like Bloombrute, Titanbones, Way of the Mentor and Vigorbloom Vanguard."
+   },
+   {
+    "pair": "WU",
+    "take": "Surveil and fliers deck using Peer Review cards, with Denzilore Fatehold, Codie and Eye of Jace as payoffs."
+   },
+   {
+    "pair": "UB",
+    "take": "Self-mill and threshold archetype, supported by Liliana the Repentant, Paradox Shaper, Recursive Recruitment and Uldaros Theorix."
+   },
+   {
+    "pair": "UR",
+    "take": "Prowess and cheap-spells deck with Pompous Battlemage, Chandra's Emberling and Frostbite Pyromental."
+   },
+   {
+    "pair": "BR",
+    "take": "Stingerquill deal-one-damage and Viscous Verse deck, fueled by Stingerquill Voxmancer, Tomik and Koth, the Geomancer."
+   },
+   {
+    "pair": "RG",
+    "take": "Heartwood token ramp deck with big payoffs like Craftwork Crusher, Karn, Gilded Guardian and Draconic Visitor."
+   },
+   {
+    "pair": "WR",
+    "take": "Aggressive go-wide and +1/+1 counters deck with Warrior's Blades, Mabel and Winter, Team Player."
+   },
+   {
+    "pair": "BG",
+    "take": "Graveyard recursion and self-mill deck where Tarmogoyf, Carnivorous Cultivator and Restore with Empathy shine."
+   },
+   {
+    "pair": "WB",
+    "take": "Creature-heavy sacrifice deck supported by Edgar, Ancient Bloodlord."
+   },
+   {
+    "pair": "UG",
+    "take": "Planeswalker-focused deck, likely where Inspired Tethermage and Avatar of Burgeoning Echoes are best."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace / Jace tokens",
+    "take": "Pervasive planeswalker tokens that reward cheap evasive attackers, cast spells before attacking so you can hit their Jace, and power up Way enchantments and Jace payoffs."
+   },
+   {
+    "name": "Prepared creatures (Seed Suture, Peer Review, Viscous Verse, Molten Tide)",
+    "take": "Creatures that come with cheap spells, providing value, lifegain triggers, prowess triggers and targeting for your own creatures."
+   },
+   {
+    "name": "Landcycling",
+    "take": "Makes big creatures like Apex Witchstalker and Undulating Witness flexible and very playable."
+   },
+   {
+    "name": "Surveil",
+    "take": "Common via Jace tokens, enabling graveyard synergies and payoffs like Saheeli, Consul of Oversight and Proctor of Potential."
+   },
+   {
+    "name": "Heartwood tokens",
+    "take": "Ramp and fuel for Red-Green payoffs and mana sinks, though too many extra mana sources risk flooding."
+   },
+   {
+    "name": "Threshold / self-mill (Omit Variables)",
+    "take": "Feast-or-famine cards that are great only when going hard on the theme."
+   },
+   {
+    "name": "Color hosers",
+    "take": "A cycle of color-specific cards that are excellent sideboard options but not mainboard material."
+   }
+  ],
+  "advice": [
+   "Prioritize cheap removal like Last Gasp, Extended Absence, No Admittance and Compel Brutality.",
+   "Draft cheap evasive creatures and menace to pressure opposing Jace tokens while protecting yours.",
+   "Value landcyclers and multi-purpose cards; play multiple Apex Witchstalkers or Mindseeker Oculuses happily.",
+   "Don't auto-play rares like Flickering Hound or Liliana the Faultless without the synergy they need.",
+   "Expensive bombs and grindy cards gain value in Sealed, which is slower than Draft.",
+   "Treat build-arounds (self-mill, sacrifice, Heartwood) as feast or famine and only play them when committed.",
+   "If you open Splinter Twin, pair it with the common Divining Duelist for an infinite combo.",
+   "Common and rare dual lands are strong picks that enable multicolor decks and splashes."
+  ]
+ }
+}

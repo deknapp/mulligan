@@ -1,0 +1,709 @@
+{
+ "show": "Lords of Limited",
+ "title": "#497: Our Prerelease Guide for Reality Fracture",
+ "date": "2026-09-21",
+ "url": "https://audioboom.com/posts/8955341",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "scale": "No grades on air; the hosts graded commons and uncommons privately and instead give ranked top-three uncommon lists, notable commons, and sleepers per color.",
+ "cards": [
+  {
+   "card": "Craftwork Crusher",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The buzziest card of the preview season, with rare-level power; red-green ramp can land it on turn five or six."
+  },
+  {
+   "card": "Craftwork Crusher",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Agrees it is busted and wonders whether enough Heartwood tokens let you splash its heavy RRGG cost."
+  },
+  {
+   "card": "Tomik, Orzhov Lawmage",
+   "host": "Ben",
+   "grade_said": "#1 white uncommon",
+   "grade": "none",
+   "take": "White's best two-drop: an evasive body that protects planeswalkers and grants flying to countered creatures, which is a lot for two mana."
+  },
+  {
+   "card": "Tomik, Orzhov Lawmage",
+   "host": "Ethan",
+   "grade_said": "#3 white uncommon",
+   "grade": "none",
+   "take": "Has it third and is fine with it being Ben's top pick."
+  },
+  {
+   "card": "Saheeli, Consul of Oversight",
+   "host": "Ben",
+   "grade_said": "#2 white uncommon",
+   "grade": "none",
+   "take": "A five-mana 4/4 flyer that makes Thopters off surveil; best cast when a Jace is ready to downtick, but still a decent Air Elemental otherwise."
+  },
+  {
+   "card": "Saheeli, Consul of Oversight",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Calls it busted when you can pair it with a Jace downtick on the same turn."
+  },
+  {
+   "card": "Teyo, Lightshield Expert",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An interesting flash protection-and-counter twist, but he later bumped it from his top three."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "Ben",
+   "grade_said": "#3 white uncommon (audible)",
+   "grade": "none",
+   "take": "The evasive 1/3 can bounce your own Way enchantments to re-empower Jace, which opens lots of cool lines."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Likes Ben's case for replaying Ways with it."
+  },
+  {
+   "card": "Your Fate Ends Here",
+   "host": "Ethan",
+   "grade_said": "#1 white uncommon",
+   "grade": "none",
+   "take": "Good instant removal plus surveil, though being unable to hit two-drops may sting in a board-presence format."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Ethan",
+   "grade_said": "#2 white uncommon",
+   "grade": "none",
+   "take": "Its floor of two Cadets plus surveils is Imperial Oath-adjacent, and Empower Jace is spread widely enough to play it in white."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Sees it as more of a card for green's Jace decks than for white."
+  },
+  {
+   "card": "Memory Trap",
+   "host": "Ethan",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "Clearly strong removal that exiles any nonland permanent."
+  },
+  {
+   "card": "Memory Trap",
+   "host": "Ben",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "On his notable commons list as quality white removal."
+  },
+  {
+   "card": "Surgical Precision",
+   "host": "Ethan",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "Recalls Murdock's Crusade: flexible removal for big creatures that can also cycle and gain life."
+  },
+  {
+   "card": "Surgical Precision",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A good card that only missed his list because white is so deep."
+  },
+  {
+   "card": "Blossom-Blessed Angel",
+   "host": "Ben",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "A 2/4 flying vigilance four-drop whose Seed Suture makes it a 3/4 later; absurdly good, and his whole white ranking leans on it."
+  },
+  {
+   "card": "Blossom-Blessed Angel",
+   "host": "Ethan",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "Much better than the similar Gollum's Bite adventure creature; he has it as a sleeper."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "Ben",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "An Imperial Oath-style three Cadets plus Empower Jace, with land cycling as a backup; predictably strong."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Wary of land cyclers, but this one is an exception because it still does its job."
+  },
+  {
+   "card": "Unflinching Hortimancer",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A Pridemate-style two-drop that will just trade in combat; bad news for white's life gain plan."
+  },
+  {
+   "card": "Campus Crier",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The white two-drop he actually wants: a 3/1 that can later exile itself to Empower Jace 2."
+  },
+  {
+   "card": "Campus Crier",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "White's good two-drop, balancing out the weak Hortimancer."
+  },
+  {
+   "card": "Shatterwing Pegasus",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Likes it as a 2/3 flyer that can pump the team late; +1/+1 counter synergies otherwise look like a red herring."
+  },
+  {
+   "card": "Mindseeker Oculus",
+   "host": "both",
+   "grade_said": "best common",
+   "grade": "none",
+   "take": "A three-mana body that Empowers Jace 4; possibly the best common, and even better with Kiora in blue-green."
+  },
+  {
+   "card": "Plan for All Outcomes",
+   "host": "Ethan",
+   "grade_said": "#1 blue uncommon",
+   "grade": "none",
+   "take": "Just busted: sorcery-speed top-or-bottom removal plus an ongoing Empower Jace engine, with no build-around work needed."
+  },
+  {
+   "card": "Plan for All Outcomes",
+   "host": "Ben",
+   "grade_said": "#1 blue uncommon",
+   "grade": "none",
+   "take": "Also his top blue uncommon."
+  },
+  {
+   "card": "Tetsuko Umezawa, Fugitive",
+   "host": "Ethan",
+   "grade_said": "#2 blue uncommon",
+   "grade": "none",
+   "take": "A two-drop that does everything: evasion enabler, build-around potential, and high toughness to protect Jace."
+  },
+  {
+   "card": "Traxos, Academy Guardian",
+   "host": "Ethan",
+   "grade_said": "#3 blue uncommon",
+   "grade": "none",
+   "take": "A 1/5 flying vigilance prowess body that often costs two and feels like cheating; four mana is fine too."
+  },
+  {
+   "card": "Traxos, Academy Guardian",
+   "host": "Ben",
+   "grade_said": "#2 blue uncommon",
+   "grade": "none",
+   "take": "Rules, and it's cube-bound; one of the high-toughness flying vigilance blockers that will make boards hard to attack."
+  },
+  {
+   "card": "Countersculpt",
+   "host": "Ben",
+   "grade_said": "#3 blue uncommon",
+   "grade": "none",
+   "take": "Stands by last week's take: a cheap counterspell that also Empowers Jace."
+  },
+  {
+   "card": "Icy Reception",
+   "host": "Ben",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "Essence Scatter-plus, since it can also hit legendary Ways or shrink a creature, despite others' skepticism."
+  },
+  {
+   "card": "Icy Reception",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Agrees it's good."
+  },
+  {
+   "card": "Surveillance Phantasm",
+   "host": "Ethan",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "The format's constant surveils turn off its defender, so it protects your Jace and attacks theirs; outstanding in blue-white."
+  },
+  {
+   "card": "Surveillance Phantasm",
+   "host": "Ben",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "Also on his sleeper list; a two-drop that will just be good."
+  },
+  {
+   "card": "Gallia, Tragic Host",
+   "host": "both",
+   "grade_said": "#1 black uncommon",
+   "grade": "none",
+   "take": "A cheap evasive menace threat that recurs itself, is free value when milled, and fits deathtouch themes."
+  },
+  {
+   "card": "Break Under Pressure",
+   "host": "both",
+   "grade_said": "#2 black uncommon",
+   "grade": "none",
+   "take": "An instant edict that takes the opponent's biggest threat and gains life."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "both",
+   "grade_said": "#3 black uncommon",
+   "grade": "none",
+   "take": "Empower Jace 5 plus a sac-for-4/4 ability; curving a Ravenous Rats-type into it is nasty."
+  },
+  {
+   "card": "Last Gasp",
+   "host": "Ethan",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "Excellent cheap instant removal."
+  },
+  {
+   "card": "Extended Absence",
+   "host": "Ethan",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "Banger instant exile removal, but splashable, which doesn't help black as a main color."
+  },
+  {
+   "card": "Screeching Soulbreaker",
+   "host": "Ethan",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "One of black's few exciting creatures: a 1/4 flyer that pressures Jaces, protects yours, and attacks over high-toughness boards."
+  },
+  {
+   "card": "Screeching Soulbreaker",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not a fan; its drain doesn't apply when attacking a Jace, so it's just a 1/4 flyer there."
+  },
+  {
+   "card": "Rank Rat",
+   "host": "both",
+   "grade_said": "notable omission",
+   "grade": "none",
+   "take": "Discard matters little in a format full of surveil, card draw, and some flashback."
+  },
+  {
+   "card": "Command the Stage",
+   "host": "Ben",
+   "grade_said": "#1 red uncommon",
+   "grade": "none",
+   "take": "Makes and pumps Cadets and keeps returning thanks to red-black's constant non-combat damage."
+  },
+  {
+   "card": "Command the Stage",
+   "host": "Ethan",
+   "grade_said": "#2 red uncommon",
+   "grade": "none",
+   "take": "A strong card, and their only overlap in red's top lists."
+  },
+  {
+   "card": "Violent Echoes",
+   "host": "Ben",
+   "grade_said": "#2 red uncommon",
+   "grade": "none",
+   "take": "Instant six damage that turns excess damage into Empower Jace."
+  },
+  {
+   "card": "Pia, Determined Rebuilder",
+   "host": "Ben",
+   "grade_said": "#3 red uncommon",
+   "grade": "none",
+   "take": "A two-for-one body with a Thopter plus a late-game pump sink."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Ethan",
+   "grade_said": "#1 red uncommon",
+   "grade": "none",
+   "take": "The only Way that lets planeswalkers uptick while ramping into red's strong four-drops; very powerful."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Ben",
+   "grade_said": "top red uncommon (audible)",
+   "grade": "none",
+   "take": "Won over by Ethan's Temur take and added it to his red top uncommons."
+  },
+  {
+   "card": "Fulminous Forte",
+   "host": "Ethan",
+   "grade_said": "#3 red uncommon",
+   "grade": "none",
+   "take": "Solid flexible removal, either a one-damage sweep or five to one target, but less impressive than Violent Echoes."
+  },
+  {
+   "card": "Fulminous Forte",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very good; red simply has six or seven B-level uncommons."
+  },
+  {
+   "card": "No Admittance",
+   "host": "both",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "Two-mana deal three plus Empower Jace 1 is a very good card."
+  },
+  {
+   "card": "Heartstring Puller",
+   "host": "both",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "A trampling body plus a Cadet token for four, which also feeds Command the Stage."
+  },
+  {
+   "card": "Skilled Battlecarver",
+   "host": "Ben",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "A two-drop with first strike on your turn and a pump that make it very hard to block, and it can hold back to trade up."
+  },
+  {
+   "card": "Skilled Battlecarver",
+   "host": "Ethan",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "Likes it, but only as a sleeper; it embarrasses most two-drops."
+  },
+  {
+   "card": "Bestial Incursion",
+   "host": "both",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "Green's standout common: a 4/4 trampler with flashback for another."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "Ethan",
+   "grade_said": "#1 green uncommon",
+   "grade": "none",
+   "take": "Worse than a five-mana 4/4 draw-a-card if the board goes badly, but its game-warping ceiling makes it green's top Jace payoff."
+  },
+  {
+   "card": "Heartwood Crafter",
+   "host": "both",
+   "grade_said": "top green uncommon",
+   "grade": "none",
+   "take": "The mana restriction doesn't matter; it casts prepared spells and activations, and it ramps to a turn-three four-drop."
+  },
+  {
+   "card": "Ruric Thar, Magecrusher",
+   "host": "both",
+   "grade_said": "top-three green uncommon",
+   "grade": "none",
+   "take": "A seven-mana uncounterable 7/7 with reach, vigilance, trample, and conditional hexproof; power matches its cost."
+  },
+  {
+   "card": "Yoshimaru, Scrappy Stray",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Plays as a two-mana fight spell that leaves a body with a mana sink; underrated and cool, though maybe not a top uncommon."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Ethan",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "A rare cheap body that also Empowers Jace, and deathtouch helps it protect that Jace."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Ben",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "Left it off his notables because first strikers and flyers get past it, but keeps it as a sleeper and hopes he's wrong."
+  },
+  {
+   "card": "Compel Brutality",
+   "host": "Ethan",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "A flexible instant fight-style removal spell that can even use a Jace's loyalty as damage."
+  },
+  {
+   "card": "Fatehold Chronologist",
+   "host": "both",
+   "grade_said": "notable common",
+   "grade": "none",
+   "take": "An excellent 1/2 flyer that comes prepared with Peer Review for a Cadet plus surveil."
+  },
+  {
+   "card": "Predictive Preparations",
+   "host": "Ethan",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "A weaker Travel Preparations, but surveilling it into the yard for flashback could make it playable in counters decks."
+  },
+  {
+   "card": "Theoretical Necromancer",
+   "host": "Ethan",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "A rare decent black creature; a trade-off body that later exiles itself to reanimate another creature, good with self-mill."
+  },
+  {
+   "card": "Theoretical Necromancer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Also likes it for the self-mill space."
+  },
+  {
+   "card": "Tether Technician",
+   "host": "Ben",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "Big five-mana reach bodies overperform, and this one can turn a spare card into a Shock."
+  },
+  {
+   "card": "Tether Technician",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Agrees it's a nice card."
+  },
+  {
+   "card": "Konstrari Improviser",
+   "host": "Ethan",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "Simply a good two-drop that makes a Heartwood token."
+  },
+  {
+   "card": "Konstrari Improviser",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A good two-drop, slightly docked because the turn-three Heartwood mana lacks a great three-drop to use it on."
+  },
+  {
+   "card": "Tam's Resistance",
+   "host": "Ethan",
+   "grade_said": "sleeper common",
+   "grade": "none",
+   "take": "Empower Jace 4 for two mana is just good, even if the ideal timing is unclear."
+  },
+  {
+   "card": "Tam's Resistance",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Co-signs it; the counter fits nicely on the format's high-toughness vigilance flyers."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "Ethan",
+   "grade_said": "top multicolor uncommon",
+   "grade": "none",
+   "take": "A real reason to be green-black that rewards black's self-mill, and its BBG cost keeps green drafters from taking it."
+  },
+  {
+   "card": "Kiora of Salt and Sand",
+   "host": "Ethan",
+   "grade_said": "top multicolor uncommon",
+   "grade": "none",
+   "take": "Was a doubter last week, but with the full set he buys into the unblockable attacker and 8/8 hexproof Leviathan ultimate."
+  },
+  {
+   "card": "Kiora of Salt and Sand",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Card rules and is a big reason he's excited about blue-green."
+  },
+  {
+   "card": "Grim Repriser",
+   "host": "Ben",
+   "grade_said": "notable multicolor uncommon",
+   "grade": "none",
+   "take": "A prowess two-drop that red-black can reanimate basically whenever, thanks to constant non-combat damage."
+  },
+  {
+   "card": "Bloombrute",
+   "host": "Ben",
+   "grade_said": "notable multicolor uncommon",
+   "grade": "none",
+   "take": "A pushed 4/4 rate monster that draws off life gain and gives itself trample and lifelink."
+  },
+  {
+   "card": "Twisted Fates",
+   "host": "Ben",
+   "grade_said": "notable multicolor uncommon",
+   "grade": "none",
+   "take": "Great unconditional removal plus a team pump, costed so only white-black can use it."
+  },
+  {
+   "card": "Saheeli, Jewel of Avishkar",
+   "host": "Ben",
+   "grade_said": "notable multicolor uncommon",
+   "grade": "none",
+   "take": "A sturdy 2/4 that makes a hasty Thopter for every noncreature spell with no per-turn limit; a blue-red powerhouse."
+  },
+  {
+   "card": "Warrior's Blades",
+   "host": "Ben",
+   "grade_said": "notable multicolor uncommon",
+   "grade": "none",
+   "take": "A Lightning Helix stapled to an equipment with a cheapening equip cost; a banger."
+  },
+  {
+   "card": "Stingerquill Voxmancer",
+   "host": "Ben",
+   "grade_said": "notable multicolor uncommon",
+   "grade": "none",
+   "take": "Not top raw power but oozes synergy by re-preparing Vicious Burst every turn; any red deck can use it."
+  },
+  {
+   "card": "Cryotheory Adept",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Could be good: a prowess two-drop that later exiles itself to tap and stun."
+  },
+  {
+   "card": "Semester Foreseer",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Could overperform as a 3/4 with surveil and Peer Review prepared."
+  },
+  {
+   "card": "Infinite Coursework",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Mediocre tap-down removal."
+  },
+  {
+   "card": "Protege's Awakening",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Empower Jace 6 gets blue-green three-quarters of the way to a Kiora Leviathan."
+  }
+ ],
+ "format": {
+  "summary": "Both hosts expect a deep, synergy-rich, flat-power format where no rate monsters crowd out the synergies. Empower Jace (EJ) is the defining mechanic: build either heavily around it or barely at all. Pushed double-gold uncommons incentivize finding your lane. Ben sees Jeskai (red, white, blue, black, green) and Ethan sees Temur (red, blue, green, white, black); they converge on red first and black last.",
+  "speed": "Board presence matters: affect the board by turn two to pressure opposing Jaces and protect your own. Games snowball when one player curves out and the other durdles with land cyclers. Otherwise expect board stalls from high-toughness flying vigilance creatures.",
+  "colors": [
+   {
+    "color": "R",
+    "take": "Clear number one for both: deep, interesting commons, pushed uncommons, and a mix of threats, burn, Empower Jace, and inherent synergy with every other color; also has the best cheap plays."
+   },
+   {
+    "color": "U",
+    "take": "Ethan's clear second. Commons look individually weak outside Mindseeker Oculus but play better than the sum of their parts. Uncommons push toward blue-red and blue-green."
+   },
+   {
+    "color": "W",
+    "take": "Ben ranks it high for deep commons and uncommons mixing aggression and grind, much of it resting on Blossom-Blessed Angel. Ethan ranks it fourth and finds the +1/+1 counter and life gain pieces weak."
+   },
+   {
+    "color": "G",
+    "take": "Cares most about Empower Jace, with strong but expensive uncommons that Heartwood ramp can reach. Commons are thin beyond Bestial Incursion. Ben moved it up to third during the episode."
+   },
+   {
+    "color": "B",
+    "take": "Last for both: excellent, splashable removal but few good threats, so it's a support color rather than a main color."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "UR",
+    "take": "Ben's top archetype; prowess finally shines, with cards like Saheeli, Jewel of Avishkar and Traxos."
+   },
+   {
+    "pair": "WU",
+    "take": "Ben has it in his top tier alongside the red pairs; it's a surveil aggro deck with strong flyers and Surveillance Phantasm."
+   },
+   {
+    "pair": "BR",
+    "take": "Top tier for Ben; non-combat damage is extremely supported via Vicious Burst, Stingerquill Voxmancer, and Grim Repriser."
+   },
+   {
+    "pair": "RG",
+    "take": "Top tier; Heartwood ramp into big threats like Craftwork Crusher."
+   },
+   {
+    "pair": "WR",
+    "take": "Top tier for Ben as a +1/+1 counters aggro deck; Warrior's Blades is a standout."
+   },
+   {
+    "pair": "UG",
+    "take": "Ben's sleeper; the splash-the-Ways Jace deck could be oppressive or flop, and both lean toward it being good, with Kiora as a key payoff."
+   },
+   {
+    "pair": "BG",
+    "take": "Ben doubts the deathtouch-plus-trample theme and ranks it bottom tier; Ethan is less skeptical, and Hapatra is a real draw."
+   },
+   {
+    "pair": "UB",
+    "take": "Looks under-supported; black's weak card file worries both, though Ethan is less down on self-mill."
+   },
+   {
+    "pair": "WG",
+    "take": "Middle tier; life gain and counters look supported but a bit dubious, with Bloombrute as a pushed payoff."
+   },
+   {
+    "pair": "WB",
+    "take": "Middle tier; Twisted Fates is a strong reward for the pair."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace",
+    "take": "Format-defining; builds a Jace token that can minus one to surveil or minus three to draw, and the Way enchantments add abilities. Temur colors best support sitting on and growing Jace, while other decks just downtick immediately."
+   },
+   {
+    "name": "Prepare",
+    "take": "Each allied pair has a hybrid prepared spell that ties into its archetype: Peer Review makes a Cadet and surveils, Emit Variables mills, Vicious Burst deals damage, Soul Tether makes Heartwood, and Seed Suture adds a counter and gains life. The hosts call this a genius design."
+   },
+   {
+    "name": "Heartwood tokens",
+    "take": "Effectively three-mana Manaliths tapping for red or green, with strong top end to spend the mana on and help casting heavy costs like Craftwork Crusher."
+   },
+   {
+    "name": "Evergreen keywords",
+    "take": "Flying, vigilance, trample, prowess, and lifelink will matter a lot in the fight over Jaces; high-toughness vigilance flyers are especially strong."
+   }
+  ],
+  "advice": [
+   "Prioritize two-drops and board presence so you can pressure opposing Jace tokens and protect your own; don't spend turn two land cycling.",
+   "Either commit heavily to Empower Jace or mostly ignore it; a few incidental Empower Jace cards just play as a surveil tacked on.",
+   "Respect Empower Jace in deckbuilding even when it doesn't matter every game, much like planeswalkers in War of the Spark.",
+   "Use the pushed double-gold uncommons as signals to find your lane.",
+   "Treat black as a support color for its removal rather than a main color.",
+   "Expect high-toughness flying vigilance creatures to stall boards, so value evasion, deathtouch-plus-trample, and reach."
+  ]
+ }
+}
