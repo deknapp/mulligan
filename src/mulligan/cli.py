@@ -149,19 +149,18 @@ def _pick_view(state, names, ratings, note: str):
         head.append("[dim]Picked; waiting for the next pack.[/dim]")
     table = Table(box=None, pad_edge=False, header_style="bold")
     for col, justify in (("", "right"), ("grade", "left"), ("card", "left"), ("", "left"),
-                         ("score", "right"), ("sim", "right"), ("17Lands", "right"),
+                         ("score", "right"), ("experts", "left"),
                          ("why", "left")):
         table.add_column(col, justify=justify, overflow="fold")
     taken = state.picks.get((state.pack, state.pick))
     for i, a in enumerate(advise(ratings, pack, picks, state.pick)):
         c = a.card
-        sim = f"{c.sim:.1%} [dim]{c.sim_games:,}[/dim]" if c.sim is not None else "–"
-        real = f"{c.real:.1%} [dim]{c.real_games:,}[/dim]" if c.real is not None else "–"
+        experts = ", ".join(f"{h} {g}" for h, g in c.expert_grades) or "–"
         score = "" if a.score is None else f"{100 * a.score:+.1f}"
         mark = "✓" if taken is not None and names([taken])[0] == c.name else ""
         style = "bold green" if i == 0 and a.score is not None else None
-        table.add_row(f"{mark}{i + 1}", c.grade or "–", c.name, c.colors or "C", score, sim,
-                      real, " ".join(a.why), style=style)
+        table.add_row(f"{mark}{i + 1}", c.grade or "–", c.name, c.colors or "C", score,
+                      experts, " ".join(a.why), style=style)
     return Group(*head, table, f"[dim]{note}[/dim]")
 
 
@@ -178,14 +177,13 @@ def live_cmd(
     browser: bool = typer.Option(True, help="Open the browser page automatically."),
 ):
     """Pick advice during an Arena draft: reads the log as you draft and ranks
-    each pack by the simulator's card ratings blended with 17Lands' real ones.
+    each pack by the podcast hosts' expert grades (no simulator ratings).
     The browser page adds a color compass, your pool, and every pick so far to
     step back through."""
     from rich.live import Live
 
     from .draft_log import CardNames, DraftTracker, LogFollower, find_player_log
-    from .live_web import pair_strength
-    from .pick_advice import add_experts, build_ratings, load_experts, load_real, load_sim
+    from .pick_advice import expert_ratings, load_experts, load_sim
     from .site.build import CURRENT_SET
 
     path = find_player_log(log)
@@ -206,29 +204,14 @@ def live_cmd(
         code = (set_code or state.set_code or CURRENT_SET).lower()
         fmt = next((f for f in DRAFT_FORMATS if f in state.event), "PremierDraft")
         if (code, fmt) not in loaded:
-            sim = load_sim(code, fetch=not offline)
-            real = load_real(code, fmt, fetch=not offline)
-            ratings = build_ratings(sim, real)
-            add_experts(ratings, load_experts(code, fetch=not offline))
-            bits = [f"simulated draft of {ratings.sim_run}" if sim else
-                    f"no simulated data for {code.upper()}"]
-            if ratings.real_used:
-                bits.append(f"17Lands {fmt} ({ratings.real_used} cards, fetched "
-                            f"{ratings.real_fetched[:16].replace('T', ' ')}; shifted "
-                            f"{100 * ratings.shift:+.1f} pts onto the sim's scale)")
-            elif ratings.real_rows:
-                bits.append(f"17Lands {fmt} has win rates for only {ratings.real_rows} cards, "
-                            "too few to blend in yet")
-            else:
-                bits.append(f"no 17Lands {fmt} data yet"
-                            + (f" (starts {ratings.real_start})" if ratings.real_start else ""))
-            if ratings.experts:
-                graded = sum(c.ez is not None for c in ratings.cards.values())
-                bits.append(f"podcast hosts' grades for {graded} cards, averaged in half and "
-                            "half until 17Lands has enough games")
-            note = ("Score: points above the average card, minus an off-color penalty that "
-                    "grows through the draft. Data: " + "; ".join(bits) + ".")
-            loaded[(code, fmt)] = (ratings, note, pair_strength(sim, real))
+            # Expert grades only: the simulator's ratings missed busted rares.
+            sim = load_sim(code, fetch=not offline)      # card facts only
+            ratings = expert_ratings(sim, load_experts(code, fetch=not offline))
+            graded = sum(c.ez is not None for c in ratings.cards.values())
+            note = ("Score: the podcast hosts' grades (each host standardized, then averaged), "
+                    "minus an off-color penalty that grows through the draft. "
+                    f"{graded} cards graded; no simulator or 17Lands ratings.")
+            loaded[(code, fmt)] = (ratings, note, {})
         return loaded[(code, fmt)]
 
     def view():

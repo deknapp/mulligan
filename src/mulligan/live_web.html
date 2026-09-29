@@ -432,7 +432,6 @@ function heroHTML(step) {
       : `<div class="took">You took <b>${esc(step.taken)}</b> (#${takenIdx + 1}${taken && taken.score != null ? `, ${taken.score >= 0 ? "+" : "−"}${Math.abs(taken.score).toFixed(1)}` : ""}).</div>`;
   }
   const extra = [];
-  if (top.sim != null) extra.push(`sim ${(100 * top.sim).toFixed(1)}%`);
   if (top.experts) extra.push(`experts ${esc(top.experts)}`);
   if (top.real != null) extra.push(`17Lands ${(100 * top.real).toFixed(1)}% <span style="color:var(--faint)">(${top.real_games.toLocaleString()})</span>`);
   return `<div class="hero">
@@ -522,7 +521,7 @@ function render() {
         <section class="panel" id="compassWrap"><h2>Where your picks point</h2>${buildCompass()}
           <div class="lean"><div class="pair" id="leanBig"></div><div class="sub" id="leanSub"></div></div>
           <div class="note" style="text-align:center">Petals: how much of your pool each color holds. The ring fills as your colors settle.
-            Brighter pair nodes win more (simulated decks until 17Lands has real ones). Hover a card to see where it would pull you.</div></section>
+            Hover a card to see where it would pull you.</div></section>
       </div>
       <div>
         <section class="panel"><h2 id="packTitle">This pack</h2><div id="hero"></div><div id="rows"></div>
@@ -586,7 +585,7 @@ function drawDeck() {
     <div class="decksum"><span><b>${d.spells.length}</b> spells: <b>${creatures}</b> creatures, <b>${d.spells.length - creatures}</b> other</span>
       <span><b>${nLands}</b> lands: ${lands}</span></div>
     ${left}
-    <div class="note">Built the way <code>mulligan build</code> does before 17Lands has data: the best two-color builds by simulated card ratings,
+    <div class="note">Built the way <code>mulligan build</code> does before 17Lands has data: the best two-color builds by card ratings moved by expert grades,
       plus the best three-color one. The first is the recommendation (on HOB, letting a splash win on rating didn't help).
       "Score" only compares builds of this pool. Copy for Arena, then Import in Arena's deck builder.</div>`;
 }

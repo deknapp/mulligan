@@ -326,6 +326,29 @@ def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
                    synergy, pair_mean, sd or 1.0)
 
 
+EXPERT_SD = 0.03              # one expert standard deviation, in win-rate points
+
+
+def expert_ratings(sim: dict | None, experts: dict | None) -> Ratings:
+    """Ratings from the podcast hosts' grades alone: the simulated draft file
+    supplies only card facts (colors, cost, rarity, what lands make), never a
+    win rate, pair record or synergy. A card's score is its standardized
+    expert grade; ungraded cards go unrated."""
+    base = build_ratings(sim, None)
+    for c in base.cards.values():
+        c.sim, c.sim_games, c.est, c.z, c.grade = None, 0, None, None, None
+        c.pairs, c.ata = {}, None
+    add_experts(base, experts)
+    for c in base.cards.values():
+        if c.ez is not None:
+            c.est = c.ez * EXPERT_SD
+            c.z, c.grade = c.ez, c.ex_grade
+    base.synergy, base.pair_mean = {}, {}
+    base.mean, base.sd, base.shift, base.real_used, base.real_rows = 0.0, EXPERT_SD, 0.0, 0, 0
+    base.experts = False          # est already is the experts' rating; no blending
+    return base
+
+
 def lane(ratings: Ratings, picks: list[str]) -> tuple[dict[str, float], list[str]]:
     """The two colors your picks point at, weighted by quality."""
     weight = dict.fromkeys("WUBRG", 0.0)
@@ -481,7 +504,7 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
 
         if c.removal:
             why.append("Removal.")
-        if blend:
+        if c.expert_grades:
             hosts = ", ".join(f"{h} {g}" for h, g in c.expert_grades)
             why.append(f"Experts: {c.ex_grade} ({hosts}).")
         if pick_number and c.ata and len(pack) > 8 and c.ata >= pick_number + 8.5:

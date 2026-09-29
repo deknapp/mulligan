@@ -54,16 +54,20 @@ def _lane(ratings: Ratings, picks: list[str]) -> dict:
 def deck_builds(pool: list[str], set_code: str, ratings: Ratings) -> list[dict]:
     """The pool built into decks the way ``mulligan build`` does before 17Lands
     has data for a set (``limited.release_day``): the best two-color builds by
-    simulated card ratings, plus the best three-color one. The first is the
+    card ratings (text-derived, moved by expert grades), plus the best
+    three-color one. The first is the
     recommendation; on HOB, letting a splash win on rating did not help."""
     from collections import Counter
 
     from .cards.sets import available_sets, load_set
-    from .limited.release_day import candidate_builds, rating_points, sim_ratings
+    from .limited.rating import static_rating
+    from .limited.release_day import candidate_builds
     if set_code not in available_sets():
         return []
     data = load_set(set_code)
-    points = rating_points(data, sim_ratings(set_code))
+    # The card's text-derived rating moved by its expert grade (no simulator).
+    points = {name: static_rating(spec) + EXPERT_POINTS * (ratings.get(name).z or 0.0)
+              for name, spec in data.playable.items()}
     try:
         builds = candidate_builds(pool, data, points, top=3, splash=True)
     except ValueError:
@@ -146,6 +150,7 @@ class Snapshots:
                 "pairs": pairs or {}, "decks": self._decks[1]}
 
 
+EXPERT_POINTS = 2.5       # deckbuilder points per expert standard deviation
 REAL_PAIR_GAMES = 500     # 17Lands games a pair needs before its win rate is shown
 
 

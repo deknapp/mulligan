@@ -9,7 +9,7 @@ from typer.testing import CliRunner
 
 from mulligan.cli import app
 from mulligan.draft_log import DraftTracker, LogFollower
-from mulligan.pick_advice import advise, build_ratings, lane
+from mulligan.pick_advice import advise, build_ratings, expert_ratings, lane
 
 EVENT = "PremierDraft_FRA_20261002"
 
@@ -173,11 +173,26 @@ def test_live_once_shows_the_pack(tmp_path, monkeypatch):
                         lambda db=None: {10: "Bomb", 11: "Filler", 12: "Good Green"})
     monkeypatch.setattr("mulligan.draft_log.arena_names", lambda ids: {})
     monkeypatch.setattr("mulligan.pick_advice.load_sim", lambda code, fetch=True: SIM)
-    monkeypatch.setattr("mulligan.pick_advice.load_real", lambda *a, **k: None)
+    experts = {"cards": {n: {"grades": [{"show": "LR", "host": "Marshall", "grade": g}]}
+                         for n, g in (("Bomb", "A"), ("Good Green", "B"), ("Filler", "D"))}}
+    monkeypatch.setattr("mulligan.pick_advice.load_experts", lambda *a, **k: experts)
     result = CliRunner().invoke(app, ["live", "--log", str(log), "--once", "--offline"])
     assert result.exit_code == 0, result.output
     assert "Pack 1, pick 2" in result.output
     assert result.output.index("Good Green") < result.output.index("Filler")
+    assert "no simulator" in result.output         # expert grades only
+
+
+def test_live_ratings_are_the_experts_alone():
+    """A card the simulator rates as filler but the experts call a bomb ranks first."""
+    experts = {"cards": {"Filler": {"grades": [{"show": "LR", "host": "M", "grade": "A+"}]},
+                         "Bomb": {"grades": [{"show": "LR", "host": "M", "grade": "C"}]},
+                         "Good Green": {"grades": [{"show": "LR", "host": "M", "grade": "C+"}]}}}
+    ratings = expert_ratings(SIM, experts)
+    assert all(c.sim is None and not c.pairs for c in ratings.cards.values())
+    assert not ratings.synergy
+    ranked = advise(ratings, ["Bomb", "Filler"], [])
+    assert ranked[0].card.name == "Filler"
 
 
 def test_a_real_fra_premier_draft():
