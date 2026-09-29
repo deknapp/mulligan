@@ -67,6 +67,7 @@ class DraftState:
     pick: int = 0
     cards: list[int] = field(default_factory=list)       # grpIds in that pack
     picks: dict[tuple[int, int], int] = field(default_factory=dict)  # (pack, pick) -> grpId
+    packs: dict[tuple[int, int], list[int]] = field(default_factory=dict)  # every pack seen
     complete: bool = False
 
     @property
@@ -100,6 +101,7 @@ class DraftTracker:
         if (pack, pick) == (1, 1) and self.state.picks:
             self._new_draft(self.state.event)   # a new draft of the same event
         self.state.pack, self.state.pick, self.state.cards = pack, pick, cards
+        self.state.packs[pack, pick] = cards
         self.state.complete = False
         self.changed = True
 

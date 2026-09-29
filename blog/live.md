@@ -5,8 +5,8 @@
 The [pick helper](tools/pick.html) on this site needs you to type in the pack.
 The local version reads it for you. Arena writes every pack it shows you and
 every pick you make to a log file on your computer. `mulligan live` watches that
-file, and each time a new pack arrives it ranks the cards in a terminal window
-next to the game:
+file, and each time a new pack arrives it ranks the cards, both in the terminal
+and on a page it opens in your browser (served from your own computer):
 
 ```
 PremierDraft_FRA_20261002   Pack 1, pick 5   4 cards taken
@@ -18,6 +18,21 @@ Your picks lean Red-Green (R 2.1, G 2.0, B 1.2).
            Fits your RG picks. In simulated RG decks: 52.6% (1,394 games).
  ...
 ```
+
+The browser page shows the same ranking with card art and the reasons for each
+score, plus:
+
+- **A color compass.** The five colors sit around a pentagon, with the ten
+  two-color pairs between them, each labelled with its win rate in simulated
+  decks. Petals grow toward the colors your picks hold, a trail shows where
+  each pick moved you, and a ring fills as your colors settle. Hover a card in
+  the pack to see where taking it would pull you.
+- **Your pool,** by color, with each card's grade.
+- **Every pick so far,** as three rows of squares colored by the card you took,
+  starred where you took the helper's top card. Click one (or use the arrow
+  keys) to see that pack again as the helper ranked it then; **L** or the live
+  button jumps back to the current pick. After a draft, run `mulligan live`
+  again to step back through the whole thing.
 
 It only reads the log file. It doesn't touch the game or send anything anywhere,
 and it's the same log that 17Lands' and other draft overlays read.
@@ -90,8 +105,10 @@ Arena doesn't log packs. You only have to do this once.
 mulligan live
 ```
 
-When a pack shows up in Arena, it shows up here, best pick in green. Ctrl-C
-stops it. If you start it partway through a draft, it catches up on the picks
+Your browser opens the helper's page. When a pack shows up in Arena, it shows up
+there (and in the terminal, best pick in green). Ctrl-C stops it. For the
+terminal alone, run `mulligan live --no-web`; if the page doesn't open by
+itself, the terminal prints its address (http://127.0.0.1:8765/). If you start it partway through a draft, it catches up on the picks
 you've already made from the log.
 
 **To update** to the newest simulated data and fixes:

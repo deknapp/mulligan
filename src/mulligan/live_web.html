@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mulligan live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d16;
+  --bg2: #121526;
+  --panel: rgba(24, 28, 48, 0.78);
+  --line: rgba(160, 170, 220, 0.14);
+  --text: #e8e9f3;
+  --dim: #9097b5;
+  --faint: #5d6385;
+  --W: #f4e6b8;
+  --U: #4ea3ea;
+  --B: #b58ad6;
+  --R: #f0654a;
+  --G: #52c07a;
+  --M: #e2b84a;
+  --C: #a9adbf;
+  --good: #7fe0a0;
+  --bad: #ff7d6b;
+  --star: #ffd76a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: radial-gradient(1200px 800px at 30% 20%, #1a1f3d 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--text);
+  font: 15px/1.45 Inter, system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+header {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  padding: 14px 24px; border-bottom: 1px solid var(--line);
+  background: rgba(11, 13, 22, 0.6); backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 5;
+}
+.brand { font-family: Cinzel, Georgia, serif; font-weight: 700; font-size: 20px; letter-spacing: 1px; }
+.brand span { color: var(--dim); font-weight: 500; }
+.where { font-size: 22px; font-weight: 700; }
+.where small { color: var(--dim); font-weight: 500; font-size: 14px; margin-left: 8px; }
+.pill {
+  font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--dim);
+  background: none; cursor: pointer; font-family: inherit;
+}
+.pill.live { color: #0b0d16; background: var(--good); border-color: var(--good); }
+.pill.live::before { content: "● "; animation: pulse 1.4s infinite; }
+@keyframes pulse { 50% { opacity: 0.25; } }
+.spacer { flex: 1; }
+.nav button {
+  background: var(--panel); color: var(--text); border: 1px solid var(--line);
+  border-radius: 8px; padding: 6px 12px; font: inherit; cursor: pointer;
+}
+.nav button:hover { border-color: var(--dim); }
+
+main {
+  display: grid; gap: 20px; padding: 20px 24px 12px;
+  grid-template-columns: minmax(420px, 1fr) minmax(460px, 1.1fr);
+  max-width: 1600px; margin: 0 auto;
+}
+@media (max-width: 1000px) { main { grid-template-columns: 1fr; } }
+.panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+  padding: 16px 18px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+h2 {
+  margin: 0 0 10px; font-family: Cinzel, Georgia, serif; font-size: 15px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--dim); font-weight: 700;
+}
+
+/* compass */
+#compassWrap { position: relative; }
+#compass { width: 100%; height: auto; display: block; max-height: 72vh; }
+.lean { text-align: center; margin-top: -6px; }
+.lean .pair { font-family: Cinzel, Georgia, serif; font-size: 26px; font-weight: 700; }
+.lean .sub { color: var(--dim); font-size: 14px; }
+.petal { transition: transform 0.8s cubic-bezier(.2,.8,.2,1); mix-blend-mode: screen; }
+.guild text { font-size: 11.5px; fill: var(--dim); letter-spacing: 0.3px; paint-order: stroke; stroke: #0b0d16; stroke-width: 3px; }
+.guild.on text { fill: var(--text); font-weight: 700; font-size: 12.5px; }
+.orbLabel { font-family: Cinzel, Georgia, serif; font-weight: 700; font-size: 22px; text-anchor: middle; dominant-baseline: central; fill: #0b0d16; }
+#now { transition: transform 0.8s cubic-bezier(.2,.8,.2,1); }
+#ghost { transition: transform 0.25s ease-out, opacity 0.2s; }
+
+/* pack */
+.hero { display: grid; grid-template-columns: 200px 1fr; gap: 18px; margin-bottom: 14px; }
+.hero img, .hero .noimg { width: 200px; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+.hero .noimg { height: 279px; display: grid; place-items: center; background: var(--bg2); color: var(--faint); font-size: 13px; text-align: center; padding: 12px; }
+.hero .label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--star); font-weight: 700; }
+.hero .name { font-size: 26px; font-weight: 700; line-height: 1.15; margin: 4px 0 8px; }
+.hero .stats { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.hero .big { font-size: 28px; font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12.5px; padding: 3px 9px; border-radius: 99px; background: rgba(255,255,255,0.06); border: 1px solid var(--line); color: var(--text); }
+.took { margin-top: 12px; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.05); border-left: 3px solid var(--dim); font-size: 14px; }
+.took.same { border-left-color: var(--star); }
+
+.rows { display: flex; flex-direction: column; gap: 4px; }
+.row {
+  display: grid; grid-template-columns: 26px 64px minmax(0, 1fr) 44px 120px; gap: 10px;
+  align-items: center; padding: 5px 8px; border-radius: 10px; cursor: default;
+  border: 1px solid transparent;
+}
+.row:hover { background: rgba(255,255,255,0.05); border-color: var(--line); }
+.row.taken { background: rgba(127, 224, 160, 0.08); border-color: rgba(127, 224, 160, 0.35); }
+.row .rank { color: var(--faint); font-weight: 700; text-align: right; }
+.row .art { width: 64px; height: 47px; border-radius: 6px; object-fit: cover; background: var(--bg2); display: block; }
+.row .nm { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .why { color: var(--dim); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .tag { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: 2px; }
+.tag.you { background: var(--good); color: #0b0d16; }
+.grade { font-weight: 700; font-size: 14px; text-align: center; border-radius: 6px; padding: 3px 0; }
+.bar { position: relative; height: 22px; }
+.bar .axis { position: absolute; left: 50%; top: 2px; bottom: 2px; width: 1px; background: var(--faint); }
+.bar .fill { position: absolute; top: 5px; height: 12px; border-radius: 3px; }
+.bar .val { position: absolute; top: 1px; font-size: 12px; font-weight: 700; }
+.cost { display: inline-flex; gap: 2px; vertical-align: 1px; margin-left: 6px; }
+.pip { width: 14px; height: 14px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 9.5px; font-weight: 700; color: #0b0d16; box-shadow: inset 0 -1px 2px rgba(0,0,0,.35); }
+
+/* pool */
+.pool { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.pcol h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+.pcol h3 .dot { width: 10px; height: 10px; border-radius: 50%; }
+.pcol h3 .n { color: var(--dim); font-weight: 500; }
+.pcard { font-size: 12px; padding: 3px 6px; border-radius: 6px; margin-bottom: 3px; background: rgba(255,255,255,0.04); border-left: 3px solid; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard b { font-weight: 700; margin-right: 4px; }
+.pcard.new { animation: glow 2s ease-out; }
+@keyframes glow { from { background: rgba(255, 215, 106, 0.4); } }
+
+/* timeline */
+footer { padding: 4px 24px 24px; max-width: 1600px; margin: 0 auto; }
+.timeline { display: grid; grid-template-columns: 70px repeat(14, minmax(0, 1fr)); gap: 5px; align-items: center; }
+.timeline .pk { color: var(--dim); font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.slot {
+  height: 30px; border-radius: 7px; background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  cursor: pointer; position: relative; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: rgba(11,13,22,.75);
+}
+.slot.empty { cursor: default; }
+.slot.cur { outline: 2px solid var(--text); outline-offset: 2px; }
+.slot.star::after { content: "★"; position: absolute; top: -9px; right: -4px; color: var(--star); font-size: 13px; text-shadow: 0 0 6px #000; }
+.legend { color: var(--dim); font-size: 12.5px; margin-top: 10px; display: flex; gap: 18px; flex-wrap: wrap; }
+.note { color: var(--faint); font-size: 12px; margin-top: 8px; }
+.empty-state { text-align: center; padding: 120px 20px; color: var(--dim); }
+.empty-state .t { font-family: Cinzel, Georgia, serif; font-size: 30px; color: var(--text); margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">mulligan <span>live</span></div>
+  <div class="where" id="where"></div>
+  <div class="spacer"></div>
+  <div class="nav">
+    <button id="prev" title="Previous pick (←)">◀</button>
+    <button id="next" title="Next pick (→)">▶</button>
+  </div>
+  <button class="pill" id="livePill" title="Follow the draft (L)">live</button>
+</header>
+<div id="app"></div>
+<script>
+const ORDER = ["W", "U", "B", "R", "G"];
+const NAMES = {W: "White", U: "Blue", B: "Black", R: "Red", G: "Green"};
+const css = k => getComputedStyle(document.documentElement).getPropertyValue("--" + k).trim();
+const R = 205;
+const VERT = Object.fromEntries(ORDER.map((k, i) => {
+  const a = (-90 + 72 * i) * Math.PI / 180;
+  return [k, [R * Math.cos(a), R * Math.sin(a)]];
+}));
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const img = (version, name) => `/img/${version}/${encodeURIComponent(name)}`;
+
+let data = null, version = 0, view = null, live = true, hover = null, lastPool = 0;
+
+function cardColor(colors) {
+  if (!colors) return css("C");
+  if (colors.length > 1) return css("M");
+  return css(colors);
+}
+
+// Where a pool's colors point: each color's share, cubed so the leaders pull
+// hardest. Two even colors land on the midpoint between them (the pair's node).
+function position(weight) {
+  const total = ORDER.reduce((s, k) => s + (weight[k] || 0), 0);
+  if (!total) return [0, 0];
+  let x = 0, y = 0, norm = 0;
+  for (const k of ORDER) {
+    const p = ((weight[k] || 0) / total) ** 3;
+    x += p * VERT[k][0]; y += p * VERT[k][1]; norm += p;
+  }
+  return [x / norm, y / norm];
+}
+
+// A card's pull, the way pick_advice.lane() counts it.
+function withCard(weight, card) {
+  const w = {...weight};
+  if (!card || !card.colors || card.land) return w;
+  const q = Math.max(0.2, 1 + (card.z || 0));
+  for (const k of card.colors) w[k] = (w[k] || 0) + q / card.colors.length;
+  return w;
+}
+
+function costHTML(cost) {
+  if (!cost) return "";
+  const parts = cost.match(/\{[^}]+\}/g) || [];
+  return `<span class="cost">${parts.map(p => {
+    const s = p.slice(1, -1);
+    const cols = s.split("/").filter(c => ORDER.includes(c));
+    if (!cols.length) return `<span class="pip" style="background:${css("C")}">${esc(s)}</span>`;
+    const bg = cols.length > 1 ? `linear-gradient(135deg, ${css(cols[0])} 50%, ${css(cols[1])} 50%)` : css(cols[0]);
+    return `<span class="pip" style="background:${bg}"></span>`;
+  }).join("")}</span>`;
+}
+
+function gradeStyle(g) {
+  if (!g) return `color:${css("faint")}`;
+  const c = {A: "#ffd76a", B: "#7fe0a0", C: "#9fb3d9", D: "#ff9f6b", F: "#ff7d6b"}[g[0]];
+  return `color:${c};background:${c}1f`;
+}
+
+function scoreBar(score) {
+  if (score == null) return `<div class="bar"><div class="axis"></div></div>`;
+  const span = 10, pct = Math.max(-1, Math.min(1, score / span)) * 50;
+  const col = score >= 0 ? css("good") : css("bad");
+  const left = score >= 0 ? 50 : 50 + pct;
+  const text = (score >= 0 ? "+" : "−") + Math.abs(score).toFixed(1);
+  const valPos = score >= 0 ? `left:calc(${50 + pct}% + 4px)` : `right:calc(${50 - pct}% + 4px)`;
+  const clampedPos = Math.abs(pct) > 30 ? (score >= 0 ? `right:calc(${50 - pct}% + 4px);color:#0b0d16` : `left:calc(${50 + pct}% + 4px);color:#0b0d16`) : valPos;
+  return `<div class="bar"><div class="axis"></div>
+    <div class="fill" style="left:${left}%;width:${Math.abs(pct)}%;background:${col}"></div>
+    <div class="val" style="${clampedPos};${Math.abs(pct) > 30 ? "" : "color:" + col}">${text}</div></div>`;
+}
+
+// ---- the color compass -------------------------------------------------------
+
+function petalPath() {
+  const L = R * 0.95;
+  return `M0,0 C${-L * 0.34},${-L * 0.28} ${-L * 0.22},${-L * 0.82} 0,${-L} C${L * 0.22},${-L * 0.82} ${L * 0.34},${-L * 0.28} 0,0Z`;
+}
+
+function buildCompass() {
+  const S = 312;
+  const pent = ORDER.map(k => VERT[k].join(",")).join(" ");
+  const star = [0, 2, 4, 1, 3].map(i => VERT[ORDER[i]].join(",")).join(" ");
+  const defs = ORDER.map(k => `
+    <radialGradient id="pg${k}" cx="0" cy="0" r="${R}" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${css(k)}" stop-opacity="0.05"/>
+      <stop offset="0.55" stop-color="${css(k)}" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="${css(k)}" stop-opacity="0.95"/>
+    </radialGradient>
+    <radialGradient id="og${k}" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="0.35" stop-color="${css(k)}"/>
+      <stop offset="1" stop-color="${css(k)}" stop-opacity="0.75"/>
+    </radialGradient>`).join("");
+  const petals = ORDER.map((k, i) => `
+    <g transform="rotate(${72 * i})"><path class="petal" id="petal${k}" d="${petalPath()}"
+      fill="url(#pg${k})" filter="url(#soft)" transform="scale(0.05)"/></g>`).join("");
+  const guilds = [];
+  for (let i = 0; i < 5; i++) for (let j = i + 1; j < 5; j++) {
+    const a = ORDER[i], b = ORDER[j];
+    const pair = ORDER.filter(k => k === a || k === b).join("");
+    const [x, y] = [(VERT[a][0] + VERT[b][0]) / 2, (VERT[a][1] + VERT[b][1]) / 2];
+    const allied = (j - i === 1) || (j - i === 4);
+    const out = allied ? 1.13 : 1.0;
+    const len = Math.hypot(x, y), ux = x / len, uy = y / len;   // labels point away from the center
+    const anchor = Math.abs(ux) < 0.3 ? "middle" : ux > 0 ? "start" : "end";
+    guilds.push(`<g class="guild" id="guild${pair}" transform="translate(${x * out},${y * out})">
+      <circle r="11" fill="${css(a)}" opacity="0.9"/>
+      <path d="M0,-11 A11,11 0 0,1 0,11 Z" fill="${css(b)}" opacity="0.95"/>
+      <circle class="ring" r="15" fill="none" stroke="${css("star")}" stroke-width="2" opacity="0"/>
+      <text x="${(ux * 20).toFixed(1)}" y="${(uy * 20 + 4).toFixed(1)}" style="text-anchor:${anchor}"></text></g>`);
+  }
+  const orbs = ORDER.map(k => {
+    const [x, y] = VERT[k].map(v => v * 1.2);
+    return `<g transform="translate(${x},${y})">
+      <circle r="30" fill="${css(k)}" opacity="0.25" filter="url(#glow)" id="halo${k}"/>
+      <circle r="24" fill="url(#og${k})" stroke="rgba(0,0,0,.35)" stroke-width="1.5"/>
+      <text class="orbLabel">${k}</text>
+      <text id="w${k}" y="44" text-anchor="middle" font-size="12.5" fill="${css("dim")}"></text></g>`;
+  }).join("");
+  const ringR = R * 1.2 + 50;
+  return `<svg id="compass" viewBox="${-S} ${-S} ${2 * S} ${2 * S}" role="img" aria-label="Color compass">
+    <defs>${defs}
+      <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
+      <radialGradient id="nowg"><stop offset="0" stop-color="#fff"/><stop offset="0.4" stop-color="#fff" stop-opacity="0.8"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    </defs>
+    <circle r="${ringR}" fill="none" stroke="${css("line")}" stroke-width="5"/>
+    <circle id="commitArc" r="${ringR}" fill="none" stroke="${css("star")}" stroke-width="5" stroke-linecap="round"
+      stroke-dasharray="0 9999" transform="rotate(-90)" opacity="0.85"/>
+    <polygon points="${pent}" fill="rgba(255,255,255,0.015)" stroke="${css("line")}" stroke-width="1.5"/>
+    <polygon points="${star}" fill="none" stroke="${css("line")}" stroke-width="1"/>
+    ${petals}
+    <g id="guilds">${guilds.join("")}</g>
+    <g id="trail"></g>
+    <g id="ghost" opacity="0"><line id="ghostLine" stroke="#fff" stroke-dasharray="4 5" stroke-width="1.5" opacity="0.7"/>
+      <circle id="ghostDot" r="10" fill="none" stroke="#fff" stroke-width="2"/></g>
+    <g id="now"><circle r="28" fill="url(#nowg)" opacity="0.55"><animate attributeName="r" values="22;32;22" dur="2.4s" repeatCount="indefinite"/></circle>
+      <circle r="8" fill="#fff" stroke="#0b0d16" stroke-width="2"/></g>
+    ${orbs}
+  </svg>`;
+}
+
+function drawCompass(step, idx) {
+  const weight = step.before.weight;
+  const total = ORDER.reduce((s, k) => s + weight[k], 0) || 1;
+  const most = Math.max(...ORDER.map(k => weight[k])) || 1;
+  for (const k of ORDER) {
+    const share = weight[k] / total;
+    const s = 0.06 + 0.9 * (weight[k] / most) ** 0.8;   // the leading color reaches its orb
+    document.getElementById("petal" + k).setAttribute("transform", `scale(${s.toFixed(3)})`);
+    document.getElementById("halo" + k).setAttribute("opacity", (0.12 + share * 1.4).toFixed(2));
+    document.getElementById("w" + k).textContent = weight[k] ? weight[k].toFixed(1) : "";
+  }
+  const ringR = R * 1.2 + 50, circ = 2 * Math.PI * ringR;
+  document.getElementById("commitArc").setAttribute("stroke-dasharray",
+    `${(step.before.commit * circ).toFixed(1)} ${circ.toFixed(1)}`);
+
+  // guild nodes: size by simulated deck win rate, label with the name and it
+  const pairs = data.pairs || {};
+  const wrs = Object.values(pairs).map(p => p.wr);
+  const lo = Math.min(...wrs), hi = Math.max(...wrs);
+  document.querySelectorAll(".guild").forEach(g => {
+    const pair = g.id.slice(5), p = pairs[pair];
+    const on = pair === step.before.pair;
+    g.classList.toggle("on", on);
+    g.querySelector(".ring").setAttribute("opacity", on ? 1 : 0);
+    const t = p && hi > lo ? (p.wr - lo) / (hi - lo) : 0.5;
+    g.querySelectorAll("circle:not(.ring), path").forEach(e => e.setAttribute("opacity", (0.35 + 0.6 * t).toFixed(2)));
+    g.setAttribute("style", `transform-box: fill-box`);
+    g.querySelector("text").textContent = p ? `${p.name} ${(100 * p.wr).toFixed(1)}%` : pair;
+  });
+
+  // the trail: where you stood before each pick, dots in the taken card's color
+  const pts = [];
+  for (let i = 0; i <= idx; i++) pts.push(position(data.steps[i].before.weight));
+  const cur = data.steps[idx];
+  let after = null;
+  if (cur.taken) {
+    const next = data.steps[idx + 1];
+    after = next ? position(next.before.weight) : position(data.now.weight);
+  }
+  const all = after ? [...pts, after] : pts;
+  let svg = "";
+  for (let i = 1; i < all.length; i++) {
+    const age = (all.length - i) / all.length;
+    const c = cardColor(pickColors(i - 1));
+    svg += `<line x1="${all[i - 1][0]}" y1="${all[i - 1][1]}" x2="${all[i][0]}" y2="${all[i][1]}"
+      stroke="${c}" stroke-width="${(2.5 - 1.2 * age).toFixed(2)}" stroke-linecap="round" opacity="${(1 - 0.75 * age).toFixed(2)}"/>`;
+  }
+  for (let i = 1; i < all.length; i++) {
+    const age = (all.length - i) / all.length;
+    const first = data.steps[i - 1] && data.steps[i - 1].pick === 1;
+    svg += `<circle cx="${all[i][0]}" cy="${all[i][1]}" r="${first ? 6 : 4}" fill="${cardColor(pickColors(i - 1))}"
+      stroke="#0b0d16" stroke-width="1" opacity="${(1 - 0.6 * age).toFixed(2)}"><title>${esc(data.steps[i - 1].taken)}</title></circle>`;
+  }
+  document.getElementById("trail").innerHTML = svg;
+  const here = after || pts[pts.length - 1];
+  document.getElementById("now").setAttribute("transform", `translate(${here[0]},${here[1]})`);
+  drawGhost();
+}
+
+function pickColors(i) {
+  const s = data.steps[i];
+  const row = s && s.cards.find(c => c.name === s.taken);
+  return row ? (row.land ? "" : row.colors) : "";
+}
+
+function drawGhost() {
+  const ghost = document.getElementById("ghost");
+  if (!ghost) return;
+  const step = data && data.steps[view];
+  // Hovering a card shows its pull; before you pick, the top card's shows anyway.
+  const card = hover || (step && !step.taken ? step.cards[0] : null);
+  if (!card || !step) { ghost.setAttribute("opacity", 0); return; }
+  const from = position(step.before.weight), to = position(withCard(step.before.weight, card));
+  ghost.setAttribute("opacity", 1);
+  const line = document.getElementById("ghostLine");
+  line.setAttribute("x1", from[0]); line.setAttribute("y1", from[1]);
+  line.setAttribute("x2", to[0]); line.setAttribute("y2", to[1]);
+  const dot = document.getElementById("ghostDot");
+  dot.setAttribute("cx", to[0]); dot.setAttribute("cy", to[1]);
+  dot.setAttribute("stroke", cardColor(card.land ? "" : card.colors));
+}
+
+// ---- panels -----------------------------------------------------------------
+
+function leanText(lane, picks) {
+  if (!picks) return {big: "Wide open", sub: "First pick: take the best card."};
+  if (lane.pair) return {big: lane.pair_name, sub: `${NAMES[lane.pair[0]]}–${NAMES[lane.pair[1]]} · colors ${Math.round(100 * lane.commit)}% settled`};
+  if (lane.top.length) return {big: NAMES[lane.top[0]], sub: `still one color · ${Math.round(100 * lane.commit)}% settled`};
+  return {big: "Wide open", sub: "no colored picks yet"};
+}
+
+function heroHTML(step) {
+  const top = step.cards[0];
+  if (!top) return "";
+  const takenIdx = step.cards.findIndex(c => c.name === step.taken);
+  const taken = step.cards[takenIdx];
+  let took = "";
+  if (step.taken) {
+    took = takenIdx === 0
+      ? `<div class="took same">★ You took the top pick.</div>`
+      : `<div class="took">You took <b>${esc(step.taken)}</b> (#${takenIdx + 1}${taken && taken.score != null ? `, ${taken.score >= 0 ? "+" : "−"}${Math.abs(taken.score).toFixed(1)}` : ""}).</div>`;
+  }
+  const extra = [];
+  if (top.sim != null) extra.push(`sim ${(100 * top.sim).toFixed(1)}%`);
+  if (top.real != null) extra.push(`17Lands ${(100 * top.real).toFixed(1)}% <span style="color:var(--faint)">(${top.real_games.toLocaleString()})</span>`);
+  return `<div class="hero">
+    <img src="${img("normal", top.name)}" alt="${esc(top.name)}" onerror="this.outerHTML='<div class=noimg>${esc(top.name).replace(/'/g, "")}</div>'">
+    <div>
+      <div class="label">★ ${step.taken ? "The helper's pick" : "Take this"}</div>
+      <div class="name">${esc(top.name)}${costHTML(top.cost)}</div>
+      <div class="stats">
+        <span class="grade big" style="${gradeStyle(top.grade)};padding:2px 12px">${esc(top.grade || "–")}</span>
+        <span class="big" style="color:${(top.score || 0) >= 0 ? css("good") : css("bad")}">${top.score == null ? "" : (top.score >= 0 ? "+" : "−") + Math.abs(top.score).toFixed(1)}</span>
+        <span style="color:var(--dim);font-size:13px">${extra.join(" · ")}</span>
+      </div>
+      <div class="chips">${top.why.map(w => `<span class="chip">${esc(w)}</span>`).join("")}</div>
+      ${took}
+    </div></div>`;
+}
+
+function rowsHTML(step) {
+  return `<div class="rows">${step.cards.map((c, i) => `
+    <div class="row${c.name === step.taken ? " taken" : ""}" data-i="${i}">
+      <div class="rank">${i + 1}</div>
+      <img class="art" loading="lazy" src="${img("art_crop", c.name)}" alt="" onerror="this.style.visibility='hidden'">
+      <div style="min-width:0">
+        <div class="nm" style="border-left:3px solid ${cardColor(c.land ? "" : c.colors)};padding-left:7px">${esc(c.name)}${costHTML(c.cost)}${c.name === step.taken ? `<span class="tag you">TAKEN</span>` : ""}</div>
+        <div class="why" style="padding-left:10px" title="${esc(c.why.join(' · '))}">${esc(c.why.join(" · "))}</div>
+      </div>
+      <div class="grade" style="${gradeStyle(c.grade)}">${esc(c.grade || "–")}</div>
+      ${scoreBar(c.score)}
+    </div>`).join("")}</div>`;
+}
+
+function poolHTML(n) {
+  const pool = data.pool.slice(0, n);
+  const cols = {W: [], U: [], B: [], R: [], G: [], M: [], C: []};
+  pool.forEach((c, i) => {
+    const k = c.land || !c.colors ? "C" : c.colors.length > 1 ? "M" : c.colors;
+    cols[k].push({...c, i});
+  });
+  const title = {W: "White", U: "Blue", B: "Black", R: "Red", G: "Green", M: "Multi", C: "Other"};
+  return `<div class="pool">${Object.entries(cols).map(([k, cards]) => `
+    <div class="pcol"><h3><span class="dot" style="background:${css(k)}"></span>${title[k]} <span class="n">${cards.length}</span></h3>
+    ${cards.sort((a, b) => (b.z ?? -9) - (a.z ?? -9)).map(c => `
+      <div class="pcard${c.i >= lastPool && live ? " new" : ""}" style="border-color:${cardColor(c.land ? "" : c.colors)}" title="${esc(c.name)}"><b style="${gradeStyle(c.grade)};background:none">${esc(c.grade || "")}</b>${esc(c.name)}</div>`).join("")}
+    </div>`).join("")}</div>`;
+}
+
+function timelineHTML() {
+  const bySlot = {};
+  data.steps.forEach((s, i) => bySlot[`${s.pack}-${s.pick}`] = i);
+  let html = `<div class="timeline">`;
+  for (let p = 1; p <= 3; p++) {
+    html += `<div class="pk">Pack ${p}</div>`;
+    for (let k = 1; k <= 14; k++) {
+      const i = bySlot[`${p}-${k}`];
+      if (i === undefined) { html += `<div class="slot empty"></div>`; continue; }
+      const s = data.steps[i];
+      const star = s.taken && s.cards[0] && s.cards[0].name === s.taken;
+      const bg = s.taken ? cardColor(pickColors(i)) : "rgba(255,255,255,0.12)";
+      html += `<div class="slot${i === view ? " cur" : ""}${star ? " star" : ""}" data-i="${i}"
+        style="background:${bg}" title="P${p}p${k}: ${esc(s.taken || "not picked yet")}">${k}</div>`;
+    }
+  }
+  html += `</div><div class="legend"><span>Each square is a pick, colored by the card you took.</span>
+    <span><span style="color:var(--star)">★</span> you took the helper's top card</span>
+    <span>← → step through picks · L follows the draft</span></div>`;
+  return html;
+}
+
+function render() {
+  const app = document.getElementById("app");
+  const where = document.getElementById("where");
+  document.getElementById("livePill").classList.toggle("live", live);
+  if (!data || !data.steps || !data.steps.length) {
+    where.innerHTML = "";
+    app.innerHTML = `<div class="empty-state"><div class="t">Waiting for a draft</div>
+      Start a draft in MTG Arena. The first pack shows up here as soon as Arena logs it.</div>`;
+    return;
+  }
+  if (view == null || view >= data.steps.length) view = data.steps.length - 1;
+  const step = data.steps[view];
+  const picks = data.steps.slice(0, view).filter(s => s.taken).length;
+  const status = data.status === "complete" ? "draft complete" : (view === data.steps.length - 1 && data.waiting ? "picked, waiting for the next pack" : "");
+  where.innerHTML = `Pack ${step.pack} · Pick ${step.pick}<small>${esc(data.event)}${status ? " · " + status : ""}</small>`;
+  if (!document.getElementById("compass")) {
+    app.innerHTML = `<main>
+      <div>
+        <section class="panel" id="compassWrap"><h2>Where your picks point</h2>${buildCompass()}
+          <div class="lean"><div class="pair" id="leanBig"></div><div class="sub" id="leanSub"></div></div>
+          <div class="note" style="text-align:center">Petals: how much of your pool each color holds. The ring fills as your colors settle.
+            Pair nodes are sized by the simulator's deck win rate. Hover a card to see where it would pull you.</div></section>
+      </div>
+      <div>
+        <section class="panel"><h2 id="packTitle">This pack</h2><div id="hero"></div><div id="rows"></div>
+          <div class="note" id="note"></div></section>
+      </div>
+      <section class="panel" style="grid-column:1/-1"><h2 id="poolTitle">Pool</h2><div id="pool"></div></section>
+    </main>
+    <footer><section class="panel"><div id="timeline"></div></section></footer>`;
+  }
+  const lean = leanText(step.before, picks);
+  document.getElementById("leanBig").textContent = lean.big;
+  document.getElementById("leanBig").style.color = step.before.pair ? "" : css("text");
+  document.getElementById("leanSub").textContent = lean.sub;
+  document.getElementById("packTitle").textContent = `This pack · ${step.cards.length} cards · before pick ${picks + 1}`;
+  document.getElementById("hero").innerHTML = heroHTML(step);
+  document.getElementById("rows").innerHTML = rowsHTML(step);
+  document.getElementById("note").textContent = data.note || "";
+  const n = step.taken ? picks + 1 : picks;
+  document.getElementById("poolTitle").textContent = `Pool · ${n} card${n === 1 ? "" : "s"}${view < data.steps.length - 1 ? " (as of this pick)" : ""}`;
+  document.getElementById("pool").innerHTML = poolHTML(n);
+  document.getElementById("timeline").innerHTML = timelineHTML();
+  drawCompass(step, view);
+  lastPool = data.pool.length;
+}
+
+// ---- interaction + polling -------------------------------------------------
+
+function go(i, fromUser = true) {
+  if (!data || !data.steps.length) return;
+  view = Math.max(0, Math.min(data.steps.length - 1, i));
+  if (fromUser) live = view === data.steps.length - 1;
+  hover = null;
+  render();
+}
+document.getElementById("prev").onclick = () => go(view - 1);
+document.getElementById("next").onclick = () => go(view + 1);
+document.getElementById("livePill").onclick = () => { live = true; go(data ? data.steps.length - 1 : 0, false); };
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") go(view - 1);
+  else if (e.key === "ArrowRight") go(view + 1);
+  else if (e.key.toLowerCase() === "l") { live = true; go(data.steps.length - 1, false); }
+});
+document.addEventListener("click", e => {
+  const slot = e.target.closest(".slot[data-i]");
+  if (slot) go(+slot.dataset.i);
+});
+document.addEventListener("mouseover", e => {
+  const row = e.target.closest(".row[data-i]");
+  const next = row ? data.steps[view].cards[+row.dataset.i] : null;
+  if (next !== hover) { hover = next; drawGhost(); }
+});
+
+async function poll() {
+  try {
+    const r = await fetch(`/state.json?v=${version}`, {cache: "no-store"});
+    const j = await r.json();
+    if (j.v !== version && j.status !== undefined) {
+      version = j.v; data = j;
+      if (live) view = data.steps.length - 1;
+      else view = Math.min(view ?? 0, data.steps.length - 1);
+      render();
+    }
+  } catch (e) { /* the helper stopped; keep the last view */ }
+  setTimeout(poll, 600);
+}
+const start = location.hash.match(/^#pick=(\d+)$/);
+if (start) { live = false; view = +start[1] - 1; }
+render();
+poll();
+</script>
+</body>
+</html>

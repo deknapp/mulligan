@@ -143,6 +143,7 @@ class Card:
     pairs: dict[str, list[float]] = field(default_factory=dict)
     pips: dict[str, float] = field(default_factory=dict)
     makes: str = ""                   # colors a land can tap for
+    cost: str = ""                    # mana cost, {1}{W}
 
 
 @dataclass
@@ -196,7 +197,8 @@ def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
     for c in (sim or {}).get("cards", []):
         card = Card(c["n"], c.get("c") or "", c.get("r", ""), bool(c.get("rm")),
                     unsupported=c.get("un"), ata=c.get("ata") or None,
-                    pairs=(sim.get("pc") or {}).get(c["n"], {}), pips=pips(c.get("cost", "")))
+                    pairs=(sim.get("pc") or {}).get(c["n"], {}), pips=pips(c.get("cost", "")),
+                    cost=c.get("cost", ""))
         if "Land" in c.get("t", ""):
             card.makes = land_colors(c.get("o", ""))
         if c.get("g"):

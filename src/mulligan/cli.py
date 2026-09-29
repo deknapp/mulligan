@@ -172,12 +172,19 @@ def live_cmd(
     once: bool = typer.Option(False, help="Show the current pick and exit."),
     offline: bool = typer.Option(False, help="Don't fetch 17Lands or the site's data."),
     interval: float = typer.Option(0.5, help="Seconds between log checks."),
+    web: bool = typer.Option(True, help="Also show the advice in your browser, on a page "
+                                        "served from this machine."),
+    port: int = typer.Option(8765, help="Port for the browser page."),
+    browser: bool = typer.Option(True, help="Open the browser page automatically."),
 ):
     """Pick advice during an Arena draft: reads the log as you draft and ranks
-    each pack by the simulator's card ratings blended with 17Lands' real ones."""
+    each pack by the simulator's card ratings blended with 17Lands' real ones.
+    The browser page adds a color compass, your pool, and every pick so far to
+    step back through."""
     from rich.live import Live
 
     from .draft_log import CardNames, DraftTracker, LogFollower, find_player_log
+    from .live_web import pair_strength
     from .pick_advice import build_ratings, load_real, load_sim
     from .site.build import CURRENT_SET
 
@@ -216,7 +223,7 @@ def live_cmd(
                             + (f" (starts {ratings.real_start})" if ratings.real_start else ""))
             note = ("Score: points above the average card, minus an off-color penalty that "
                     "grows through the draft. Data: " + "; ".join(bits) + ".")
-            loaded[(code, fmt)] = (ratings, note)
+            loaded[(code, fmt)] = (ratings, note, pair_strength(sim))
         return loaded[(code, fmt)]
 
     def view():
@@ -227,20 +234,45 @@ def live_cmd(
         if state.complete:
             return (f"{state.event}: draft complete, {len(state.picked)} cards. "
                     "Build it with: mulligan build log:latest")
-        return _pick_view(state, names, *ratings_for(state))
+        ratings, note, _ = ratings_for(state)
+        return _pick_view(state, names, ratings, note)
 
     if once:
         console.print(view())
         return
+    server = None
+    if web:
+        from .live_web import LiveServer, Snapshots
+        server, snapshot = LiveServer(port, offline=offline), Snapshots()
+
+        def publish():
+            state = tracker.state
+            if not state.packs:
+                server.publish({"status": "none", "steps": []})
+                return
+            code = (set_code or state.set_code or CURRENT_SET).lower()
+            ratings, note, pairs = ratings_for(state)
+            server.publish(snapshot(state, names, ratings, note, code, pairs))
+
+        publish()
+        console.print(f"Pick helper page: [bold]{server.url}[/bold]")
+        if browser:
+            import webbrowser
+            webbrowser.open(server.url)
     console.print(f"[dim]Watching {path}. Ctrl-C to stop.[/dim]")
     try:
         with Live(view(), console=console, auto_refresh=False) as live:
             while True:
                 if follower.poll():
                     live.update(view(), refresh=True)
+                    if server:
+                        publish()
                 time.sleep(interval)
     except KeyboardInterrupt:
         pass
+    finally:
+        if server:
+            server.close()
 
 
 @app.command("versus")

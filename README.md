@@ -138,7 +138,10 @@ Your picks lean Red-Green (R 2.1, G 2.0, B 1.2).
 ```
 
 Watches Arena's log while you draft (Premier, Quick or Traditional) and ranks
-each pack as it arrives. A card's rating blends the latest simulated draft with
+each pack as it arrives, in the terminal and on a local browser page
+(`src/mulligan/live_web.py`, http://127.0.0.1:8765/): card art, a five-color
+compass showing where your picks are pulling you, your pool, and every pick so
+far to step back through. `--no-web` keeps it to the terminal. A card's rating blends the latest simulated draft with
 17Lands' live win rates: the simulator counts as 500 real games, and real rates
 are shifted onto the simulator's scale by the median gap first. A set with no
 simulation runs on 17Lands alone. Then the same off-color penalty as the
