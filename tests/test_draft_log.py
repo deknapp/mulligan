@@ -178,3 +178,20 @@ def test_live_once_shows_the_pack(tmp_path, monkeypatch):
     assert result.exit_code == 0, result.output
     assert "Pack 1, pick 2" in result.output
     assert result.output.index("Good Green") < result.output.index("Filler")
+
+
+def test_a_real_fra_premier_draft():
+    """A whole FRA Premier Draft from Arena's log (2026-09-29): every pick lands
+    where Arena's final CardPool says, and the draft ends."""
+    from pathlib import Path
+    lines = (Path(__file__).parent / "data" / "fra-premier-draft-2026-09-29.log").read_text()
+    tracker = DraftTracker()
+    tracker.feed(_join("PremierDraft_FRA_20260929"))
+    for line in lines.splitlines()[:-1]:
+        tracker.feed(line)
+    state = tracker.state
+    assert (state.pack, state.pick, len(state.picked), state.waiting) == (3, 14, 42, True)
+    assert not state.complete
+    assert state.picked[:3] == [106468, 106259, 106468]
+    tracker.feed(lines.splitlines()[-1])
+    assert state.complete and state.set_code == "fra"

@@ -9,7 +9,9 @@ differ by event type, and have changed over the years:
   event can instead come as ``"CardsInPack":[...]`` with ``PackNumber`` and
   ``PickNumber``. Picks are ``Draft.MakeHumanDraftPick`` (``packNumber``,
   ``pickNumber``, ``cardId``) or, in older clients, ``Event_PlayerDraftMakePick``
-  (``Pack``, ``Pick``, ``GrpId``/``GrpIds``). All 1-based.
+  (``Pack``, ``Pick``, ``GrpId``/``GrpIds``). All 1-based. The 2026 client
+  (FRA, September 2026) logs ``EventPlayerDraftMakePick`` with ``GrpIds``,
+  and ends the draft with ``DraftCompleteDraft``.
 * Quick draft (bots): ``BotDraft_DraftStatus`` / ``BotDraft_DraftPick``
   responses carry ``"DraftPack":["id",...]``, ``"PickedCards":[...]`` and a
   0-based ``PackNumber``/``PickNumber``; picks are ``PickInfo``
@@ -148,7 +150,8 @@ class DraftTracker:
             if card and pack is not None and pick is not None:
                 self._pick(int(pack) + 1, int(pick) + 1, int(card))
 
-        if "EventSetDeck" in text or '"DraftStatus":"Completed"' in text:
+        if ("EventSetDeck" in text or "DraftCompleteDraft" in text
+                or '"DraftStatus":"Completed"' in text):
             self.state.complete = self.changed = True
 
 

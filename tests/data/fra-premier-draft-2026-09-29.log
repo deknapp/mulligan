@@ -1,0 +1,85 @@
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":1,"SelfPack":1,"PackCards":"106273,106240,106344,106276,106376,106285,106373,106250,106507,106225,106477,106507,106468,106529"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106468],\"Pack\":1,\"Pick\":1}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":2,"SelfPack":1,"PackCards":"106259,106418,106226,106325,106394,106227,106280,106402,106480,106384,106491,106506,106530"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106259],\"Pack\":1,\"Pick\":2}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":3,"SelfPack":1,"PackCards":"106433,106394,106283,106273,106407,106241,106247,106426,106251,106468,106455,106435"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106468],\"Pack\":1,\"Pick\":3}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":4,"SelfPack":1,"PackCards":"106304,106241,106255,106338,106280,106294,106317,106249,106521,106525,106533"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106249],\"Pack\":1,\"Pick\":4}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":5,"SelfPack":1,"PackCards":"106433,106371,106329,106294,106255,106376,106240,106314,106424,106534"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106240],\"Pack\":1,\"Pick\":5}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":6,"SelfPack":1,"PackCards":"106303,106349,106226,106252,106298,106297,106508,106494,106429"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106297],\"Pack\":1,\"Pick\":6}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":7,"SelfPack":1,"PackCards":"106397,106360,106235,106433,106375,106337,106479,106437"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106437],\"Pack\":1,\"Pick\":7}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":8,"SelfPack":1,"PackCards":"106276,106306,106311,106350,106434,106502,106438"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106434],\"Pack\":1,\"Pick\":8}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":9,"SelfPack":1,"PackCards":"106344,106276,106376,106477,106507,106529"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106376],\"Pack\":1,\"Pick\":9}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":10,"SelfPack":1,"PackCards":"106418,106226,106325,106506,106530"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106418],\"Pack\":1,\"Pick\":10}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":11,"SelfPack":1,"PackCards":"106433,106407,106241,106426"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106433],\"Pack\":1,\"Pick\":11}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":12,"SelfPack":1,"PackCards":"106241,106280,106533"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106280],\"Pack\":1,\"Pick\":12}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":13,"SelfPack":1,"PackCards":"106433,106534"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106433],\"Pack\":1,\"Pick\":13}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":14,"SelfPack":1,"PackCards":"106226"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106226],\"Pack\":1,\"Pick\":14}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":1,"SelfPack":2,"PackCards":"106246,106397,106325,106417,106255,106344,106358,106403,106260,106281,106517,106524,106516,106527"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106358],\"Pack\":2,\"Pick\":1}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":2,"SelfPack":2,"PackCards":"106305,106354,106303,106240,106295,106312,106249,106379,106413,106466,106442,106505,106427"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106295],\"Pack\":2,\"Pick\":2}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":3,"SelfPack":2,"PackCards":"106268,106407,106325,106296,106231,106350,106406,106426,106460,106442,106505,106526"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106460],\"Pack\":2,\"Pick\":3}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":4,"SelfPack":2,"PackCards":"106315,106349,106320,106369,106298,106247,106299,106291,106523,106455,106423"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106291],\"Pack\":2,\"Pick\":4}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":5,"SelfPack":2,"PackCards":"106229,106311,106352,106273,106231,106304,106336,106470,106495,106531"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106273],\"Pack\":2,\"Pick\":5}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":6,"SelfPack":2,"PackCards":"106283,106269,106298,106433,106311,106381,106467,106453,106532"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106283],\"Pack\":2,\"Pick\":6}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":7,"SelfPack":2,"PackCards":"106329,106418,106295,106383,106395,106516,106460,106422"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106295],\"Pack\":2,\"Pick\":7}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":8,"SelfPack":2,"PackCards":"106289,106335,106304,106433,106233,106375,106439"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106233],\"Pack\":2,\"Pick\":8}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":9,"SelfPack":2,"PackCards":"106397,106325,106417,106255,106403,106527"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106255],\"Pack\":2,\"Pick\":9}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":10,"SelfPack":2,"PackCards":"106303,106312,106413,106466,106442"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106466],\"Pack\":2,\"Pick\":10}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":11,"SelfPack":2,"PackCards":"106325,106231,106406,106526"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106231],\"Pack\":2,\"Pick\":11}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":12,"SelfPack":2,"PackCards":"106247,106299,106423"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106247],\"Pack\":2,\"Pick\":12}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":13,"SelfPack":2,"PackCards":"106231,106531"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106231],\"Pack\":2,\"Pick\":13}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":14,"SelfPack":2,"PackCards":"106532"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106532],\"Pack\":2,\"Pick\":14}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":1,"SelfPack":3,"PackCards":"106418,106354,106289,106272,106371,106325,106248,106387,106375,106277,106511,106482,106451,106438"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106277],\"Pack\":3,\"Pick\":1}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":2,"SelfPack":3,"PackCards":"106417,106394,106327,106371,106256,106247,106303,106379,106421,106463,106480,106525,106528"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106463],\"Pack\":3,\"Pick\":2}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":3,"SelfPack":3,"PackCards":"106272,106344,106325,106419,106296,106246,106312,106364,106336,106509,106466,106420"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106364],\"Pack\":3,\"Pick\":3}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":4,"SelfPack":3,"PackCards":"106248,106298,106303,106394,106235,106283,106379,106291,106480,106450,106532"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106291],\"Pack\":3,\"Pick\":4}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":5,"SelfPack":3,"PackCards":"106350,106327,106299,106273,106303,106262,106343,106525,106467,106533"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106467],\"Pack\":3,\"Pick\":5}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":6,"SelfPack":3,"PackCards":"106394,106280,106329,106418,106412,106383,106425,106499,106530"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106412],\"Pack\":3,\"Pick\":6}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":7,"SelfPack":3,"PackCards":"106355,106263,106305,106354,106284,106506,106451,106535"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106263],\"Pack\":3,\"Pick\":7}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":8,"SelfPack":3,"PackCards":"106371,106376,106263,106419,106361,106443,106428"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106263],\"Pack\":3,\"Pick\":8}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":9,"SelfPack":3,"PackCards":"106418,106354,106289,106371,106375,106511"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106418],\"Pack\":3,\"Pick\":9}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":10,"SelfPack":3,"PackCards":"106327,106371,106303,106379,106528"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106379],\"Pack\":3,\"Pick\":10}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":11,"SelfPack":3,"PackCards":"106272,106325,106336,106420"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106272],\"Pack\":3,\"Pick\":11}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":12,"SelfPack":3,"PackCards":"106248,106379,106532"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106248],\"Pack\":3,\"Pick\":12}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":13,"SelfPack":3,"PackCards":"106262,106533"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106262],\"Pack\":3,\"Pick\":13}"}
+[UnityCrossThreadLogger]Draft.Notify {"draftId":"d","SelfPick":14,"SelfPack":3,"PackCards":"106530"}
+[UnityCrossThreadLogger]==> EventPlayerDraftMakePick {"id":"x","request":"{\"DraftId\":\"d\",\"GrpIds\":[106530],\"Pack\":3,\"Pick\":14}"}
+[UnityCrossThreadLogger]==> DraftCompleteDraft {"id":"x","request":"{\"EventName\":\"PremierDraft_FRA_20260929\",\"IsBotDraft\":false}"}
