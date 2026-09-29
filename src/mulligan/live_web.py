@@ -40,7 +40,7 @@ def _row(a) -> dict:
             "score": None if a.score is None else round(100 * a.score, 2),
             "sim": _pct(c.sim), "sim_games": c.sim_games,
             "real": _pct(c.real), "real_games": c.real_games,
-            "removal": c.removal, "land": c.makes, "why": a.why}
+            "removal": c.removal, "land": c.makes, "why": a.why, "experts": c.ex_grade}
 
 
 def _lane(ratings: Ratings, picks: list[str]) -> dict:

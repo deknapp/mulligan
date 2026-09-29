@@ -116,6 +116,7 @@ h2 {
 .tag.you { background: var(--good); color: #0b0d16; }
 .grade { font-weight: 700; font-size: 14px; text-align: center; border-radius: 6px; padding: 3px 0; }
 .bar { position: relative; height: 22px; }
+.exg { font-size: 10.5px; color: var(--dim); text-align: center; margin-top: 2px; white-space: nowrap; }
 .bar .axis { position: absolute; left: 50%; top: 2px; bottom: 2px; width: 1px; background: var(--faint); }
 .bar .fill { position: absolute; top: 5px; height: 12px; border-radius: 3px; }
 .bar .val { position: absolute; top: 1px; font-size: 12px; font-weight: 700; }
@@ -432,6 +433,7 @@ function heroHTML(step) {
   }
   const extra = [];
   if (top.sim != null) extra.push(`sim ${(100 * top.sim).toFixed(1)}%`);
+  if (top.experts) extra.push(`experts ${esc(top.experts)}`);
   if (top.real != null) extra.push(`17Lands ${(100 * top.real).toFixed(1)}% <span style="color:var(--faint)">(${top.real_games.toLocaleString()})</span>`);
   return `<div class="hero">
     <img src="${img("normal", top.name)}" alt="${esc(top.name)}" onerror="this.outerHTML='<div class=noimg>${esc(top.name).replace(/'/g, "")}</div>'">
@@ -457,7 +459,7 @@ function rowsHTML(step) {
         <div class="nm" style="border-left:3px solid ${cardColor(c.land ? "" : c.colors)};padding-left:7px">${esc(c.name)}${costHTML(c.cost)}${c.name === step.taken ? `<span class="tag you">TAKEN</span>` : ""}</div>
         <div class="why" style="padding-left:10px" title="${esc(c.why.join(' · '))}">${esc(c.why.join(" · "))}</div>
       </div>
-      <div class="grade" style="${gradeStyle(c.grade)}">${esc(c.grade || "–")}</div>
+      <div><div class="grade" style="${gradeStyle(c.grade)}">${esc(c.grade || "–")}</div>${c.experts ? `<div class="exg" title="Podcast hosts' average grade">exp ${esc(c.experts)}</div>` : ""}</div>
       ${scoreBar(c.score)}
     </div>`).join("")}</div>`;
 }

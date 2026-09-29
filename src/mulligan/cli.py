@@ -185,7 +185,7 @@ def live_cmd(
 
     from .draft_log import CardNames, DraftTracker, LogFollower, find_player_log
     from .live_web import pair_strength
-    from .pick_advice import build_ratings, load_real, load_sim
+    from .pick_advice import add_experts, build_ratings, load_experts, load_real, load_sim
     from .site.build import CURRENT_SET
 
     path = find_player_log(log)
@@ -209,6 +209,7 @@ def live_cmd(
             sim = load_sim(code, fetch=not offline)
             real = load_real(code, fmt, fetch=not offline)
             ratings = build_ratings(sim, real)
+            add_experts(ratings, load_experts(code, fetch=not offline))
             bits = [f"simulated draft of {ratings.sim_run}" if sim else
                     f"no simulated data for {code.upper()}"]
             if ratings.real_used:
@@ -221,6 +222,10 @@ def live_cmd(
             else:
                 bits.append(f"no 17Lands {fmt} data yet"
                             + (f" (starts {ratings.real_start})" if ratings.real_start else ""))
+            if ratings.experts:
+                graded = sum(c.ez is not None for c in ratings.cards.values())
+                bits.append(f"podcast hosts' grades for {graded} cards, averaged in half and "
+                            "half until 17Lands has enough games")
             note = ("Score: points above the average card, minus an off-color penalty that "
                     "grows through the draft. Data: " + "; ".join(bits) + ".")
             loaded[(code, fmt)] = (ratings, note, pair_strength(sim, real))

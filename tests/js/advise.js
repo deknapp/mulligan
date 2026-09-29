@@ -1,13 +1,16 @@
 // Runs the website pick helper's advise() on a pack, for tests/test_site_pick.py.
-// usage: node advise.js tools.js data.json '{"pack": [...], "picks": [...]}'
+// usage: node advise.js tools.js data.json experts.json|- '{"pack": [...], "picks": [...]}'
 const fs = require("fs"), vm = require("vm");
-const [tools, dataPath, arg] = process.argv.slice(2);
+const [tools, dataPath, expertsPath, arg] = process.argv.slice(2);
 const src = fs.readFileSync(tools, "utf8").replace(/\nload\(\)\.then[\s\S]*$/, "\n");
 const ctx = { console, Map, Set, Math, Object, JSON };
 vm.createContext(ctx);
-vm.runInContext(src + "\nthis.prepare = prepare; this.advise = advise;", ctx);
+vm.runInContext(src + "\nthis.prepare = prepare; this.advise = advise; this.addExperts = addExperts;", ctx);
 const state = ctx.prepare(JSON.parse(fs.readFileSync(dataPath, "utf8")), null);
+const experts = expertsPath === "-" ? null : JSON.parse(fs.readFileSync(expertsPath, "utf8"));
+ctx.addExperts(state, experts);
 const { pack, picks } = JSON.parse(arg);
 const get = (n) => state.byName.get(n);
-const { scored } = ctx.advise(state, pack.map(get), picks.map(get), false);
+const blend = !state.live && !!state.experts;
+const { scored } = ctx.advise(state, pack.map(get), picks.map(get), blend);
 console.log(JSON.stringify(scored.map((s) => [s.c.n, s.score])));

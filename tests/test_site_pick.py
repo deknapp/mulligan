@@ -1,5 +1,6 @@
 """The website's pick helper (site/tools.js) ranks a pack exactly as `mulligan
-live` does (pick_advice.advise), before real data or expert grades come in."""
+live` does (pick_advice.advise), before real data comes in: with and without
+the podcast hosts' grades averaged in."""
 
 from __future__ import annotations
 
@@ -11,16 +12,21 @@ from pathlib import Path
 
 import pytest
 
-from mulligan.pick_advice import advise, build_ratings
+from mulligan.pick_advice import add_experts, advise, build_ratings
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "site" / "data" / "fra.json"
+EXPERTS = ROOT / "site" / "data" / "fra-experts.json"
 
 
-@pytest.mark.skipif(shutil.which("node") is None or not DATA.exists(), reason="needs node")
-def test_web_pick_helper_matches_the_python_one():
+@pytest.mark.skipif(shutil.which("node") is None or not EXPERTS.exists(), reason="needs node")
+@pytest.mark.parametrize("with_experts", [False, True])
+def test_web_pick_helper_matches_the_python_one(with_experts):
     sim = json.loads(DATA.read_text())
     ratings = build_ratings(sim, None)
+    if with_experts:
+        add_experts(ratings, json.loads(EXPERTS.read_text()))
+        assert ratings.experts
     names = [c["n"] for c in sim["cards"]]
     rng = random.Random(7)
     for _ in range(12):
@@ -30,6 +36,7 @@ def test_web_pick_helper_matches_the_python_one():
         out = subprocess.run(
             ["node", str(ROOT / "tests" / "js" / "advise.js"),
              str(ROOT / "src" / "mulligan" / "site" / "tools.js"), str(DATA),
+             str(EXPERTS) if with_experts else "-",
              json.dumps({"pack": pack, "picks": picks})],
             capture_output=True, text=True, check=True).stdout
         js = json.loads(out)

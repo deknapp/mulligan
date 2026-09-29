@@ -145,6 +145,9 @@ class Card:
     pairs: dict[str, list[float]] = field(default_factory=dict)
     pips: dict[str, float] = field(default_factory=dict)
     makes: str = ""                   # colors a land can tap for
+    ez: float | None = None           # expert grades, each host standardized, averaged
+    ex_grade: str | None = None       # the hosts' average letter
+    expert_grades: list[tuple[str, str]] = field(default_factory=list)   # (host, grade)
     cost: str = ""                    # mana cost, {1}{W}
 
 
@@ -161,6 +164,8 @@ class Ratings:
     real_start: str = ""
     synergy: dict[tuple[str, str], float] = field(default_factory=dict)
     pair_mean: dict[str, float] = field(default_factory=dict)
+    sd: float = 1.0
+    experts: bool = False             # expert grades are averaged into each card's rating
 
     def syn(self, a: str, b: str) -> float:
         return self.synergy.get((a, b) if a < b else (b, a), 0.0)
@@ -190,6 +195,66 @@ def land_colors(oracle: str) -> str:
         if "any color" in clause:
             made |= set("WUBRG")
     return "".join(k for k in "WUBRG" if k in made)
+
+
+LETTERS = ["F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"]
+EXPERTS_UNTIL = 20            # cards with REAL_PRIOR_GAMES real games; then experts drop out
+
+
+def load_experts(set_code: str, fetch: bool = True) -> dict | None:
+    """The podcast hosts' card grades (``mulligan experts``): this clone's copy,
+    else the published site's, cached."""
+    try:
+        from .site.build import BLOG
+        local = BLOG / "data" / f"{set_code}-experts.json"
+        if local.exists():
+            return json.loads(local.read_text())
+    except Exception:
+        pass
+    cache = cache_dir("site", f"{set_code}-experts.json")
+    try:
+        if not fetch:
+            raise OSError("offline")
+        data = _get_json(f"{SITE_DATA}/{set_code}-experts.json")
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(data))
+        return data
+    except Exception:
+        return json.loads(cache.read_text()) if cache.exists() else None
+
+
+def add_experts(ratings: Ratings, experts: dict | None) -> None:
+    """Expert grades, as the website's pick helper uses them (``addExperts`` in
+    site/tools.js): each host's letters standardized (shows use the scale
+    differently: Limited Resources' B is Limited Level-Ups' C+), then averaged
+    per card. They count until 17Lands has real win rates for enough cards."""
+    if not experts:
+        return
+    by_host: dict[str, list[int]] = {}
+    graded = []
+    for name, x in (experts.get("cards") or {}).items():
+        c = ratings.cards.get(name)
+        if c is None:
+            continue
+        grades = [g for g in x.get("grades", []) if g.get("grade") in LETTERS]
+        if not grades:
+            continue
+        graded.append((c, grades))
+        for g in grades:
+            by_host.setdefault(f"{g['show']}|{g['host']}", []).append(LETTERS.index(g["grade"]))
+    norm = {}
+    for h, xs in by_host.items():
+        m = sum(xs) / len(xs)
+        norm[h] = (m, math.sqrt(sum((x - m) ** 2 for x in xs) / len(xs)) or 1.0)
+    for c, grades in graded:
+        idx = [LETTERS.index(g["grade"]) for g in grades]
+        c.ex_grade = LETTERS[math.floor(sum(idx) / len(idx) + 0.5)]
+        c.ez = sum((LETTERS.index(g["grade"]) - norm[f"{g['show']}|{g['host']}"][0])
+                   / norm[f"{g['show']}|{g['host']}"][1] for g in grades) / len(grades)
+        c.expert_grades = [(g["host"], g["grade"]) for g in grades]
+    real_enough = sum(1 for c in ratings.cards.values()
+                      if c.real is not None and c.real_games >= REAL_PRIOR_GAMES)
+    ratings.experts = bool(graded) and real_enough < EXPERTS_UNTIL
 
 
 def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
@@ -258,7 +323,7 @@ def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
     pair_mean = {p: w / g for p, (w, g) in sums.items() if g}
     return Ratings(cards, mean, sim_mean, shift, used, real_rows, (sim or {}).get("run", ""),
                    (real or {}).get("fetched", ""), (real or {}).get("start", ""),
-                   synergy, pair_mean)
+                   synergy, pair_mean, sd or 1.0)
 
 
 def lane(ratings: Ratings, picks: list[str]) -> tuple[dict[str, float], list[str]]:
@@ -346,14 +411,22 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
         if c.makes and len(c.makes) >= 2:
             out.append(_land(c, top, pair, commit, splash))
             continue
-        if c.est is None:
+        blend = ratings.experts and c.ez is not None
+        if c.est is None and not blend:
             why.append(f"Not simulated ({c.unsupported})." if c.unsupported else
                        "Not in the set data.")
             out.append(Advice(c, None, why))
             continue
-        base = c.est - ratings.mean
+        if c.est is None:
+            base = c.ez * ratings.sd
+        elif blend:
+            # Half the card's own rating, half the experts' (on the same scale).
+            base = ((c.est - ratings.mean) / ratings.sd + c.ez) / 2 * ratings.sd
+        else:
+            base = c.est - ratings.mean
         score = base
-        why.append(f"{_pts(base)} pts vs. the average card.")
+        why.append(f"{_pts(base)} pts vs. the average card"
+                   + (" (with the experts averaged in)." if blend else "."))
 
         off = [k for k in c.colors if k not in top] if len(top) == 2 else []
         if off and commit > 0:
@@ -408,6 +481,9 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
 
         if c.removal:
             why.append("Removal.")
+        if blend:
+            hosts = ", ".join(f"{h} {g}" for h, g in c.expert_grades)
+            why.append(f"Experts: {c.ex_grade} ({hosts}).")
         if pick_number and c.ata and len(pack) > 8 and c.ata >= pick_number + 8.5:
             why.append(f"Usually taken around pick {c.ata:.0f}: may come back.")
         out.append(Advice(c, score, why))

@@ -60,6 +60,14 @@ so they're shifted onto the simulator's scale before the two are mixed. Early
 on, while 17Lands only has numbers for a handful of cards, the helper sticks to
 the simulator and says so.
 
+Until 17Lands has solid numbers (500 games) for at least 20 cards, the
+**experts** count too: the podcast hosts' grades from the [primer](posts/2026-09-21-reality-fracture-primer.html#experts)
+(Limited Resources, Limited Level-Ups, Lords of Limited, TCGplayer). Each
+host's grades are put on a common scale first, since shows use letters
+differently, then averaged, and the card's rating becomes half the simulator's
+and half the experts'. A card the simulator can't rate goes on the experts'
+grade alone. After that, real games take over.
+
 From there it works like the website's pick helper, which uses the same rules.
 **Score** is how many points more often you win when the card is drawn than
 with an average card, then adjusted for what you've taken:
