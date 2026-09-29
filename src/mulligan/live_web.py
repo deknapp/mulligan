@@ -51,12 +51,58 @@ def _lane(ratings: Ratings, picks: list[str]) -> dict:
             "commit": round(commitment(weight, len(picks)), 3)}
 
 
+def deck_builds(pool: list[str], set_code: str, ratings: Ratings) -> list[dict]:
+    """The pool built into decks the way ``mulligan build`` does before 17Lands
+    has data for a set (``limited.release_day``): the best two-color builds by
+    simulated card ratings, plus the best three-color one. The first is the
+    recommendation; on HOB, letting a splash win on rating did not help."""
+    from collections import Counter
+
+    from .cards.sets import available_sets, load_set
+    from .limited.release_day import candidate_builds, rating_points, sim_ratings
+    if set_code not in available_sets():
+        return []
+    data = load_set(set_code)
+    points = rating_points(data, sim_ratings(set_code))
+    try:
+        builds = candidate_builds(pool, data, points, top=3, splash=True)
+    except ValueError:
+        return []
+    out = []
+    for i, deck in enumerate(builds):
+        used = Counter(c.name for c in deck.cards)
+        left = Counter(pool) - used
+        spells = []
+        for spec in deck.spells:
+            c = ratings.get(spec.name)
+            spells.append({"name": spec.name, "mv": spec.cost.mana_value, "cost": c.cost,
+                           "colors": "".join(k for k in "WUBRG" if k in spec.color_set),
+                           "creature": spec.is_creature, "grade": c.grade,
+                           "z": None if c.z is None else round(c.z, 3)})
+        left_out = []
+        for name in left.elements():
+            c = ratings.get(name)
+            if c.makes or c.unsupported == "land" or c.z is None:
+                continue
+            left_out.append({"name": name, "colors": c.colors, "cost": c.cost,
+                             "grade": c.grade, "z": round(c.z, 3)})
+        left_out.sort(key=lambda c: -c["z"])
+        pair = "".join(k for k in "WUBRG" if k in deck.colors)
+        out.append({"colors": pair, "name": PAIR_NAMES.get(pair, ""),
+                    "score": round(deck.score, 1), "recommended": i == 0,
+                    "splash": len(pair) > 2, "spells": spells,
+                    "lands": dict(Counter(c.name for c in deck.lands)),
+                    "decklist": deck.decklist(), "left_out": left_out[:8]})
+    return out
+
+
 class Snapshots:
     """Builds the page's JSON. Packs you've already picked from never change,
     so their advice is computed once."""
 
     def __init__(self):
         self._done: dict[tuple, dict] = {}
+        self._decks: tuple = ((), [])
 
     def __call__(self, state: DraftState, names, ratings: Ratings, note: str,
                  set_code: str, pairs: dict | None = None) -> dict:
@@ -85,19 +131,37 @@ class Snapshots:
             pool.append({"name": name, "colors": c.colors, "cost": c.cost, "grade": c.grade,
                          "z": None if c.z is None else round(c.z, 3), "land": c.makes})
         status = "complete" if state.complete else ("drafting" if state.cards else "none")
+        key = (set_code, tuple(picks))
+        if self._decks[0] != key:
+            decks = []
+            if len(picks) >= 23:
+                try:
+                    decks = deck_builds(picks, set_code, ratings)
+                except Exception:        # a build problem must never stop the draft view
+                    decks = []
+            self._decks = (key, decks)
         return {"event": state.event, "set": set_code, "status": status,
                 "pack": state.pack, "pick": state.pick, "waiting": state.waiting,
                 "note": note, "steps": steps, "pool": pool, "now": _lane(ratings, picks),
-                "pairs": pairs or {}}
+                "pairs": pairs or {}, "decks": self._decks[1]}
 
 
-def pair_strength(sim: dict | None) -> dict:
-    """Each color pair's simulated deck win rate and share of decks."""
+REAL_PAIR_GAMES = 500     # 17Lands games a pair needs before its win rate is shown
+
+
+def pair_strength(sim: dict | None, real: dict | None = None) -> dict:
+    """Each color pair's simulated deck win rate and share of decks, and
+    17Lands' real one once the pair has enough games."""
     out = {}
     for p, v in ((sim or {}).get("pairs") or {}).items():
         if v.get("g"):
             out[p] = {"wr": round(v["w"] / v["g"], 4), "share": v.get("share"),
                       "name": PAIR_NAMES.get(p, p)}
+    for p, (wins, games) in ((real or {}).get("pairs") or {}).items():
+        p = "".join(k for k in "WUBRG" if k in p)
+        if len(p) == 2 and games >= REAL_PAIR_GAMES:
+            out.setdefault(p, {"name": PAIR_NAMES.get(p, p)})
+            out[p].update(real=round(wins / games, 4), real_games=games)
     return out
 
 

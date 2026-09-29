@@ -223,7 +223,7 @@ def live_cmd(
                             + (f" (starts {ratings.real_start})" if ratings.real_start else ""))
             note = ("Score: points above the average card, minus an off-color penalty that "
                     "grows through the draft. Data: " + "; ".join(bits) + ".")
-            loaded[(code, fmt)] = (ratings, note, pair_strength(sim))
+            loaded[(code, fmt)] = (ratings, note, pair_strength(sim, real))
         return loaded[(code, fmt)]
 
     def view():

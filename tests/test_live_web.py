@@ -66,3 +66,26 @@ def test_server_serves_the_page_and_only_new_state(tmp_path, monkeypatch):
             assert e.code == 404
     finally:
         server.close()
+
+
+def test_pair_strength_adds_17lands_once_a_pair_has_the_games():
+    sim = {"pairs": {"WU": {"w": 55.0, "g": 100}}}
+    real = {"pairs": {"WU": [3000, 5000], "UB": [100, 200]}}
+    got = pair_strength(sim, real)
+    assert got["WU"]["real"] == 0.6 and got["WU"]["real_games"] == 5000
+    assert "UB" not in got                                  # 200 games: too few
+
+
+def test_a_finished_pool_is_built_into_decks():
+    from mulligan.cards.sets import load_set
+    from mulligan.live_web import deck_builds
+    data = load_set("fra")
+    pool = [n for n, s in data.playable.items()
+            if not s.is_land and s.color_set and s.color_set <= {"W", "U"}][:30]
+    decks = deck_builds(pool, "fra", build_ratings(SIM, None))
+    best = decks[0]
+    assert best["recommended"] and best["colors"] == "WU" and len(best["spells"]) == 23
+    assert best["decklist"].startswith("Deck\n") and sum(best["lands"].values()) == 17
+    assert len(best["left_out"]) <= 8
+    assert deck_builds(pool[:10], "fra", build_ratings(SIM, None)) == []
+    assert deck_builds(pool, "xyz", build_ratings(SIM, None)) == []

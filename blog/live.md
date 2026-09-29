@@ -24,10 +24,14 @@ score, plus:
 
 - **A color compass.** The five colors sit around a pentagon, with the ten
   two-color pairs between them, each labelled with its win rate in simulated
-  decks. Petals grow toward the colors your picks hold, a trail shows where
+  decks (17Lands' real win rate once every pair has 500 games). Petals grow toward the colors your picks hold, a trail shows where
   each pick moved you, and a ring fills as your colors settle. Hover a card in
   the pack to see where taking it would pull you.
 - **Your pool,** by color, with each card's grade.
+- **Your deck.** From 23 picks on, the pool built into a deck the way
+  `mulligan build` does: the recommended two-color build laid out by mana
+  cost, the next-best builds (including a splash) a click away, the best
+  cards left out, and a button that copies the list for Arena's Import.
 - **Every pick so far,** as three rows of squares colored by the card you took,
   starred where you took the helper's top card. Click one (or use the arrow
   keys) to see that pack again as the helper ranked it then; **L** or the live

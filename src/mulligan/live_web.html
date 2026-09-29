@@ -132,6 +132,23 @@ h2 {
 .pcard.new { animation: glow 2s ease-out; }
 @keyframes glow { from { background: rgba(255, 215, 106, 0.4); } }
 
+/* deck */
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+.tab { background: rgba(255,255,255,0.04); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 7px 14px; font: inherit; font-weight: 600; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+.tab.on { border-color: var(--star); background: rgba(255, 215, 106, 0.1); }
+.tab small { color: var(--dim); font-weight: 500; }
+.copy { margin-left: auto; background: var(--good); color: #0b0d16; border: 0; border-radius: 10px; padding: 8px 14px; font: inherit; font-weight: 700; cursor: pointer; }
+.curve { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; align-items: start; }
+.cv h3 { margin: 0 0 6px; font-size: 12px; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; }
+.cv .barv { height: 64px; display: flex; align-items: flex-end; margin-bottom: 8px; }
+.cv .barv div { width: 100%; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, rgba(255,215,106,.85), rgba(255,215,106,.25)); }
+.cv .cards { align-self: start; }
+.dcard { font-size: 12.5px; padding: 4px 7px; border-radius: 6px; margin-bottom: 4px; background: rgba(255,255,255,0.05); border-left: 3px solid; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dcard b { margin-right: 5px; }
+.dcard .ty { color: var(--faint); margin-left: 4px; font-size: 11px; }
+.decksum { color: var(--dim); font-size: 14px; margin: 14px 0 4px; display: flex; gap: 22px; flex-wrap: wrap; }
+.decksum b { color: var(--text); }
+
 /* timeline */
 footer { padding: 4px 24px 24px; max-width: 1600px; margin: 0 auto; }
 .timeline { display: grid; grid-template-columns: 70px repeat(14, minmax(0, 1fr)); gap: 5px; align-items: center; }
@@ -173,7 +190,7 @@ const VERT = Object.fromEntries(ORDER.map((k, i) => {
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const img = (version, name) => `/img/${version}/${encodeURIComponent(name)}`;
 
-let data = null, version = 0, view = null, live = true, hover = null, lastPool = 0;
+let data = null, version = 0, view = null, live = true, hover = null, lastPool = 0, deckTab = 0;
 
 function cardColor(colors) {
   if (!colors) return css("C");
@@ -271,7 +288,7 @@ function buildCompass() {
     guilds.push(`<g class="guild" id="guild${pair}" transform="translate(${x * out},${y * out})">
       <circle r="11" fill="${css(a)}" opacity="0.9"/>
       <path d="M0,-11 A11,11 0 0,1 0,11 Z" fill="${css(b)}" opacity="0.95"/>
-      <circle class="ring" r="15" fill="none" stroke="${css("star")}" stroke-width="2" opacity="0"/>
+      <title></title><circle class="ring" r="15" fill="none" stroke="${css("star")}" stroke-width="2" opacity="0"/>
       <text x="${(ux * 20).toFixed(1)}" y="${(uy * 20 + 4).toFixed(1)}" style="text-anchor:${anchor}"></text></g>`);
   }
   const orbs = ORDER.map(k => {
@@ -321,18 +338,24 @@ function drawCompass(step, idx) {
     `${(step.before.commit * circ).toFixed(1)} ${circ.toFixed(1)}`);
 
   // guild nodes: size by simulated deck win rate, label with the name and it
+  // Once 17Lands has every pair, their real win rates take over the nodes.
   const pairs = data.pairs || {};
-  const wrs = Object.values(pairs).map(p => p.wr);
+  const useReal = Object.keys(pairs).length >= 10 && Object.values(pairs).every(p => p.real != null);
+  const rate = p => useReal ? p.real : p.wr;
+  const wrs = Object.values(pairs).map(rate).filter(x => x != null);
   const lo = Math.min(...wrs), hi = Math.max(...wrs);
   document.querySelectorAll(".guild").forEach(g => {
     const pair = g.id.slice(5), p = pairs[pair];
     const on = pair === step.before.pair;
     g.classList.toggle("on", on);
     g.querySelector(".ring").setAttribute("opacity", on ? 1 : 0);
-    const t = p && hi > lo ? (p.wr - lo) / (hi - lo) : 0.5;
+    const t = p && hi > lo ? (rate(p) - lo) / (hi - lo) : 0.5;
     g.querySelectorAll("circle:not(.ring), path").forEach(e => e.setAttribute("opacity", (0.35 + 0.6 * t).toFixed(2)));
     g.setAttribute("style", `transform-box: fill-box`);
-    g.querySelector("text").textContent = p ? `${p.name} ${(100 * p.wr).toFixed(1)}%` : pair;
+    g.querySelector("text").textContent = !p ? pair : useReal
+      ? `${p.name} ${(100 * p.real).toFixed(1)}% real` : `${p.name} ${(100 * p.wr).toFixed(1)}%`;
+    g.querySelector("title").textContent = !p ? pair : `${p.name}: ${p.wr != null ? `simulated decks ${(100 * p.wr).toFixed(1)}%` : ""}` +
+      (p.real != null ? ` · 17Lands ${(100 * p.real).toFixed(1)}% over ${p.real_games.toLocaleString()} games` : " · no 17Lands data yet");
   });
 
   // the trail: where you stood before each pick, dots in the taken card's color
@@ -497,12 +520,13 @@ function render() {
         <section class="panel" id="compassWrap"><h2>Where your picks point</h2>${buildCompass()}
           <div class="lean"><div class="pair" id="leanBig"></div><div class="sub" id="leanSub"></div></div>
           <div class="note" style="text-align:center">Petals: how much of your pool each color holds. The ring fills as your colors settle.
-            Pair nodes are sized by the simulator's deck win rate. Hover a card to see where it would pull you.</div></section>
+            Brighter pair nodes win more (simulated decks until 17Lands has real ones). Hover a card to see where it would pull you.</div></section>
       </div>
       <div>
         <section class="panel"><h2 id="packTitle">This pack</h2><div id="hero"></div><div id="rows"></div>
           <div class="note" id="note"></div></section>
       </div>
+      <section class="panel" style="grid-column:1/-1;display:none" id="deckPanel"><h2 id="deckTitle">Your deck</h2><div id="deck"></div></section>
       <section class="panel" style="grid-column:1/-1"><h2 id="poolTitle">Pool</h2><div id="pool"></div></section>
     </main>
     <footer><section class="panel"><div id="timeline"></div></section></footer>`;
@@ -520,8 +544,61 @@ function render() {
   document.getElementById("pool").innerHTML = poolHTML(n);
   document.getElementById("timeline").innerHTML = timelineHTML();
   drawCompass(step, view);
+  drawDeck();
   lastPool = data.pool.length;
 }
+
+// ---- the deck -------------------------------------------------------------
+
+function drawDeck() {
+  const panel = document.getElementById("deckPanel");
+  const decks = data.decks || [];
+  const atEnd = view === data.steps.length - 1;
+  if (!decks.length || !atEnd) { panel.style.display = "none"; return; }
+  panel.style.display = "";
+  if (deckTab >= decks.length) deckTab = 0;
+  const d = decks[deckTab];
+  document.getElementById("deckTitle").textContent =
+    data.status === "complete" ? "Your deck" : "Your deck if the draft ended now";
+  const tabs = decks.map((x, i) => `<button class="tab${i === deckTab ? " on" : ""}" data-deck="${i}">
+      ${costHTML(x.colors.split("").map(k => `{${k}}`).join(""))}
+      ${esc(x.name || x.colors.split("").join("-") + (x.splash ? " splash" : ""))}
+      ${x.recommended ? `<small style="color:var(--star)">★ recommended</small>` : `<small>score ${x.score}</small>`}</button>`).join("");
+  const cols = [[], [], [], [], [], []];
+  d.spells.forEach(c => cols[Math.max(0, Math.min(5, c.mv - 1))].push(c));
+  const most = Math.max(...cols.map(c => c.length), 1);
+  const curve = cols.map((cards, i) => `<div class="cv">
+      <h3><span>${i === 0 ? "≤1" : i === 5 ? "6+" : i + 1}</span><span>${cards.length}</span></h3>
+      <div class="barv"><div style="height:${(100 * cards.length / most).toFixed(0)}%"></div></div>
+      <div class="cards">${cards.sort((a, b) => (b.z ?? -9) - (a.z ?? -9)).map(c => `
+        <div class="dcard" style="border-color:${cardColor(c.colors)}" title="${esc(c.name)}"><b style="${gradeStyle(c.grade)};background:none">${esc(c.grade || "")}</b>${esc(c.name)}<span class="ty">${c.creature ? "" : "spell"}</span></div>`).join("")}
+      </div></div>`).join("");
+  const creatures = d.spells.filter(c => c.creature).length;
+  const lands = Object.entries(d.lands).map(([n, k]) => `${k} ${esc(n)}`).join(" · ");
+  const nLands = Object.values(d.lands).reduce((a, b) => a + b, 0);
+  const left = d.left_out.length ? `<div class="decksum"><span>Best cards left out:</span></div><div class="chips">${d.left_out.map(c =>
+      `<span class="chip" style="border-left:3px solid ${cardColor(c.colors)}"><b style="${gradeStyle(c.grade)};background:none">${esc(c.grade || "")}</b> ${esc(c.name)}</span>`).join("")}</div>` : "";
+  document.getElementById("deck").innerHTML = `
+    <div class="tabs">${tabs}<button class="copy" id="copyDeck">Copy for Arena</button></div>
+    <div class="curve">${curve}</div>
+    <div class="decksum"><span><b>${d.spells.length}</b> spells: <b>${creatures}</b> creatures, <b>${d.spells.length - creatures}</b> other</span>
+      <span><b>${nLands}</b> lands: ${lands}</span></div>
+    ${left}
+    <div class="note">Built the way <code>mulligan build</code> does before 17Lands has data: the best two-color builds by simulated card ratings,
+      plus the best three-color one. The first is the recommendation (on HOB, letting a splash win on rating didn't help).
+      "Score" only compares builds of this pool. Copy for Arena, then Import in Arena's deck builder.</div>`;
+}
+
+document.addEventListener("click", async e => {
+  const tab = e.target.closest("[data-deck]");
+  if (tab) { deckTab = +tab.dataset.deck; drawDeck(); return; }
+  if (e.target.id === "copyDeck") {
+    const d = data.decks[deckTab];
+    try { await navigator.clipboard.writeText(d.decklist); e.target.textContent = "Copied ✓"; }
+    catch (err) { e.target.textContent = "Copy failed"; }
+    setTimeout(() => { const b = document.getElementById("copyDeck"); if (b) b.textContent = "Copy for Arena"; }, 1800);
+  }
+});
 
 // ---- interaction + polling -------------------------------------------------
 
