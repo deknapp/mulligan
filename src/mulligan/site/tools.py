@@ -66,7 +66,9 @@ def deck_profile(run: DraftRun, names: list[str]) -> dict[str, float]:
 def synergy_export(cells: dict, index: dict[str, int]) -> dict | None:
     """Card-pair synergies for the site, compact: [card a, card b, estimate and
     standard error in tenths of a point, games with both in the deck]. Keeps
-    each card's strongest pairs both ways, which is what the page can show."""
+    each card's strongest pairs both ways, which is what the page can show, and
+    ``a``: every pair's estimate of at least a tenth of a point, flat as
+    [a, b, estimate, a, b, estimate, ...], for scoring a pick against a whole pool."""
     result = synergies(cells)
     rows = [r for r in result["pairs"] if r["a"] in index and r["b"] in index]
     if not rows:
@@ -78,7 +80,9 @@ def synergy_export(cells: dict, index: dict[str, int]) -> dict | None:
         by_card.setdefault(r["b"], []).append(i)
     for ids in by_card.values():   # rows are sorted best first
         keep.update(ids[:PAIRS_PER_CARD] + ids[-PAIRS_PER_CARD:])
-    return {"tau": round(1000 * result["tau"]) / 10, "pairs": len(rows),
+    every = [x for r in rows if round(1000 * r["est"])
+             for x in (index[r["a"]], index[r["b"]], round(1000 * r["est"]))]
+    return {"tau": round(1000 * result["tau"]) / 10, "pairs": len(rows), "a": every,
             "p": [[index[r["a"]], index[r["b"]], round(1000 * r["est"]),
                    round(1000 * r["se"]), r["n"]] for i, r in enumerate(rows) if i in keep]}
 

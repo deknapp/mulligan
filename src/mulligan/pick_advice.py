@@ -1,9 +1,26 @@
 """Which card to take: the simulator's card win rates and 17Lands' real ones,
-blended, plus how well each card fits the colors you've drafted.
+blended, then adjusted for the cards you already have.
 
-The same rules as the website's pick helper (``site/tools.js``), with one
-difference: the website swaps in a 17Lands number once it has 500 games, while
-this blends the two. The simulator is treated as a prior worth
+A pick's score, in win-rate points against the average card:
+
+* the card's own rating (below);
+* colors: a penalty per color outside your two, heavier for a card needing two
+  or more pips of it, halved when your pool already fixes for that color. How
+  much it bites grows with the picks you've made and how settled they are;
+* your pair: how much better or worse the card does in simulated decks of
+  your two colors than it does everywhere;
+* synergy with your whole pool: the card's pair interaction (``limited.synergy``)
+  with every card you've taken, each weighted by how likely that card is to
+  make your deck, times the chance the two are drawn in the same game;
+* playables: when your colors are short of a deck's worth of playables for the
+  picks that are left, on-color playables gain;
+* lands: a dual land in your colors is worth a late pick, more when it lets you
+  splash a strong card you've taken.
+
+The card ratings follow the website's pick helper (``site/tools.js``), except
+that the website swaps in a 17Lands number once it has 500 games, while this
+blends the two; the pool adjustments above are this helper's own. The
+simulator is treated as a prior worth
 ``REAL_PRIOR_GAMES`` real games, so on release day a card is rated by the
 simulator alone, at 500 real games half and half, and at 5,000 almost entirely
 by real players. Real win rates run higher than simulated ones (17Lands users
@@ -19,6 +36,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import statistics
 import time
 import urllib.request
@@ -33,6 +51,20 @@ REAL_MAX_AGE = 3 * 3600
 LANE_PENALTY = 0.035         # per off-color color, once fully committed
 COMMIT_PICKS = 14            # picks until color matters fully
 PAIR_MIN_GAMES = 150
+PAIR_PRIOR_GAMES = 300       # a card's record in one pair is shrunk toward its overall one
+PAIR_WEIGHT = 0.5            # how much of that difference counts
+DRAWN_TOGETHER = 0.4         # chance a deck card is drawn in a game you draw the pick
+UNDECIDED_IN_DECK = 0.5      # chance a pool card makes the deck before you have a lane
+OFF_LANE_IN_DECK = 0.1       # ... once you're settled, for a card outside it
+PLAYABLE_Z = -1.0            # rated at least this (about a C-) counts as a playable
+UNPLAYABLE_IN_DECK = 0.3
+DECK_PLAYABLES = 23
+TOTAL_PICKS = 42             # three packs of 14
+ON_LANE_SHARE = 0.3          # of the picks left, the share that will be on-color playables
+NEED_BONUS = 0.03            # most a short pool adds to an on-color playable
+DUAL_LAND = -0.025           # a dual in your colors: about a late playable
+SPLASH_LAND = -0.012         # a dual that lets you splash a strong card you have
+SPLASH_Z = 1.0
 COLORS = {"W": "White", "U": "Blue", "B": "Black", "R": "Red", "G": "Green"}
 PAIR_NAMES = {"WU": "Azorius", "UB": "Dimir", "BR": "Rakdos", "RG": "Gruul", "WG": "Selesnya",
               "WB": "Orzhov", "UR": "Izzet", "BG": "Golgari", "WR": "Boros", "UG": "Simic"}
@@ -103,6 +135,8 @@ class Card:
     grade: str | None = None
     unsupported: str | None = None
     pairs: dict[str, list[float]] = field(default_factory=dict)
+    pips: dict[str, float] = field(default_factory=dict)
+    makes: str = ""                   # colors a land can tap for
 
 
 @dataclass
@@ -116,9 +150,37 @@ class Ratings:
     sim_run: str = ""
     real_fetched: str = ""
     real_start: str = ""
+    synergy: dict[tuple[str, str], float] = field(default_factory=dict)
+    pair_mean: dict[str, float] = field(default_factory=dict)
+
+    def syn(self, a: str, b: str) -> float:
+        return self.synergy.get((a, b) if a < b else (b, a), 0.0)
 
     def get(self, name: str) -> Card:
         return self.cards.get(name) or Card(name)
+
+
+def pips(cost: str) -> dict[str, float]:
+    """Colored pips per color; a hybrid pip counts half toward each side, a
+    {2/W} pip nothing (generic mana pays for it)."""
+    out: dict[str, float] = {}
+    for sym in re.findall(r"\{([^}]+)\}", cost or ""):
+        parts = [p for p in sym.split("/") if p in "WUBRG" and p]
+        if sym.startswith("2/") or not parts:
+            continue
+        for k in parts:
+            out[k] = out.get(k, 0) + 1 / len(parts)
+    return out
+
+
+def land_colors(oracle: str) -> str:
+    """The colors a land's mana abilities make: "{T}: Add {R} or {W}." -> "WR"."""
+    made = set()
+    for clause in re.findall(r"Add ([^.]*)", oracle or ""):
+        made |= set(re.findall(r"\{([WUBRG])\}", clause))
+        if "any color" in clause:
+            made |= set("WUBRG")
+    return "".join(k for k in "WUBRG" if k in made)
 
 
 def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
@@ -128,7 +190,9 @@ def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
     for c in (sim or {}).get("cards", []):
         card = Card(c["n"], c.get("c") or "", c.get("r", ""), bool(c.get("rm")),
                     unsupported=c.get("un"), ata=c.get("ata") or None,
-                    pairs=(sim.get("pc") or {}).get(c["n"], {}))
+                    pairs=(sim.get("pc") or {}).get(c["n"], {}), pips=pips(c.get("cost", "")))
+        if "Land" in c.get("t", ""):
+            card.makes = land_colors(c.get("o", ""))
         if c.get("g"):
             card.sim = (c["w"] + prior * sim_mean) / (c["g"] + prior)
             card.sim_games = c["g"]
@@ -167,8 +231,17 @@ def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
             c.z = (c.est - mean) / sd
             c.grade = next(g for cut, g in GRADES if c.z >= cut)
     real_rows = sum(c.real is not None for c in cards.values())
+    names = [c["n"] for c in (sim or {}).get("cards", [])]
+    flat = ((sim or {}).get("syn") or {}).get("a") or []
+    synergy = {}
+    for i in range(0, len(flat) - 2, 3):
+        a, b = sorted((names[flat[i]], names[flat[i + 1]]))
+        synergy[a, b] = flat[i + 2] / 1000
+    pair_mean = {p: r["w"] / r["g"] for p, r in ((sim or {}).get("pairs") or {}).items()
+                 if r.get("g")}
     return Ratings(cards, mean, sim_mean, shift, used, real_rows, (sim or {}).get("run", ""),
-                   (real or {}).get("fetched", ""), (real or {}).get("start", ""))
+                   (real or {}).get("fetched", ""), (real or {}).get("start", ""),
+                   synergy, pair_mean)
 
 
 def lane(ratings: Ratings, picks: list[str]) -> tuple[dict[str, float], list[str]]:
@@ -194,44 +267,144 @@ def _pts(x: float) -> str:
     return f"{'+' if x >= 0 else '−'}{abs(100 * x):.1f}"
 
 
+def commitment(weight: dict[str, float], picks: int) -> float:
+    """0 to 1: how settled your colors are. Grows with picks, and only as far
+    as your picks actually concentrate in two colors."""
+    total = sum(weight.values())
+    if not total:
+        return 0.0
+    share = sum(sorted(weight.values())[-2:]) / total
+    return min(1.0, picks / COMMIT_PICKS) * min(1.0, max(0.0, (share - 0.5) / 0.3))
+
+
+def _fits(c: Card, top: list[str]) -> bool:
+    return len(top) == 2 and all(k in top for k in c.colors)
+
+
+def in_deck(ratings: Ratings, c: Card, top: list[str], commit: float) -> float:
+    """Rough chance a card you've taken ends up in your deck."""
+    if c.makes or c.unsupported == "land":
+        return 0.0
+    fit = 1.0 if not c.colors or _fits(c, top) else OFF_LANE_IN_DECK
+    chance = commit * fit + (1 - commit) * UNDECIDED_IN_DECK
+    return chance * (1.0 if (c.z or 0) >= PLAYABLE_Z else UNPLAYABLE_IN_DECK)
+
+
+def pool_synergy(ratings: Ratings, name: str, picks: list[str], top: list[str],
+                 commit: float) -> tuple[float, list[tuple[str, float]]]:
+    """The pick's synergy with everything you've taken, on the win-rate scale,
+    and each pool card's share of it."""
+    parts: dict[str, float] = {}
+    for p in picks:
+        e = ratings.syn(name, p)
+        if e:
+            parts[p] = parts.get(p, 0.0) + DRAWN_TOGETHER * e * in_deck(
+                ratings, ratings.get(p), top, commit)
+    return sum(parts.values()), sorted(parts.items(), key=lambda kv: -abs(kv[1]))
+
+
+def _playables(ratings: Ratings, picks: list[str], top: list[str]) -> int:
+    return sum(1 for p in picks for c in [ratings.get(p)]
+               if not c.makes and c.unsupported != "land" and c.est is not None
+               and (c.z or 0) >= PLAYABLE_Z and (not c.colors or _fits(c, top)))
+
+
 def advise(ratings: Ratings, pack: list[str], picks: list[str],
            pick_number: int = 0) -> list[Advice]:
     """The pack, best pick first."""
-    _, top = lane(ratings, picks)
-    commit = min(1.0, len(picks) / COMMIT_PICKS)
+    weight, top = lane(ratings, picks)
+    commit = commitment(weight, len(picks))
     pair = "".join(k for k in "WUBRG" if k in top) if len(top) == 2 else ""
+    fixes = {k for p in picks for c in [ratings.get(p)] if c.makes and len(c.makes) >= 2
+             for k in c.makes}
+    splash = {k: p for p in picks for c in [ratings.get(p)]
+              if (c.z or 0) >= SPLASH_Z and not c.makes for k in c.colors if k not in top}
+    have = _playables(ratings, picks, top)
+    left = max(0, TOTAL_PICKS - len(picks))
+    need = min(1.0, max(0.0, (DECK_PLAYABLES - have - ON_LANE_SHARE * left) / DECK_PLAYABLES))
     out = []
     for name in pack:
         c = ratings.get(name)
         why = []
+        if c.makes and len(c.makes) >= 2:
+            out.append(_land(c, top, pair, commit, splash))
+            continue
         if c.est is None:
             why.append(f"Not simulated ({c.unsupported})." if c.unsupported else
                        "Not in the set data.")
             out.append(Advice(c, None, why))
             continue
         base = c.est - ratings.mean
-        off = sum(k not in top for k in c.colors) if len(top) == 2 else 0
-        penalty = off * commit * LANE_PENALTY
+        score = base
         why.append(f"{_pts(base)} pts vs. the average card.")
+
+        off = [k for k in c.colors if k not in top] if len(top) == 2 else []
         if off and commit > 0:
-            why.append(f"{'One color' if off == 1 else 'Both colors'} outside your {pair} "
-                       f"lane: −{100 * penalty:.1f} pts this far in.")
+            penalty = 0.0
+            for k in off:
+                heavy = 1 + 0.5 * max(0.0, c.pips.get(k, 1) - 1)
+                penalty += LANE_PENALTY * commit * heavy * (0.5 if k in fixes else 1.0)
+            score -= penalty
+            note = (f"{'One color' if len(off) == 1 else 'Both colors'} outside your {pair} "
+                    f"lane: −{100 * penalty:.1f} pts this far in")
+            if any(c.pips.get(k, 1) >= 2 for k in off):
+                note += " (heavy on off-color mana)"
+            elif all(k in fixes for k in off):
+                note += " (your pool fixes for it)"
+            why.append(note + ".")
         elif c.colors and top and all(k in top for k in c.colors) and picks:
             why.append(f"Fits your {''.join(top)} picks.")
         elif not c.colors:
             why.append("Colorless: fits any deck.")
-        if pair and pair in c.pairs and c.pairs[pair][1] >= PAIR_MIN_GAMES:
+
+        if pair and pair in c.pairs and c.pairs[pair][1] >= PAIR_MIN_GAMES and c.sim is not None:
             w, g = c.pairs[pair]
-            why.append(f"In simulated {pair} decks: {100 * w / g:.1f}% ({g:,} games).")
+            in_pair = (w + PAIR_PRIOR_GAMES * c.sim) / (g + PAIR_PRIOR_GAMES)
+            delta = ((in_pair - ratings.pair_mean.get(pair, ratings.sim_mean))
+                     - (c.sim - ratings.sim_mean))
+            bonus = PAIR_WEIGHT * commit * delta
+            score += bonus
+            if abs(bonus) >= 0.001:
+                why.append(f"In simulated {pair} decks: {100 * w / g:.1f}% ({g:,} games), "
+                           f"{_pts(bonus)} pts for your pair.")
         elif len(c.colors) == 1 and c.pairs:
             best = max(((p, (r[0] + 100 * ratings.sim_mean) / (r[1] + 100))
                         for p, r in c.pairs.items() if r[1] >= PAIR_MIN_GAMES),
                        key=lambda x: x[1], default=None)
             if best:
                 why.append(f"Best in {PAIR_NAMES.get(best[0], best[0])} ({best[0]}).")
+
+        syn, parts = pool_synergy(ratings, name, picks, top, commit)
+        score += syn
+        if abs(syn) >= 0.001:
+            names = ", ".join(p for p, v in parts[:3] if v * syn > 0)
+            why.append(f"Synergy with your pool: {_pts(syn)} pts ({names}).")
+
+        if need and commit and (not c.colors or _fits(c, top)) and (c.z or 0) >= PLAYABLE_Z:
+            bonus = NEED_BONUS * need * commit
+            score += bonus
+            why.append(f"You have {have} {pair} playables with {left} picks left: "
+                       f"{_pts(bonus)} pts.")
+
         if c.removal:
             why.append("Removal.")
         if pick_number and c.ata and len(pack) > 8 and c.ata >= pick_number + 8.5:
             why.append(f"Usually taken around pick {c.ata:.0f}: may come back.")
-        out.append(Advice(c, base - penalty, why))
+        out.append(Advice(c, score, why))
     return sorted(out, key=lambda a: -math.inf if a.score is None else a.score, reverse=True)
+
+
+def _land(c: Card, top: list[str], pair: str, commit: float,
+          splash: dict[str, str]) -> Advice:
+    """A dual land: worth a late pick in your colors, more if it enables a splash."""
+    made = set(c.makes)
+    if len(top) < 2 or commit == 0:
+        return Advice(c, DUAL_LAND - LANE_PENALTY,
+                      [f"Dual land ({c.makes}): take it late once you know your colors."])
+    if made <= set(top):
+        return Advice(c, DUAL_LAND, [f"Dual land in your {pair} colors: smoother mana."])
+    extra = [k for k in made if k not in top]
+    if len(made & set(top)) == 1 and extra[0] in splash:
+        return Advice(c, SPLASH_LAND, [f"Taps for your colors and {extra[0]}: "
+                                       f"lets you splash {splash[extra[0]]}."])
+    return Advice(c, None, [f"Dual land ({c.makes}) outside your {pair} colors."])
