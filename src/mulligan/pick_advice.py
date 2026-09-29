@@ -6,12 +6,15 @@ A pick's score, in win-rate points against the average card:
 * the card's own rating (below);
 * colors: a penalty per color outside your two, heavier for a card needing two
   or more pips of it, halved when your pool already fixes for that color. How
-  much it bites grows with the picks you've made and how settled they are;
+  much it bites grows with the picks you've made and how settled they are,
+  and into pack two an off-color card also loses most of its edge over the
+  average card, since you're unlikely to play it;
 * your pair: how much better or worse the card does in simulated decks of
   your two colors than it does everywhere;
 * synergy with your whole pool: the card's pair interaction (``limited.synergy``)
   with every card you've taken, each weighted by how likely that card is to
-  make your deck, times the chance the two are drawn in the same game;
+  make your deck, times the chance the two are drawn in the same game, at half
+  weight (simulated pair effects only loosely match real ones);
 * playables: when your colors are short of a deck's worth of playables for the
   picks that are left, on-color playables gain;
 * lands: a dual land in your colors is worth a late pick, more when it lets you
@@ -54,6 +57,9 @@ PAIR_MIN_GAMES = 150
 PAIR_PRIOR_GAMES = 300       # a card's record in one pair is shrunk toward its overall one
 PAIR_WEIGHT = 0.5            # how much of that difference counts
 DRAWN_TOGETHER = 0.4         # chance a deck card is drawn in a game you draw the pick
+SYNERGY_WEIGHT = 0.5         # simulated pair effects track real ones only loosely (HOB r=+0.24)
+LATE_PICKS = 28              # by here an off-color card rarely makes the deck ...
+LATE_DISCOUNT = 0.6          # ... so this much of its edge is gone (less if you can splash it)
 UNDECIDED_IN_DECK = 0.5      # chance a pool card makes the deck before you have a lane
 OFF_LANE_IN_DECK = 0.1       # ... once you're settled, for a card outside it
 PLAYABLE_Z = -1.0            # rated at least this (about a C-) counts as a playable
@@ -237,8 +243,15 @@ def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
     for i in range(0, len(flat) - 2, 3):
         a, b = sorted((names[flat[i]], names[flat[i + 1]]))
         synergy[a, b] = flat[i + 2] / 1000
-    pair_mean = {p: r["w"] / r["g"] for p, r in ((sim or {}).get("pairs") or {}).items()
-                 if r.get("g")}
+    # The average card's win rate when drawn inside each pair's decks: the
+    # yardstick for one card's record there (deck records run lower).
+    sums: dict[str, list[float]] = {}
+    for by_pair in ((sim or {}).get("pc") or {}).values():
+        for p, (w, g) in by_pair.items():
+            acc = sums.setdefault(p, [0.0, 0.0])
+            acc[0] += w
+            acc[1] += g
+    pair_mean = {p: w / g for p, (w, g) in sums.items() if g}
     return Ratings(cards, mean, sim_mean, shift, used, real_rows, (sim or {}).get("run", ""),
                    (real or {}).get("fetched", ""), (real or {}).get("start", ""),
                    synergy, pair_mean)
@@ -298,7 +311,7 @@ def pool_synergy(ratings: Ratings, name: str, picks: list[str], top: list[str],
     for p in picks:
         e = ratings.syn(name, p)
         if e:
-            parts[p] = parts.get(p, 0.0) + DRAWN_TOGETHER * e * in_deck(
+            parts[p] = parts.get(p, 0.0) + SYNERGY_WEIGHT * DRAWN_TOGETHER * e * in_deck(
                 ratings, ratings.get(p), top, commit)
     return sum(parts.values()), sorted(parts.items(), key=lambda kv: -abs(kv[1]))
 
@@ -340,7 +353,9 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
 
         off = [k for k in c.colors if k not in top] if len(top) == 2 else []
         if off and commit > 0:
-            penalty = 0.0
+            # Late on, an off-color card is mostly a card you won't play.
+            late = LATE_DISCOUNT * min(1.0, len(picks) / LATE_PICKS) * commit
+            penalty = max(0.0, base) * late * (0.5 if all(k in fixes for k in off) else 1.0)
             for k in off:
                 heavy = 1 + 0.5 * max(0.0, c.pips.get(k, 1) - 1)
                 penalty += LANE_PENALTY * commit * heavy * (0.5 if k in fixes else 1.0)

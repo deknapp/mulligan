@@ -1,6 +1,8 @@
 """Pick advice beyond the card's own rating: your pool, colors and mana."""
 
 from mulligan.pick_advice import (
+    DRAWN_TOGETHER,
+    SYNERGY_WEIGHT,
     advise,
     build_ratings,
     commitment,
@@ -48,7 +50,7 @@ def test_synergy_with_the_pool_breaks_a_tie():
     ratings = build_ratings(_sim(RG + FILLER + pack, [("Partner", "R0", 30)]), None)
     picks = [c["n"] for c in RG]
     total, parts = pool_synergy(ratings, "Partner", picks, ["R", "G"], 1.0)
-    assert abs(total - 0.4 * 0.030) < 1e-9 and parts[0][0] == "R0"
+    assert abs(total - SYNERGY_WEIGHT * DRAWN_TOGETHER * 0.030) < 1e-9 and parts[0][0] == "R0"
     ranked = advise(ratings, ["Plain", "Partner"], picks)
     assert ranked[0].card.name == "Partner"
     assert any("Synergy with your pool" in w and "R0" in w for w in ranked[0].why)
@@ -105,3 +107,24 @@ def test_a_short_pool_boosts_on_color_playables_late():
     early = advise(ratings, ["Red"], [c["n"] for c in RG])[0]
     assert late.score > early.score
     assert any("playables" in w for w in late.why)
+
+
+def test_an_off_color_bomb_fades_as_the_draft_goes_on():
+    pack = [_card("Blue Bomb", "U", wr=0.62, cost="{3}{U}"), _card("Red", "R")]
+    ratings = build_ratings(_sim(RG + FILLER + pack), None)
+    rg = [c["n"] for c in RG]
+    early = {a.card.name: a.score for a in advise(ratings, ["Blue Bomb", "Red"], rg)}
+    late = {a.card.name: a.score for a in advise(ratings, ["Blue Bomb", "Red"], rg * 2)}
+    assert early["Blue Bomb"] > early["Red"]
+    assert late["Blue Bomb"] < late["Red"]
+
+
+def test_pair_bonus_is_measured_against_cards_in_that_pair():
+    cards = RG + FILLER + [_card("Star", "R"), _card("Dud", "R")]
+    sim = _sim(cards)
+    sim["pc"] = {"Star": {"RG": [600, 1000]}, "Dud": {"RG": [500, 1000]},
+                 "R0": {"RG": [550, 1000]}}
+    ratings = build_ratings(sim, None)
+    assert abs(ratings.pair_mean["RG"] - 0.55) < 1e-9
+    by = {a.card.name: a for a in advise(ratings, ["Star", "Dud"], [c["n"] for c in RG])}
+    assert by["Star"].score > 0 > by["Dud"].score
