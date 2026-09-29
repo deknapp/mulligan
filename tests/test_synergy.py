@@ -61,3 +61,16 @@ def test_tally_pickles_for_worker_processes():
     t = PairTally()
     t.add(["A", "B"], {"A"}, 1.0)
     assert pickle.loads(pickle.dumps(t)).cells == t.cells
+
+
+def test_extra_pair_runs_add_to_the_main_run(tmp_path):
+    import json
+
+    from mulligan.site.tools import pair_cells
+    main = tmp_path / "fra-draft-2026-09-21.json"
+    main.write_text(json.dumps({"card_pairs": {"A|B": [1] * 8}}))
+    (tmp_path / "fra-pairs-2026-09-29.json").write_text(
+        json.dumps({"card_pairs": {"A|B": [2] * 8, "A|C": [3] * 8}}))
+    (tmp_path / "hob-pairs-2026-09-29.json").write_text(
+        json.dumps({"card_pairs": {"A|B": [100] * 8}}))
+    assert pair_cells(main) == {"A|B": [3] * 8, "A|C": [3] * 8}

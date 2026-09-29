@@ -30,6 +30,21 @@ def latest_run(blog: Path, set_code: str) -> Path | None:
     return (dated or runs or [None])[-1]
 
 
+def pair_cells(run_path: Path) -> dict[str, list[float]]:
+    """The run's card-pair tally plus every extra simulation saved beside it as
+    ``<set>-pairs-*.json`` (more games for synergy alone, so the card ratings
+    and the primer's figures stay those of the main run)."""
+    cells = {k: list(v) for k, v in
+             json.loads(run_path.read_text()).get("card_pairs", {}).items()}
+    set_code = run_path.stem.split("-")[0]
+    for extra in sorted(run_path.parent.glob(f"{set_code}-pairs-*.json")):
+        for key, cell in json.loads(extra.read_text()).get("card_pairs", {}).items():
+            mine = cells.setdefault(key, [0.0] * 8)
+            for i, v in enumerate(cell):
+                mine[i] += v
+    return cells
+
+
 def _ops(node) -> set[str]:
     out: set[str] = set()
     if isinstance(node, dict):
@@ -132,7 +147,7 @@ def export(run_path: Path) -> dict:
         "mean": round(mean, 4), "prior": PRIOR_GAMES,
         "play": run.raw.get("on_the_play"), "cards": cards, "pairs": pairs,
         "pc": pair_cards,
-        "syn": synergy_export(run.raw.get("card_pairs", {}),
+        "syn": synergy_export(pair_cells(run_path),
                               {c["n"]: i for i, c in enumerate(cards)}),
     }
 
