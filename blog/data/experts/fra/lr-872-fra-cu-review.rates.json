@@ -1,0 +1,52 @@
+{
+ "show": "Limited Resources",
+ "hosts": [
+  "Marshall",
+  "Luis"
+ ],
+ "pairs": [
+  {
+   "pair": "BR",
+   "host": "both",
+   "score": 1,
+   "reason": "Ping payoffs look strong; a little scary to face"
+  },
+  {
+   "pair": "WG",
+   "host": "both",
+   "score": 1,
+   "reason": "Life gain deck looks extremely well supported"
+  },
+  {
+   "pair": "UG",
+   "host": "Marshall",
+   "score": -1,
+   "reason": "Skeptical; the archetype has to prove itself"
+  },
+  {
+   "pair": "UG",
+   "host": "Luis",
+   "score": 0,
+   "reason": "Could be really good but fragile"
+  },
+  {
+   "pair": "BG",
+   "host": "Marshall",
+   "score": -1,
+   "reason": "Out of benefit of the doubt, must prove itself"
+  },
+  {
+   "pair": "RG",
+   "host": "Luis",
+   "score": 0,
+   "reason": "Skeptical of Heartwood ramp, but payoffs are great"
+  },
+  {
+   "pair": "UR",
+   "host": "Marshall",
+   "score": -1,
+   "reason": "Down on prowess as a primary game plan"
+  }
+ ],
+ "colors": []
+}

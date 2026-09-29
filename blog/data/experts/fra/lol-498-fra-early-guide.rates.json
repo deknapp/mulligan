@@ -1,0 +1,101 @@
+{
+ "show": "Lords of Limited",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "pairs": [
+  {
+   "pair": "RG",
+   "host": "both",
+   "score": 2,
+   "reason": "Ramp/good-stuff deck called one of the best in the format"
+  },
+  {
+   "pair": "WB",
+   "host": "both",
+   "score": 1,
+   "reason": "Good cards plus sacrifice synergy overperformed; Twisted Fates is excellent"
+  },
+  {
+   "pair": "WU",
+   "host": "Ethan",
+   "score": 1,
+   "reason": "Go-wide surveil deck impressive, though not a premier strategy"
+  },
+  {
+   "pair": "WG",
+   "host": "Ethan",
+   "score": 1,
+   "reason": "Seed Suture and a pushed uncommon make life gain real and good"
+  },
+  {
+   "pair": "UR",
+   "host": "both",
+   "score": 1,
+   "reason": "Blue-red good cards is a very strong deck"
+  },
+  {
+   "pair": "UB",
+   "host": "Ethan",
+   "score": -1,
+   "reason": "Still not impressed with the mill deck"
+  },
+  {
+   "pair": "BR",
+   "host": "Ethan",
+   "score": -1,
+   "reason": "Fussy; relies on Vicious Verse creatures surviving"
+  },
+  {
+   "pair": "BG",
+   "host": "Ethan",
+   "score": 0,
+   "reason": "On the fence; archetype's identity feels split"
+  },
+  {
+   "pair": "UG",
+   "host": "both",
+   "score": -1,
+   "reason": "Slightly worse than hoped; no good version seen yet"
+  }
+ ],
+ "colors": [
+  {
+   "color": "G",
+   "host": "Ben",
+   "score": 1,
+   "reason": "Biggest mover up; self-described green stan"
+  },
+  {
+   "color": "B",
+   "host": "both",
+   "score": -1,
+   "reason": "Still ranked fifth, though not bad and has good removal"
+  },
+  {
+   "color": "W",
+   "host": "Ethan",
+   "score": 0,
+   "reason": "Biggest mover up, now ranked third"
+  },
+  {
+   "color": "R",
+   "host": "Ethan",
+   "score": 1,
+   "reason": "Still near the top of his color rankings"
+  },
+  {
+   "color": "U",
+   "host": "Ethan",
+   "score": 1,
+   "reason": "Still near the top of his color rankings"
+  },
+  {
+   "color": "G",
+   "host": "Ethan",
+   "score": 0,
+   "reason": "Ranked fourth, though he hasn't played it yet"
+  }
+ ]
+}

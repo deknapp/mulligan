@@ -248,6 +248,91 @@ def extract(set_code: str, slug: str, client=None) -> Path:
     return out
 
 
+RATE_SYSTEM = """You read one Limited set review (a podcast transcript or a written
+article) and record how strong each host expects each color pair and each
+color to be in draft.
+
+The hosts are {hosts}; use exactly these names, or "both" when you cannot tell
+them apart and they agree.
+
+Score only what they actually said, on this scale:
+  +2  the best deck/color in the format, a clear top pick
+  +1  good, above average, happy to be in it
+   0  fine, middle of the pack, or mixed feelings
+  -1  weak, below average, would rather avoid
+  -2  the worst, actively steer clear
+Leave a pair or color out entirely if it wasn't evaluated. Describing an
+archetype's plan is not an evaluation; a judgment of its strength is. For a
+written article, a section's author judges the cards in it; judge a color from
+what they say about the color as a whole, not from single cards.
+reason: a few words, paraphrased, on why."""
+
+
+def _rate_schema() -> dict:
+    row = {"type": "object", "additionalProperties": False,
+           "required": ["host", "score", "reason"],
+           "properties": {"host": {"type": "string"},
+                          "score": {"type": "integer", "enum": [-2, -1, 0, 1, 2]},
+                          "reason": {"type": "string"}}}
+    return {"type": "object", "additionalProperties": False, "required": ["pairs", "colors"],
+            "properties": {
+                "pairs": {"type": "array", "items": {
+                    **row, "required": ["pair", *row["required"]],
+                    "properties": {"pair": {"type": "string", "enum": PAIRS},
+                                   **row["properties"]}}},
+                "colors": {"type": "array", "items": {
+                    **row, "required": ["color", *row["required"]],
+                    "properties": {"color": {"type": "string", "enum": COLORS},
+                                   **row["properties"]}}}}}
+
+
+def rate(set_code: str, slug: str, client=None) -> Path:
+    """One episode -> each host's expected strength for every pair and color it
+    evaluated, -2 to +2. Saved beside the extract as <slug>.rates.json."""
+    meta = EPISODES[set_code][slug]
+    transcript = (RAW / f"{slug}.txt").read_text()
+    user = (f"{meta['show']}, {meta['title']} ({meta['date']}).\n\n"
+            f"<review>\n{transcript}\n</review>")
+    system = RATE_SYSTEM.replace("{hosts}", " and ".join(meta["hosts"]))
+    result = _ask(client or _client(), system, user, _rate_schema())
+    out = OUT / "experts" / set_code / f"{slug}.rates.json"
+    out.write_text(json.dumps({"show": meta["show"], "hosts": meta["hosts"], **result},
+                              indent=1, ensure_ascii=False))
+    return out
+
+
+def _host(name: str, meta: dict) -> list[str]:
+    """A host as the model wrote it -> the show's spelling ("Mark" -> "Marc"),
+    or nobody if it matches no host."""
+    import difflib
+    return difflib.get_close_matches(name, meta["hosts"], n=1, cutoff=0.6)
+
+
+def expected(set_code: str) -> dict[str, dict[str, dict]]:
+    """{"pairs"|"colors": {key: {"score": mean over hosts, "hosts": {show|host:
+    score}}}}. A host heard in several episodes counts once, at their latest
+    word; "both" counts for each host of the show."""
+    folder = OUT / "experts" / set_code
+    latest: dict[str, dict[tuple[str, str], int]] = {"pairs": {}, "colors": {}}
+    for slug, meta in sorted(EPISODES[set_code].items(), key=lambda kv: kv[1]["date"]):
+        path = folder / f"{slug}.rates.json"
+        if not path.exists():
+            continue
+        rates = json.loads(path.read_text())
+        for kind, key in (("pairs", "pair"), ("colors", "color")):
+            for r in rates[kind]:
+                hosts = meta["hosts"] if r["host"] == "both" else _host(r["host"], meta)
+                for host in hosts:
+                    latest[kind][f"{meta['show']}|{host}", r[key]] = r["score"]
+    out: dict[str, dict[str, dict]] = {}
+    for kind, scores in latest.items():
+        by: dict[str, dict[str, int]] = {}
+        for (who, key), score in scores.items():
+            by.setdefault(key, {})[who] = score
+        out[kind] = {k: {"score": sum(v.values()) / len(v), "hosts": v} for k, v in by.items()}
+    return out
+
+
 def tier_lists(set_code: str, refresh: bool = False) -> dict[str, dict[str, str]]:
     """"show|host" -> card -> grade, from the hosts' published tier lists."""
     import urllib.request

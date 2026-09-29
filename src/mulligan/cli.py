@@ -641,7 +641,8 @@ def experts_cmd(
     episode: list[str] = typer.Option(None, help="Episodes to (re)extract; default: new ones."),
     synthesize: bool = typer.Option(True, help="Rewrite the overview afterwards."),
 ):
-    """Podcast set reviews -> per-card grades and a format overview (Claude API;
+    """Podcast set reviews -> per-card grades, each host's pair and color
+    expectations, and a format overview (Claude API;
     needs ANTHROPIC_API_KEY, e.g. in .env). Transcripts must already be in
     data/raw/podcasts/<episode>.txt."""
     from . import experts
@@ -651,6 +652,12 @@ def experts_cmd(
     for slug in todo:
         console.print(f"extracting {slug}")
         console.print(f"[dim]wrote {experts.extract(set_code, slug)}[/dim]")
+    folder = experts.OUT / "experts" / set_code
+    for slug in experts.EPISODES[set_code]:
+        if (experts.RAW / f"{slug}.txt").exists() and (
+                slug in todo or not (folder / f"{slug}.rates.json").exists()):
+            console.print(f"rating pairs and colors in {slug}")
+            console.print(f"[dim]wrote {experts.rate(set_code, slug)}[/dim]")
     if synthesize:
         console.print("synthesizing")
         console.print(f"[dim]wrote {experts.synthesize(set_code)}[/dim]")

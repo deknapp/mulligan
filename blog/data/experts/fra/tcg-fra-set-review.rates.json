@@ -1,0 +1,40 @@
+{
+ "show": "TCGplayer",
+ "hosts": [
+  "LSV",
+  "Martin"
+ ],
+ "pairs": [],
+ "colors": [
+  {
+   "color": "W",
+   "host": "Martin",
+   "score": 1,
+   "reason": "Good color with four cheap, splashable removal spells; popular in Sealed"
+  },
+  {
+   "color": "U",
+   "host": "LSV",
+   "score": 1,
+   "reason": "Very nice commons combining card advantage and speed; doing quite well"
+  },
+  {
+   "color": "B",
+   "host": "LSV",
+   "score": 1,
+   "reason": "Awesome top commons, good removal and landcycler; solid though small-statted"
+  },
+  {
+   "color": "R",
+   "host": "Martin",
+   "score": 0,
+   "reason": "Efficient removal, but many cards only work in specific pairs and aggressive cards are weaker in Sealed"
+  },
+  {
+   "color": "G",
+   "host": "Martin",
+   "score": 1,
+   "reason": "Very strong mix of ramp, synergy, mana sinks, removal and late-game threats"
+  }
+ ]
+}

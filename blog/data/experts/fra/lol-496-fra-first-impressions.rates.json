@@ -1,0 +1,22 @@
+{
+ "show": "Lords of Limited",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "pairs": [
+  {
+   "pair": "BR",
+   "host": "both",
+   "score": 1,
+   "reason": "Prepared-spell synergies make Rakdos greater than the sum of its parts"
+  },
+  {
+   "pair": "UG",
+   "host": "both",
+   "score": 1,
+   "reason": "Board presence plus big Jace payoffs looks more competitive than typical clunky blue-green ramp"
+  }
+ ],
+ "colors": []
+}

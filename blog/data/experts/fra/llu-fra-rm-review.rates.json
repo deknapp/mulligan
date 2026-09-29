@@ -1,0 +1,58 @@
+{
+ "show": "Limited Level-Ups",
+ "hosts": [
+  "Marc",
+  "Alex"
+ ],
+ "pairs": [
+  {
+   "pair": "RG",
+   "host": "Mark",
+   "score": 2,
+   "reason": "Most impressed by it in early access; possible best pair"
+  },
+  {
+   "pair": "WU",
+   "host": "Mark",
+   "score": 1,
+   "reason": "Impressed; went 5 wins twice with different builds"
+  },
+  {
+   "pair": "BG",
+   "host": "Mark",
+   "score": 1,
+   "reason": "Impressed; strong grindy recursion decks"
+  },
+  {
+   "pair": "WG",
+   "host": "Mark",
+   "score": 0,
+   "reason": "Seems fine"
+  },
+  {
+   "pair": "WB",
+   "host": "Mark",
+   "score": 0,
+   "reason": "Seems fine"
+  },
+  {
+   "pair": "UG",
+   "host": "Mark",
+   "score": 0,
+   "reason": "Seems fine"
+  },
+  {
+   "pair": "UR",
+   "host": "Mark",
+   "score": 0,
+   "reason": "Seems fine"
+  },
+  {
+   "pair": "BR",
+   "host": "both",
+   "score": -1,
+   "reason": "Previously judged somewhat weaker than others, though well supported by gold cards"
+  }
+ ],
+ "colors": []
+}

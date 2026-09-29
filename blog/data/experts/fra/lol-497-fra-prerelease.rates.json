@@ -1,0 +1,149 @@
+{
+ "show": "Lords of Limited",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "pairs": [
+  {
+   "pair": "UR",
+   "host": "Ben",
+   "score": 2,
+   "reason": "S tier; very hyped, prowess finally gets its day"
+  },
+  {
+   "pair": "WR",
+   "host": "Ben",
+   "score": 1,
+   "reason": "All red archetypes in top tier"
+  },
+  {
+   "pair": "BR",
+   "host": "Ben",
+   "score": 1,
+   "reason": "Red archetype in top tier; noncombat damage well supported"
+  },
+  {
+   "pair": "RG",
+   "host": "Ben",
+   "score": 1,
+   "reason": "Red archetype in top tier"
+  },
+  {
+   "pair": "WU",
+   "host": "Ben",
+   "score": 1,
+   "reason": "In top tier alongside red pairs"
+  },
+  {
+   "pair": "WG",
+   "host": "Ben",
+   "score": 0,
+   "reason": "Middling tier 1.5"
+  },
+  {
+   "pair": "WB",
+   "host": "Ben",
+   "score": 0,
+   "reason": "Middling tier 1.5"
+  },
+  {
+   "pair": "UG",
+   "host": "Ben",
+   "score": 0,
+   "reason": "Middle tier but sleeper; could be oppressive or flop"
+  },
+  {
+   "pair": "BG",
+   "host": "Ben",
+   "score": -1,
+   "reason": "Bottom tier; not a believer in deathtouch trample"
+  },
+  {
+   "pair": "UB",
+   "host": "Ben",
+   "score": -1,
+   "reason": "Bottom tier; seems undersupported"
+  },
+  {
+   "pair": "UB",
+   "host": "Ethan",
+   "score": -1,
+   "reason": "Missing support; weak black card file"
+  },
+  {
+   "pair": "UG",
+   "host": "Ethan",
+   "score": 1,
+   "reason": "Excited; Kiora and Jace synergies look real"
+  },
+  {
+   "pair": "BG",
+   "host": "Ethan",
+   "score": 0,
+   "reason": "Not particularly excited, but good gold payoff"
+  }
+ ],
+ "colors": [
+  {
+   "color": "R",
+   "host": "Ben",
+   "score": 2,
+   "reason": "Top color; deep, plays well with everything"
+  },
+  {
+   "color": "W",
+   "host": "Ben",
+   "score": 1,
+   "reason": "Deep commons and uncommons; Blossom Blessed Angel"
+  },
+  {
+   "color": "U",
+   "host": "Ben",
+   "score": 1,
+   "reason": "Solid third, though commons are weak"
+  },
+  {
+   "color": "B",
+   "host": "Ben",
+   "score": -1,
+   "reason": "Good removal but lacks threats; support color"
+  },
+  {
+   "color": "G",
+   "host": "Ben",
+   "score": 0,
+   "reason": "Started last, came around to believing in it"
+  },
+  {
+   "color": "R",
+   "host": "Ethan",
+   "score": 2,
+   "reason": "Clear number one; pushed uncommons, deep"
+  },
+  {
+   "color": "U",
+   "host": "Ethan",
+   "score": 1,
+   "reason": "Clear number two; best cheap plays"
+  },
+  {
+   "color": "G",
+   "host": "Ethan",
+   "score": 1,
+   "reason": "Third; cares most about Empower Jace"
+  },
+  {
+   "color": "W",
+   "host": "Ethan",
+   "score": -1,
+   "reason": "Doesn't like white much; fourth"
+  },
+  {
+   "color": "B",
+   "host": "Ethan",
+   "score": -2,
+   "reason": "Solid last; poor commons, no threats"
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+{
+ "show": "Limited Level-Ups",
+ "hosts": [
+  "Marc",
+  "Alex"
+ ],
+ "pairs": [
+  {
+   "pair": "WU",
+   "host": "Marc",
+   "score": 1,
+   "reason": "Might be one of the strongest decks; cards all pull the same direction"
+  },
+  {
+   "pair": "BR",
+   "host": "both",
+   "score": -1,
+   "reason": "Most dubious archetype; weak commons and payoffs, pinging hard to close games"
+  },
+  {
+   "pair": "WG",
+   "host": "both",
+   "score": 1,
+   "reason": "Pushed cards; deck looks real and scary to play against"
+  }
+ ],
+ "colors": [
+  {
+   "color": "R",
+   "host": "both",
+   "score": 1,
+   "reason": "Great removal, good top end; better than first thought"
+  },
+  {
+   "color": "B",
+   "host": "both",
+   "score": -1,
+   "reason": "Currently the worst color, though solid removal as support"
+  },
+  {
+   "color": "U",
+   "host": "Marc",
+   "score": 2,
+   "reason": "Possibly the best color at common/uncommon, low confidence"
+  },
+  {
+   "color": "U",
+   "host": "Alex",
+   "score": 1,
+   "reason": "Agrees blue looks good"
+  },
+  {
+   "color": "W",
+   "host": "Marc",
+   "score": -1,
+   "reason": "Vote for second worst color"
+  },
+  {
+   "color": "G",
+   "host": "both",
+   "score": 0,
+   "reason": "Strong uncommons, solid commons, balanced"
+  }
+ ]
+}
