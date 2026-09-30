@@ -567,7 +567,7 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
         if not c.colors:
             why.append("Colorless: fits any deck.")
         elif picks:
-            note = f"In your final colors {_pct(fit)} of the time"
+            note = f"Taking it, your pool points to its colors {_pct(fit)}"
             if splashed >= 0.05:
                 note += f", splashed {_pct(splashed)}"
             why.append(note + f": adds {_pts(score)} pts to your likely deck.")

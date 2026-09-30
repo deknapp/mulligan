@@ -9,16 +9,18 @@ file, and each time a new pack arrives it ranks the cards, both in the terminal
 and on a page it opens in your browser (served from your own computer):
 
 ```
-PremierDraft_FRA_20261002   Pack 1, pick 2   1 cards taken
-Your picks lean Red (R 2.1).
-Where your pool's best cards point: UR 17%, BR 17%, WR 17%, RG 17%.
-    grade  card                    score  experts
- 1  B      Konstrari Improviser  R  +3.9  Marshall B, Luis B, Marc B-, ...
-           +2.0 pts vs. the average card. In your final colors 68% of
-           the time: adds +3.9 pts to your likely deck.
- 2  B+     Tenured Tethermage    U  +2.9  ...
+PremierDraft_FRA_20260929   Pack 1, pick 2   1 cards taken
+Your picks lean Blue (U 0.2).
+Where your pool's best cards point: WU 10%, WB 10%, WR 10%, WG 10%.
+    grade  card                        score  experts
+ 1  B+     Jiang Yanggu, Never Alone G  +3.1  Marshall B+, Luis B+, Marc B, ...
+           +2.7 pts vs. the average card. Taking it, your pool points to its
+           colors 80%, splashed 20%: adds +3.1 pts to your likely deck.
+ 2  B      Mindseeker Oculus         U  +2.1  Marshall B, Luis B, Marc B-, ...
+ 3  B-     Proft, Sinister Mastermind B +1.8  Marshall B, Luis B, Alex B-, ...
  ...
 ```
+
 The browser page shows the same ranking with card art and the reasons for each
 score, plus:
 

@@ -449,7 +449,7 @@ function advise(state, pack, picks, blend) {
     why.push(`${c.src === "17lands" ? "Real" : "Simulated"} win rate when drawn ${pts(v)} pts vs. the average card${c.src === "sim" && c.g < 300 ? ` (only ${c.g} games)` : ""}.`);
     const splashed = PAIRS.reduce((a, p) => a + (!fitsPair(c, p) && worth(c, v, p, ln.fixes) > 0 ? prob[p] : 0), 0);
     if (!c.c) why.push("Colorless: fits any deck.");
-    else if (picks.length) why.push(`In your final colors ${pc100(fit)} of the time${splashed >= 0.05 ? `, splashed ${pc100(splashed)}` : ""}: adds ${pts(score)} pts to your likely deck.`);
+    else if (picks.length) why.push(`Taking it, your pool points to its colors ${pc100(fit)}${splashed >= 0.05 ? `, splashed ${pc100(splashed)}` : ""}: adds ${pts(score)} pts to your likely deck.`);
 
     const pc = (state.sim.pc || {})[c.n] || {};
     let bonus = 0, shown = null;

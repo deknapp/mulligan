@@ -1,0 +1,16 @@
+{
+ "show": "Limited Resources",
+ "hosts": [
+  "Marshall",
+  "Luis"
+ ],
+ "pairs": [
+  {
+   "pair": "UR",
+   "host": "Marshall",
+   "score": -1,
+   "reason": "Generally skeptical of prowess decks from past experience"
+  }
+ ],
+ "colors": []
+}

@@ -1,0 +1,1183 @@
+{
+ "show": "Limited Resources",
+ "title": "#873: Reality Fracture Set Review, Rare and Mythic Rare",
+ "date": "2026-09-29",
+ "url": "https://lrcast.com/",
+ "hosts": [
+  "Marshall",
+  "Luis"
+ ],
+ "scale": "A through F letter grades with plus/minus, plus 'build around' and 'sideboard' subgrades",
+ "cards": [
+  {
+   "card": "Carnivorous Cultivator",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A two-mana 2/3 deathtouch has a B floor, and the third power stops it being ignored, so attacks force a chump or hand you a land."
+  },
+  {
+   "card": "Carnivorous Cultivator",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Great on offense and defense for two mana, with a little upside on top."
+  },
+  {
+   "card": "Puppet Crafting",
+   "host": "Luis",
+   "grade_said": "build around D",
+   "grade": "D",
+   "take": "Awkward because it can't enchant Jace tokens, so you're turning treasures or Ways into 5/5s; it's only occasionally okay."
+  },
+  {
+   "card": "Tarmogoyf",
+   "host": "Luis",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Often a two-mana 3/4 or 4/5 once lands hit graveyards, but planeswalkers rarely die and sometimes it's tiny, so it lands just under B."
+  },
+  {
+   "card": "Tarmogoyf",
+   "host": "Marshall",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A two-mana 3/4 is a B, but you have to factor in the times it's nearly a 0/1; still worth playing in green."
+  },
+  {
+   "card": "Gardenize",
+   "host": "Marshall",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "The dream of big mana needs far too much setup and a payoff to go with it."
+  },
+  {
+   "card": "Gardenize",
+   "host": "Luis",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Cute, but the work needed to get several mana a turn isn't worth a card."
+  },
+  {
+   "card": "Simulacrum Shaper",
+   "host": "Luis",
+   "grade_said": "B+, maybe A-",
+   "grade": "B+",
+   "take": "A three-mana Solemn with no real downside: it ramps, trades off and draws a card, giving it a very high floor even if it's not cube quality."
+  },
+  {
+   "card": "Simulacrum Shaper",
+   "host": "Marshall",
+   "grade_said": "B+/A-",
+   "grade": "B+",
+   "take": "Its floor starts extremely high even though its ceiling doesn't go much higher."
+  },
+  {
+   "card": "Hexhaven Invigorator",
+   "host": "Luis",
+   "grade_said": "B (heavy green), A- (mono green)",
+   "grade": "B",
+   "take": "A four-mana 6/6 vigilance that ramps is great in mono green, but in a split two-color deck it effectively costs six or more and becomes merely okay."
+  },
+  {
+   "card": "Hexhaven Invigorator",
+   "host": "Marshall",
+   "grade_said": "B+/A- (mono green)",
+   "grade": "B+",
+   "take": "Bonkers if it comes down on turn four; the whole question is how late the quadruple-green cost pushes it."
+  },
+  {
+   "card": "Garruk, Curse Breaker",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Making a 4/4 trampler, drawing a card and keeping Garruk around is excellent value that repeats turn after turn."
+  },
+  {
+   "card": "Garruk, Curse Breaker",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Even the worst case, where they kill the 4/4 blocker, leaves you up a card, so you'll always be happy playing it."
+  },
+  {
+   "card": "Hungering Puppetbeast",
+   "host": "Luis",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A five-mana 5/5 that brings its own Heartwood token to sacrifice for hexproof is very hard to remove, which is about the best you get from a five-drop."
+  },
+  {
+   "card": "Hungering Puppetbeast",
+   "host": "Marshall",
+   "grade_said": "A- (after suggesting B/B+)",
+   "grade": "A-",
+   "take": "It was a beating when played against him in early access and is good in every scenario, mostly thanks to the hexproof protection."
+  },
+  {
+   "card": "Verdant Kraken",
+   "host": "Luis",
+   "grade_said": "build around B, maybe B+",
+   "grade": "B",
+   "take": "A strong ramp payoff that the average red-green deck can cast, though flyers and removal mean it doesn't always end the game."
+  },
+  {
+   "card": "Verdant Kraken",
+   "host": "Marshall",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "The perfect well-supported ramp payoff that dominates the board within a turn or two, since you get a 3/3 even if they kill it on their upkeep."
+  },
+  {
+   "card": "Omnipresence",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "An eight-mana enchantment with no board impact; don't try it."
+  },
+  {
+   "card": "Guiding Hydra",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "It scales with the game and even the two-mana floor spreads counters around; at four mana alongside other creatures it's huge even if they kill it."
+  },
+  {
+   "card": "Guiding Hydra",
+   "host": "Marshall",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Very strong and splashable, though it needs a board of other creatures and is vulnerable to instant-speed removal before combat."
+  },
+  {
+   "card": "Liliana the Faultless",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "The Soul Warden life gain alone is good for a one-drop, and her hexproof ability forces them to kill her first."
+  },
+  {
+   "card": "Liliana the Faultless",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "An annoying card on multiple fronts, and especially valuable in the green-white life gain deck."
+  },
+  {
+   "card": "Loyal Tutor",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "It's dead when you have no planeswalker, the Garruks aren't Ugin-level, and most removal in the set hits planeswalkers anyway."
+  },
+  {
+   "card": "Ajani Resolute",
+   "host": "Luis",
+   "grade_said": "build around B",
+   "grade": "B",
+   "take": "It's unplayable outside life gain and only makes the best life gain decks better, so taking it to force life gain is a trap."
+  },
+  {
+   "card": "Enlightened Confidant",
+   "host": "Luis",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A two-mana 2/1 lifelink is fine in life gain decks, but it won't survive combat and rarely gains enough life to draw real cards."
+  },
+  {
+   "card": "Gideon's Memorial",
+   "host": "Luis",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Most of its value is as a four-damage removal spell for attacking or blocking creatures; the token anthem and planeswalker mana are minor."
+  },
+  {
+   "card": "Gideon's Memorial",
+   "host": "Marshall",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Treat it as a common-level removal spell and look for niche upside elsewhere."
+  },
+  {
+   "card": "Repurposed Enforcer",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A two-mana 3/2 with a ridiculously high floor that picks up surveils or cards whenever it attacks."
+  },
+  {
+   "card": "Repurposed Enforcer",
+   "host": "Marshall",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Repeated attacks into awkward boards add up to a lot of Jace value for two mana."
+  },
+  {
+   "card": "Germinate Recruits",
+   "host": "Luis",
+   "grade_said": "build around B",
+   "grade": "B",
+   "take": "It needs you to gain three or four life fairly often to make up for the times it makes zero, so don't put it in your deck lightly."
+  },
+  {
+   "card": "Lyra, Archangel of Dawn",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A three-mana 3/3 flyer that pressures the opponent to kill it quickly, even with no life gain."
+  },
+  {
+   "card": "Lyra, Archangel of Dawn",
+   "host": "Marshall",
+   "grade_said": "B+ baseline, build around A",
+   "grade": "B+",
+   "take": "Already threatening on its own, and it becomes a huge flyer in the life gain deck."
+  },
+  {
+   "card": "Flickering Hound",
+   "host": "Luis",
+   "grade_said": "D, build around C",
+   "grade": "C",
+   "take": "It's slow, but with good enter-the-battlefield creatures, blinking one with every creature cast adds real value."
+  },
+  {
+   "card": "Flickering Hound",
+   "host": "Marshall",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A four-mana 2/2 that dies to two-mana removal needs to really sing to be worth it."
+  },
+  {
+   "card": "Kindred Judgment",
+   "host": "Luis",
+   "grade_said": "B (maybe C)",
+   "grade": "B",
+   "take": "Shared creature types like Human will often stop it being one-sided, so it will underperform a Dune Blast at a steep seven mana."
+  },
+  {
+   "card": "Kindred Judgment",
+   "host": "Marshall",
+   "grade_said": "B+/A-",
+   "grade": "B+",
+   "take": "He's starting high because a Dune Blast-style effect was a bomb in the past, though it's expensive."
+  },
+  {
+   "card": "Return to the Light Realms",
+   "host": "Marshall",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "A nine-mana spell in the wrong color that might only return a few cheap creatures."
+  },
+  {
+   "card": "Return to the Light Realms",
+   "host": "Luis",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Splashing it into self-mill blue-black is a fun dream, but it's too narrow to rely on."
+  },
+  {
+   "card": "Diviner of Victory",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A one-mana 1/1 with pseudo-prowess that also comes with a flexible bounce spell."
+  },
+  {
+   "card": "Diviner of Victory",
+   "host": "Marshall",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "It does a lot in the early game for such a cheap card."
+  },
+  {
+   "card": "Samut, Tyrant of Naktamun",
+   "host": "Luis",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "A below-rate two-mana 2/1 whose split-second effect rarely matters, and when it does, you often won't even notice."
+  },
+  {
+   "card": "Theorist's Proxy",
+   "host": "Luis",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A flash 0/3 that draws a card is a fine playable with a high floor but a low ceiling."
+  },
+  {
+   "card": "Chandra, Chill of Compliance",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Minus two to stun a creature is the usual play, but she needs plenty of noncreature spells for her plus abilities to work."
+  },
+  {
+   "card": "Chandra, Chill of Compliance",
+   "host": "Marshall",
+   "grade_said": "B/B+",
+   "grade": "B+",
+   "take": "A slow-building source of value that isn't a big enough threat to demand an answer."
+  },
+  {
+   "card": "Cruel Calculations",
+   "host": "Luis",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "A Divination that often draws nothing and is too finicky to set up."
+  },
+  {
+   "card": "Cruel Calculations",
+   "host": "Marshall",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "He'd rather just have Divination, though he jokes he'll draw seven with it someday."
+  },
+  {
+   "card": "Jace's Machinations",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "An instant-speed Divination-plus that leaves a Jace behind and combines well with Ways and other Jace payoffs."
+  },
+  {
+   "card": "Jace's Machinations",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A strong baseline of two cards plus spare loyalty, with fun combos like Kiora."
+  },
+  {
+   "card": "Lyra, Tolarian Archangel",
+   "host": "Luis",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A three-mana 3/3 flyer that can make angels by paying five, but beware tapping out to attack into open removal."
+  },
+  {
+   "card": "Lyra, Tolarian Archangel",
+   "host": "Marshall",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A high-floor flyer with multiple ways to hit the three-card-draw trigger."
+  },
+  {
+   "card": "Seasoned Cryomancer",
+   "host": "Luis",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A three-mana double loot is already good, and the stun effects and graveyard draw-two push it very high."
+  },
+  {
+   "card": "Seasoned Cryomancer",
+   "host": "Marshall",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Card filtering adds up, making this really good."
+  },
+  {
+   "card": "Variable Chaser",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A three-mana 2/3 flying prowess creature; the wheel spell is only occasionally useful."
+  },
+  {
+   "card": "Variable Chaser",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A solid flyer you'd happily put in your deck."
+  },
+  {
+   "card": "Sphinx of False Conclusions",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A flash four-mana 4/2 flyer that loots on attack and comes back once as a token."
+  },
+  {
+   "card": "Sphinx of False Conclusions",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Flashing it in to trade and then getting another copy is already great value."
+  },
+  {
+   "card": "The Theorist, Jace Beleren",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "The classic framework of making creatures and protecting itself, plus a free card every opponent's turn."
+  },
+  {
+   "card": "The Theorist, Jace Beleren",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Fantastic but not quite A+; its reachable ultimate ends games."
+  },
+  {
+   "card": "Jace, Reality Sculptor",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Its minus shuts down attacks and its plus spawns a second Jace, which is strong but less impressive than The Theorist."
+  },
+  {
+   "card": "Jace, Reality Sculptor",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Splitting loyalty across two Jaces creates an interesting problem for the opponent."
+  },
+  {
+   "card": "Dark Matter Manipulator",
+   "host": "Luis",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A one-drop that advances the self-mill plan and can become a 3/2, but it's fairly bad outside graveyard decks."
+  },
+  {
+   "card": "Lich's Relic",
+   "host": "Luis",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Effectively a removal spell that kills their best thing and then sticks around as a useful equipment."
+  },
+  {
+   "card": "Lich's Relic",
+   "host": "Marshall",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Straight-up removal attached to an equipment is incredible."
+  },
+  {
+   "card": "Bloodline Recollector",
+   "host": "Luis",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A fine two-mana 2/2 whose three-deaths trigger is too hard to build around."
+  },
+  {
+   "card": "Bloodline Recollector",
+   "host": "Marshall",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Playable, and a bonus if the trigger happens to occur."
+  },
+  {
+   "card": "Extrapolate the Impossible",
+   "host": "Luis",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "A bad land-fetch because the opponent picks, and loading your sideboard with good cards for it isn't worth it."
+  },
+  {
+   "card": "Liliana the Repentant",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "The forced mill fuels threshold, and her exhaust reanimation provides real value."
+  },
+  {
+   "card": "Liliana the Repentant",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A two-mana 2/2 that the opponent must kill, or it eventually reanimates something."
+  },
+  {
+   "card": "Vraska's Final Mercy",
+   "host": "Luis",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "An unconditional, if double-black sorcery-speed, kill spell with a flexible card-draw mode."
+  },
+  {
+   "card": "Gideon the Oathless",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A warded 3/3 whose pings mean it can't be ignored, and killing it costs them a two-for-one."
+  },
+  {
+   "card": "Gideon the Oathless",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "You rarely get a bad exchange, though it does less when you're behind."
+  },
+  {
+   "card": "Sanctum Lurker",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "It must be killed or it drains and grows your Jace every turn, and even when answered it leaves a Jace behind."
+  },
+  {
+   "card": "Sanctum Lurker",
+   "host": "Marshall",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Play it and plus the Jace, and you usually net a two-for-one."
+  },
+  {
+   "card": "Darklight Phoenix",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A 3/2 flying haste that returns for free; build around it with Silence the Echo and cheap removal to trigger it."
+  },
+  {
+   "card": "Darklight Phoenix",
+   "host": "Marshall",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Already a decent flyer, with strong recursion in the self-mill deck."
+  },
+  {
+   "card": "Garruk, Veiled Butcher",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A textbook planeswalker bomb that shrinks creatures, forces edicts that make beasts, or strips cards."
+  },
+  {
+   "card": "Garruk, Veiled Butcher",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "One of the best cards in the set, possibly even A+."
+  },
+  {
+   "card": "Rise of the Deathbringer",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A flexible instant that either draws big or sweeps small creatures, but it's situational and occasionally uncastable."
+  },
+  {
+   "card": "Overwrite the Multiverse",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A six-mana one-sided exile wrath in effect, since it leaves you a big Jace to draw with."
+  },
+  {
+   "card": "Overwrite the Multiverse",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "It has been excellent against him multiple times."
+  },
+  {
+   "card": "Ajani's Anguish",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A Fireball that can kill a creature or the opponent, with plenty of ramp to power it."
+  },
+  {
+   "card": "Ajani's Anguish",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Flexible removal whose lingering trample makes it feel like a good deal, though it's not a bomb."
+  },
+  {
+   "card": "Pompous Battlemage",
+   "host": "Luis",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Does a little of everything for one mana, but nothing notable."
+  },
+  {
+   "card": "Pompous Battlemage",
+   "host": "Marshall",
+   "grade_said": "C/C+",
+   "grade": "C",
+   "take": "Not that great, just fine."
+  },
+  {
+   "card": "Master of Barbs",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "A two-mana 2/1 menace for aggressive black-red that doesn't need the synergy to be good."
+  },
+  {
+   "card": "Master of Barbs",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "It fits the non-combat damage subtheme."
+  },
+  {
+   "card": "Samut, Hazoret's Champion",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "On turn two, giving everything haste makes the opponent feel dead, especially with big green creatures."
+  },
+  {
+   "card": "Samut, Hazoret's Champion",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Scary enough that it will play out great."
+  },
+  {
+   "card": "Stingcaster Mage",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A hasty two-drop that recasts a cheap removal spell for a good two-for-one, and is easy to recur."
+  },
+  {
+   "card": "Stingcaster Mage",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Worth playing if you have four or five good instants or sorceries."
+  },
+  {
+   "card": "Identity Echo",
+   "host": "Luis",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Not worth a card."
+  },
+  {
+   "card": "Pyre Rhymer",
+   "host": "Luis",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A threatening three-mana 3/3 prowess whose prepared spell sets up an explosive turn."
+  },
+  {
+   "card": "Pyre Rhymer",
+   "host": "Marshall",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "A powerful prowess card, though he's skeptical of prowess decks in general."
+  },
+  {
+   "card": "Chandra, Torch of Defiance",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "An all-time great planeswalker that kills a creature and then generates damage or cards every turn."
+  },
+  {
+   "card": "Chandra, Torch of Defiance",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Brutal after killing their creature, and ramping into two-mana removal is also strong."
+  },
+  {
+   "card": "Curse-Marred Demon",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A four-mana 4/4 flying trampler whose Gamble slightly improves your hand, especially the more cards you hold."
+  },
+  {
+   "card": "Curse-Marred Demon",
+   "host": "Marshall",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Great stats; usually tutor for your best card."
+  },
+  {
+   "card": "Draconic Visitor",
+   "host": "Luis",
+   "grade_said": "B/B+",
+   "grade": "B+",
+   "take": "Mainly a five-mana 5/5 flyer, with upside if you make artifact tokens."
+  },
+  {
+   "card": "Draconic Visitor",
+   "host": "Marshall",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Already strong, and it gains value with any artifact token makers."
+  },
+  {
+   "card": "Ajani Unrelenting",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Minus three wipes the board except your Cadet, then keeps pumping out hasty tokens."
+  },
+  {
+   "card": "Ajani Unrelenting",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Probably one of the best cards in the set, and its refill mode is also useful."
+  },
+  {
+   "card": "Craterclaw Colossus",
+   "host": "Marshall",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Seven mana is a lot, and other ramp payoffs like Verdant Kraken are better."
+  },
+  {
+   "card": "Craterclaw Colossus",
+   "host": "Luis",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Win-more unless you're making lots of Heartwood tokens, in which case it might be good enough."
+  },
+  {
+   "card": "Face Yourself",
+   "host": "both",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Swingy and able to steal games, but it costs seven, is bad on small boards and is mostly a trap without a Jace."
+  },
+  {
+   "card": "Proctor of Potential",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A two-mana 3/1 that surveils and easily returns, since those decks naturally surveil."
+  },
+  {
+   "card": "Proctor of Potential",
+   "host": "Marshall",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Getting to use it twice is nice."
+  },
+  {
+   "card": "Denzilore Fatehold",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A flash 3/4 flyer on its own, and a huge bomb with surveil and scry effects."
+  },
+  {
+   "card": "Denzilore Fatehold",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "Flash it in and start spreading counters; an easy A."
+  },
+  {
+   "card": "Null Summoner",
+   "host": "Luis",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A four-mana 4/2 that strips their best card and threatens to cast it, though it's weaker as a late topdeck and not cube-level."
+  },
+  {
+   "card": "Null Summoner",
+   "host": "Marshall",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "He'd happily put it in the cube, since it effectively forces a two-for-one."
+  },
+  {
+   "card": "Uldaros Theorix",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A six-mana 5/5 flyer that recasts about two cards from your graveyard; you could argue for A+."
+  },
+  {
+   "card": "Uldaros Theorix",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "One of the best cards in the set in the graveyard-filling pair."
+  },
+  {
+   "card": "Stinging Vitriol",
+   "host": "Luis",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Good in black-red because it triggers your non-combat damage payoffs and takes a card, but it isn't splashable."
+  },
+  {
+   "card": "Ingris Stingerquill",
+   "host": "Luis",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "A cheap three-drop that pings whenever creatures attack and pumps out hasty Cadets late game."
+  },
+  {
+   "card": "Ingris Stingerquill",
+   "host": "Marshall",
+   "grade_said": "A",
+   "grade": "A",
+   "take": "It applies a lot of pressure for three mana."
+  },
+  {
+   "card": "Tenured Tethermage",
+   "host": "Luis",
+   "grade_said": "B/B+",
+   "grade": "B",
+   "take": "It ramps and makes two Heartwood tokens to grow itself, enabling the red-green deck nicely."
+  },
+  {
+   "card": "Aerid Konstrari",
+   "host": "Luis",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "A four-mana 5/4 flyer that leaves Heartwood tokens behind; A+ on raw power alone."
+  },
+  {
+   "card": "Aerid Konstrari",
+   "host": "Marshall",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "Incredibly pushed, though he'd still take Null Summoner."
+  },
+  {
+   "card": "Solarium Sentry",
+   "host": "Luis",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "A two-mana 3/3 you'd play with zero triggers, but the opponent controls the life gain, so it's not a reliable payoff."
+  },
+  {
+   "card": "Kwia Vigorbloom",
+   "host": "Luis",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "A six-mana 6/6 with flying, vigilance, lifelink and ward that wins if left unanswered."
+  },
+  {
+   "card": "Kwia Vigorbloom",
+   "host": "Marshall",
+   "grade_said": "A+",
+   "grade": "A+",
+   "take": "It fills the Baneslayer Angel slot."
+  },
+  {
+   "card": "Vindictive Triumph",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Instant-speed exile removal at a B+ power level, held back by its restrictive black-black-white cost."
+  },
+  {
+   "card": "Vindictive Triumph",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Kill-anything exile removal with upside."
+  },
+  {
+   "card": "Frostbite Pyromental",
+   "host": "Luis",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "Strong on turn three in aggressive blue-red with good mana, but it falls off sharply later and control decks don't want it."
+  },
+  {
+   "card": "Frostbite Pyromental",
+   "host": "Marshall",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "More cool than good."
+  },
+  {
+   "card": "Vraska, the Cutting Glare",
+   "host": "Marshall",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "A three-mana 4/4 deathtouch early, or a two-for-one removal creature late."
+  },
+  {
+   "card": "Vraska, the Cutting Glare",
+   "host": "Luis",
+   "grade_said": "A-",
+   "grade": "A-",
+   "take": "Play it on turn three if you can; waiting at four or five lands has a real cost."
+  },
+  {
+   "card": "Solitary Cell",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Cheap Portable Hole-style removal; the looting ability is fringe."
+  },
+  {
+   "card": "Solitary Cell",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "The removal part alone earns a B."
+  },
+  {
+   "card": "Avatar of Burgeoning Echoes",
+   "host": "Luis",
+   "grade_said": "B+/A-",
+   "grade": "B+",
+   "take": "A two-mana 2/3 that empowers Jace for two on every land drop is extremely good value."
+  },
+  {
+   "card": "Avatar of Burgeoning Echoes",
+   "host": "Marshall",
+   "grade_said": "B+",
+   "grade": "B+",
+   "take": "Great without the ultimate, but too slow for cube."
+  },
+  {
+   "card": "Tam, the Possibility",
+   "host": "Luis",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "Mostly just a three-mana 2/4, which you don't really want."
+  },
+  {
+   "card": "Tam, the Possibility",
+   "host": "Marshall",
+   "grade_said": "C-",
+   "grade": "C-",
+   "take": "Its abilities are nearly useless text in Limited."
+  },
+  {
+   "card": "Entrust the Spark",
+   "host": "both",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Swapping a Jace token for a planeswalker takes too much jumping through hoops."
+  },
+  {
+   "card": "Vraska, Soul of Stone",
+   "host": "Luis",
+   "grade_said": "build around B",
+   "grade": "B",
+   "take": "Decent in blue-red spells if you can afford the three-color cost, but worse than the uncommon Saheeli."
+  },
+  {
+   "card": "Karn, Gilded Guardian",
+   "host": "Marshall",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "In a two-color deck you'd pay about eight for a 5/5 that draws two, which isn't worth it."
+  },
+  {
+   "card": "Karn, Gilded Guardian",
+   "host": "Luis",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "It could work as a build-around in five-color ramp if it costs six or seven, but usually it won't."
+  },
+  {
+   "card": "Codie, Ravenous Codex",
+   "host": "Marshall",
+   "grade_said": "build around C+",
+   "grade": "C+",
+   "take": "Worth it only with a critical mass of prepared creatures that re-prepare themselves."
+  },
+  {
+   "card": "Codie, Ravenous Codex",
+   "host": "Luis",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "You probably need to copy two or three spells before it feels worthwhile."
+  },
+  {
+   "card": "Karn, Argent Defender",
+   "host": "Luis",
+   "grade_said": "D",
+   "grade": "D",
+   "take": "It shuts off the set's many ETBs, which is worth trying if it doesn't hurt you, but it's a replaceable body."
+  },
+  {
+   "card": "The Echoverse Fulcrum",
+   "host": "Luis",
+   "grade_said": "C",
+   "grade": "C",
+   "take": "A telegraphed wrath that costs you a card, though opponents may misplay around it."
+  },
+  {
+   "card": "Emrakul, the Exigent Doom",
+   "host": "Luis",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "By ten mana you've no cards left, the ward is easily paid, and the mana-rock mode isn't worth a slot."
+  },
+  {
+   "card": "Emrakul, the Exigent Doom",
+   "host": "Marshall",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "Too expensive no matter how you cut it."
+  },
+  {
+   "card": "Theorist's Sanctum",
+   "host": "Luis",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "An almost-free Island that sometimes empowers Jace for two."
+  },
+  {
+   "card": "Theorist's Sanctum",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Low-cost upside in a land slot."
+  },
+  {
+   "card": "Roiling Canopy",
+   "host": "Luis",
+   "grade_said": "F",
+   "grade": "F",
+   "take": "A tapped Forest whose payoff isn't good even in near mono-green, so it will cost more games than it wins."
+  },
+  {
+   "card": "Deserted Beach",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A dual land that almost always enters untapped, slightly better than the common duals."
+  },
+  {
+   "card": "Shipwreck Marsh",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A dual land that almost always enters untapped, slightly better than the common duals."
+  },
+  {
+   "card": "Haunted Ridge",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A dual land that almost always enters untapped, slightly better than the common duals."
+  },
+  {
+   "card": "Rockfall Vale",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A dual land that almost always enters untapped, slightly better than the common duals."
+  },
+  {
+   "card": "Overgrown Farmland",
+   "host": "both",
+   "grade_said": "C+",
+   "grade": "C+",
+   "take": "A dual land that almost always enters untapped, slightly better than the common duals."
+  },
+  {
+   "card": "Hall of Echoes",
+   "host": "Marshall",
+   "grade_said": "B",
+   "grade": "B",
+   "take": "Getting an instant-speed extra creature out of a land slot is huge."
+  },
+  {
+   "card": "Hall of Echoes",
+   "host": "Luis",
+   "grade_said": "B-",
+   "grade": "B-",
+   "take": "Most two-color decks should play it, though the colorless land is a cost."
+  }
+ ],
+ "format": {
+  "summary": "A planeswalker-centric set built around Empower Jace, which creates or grows a Jace token that can minus one to surveil or minus three to draw. There are ten supported archetypes: the allied pairs are Hexhaven schools and the enemy pairs are planeswalker themes. The rares are full of pushed bombs plus interesting build-arounds, and the hosts called it a breath of fresh air.",
+  "speed": "Not directly assessed yet since they had only played early access; it has plenty of aggressive archetypes alongside ramp and graveyard control.",
+  "colors": [
+   {
+    "color": "G",
+    "take": "Deep in powerful rares like Garruk, Simulacrum Shaper and Hungering Puppetbeast, with well-supported ramp for heavy green cards."
+   },
+   {
+    "color": "U",
+    "take": "Very strong rares, including multiple Jaces, Lyra, the Sphinx and Seasoned Cryomancer."
+   },
+   {
+    "color": "B",
+    "take": "Good removal and bombs such as Lich's Relic, Garruk and Overwrite the Multiverse, plus self-mill support."
+   },
+   {
+    "color": "R",
+    "take": "Two A-level planeswalkers, Chandra and Ajani Unrelenting, along with aggressive creatures."
+   },
+   {
+    "color": "W",
+    "take": "Many cards lean on life gain, which makes some rares like Ajani Resolute traps outside that deck."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "WU",
+    "take": "Fatehold surveil and scry aggro; surveil triggers come naturally, powering cards like Proctor and Denzilore."
+   },
+   {
+    "pair": "UB",
+    "take": "Graveyard-math self-mill control and midrange with threshold (seven cards in the graveyard) payoffs."
+   },
+   {
+    "pair": "BR",
+    "take": "Stingerquill aggro that cares about dealing non-combat damage to the opponent, using lots of one-mana pings."
+   },
+   {
+    "pair": "RG",
+    "take": "Konstrari ramp using Heartwood mana tokens into big six- and seven-drops; well suited to payoffs like Verdant Kraken."
+   },
+   {
+    "pair": "WG",
+    "take": "Vigorbloom life gain, where creatures grow when you gain life."
+   },
+   {
+    "pair": "WB",
+    "take": "Liliana's grindy attrition midrange with graveyard, sacrifice and token themes."
+   },
+   {
+    "pair": "UR",
+    "take": "Chandra's prowess with noncreature spells, presumably aggressive."
+   },
+   {
+    "pair": "BG",
+    "take": "Garruk's bestiary, combining deathtouch and trample with payoffs for big creatures."
+   },
+   {
+    "pair": "WR",
+    "take": "Ajani's aggressive army with a light +1/+1 counter theme."
+   },
+   {
+    "pair": "UG",
+    "take": "Jace's mastery, the home of Empower Jace and the Way enchantment cycle, possibly stretching to five colors."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace",
+    "take": "Creates or adds loyalty to a Jace token; at three you usually cash it in for a card, and opponents must decide whether to attack small Jaces. Most removal can hit planeswalkers."
+   },
+   {
+    "name": "Prepared",
+    "take": "Creatures enter with an attached cheap spell, giving you extra value; entering prepared isn't a trigger, so Karn, Argent Defender doesn't stop it."
+   },
+   {
+    "name": "Threshold / self-mill",
+    "take": "Blue-black mills itself with one-mana prepared spells to reach seven cards in the graveyard."
+   },
+   {
+    "name": "Heartwood tokens",
+    "take": "Artifact tokens that tap for red or green, fueling ramp and artifact sacrifice synergies."
+   },
+   {
+    "name": "Ways",
+    "take": "A five-color enchantment cycle that gives Jace tokens extra abilities."
+   }
+  ],
+  "advice": [
+   "Don't take Ajani Resolute or Germinate Recruits and then force life gain; they only improve an already good life gain deck.",
+   "Mono or heavy green makes Hexhaven Invigorator great, but in an even two-color split it effectively costs six or more.",
+   "Avoid tapping out to pay five for Lyra, Tolarian Archangel's ability into open removal.",
+   "With Darklight Phoenix, prioritize Silence the Echo and cheap removal to trigger its return.",
+   "Play Vraska, the Cutting Glare on turn three if you can rather than holding it for six lands.",
+   "Avoid cute tutors and planeswalker-matters cards like Loyal Tutor and Entrust the Spark.",
+   "Bonus-sheet combo: Splinter Twin plus the common Divining Duelist goes infinite."
+  ]
+ }
+}

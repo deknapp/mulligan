@@ -41,6 +41,10 @@ EPISODES = {
             "show": "Limited Resources", "title": "#872: Reality Fracture Set Review, "
             "Commons and Uncommons", "date": "2026-09-21",
             "url": "https://lrcast.com/", "hosts": ["Marshall", "Luis"]},
+        "lr-873-fra-rm-review": {
+            "show": "Limited Resources", "title": "#873: Reality Fracture Set Review, "
+            "Rare and Mythic Rare", "date": "2026-09-29",
+            "url": "https://lrcast.com/", "hosts": ["Marshall", "Luis"]},
         "llu-fra-first-impressions": {
             "show": "Limited Level-Ups", "title": "#261: Reality Fracture First Impressions",
             "date": "2026-09-18", "url": "https://limitedlevelups.libsyn.com/",

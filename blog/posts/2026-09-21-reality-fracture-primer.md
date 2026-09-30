@@ -9,7 +9,7 @@ different kinds of evidence side by side:
 - **The simulation.** Bots drafted the set 800 times (100 pods of eight),
   built decks and played **100,000 games** against each other under the full
   rules.
-- **The experts.** Eight set reviews from four outlets: Limited Resources
+- **The experts.** Nine set reviews from four outlets: Limited Resources
   (Marshall and Luis), Limited Level-Ups (Marc and Alex), Lords of Limited
   (Ben and Ethan), and the written reviews at TCGplayer (LSV and Martin Jůza).
   We summarize and paraphrase them, with credit. Listen to or read the
@@ -246,9 +246,9 @@ stabilise a board.
 
 <h2 id="experts">Where the experts and the simulation disagree</h2>
 
-Card by card, they agree more than on pairs: across the 263 cards graded by at
+Card by card, they agree more than on pairs: across the 264 cards graded by at
 least two hosts and played in at least 300 simulated games, rank agreement is
-ρ = +0.41. That's real agreement, but with big exceptions, labelled here:
+ρ = +0.43. That's real agreement, but with big exceptions, labelled here:
 
 {{figure fra-primer-grades}}
 
@@ -269,24 +269,30 @@ their grade, and the five it likes least.*
 - **Wrecking Gecko** (56.9%). D+ to C- from the shows, "garbage" in Lords of
   Limited's first impressions. Ward 2 on a 5/5 matters in a slow format full
   of removal.
+- **Ghalta the Unstoppable** (59.5%) and **Ghalta the Immovable** (57.3%).
+  Limited Resources graded them B- and C-/D+, Marc D+ and D-. Both cost far
+  less than they look once you have one big creature (more below).
 - **Greenhouse Propagator** (56.2%). Lords called it garbage at first; Ben
   moved it to C+ after playing. The simulation backs the revision.
 
 **The experts' case (the bots are probably wrong):**
 
-- **Sphinx of False Conclusions** (48.3%). Marc's best rare (A+), LSV 4.5.
+- **Sphinx of False Conclusions** (48.3%). Marc's best rare (A+), A from
+  both Limited Resources hosts, LSV 4.5.
   Flash ambushes are exactly what bots misplay.
 - **Unsummon** (47.9%). Limited Level-Ups calls it one of the best commons.
   Bots use bounce badly. Even so, the shows now say one is enough in a slow
   format.
-- **Edgar, Ancient Bloodlord** (45.1%). B from Limited Resources, 3.5 from
-  LSV. Its value is in well-timed sacrifices the bots miss.
+- **Edgar, Ancient Bloodlord** (45.1%). B and B- from Limited Resources,
+  3.5 from LSV. Its value is in well-timed sacrifices the bots miss.
 - **Way of the Mind Sculptor, Perfected Theory, Rise of the Deathbringer**:
-  graded well, terrible in the simulation. The first two are partly
-  simplified in the engine (see below), so don't read much into them.
+  graded far above how they play in the simulation (Limited Resources gave
+  the Way and Rise a B, though Perfected Theory only a D). The first two are
+  partly simplified in the engine (see below), so don't read much into them.
 
-**Too close to call:** Verdant Kraken (Limited Level-Ups A, Martin up to 5.0
-in sealed; 47.5% over 2,789 games) is probably a strong card rather than a
+**Too close to call:** Verdant Kraken (A or A- from four hosts, Martin up to
+5.0 in sealed, but only B from Luis, who doubts it ends games through flyers
+and removal; 47.5% over 2,789 games) is probably a strong card rather than a
 bomb. Flourishing Grapple's 36.6% is what maindecking a color hoser looks
 like, which is why every show says not to.
 
@@ -400,7 +406,8 @@ The tools refresh on their own. Once a day, they fetch Reality Fracture's live
 rate replaces the simulated one, and the tools say which numbers are real.
 After release, we'll check this primer against 17Lands in a new post.
 
-*Expert sources: [Limited Resources #872](https://lrcast.com/),
+*Expert sources: [Limited Resources #872 and #873](https://lrcast.com/)
+(commons and uncommons, rares and mythics),
 [Limited Level-Ups](https://limitedlevelups.libsyn.com/) (first impressions,
 commons and uncommons, rares and mythics),
 [Lords of Limited #496–498](https://audioboom.com/channels/5064090) and

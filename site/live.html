@@ -22,13 +22,15 @@ The local version reads it for you. Arena writes every pack it shows you and
 every pick you make to a log file on your computer. <code>mulligan live</code> watches that
 file, and each time a new pack arrives it ranks the cards, both in the terminal
 and on a page it opens in your browser (served from your own computer):</p>
-<pre><code>PremierDraft_FRA_20261002   Pack 1, pick 5   4 cards taken
-Your picks lean Red-Green (R 2.1, G 2.0, B 1.2).
-    grade  card                    score  sim     17Lands
- 1  A      Blossom-Blessed Angel W  +7.5  59.4%   –
-           +8.5 pts vs. the average card. One color outside your RG lane.
- 2  B-     Restore with Empathy  G  +0.7  51.5%   –
-           Fits your RG picks. In simulated RG decks: 52.6% (1,394 games).
+<pre><code>PremierDraft_FRA_20260929   Pack 1, pick 2   1 cards taken
+Your picks lean Blue (U 0.2).
+Where your pool's best cards point: WU 10%, WB 10%, WR 10%, WG 10%.
+    grade  card                        score  experts
+ 1  B+     Jiang Yanggu, Never Alone G  +3.1  Marshall B+, Luis B+, Marc B, ...
+           +2.7 pts vs. the average card. Taking it, your pool points to its
+           colors 80%, splashed 20%: adds +3.1 pts to your likely deck.
+ 2  B      Mindseeker Oculus         U  +2.1  Marshall B, Luis B, Marc B-, ...
+ 3  B-     Proft, Sinister Mastermind B +1.8  Marshall B, Luis B, Alex B-, ...
  ...
 </code></pre>
 <p>The browser page shows the same ranking with card art and the reasons for each
@@ -53,51 +55,39 @@ score, plus:</p>
 <p>It only reads the log file. It doesn't touch the game or send anything anywhere,
 and it's the same log that 17Lands' and other draft overlays read.</p>
 <h2>Where the advice comes from</h2>
-<p>Each card gets one rating, blended from two sources:</p>
+<p><strong>Card ratings are the experts' grades, and only those:</strong> the podcast hosts
+from the <a href="posts/2026-09-21-reality-fracture-primer.html#experts">primer</a>
+(Limited Resources, Limited Level-Ups, Lords of Limited, TCGplayer). Shows use
+the letters differently, so each host's grades are shifted to a common
+average first, then averaged per card. The average letter becomes win-rate
+points on an uneven scale, the way real win rates fall out: an A+ bomb is some
+ten points better than a C+ card and a B+ under four, while C and C- are about
+a point apart. The simulator's ratings are not used here; they missed too many
+busted rares.</p>
+<p><strong>Score</strong> is how much the card adds to the deck you'll likely end up with:</p>
 <ul>
-<li><strong>The simulator.</strong> Its win rate when drawn, from the latest run of simulated
-  drafts: the numbers behind the <a href="index.html">primer</a> and the
-  <a href="tools/cards.html">card ratings</a>. This is all there is on release day.</li>
-<li><strong>17Lands.</strong> Real players' win rate when drawn, fetched from
-  <a href="https://www.17lands.com">17Lands</a> when you start (and at most every three
-  hours), for the format you're in: Premier, Quick or Traditional draft.</li>
+<li><strong>Your pool as ten decks.</strong> Every card you've taken counts toward each of
+  the ten two-color decks it fits, by how much better it is than a card that
+  wouldn't make the deck. A deck is worth its best 23 cards. So it's the
+  quality of your picks that sets your colors, not how many you have: a
+  first-pick bomb makes its colors worth more straight away, and the next
+  picks in those colors gain accordingly.</li>
+<li><strong>Which deck you end in</strong> is uncertain, and more so early. The helper
+  weighs the ten decks by their worth, loosely in pack one (most of your
+  picks are still to come) and tightly by pack three. A card's score is how
+  much it raises that weighted best deck: in full where it fits, which early
+  on favors cards that fit many decks (one color, or colorless), and less
+  and less where it doesn't as your colors settle.</li>
+<li><strong>Splashes.</strong> A strong card (B+ or so) with one off-color mana symbol keeps
+  part of its value in decks outside its color, more if you've taken a land
+  that makes that color. Double off-color symbols can't be splashed.</li>
+<li><strong>Lands</strong> that tap for both of a deck's colors are worth a late pick, more
+  when they let you splash a strong card you've taken.</li>
 </ul>
-<p>The blend counts the simulator as worth 500 real games. So a card with no real
-games yet is rated by the simulator alone, one with 500 is half and half, and
-one with 5,000 is almost all real data. Real win rates run a few points higher
-than simulated ones, because 17Lands users are better than the average player,
-so they're shifted onto the simulator's scale before the two are mixed. Early
-on, while 17Lands only has numbers for a handful of cards, the helper sticks to
-the simulator and says so.</p>
-<p>Until 17Lands has solid numbers (500 games) for at least 20 cards, the
-<strong>experts</strong> count too: the podcast hosts' grades from the <a href="posts/2026-09-21-reality-fracture-primer.html#experts">primer</a>
-(Limited Resources, Limited Level-Ups, Lords of Limited, TCGplayer). Each
-host's grades are put on a common scale first, since shows use letters
-differently, then averaged, and the card's rating becomes half the simulator's
-and half the experts'. A card the simulator can't rate goes on the experts'
-grade alone. After that, real games take over.</p>
-<p>From there it works like the website's pick helper, which uses the same rules.
-<strong>Score</strong> is how many points more often you win when the card is drawn than
-with an average card, then adjusted for what you've taken:</p>
-<ul>
-<li><strong>Colors.</strong> A penalty per color outside the two your picks lean toward. It
-  grows as your colors settle (from zero at pick one), is heavier for a card
-  needing two of that color's mana, and halves when your pool has a dual land
-  for it. Into pack two an off-color card also loses most of its edge, since
-  you're unlikely to play it.</li>
-<li><strong>Your pair.</strong> How the card did in simulated decks of your two colors,
-  against how it does everywhere.</li>
-<li><strong>Synergy.</strong> The card's simulated interaction with each card you've taken,
-  counted by how likely that card is to make your deck.</li>
-<li><strong>Playables.</strong> When your colors are short of a deck's worth of playables for
-  the picks left, on-color playables gain a little.</li>
-<li><strong>Dual lands</strong> in your colors are worth a late pick, more when they let you
-  splash a strong card you've taken.</li>
-</ul>
-<p>The <strong>why</strong> column spells each of these out, and says whether a card is
-removal and whether it usually goes late enough to come back to you. It still
-doesn't know your curve: if two cards are within a point or two, take the one
-your deck needs.</p>
+<p>The terminal lists the likeliest decks above the pack, and the <strong>why</strong> column
+spells out each card's odds of being in your final colors, whether it's
+removal, and every host's grade. It still doesn't know your curve: if two
+cards are within a point or two, take the one your deck needs.</p>
 <h2>Install</h2>
 <p>You need about five minutes and a terminal (Terminal on a Mac, PowerShell on
 Windows). It works on macOS and Windows, and on Linux if Arena runs under

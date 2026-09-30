@@ -12,6 +12,16 @@
    ]
   },
   {
+   "show": "Limited Resources",
+   "title": "#873: Reality Fracture Set Review, Rare and Mythic Rare",
+   "date": "2026-09-29",
+   "url": "https://lrcast.com/",
+   "hosts": [
+    "Marshall",
+    "Luis"
+   ]
+  },
+  {
    "show": "Limited Level-Ups",
    "title": "#261: Reality Fracture First Impressions",
    "date": "2026-09-18",
@@ -83,151 +93,150 @@
   }
  ],
  "synthesis": {
-  "overview": "Reality Fracture is a full-size set with ten supported two-color archetypes. The five allied 'schools' (WU surveil, UB self-mill/threshold, BR pings, RG Heartwood ramp, WG lifegain/counters) are on rails, each sharing a hybrid prepared spell. The five enemy pairs are looser shells. The glue is Empower Jace: many cards create or load a Jace token that can -1 to surveil or -3 to draw. Legendary Way enchantments give those Jaces new abilities.\n\nEvery show calls the set deep, high-powered and synergy-rich, and Lords of Limited called it an all-time great after early play. Power sits in the uncommons and rares, especially the pushed, heavily pipped gold uncommons and charms. Limited Level-Ups notes there are only 71 commons, so decks end up uncommon-heavy.\n\nThe site's simulation (800 bot decks, 100,000 games, 51.8% average drawn win rate) broadly backs the experts on red-green and on the gold removal. It is much colder on blue and on UB than the experts are. It also likes big, sturdy green and white bodies more than the reviewers do.",
-  "speed": "Early takes said fast: Limited Resources expected quick games where bounce shines. Every show that has since played it (Limited Level-Ups' rare review, Lords of Limited's #498, Martin at TCGplayer) now says slow and grindy. Games run to turn six and beyond, seven- and eight-drops get cast, and mana sinks overperform. You still need early bodies to pressure Jace tokens and protect your own. The simulation fits the grindy read. Sturdy bodies like Wrecking Gecko (56.9%) and Thalia, the Survivor (60.7%) overperform, while tempo tools lag: Unsummon 47.9%, Perfected Theory 34.0%.",
+  "overview": "Reality Fracture is a ten-archetype set built around Empower Jace. Many cards create or add loyalty to a Jace token that can -1 to surveil or -3 to draw. Around that sit prepared creatures (each allied pair shares one hybrid prepared spell), Heartwood mana tokens in red-green, threshold self-mill in blue-black, basic landcyclers, and the Way enchantments, which give all your future Jaces new abilities. Every show calls it deep, synergistic and high-powered. Much of the power sits in rares and heavily pipped gold uncommons and charms.\n\nThe early read was aggressive, but it shifted once people played. By the rare reviews and Lords of Limited's post-prerelease episode, the consensus was a slow, grindy, mana-hungry format where games reach seven- and eight-drops. You still have to put creatures on the board early to fight over Jace tokens.\n\nThe simulation (800 bot decks, 100,000 games, average card 51.8% when drawn) broadly agrees. Red-green is the best deck at 53.2%. Sturdy, expensive value cards top the charts, and blue-black self-mill is the clear loser at 45.7%.",
+  "speed": "The experts started out split and converged on slow. Limited Resources' first review guessed games would be fast. Marc and Alex on Limited Level-Ups predicted midrange-to-grindy, then called it outright slow in their rare review. Ethan and Ben on Lords of Limited, after playing, describe long games with lots of trading, and Martin for TCGplayer expects Sealed to be slower still. The simulation doesn't measure turns, but its leaderboard supports the slow read. The top commons are big bodies and two-for-ones: Bestial Incursion 59.7%, Blossom-Blessed Angel 59.5%, Wrecking Gecko 56.9%. Six-drop Kiora of Fire and Ashes is at 61.9%. Draft for the long game, but still bring two-drops that can attack a Jace token.",
   "consensus": [
-   "Empower Jace defines the format. Attack opposing Jace tokens, and value cheap evasive or two-power creatures that can peck at them.",
-   "Red-green Heartwood ramp is real, and Craftwork Crusher and Kiora of Fire and Ashes are premium payoffs. The sim agrees: RG is the best pair at 53.2%, Kiora 61.9%, Crusher 58.7%.",
-   "The gold uncommons and charms are pushed. Twisted Fates is a near-bomb, and Konstrari Charm is the weakest charm.",
-   "Black's removal (Last Gasp, Multiply by Zero, Extended Absence, Break Under Pressure) is excellent even where black itself is rated low.",
-   "The color-hoser cycle (Flourishing Grapple, Essence Burn, Terminal Criticism, Precise Redaction, Refute Destiny) is sideboard-only in best-of-three and never maindeck in best-of-one.",
-   "Empower cards that also affect the board (Mindseeker Oculus, Hexhaven Battalion, No Admittance) beat pure Jace fuel like Protege's Awakening.",
-   "Triple-pipped gold cards like Hapatra, Twisted Fates and Mind Meanderer belong to their pair and aren't splash material."
+   "Empower Jace defines the format. Kill opposing Jace tokens for most of the game, and value evasive, menace, trample and high-toughness vigilance creatures for attacking and defending them.",
+   "Cheap removal is premium: Last Gasp, Multiply by Zero, Extended Absence, No Admittance and Clash of Elements rate well everywhere.",
+   "Pushed gold uncommons and charms are the backbone. Twisted Fates, Craftwork Crusher, Warrior's Blades and Saheeli, Jewel of Avishkar are universally liked. Konstrari Charm is the one weak charm.",
+   "Red-green Heartwood ramp is a real, well-supported deck, and Craftwork Crusher and Kiora of Fire and Ashes are premium payoffs.",
+   "The top bombs are clear: Aerid Konstrari, Ajani Unrelenting, Garruk, Curse Breaker, Garruk, Veiled Butcher, Chandra, Torch of Defiance, The Theorist, Sphinx of False Conclusions and Uldaros Theorix.",
+   "The color-hoser cycle (Flourishing Grapple, Essence Burn, Terminal Criticism, Precise Redaction, Refute Destiny) is sideboard-only. Skip it in best-of-one.",
+   "Traps to avoid: Gardenize, Omnipresence, Return to the Light Realms, Emrakul, Loyal Tutor, Identity Echo and Cruel Calculations."
   ],
   "debates": [
-   "Best Way. Alex on Limited Level-Ups and Ethan on Lords of Limited say Way of the Healer. Ben on Lords says Way of the Pyromancer, which Alex graded D+ for its late-draw floor. The sim has Healer at a flat 50.3% and Pyromancer at 45.1%.",
-   "Blue's standing. Limited Level-Ups calls blue possibly the best color at common and uncommon, and Ethan has it second. The sim has blue as the weakest color, with UB last at 45.7%.",
-   "Bloombrute. Limited Resources grades it A- and LSV 4.0, while Marc on Limited Level-Ups gave it a C over thin lifegain enablers. The sim's 53.2% sits between them.",
-   "BR pings. Ben initially rated it top tier and LSV gives Stingerquill Voxmancer 3.5. Limited Level-Ups calls it the most dubious archetype, and Lords later called it fussy. The sim shows 51.0%, but on only 5% of decks.",
-   "Kiora of Salt and Sand. Luis on Limited Resources and Ethan on Lords see a real build-around. Marc on Limited Level-Ups calls the 8/8 plan a trap. The sim sides with Marc at 48.3%.",
-   "Inspired Tethermage. Ben on Lords moved it up to B- in Way decks. Limited Level-Ups (D+) and Martin at TCGplayer (1.5) are down on it. The sim shows 50.8%.",
-   "Black's rank. Both Lords hosts and Limited Level-Ups put it last. LSV calls its commons awesome, and Ethan concedes it improved in play."
+   "Best and worst colors: Ethan and Ben on Lords of Limited put red first and black last. Marc and Alex on Limited Level-Ups called blue possibly the best color and black the worst, but only narrowly. Ben later declared himself a green stan.",
+   "Black-red pings: Limited Resources and LSV (Stingerquill Voxmancer 3.5) found it scary. Limited Level-Ups called it the most dubious archetype, and Lords of Limited's post-play episode called it fussy and fragile.",
+   "Bloombrute: Limited Resources gave it an A- and LSV a 4.0, but Marc on Limited Level-Ups gave it a C, doubting there are enough life-gain enablers.",
+   "Best Way: Alex (A-) and Ethan argue for Way of the Healer, while Ben is confident it's Way of the Pyromancer. For worst, Ethan names Way of the Cryomancer and Ben names Way of the Mind Sculptor, which Limited Resources and LSV rated a B build-around.",
+   "Kiora of Salt and Sand: Lords of Limited bought into the 8/8 Leviathan plan, while Marc on Limited Level-Ups called it an upside trap.",
+   "Surveillance Phantasm and Inspired Tethermage: Lords of Limited moved Phantasm down after play because Jaces aren't activated as often as expected. Ben moved Tethermage up to B-, while Martin has it at 1.5."
   ],
   "colors": [
    {
     "color": "W",
-    "take": "The experts are split. Limited Level-Ups called white second-worst, while Ben on Lords and Martin at TCGplayer like its depth and one-pip removal. The sim finds white's best creatures excellent: Thalia, the Survivor 60.7%, Blossom-Blessed Angel 59.5%, Lyra, Archangel of Dawn 58.5%, Ghalta the Immovable 57.3%. Yet all four white pairs land around 49-50% while being the most-drafted, so white is probably overdrafted rather than weak. Rescue Girl (46.5%) and Prophesied End (46.6%) underperform their reviews."
+    "take": "The experts are split. Limited Level-Ups ranked it second-worst, while Ben liked its depth and Ethan moved it up to third. The white pairs all land at 49-50% in the sim, yet several white cards are among its best: Thalia, the Survivor 60.7%, Blossom-Blessed Angel 59.5%, Lyra, Archangel of Dawn 58.5%. The hyped Rescue Girl (46.5%) and Prophesied End (46.6%, which Martin rated 4.0) disappoint."
    },
    {
     "color": "U",
-    "take": "This is the biggest expert-sim gap. Reviewers praise blue's card flow, Countersculpt and Unsummon, and rate rares like Sphinx of False Conclusions and Seasoned Cryomancer highly. In the sim, blue pairs average under 50% and those rares sit at 46-48%. Blue's cards are skill-intensive (flash, bounce, counters), which bots handle poorly, so the truth is likely between the two. Still, don't assume blue is the best color."
+    "take": "The biggest expert-sim gap. Limited Level-Ups calls blue possibly the best color, but it has the worst pair average in the sim (about 48.8%), dragged down by blue-black. Unsummon (47.9%), Icy Reception (48.5%) and Countersculpt (49.6%) all underperform, though Mindseeker Oculus holds at 53.5%. Bots are weakest with tempo and counterspell timing, so blue is probably better than this. Still, don't expect it to carry you."
    },
    {
     "color": "B",
-    "take": "The experts see black as a removal-rich support color with few threats. The sim is kinder: BR and BG are above average, Extended Absence runs 56.1% and Multiply by Zero 54.2%, and Curse-Marred Demon is a 61.1% rare. Break Under Pressure (47.0%) and UB self-mill are the soft spots."
+    "take": "Everyone calls black a support color with excellent removal, and the sim agrees. Extended Absence is at 56.1% and Multiply by Zero at 54.2%, and its pairs other than blue-black are middling to solid. Screeching Soulbreaker (55.6%) outplays the skeptical grades from Ben and Marc. Break Under Pressure (47.0%) lags its B+ from Limited Resources."
    },
    {
     "color": "R",
-    "take": "Lords of Limited ranks red first, and everyone likes the burn (No Admittance, Violent Echoes, Fulminous Forte). The sim agrees that red is strong: every red pair except WR is above 50%, Kiora of Fire and Ashes posts 61.9%, and Pia, Determined Rebuilder 56.2%. Violent Echoes, which the shows call a mythic-level uncommon, only manages 51.0% in bot hands."
+    "take": "Lords of Limited's number one, and the sim agrees: red's pairs average about 51%, the best of any color. Standouts include Pia, Determined Rebuilder 56.2%, Heartstring Puller 55.9% (a Lords of Limited mover down), Fulminous Forte 55.0% and Tetsuko Umezawa, Pursuer at 60.6%. The Way of the Pyromancer hype (45.1%) and Violent Echoes (51.0%) look overstated."
    },
    {
     "color": "G",
-    "take": "Green is the riser. Ben on Lords calls himself a green stan after playing, and Martin rates green very strong. The sim makes it the best color: RG at 53.2%, plus big commons and uncommons all posting 56-60% (Bestial Incursion, Ghalta the Unstoppable, Wrecking Gecko, Greenhouse Propagator)."
+    "take": "Ben and Martin rate green very highly, and the sim backs them. Green anchors the best pair, red-green, and a solid green-black. Bestial Incursion (59.7%), Greenhouse Propagator (56.2%, Ben's big mover up) and Arcane Amphisbaena (55.7%) lead the commons. Ghalta the Unstoppable hits 59.5% despite a C-/D+ from Limited Level-Ups."
    }
   ],
   "pairs": [
    {
-    "pair": "WU",
-    "experts": "Surveil flyers. Limited Level-Ups calls it possibly the strongest pair, and Ben had it top tier. Lords later said it impresses but isn't premier. Signposts are Desperate Futurescribe, Fatehold Chronologist and Denzilore Fatehold.",
-    "sim": "49.1% on 14% of decks, below average. Futurescribe (57.1%) and Chronologist (54.0%) deliver. Fatehold Charm (47.5%) and Surveillance Phantasm (50.2%) do not."
-   },
-   {
-    "pair": "UB",
-    "experts": "Luis on Limited Resources loves the Paradox Shaper self-mill loop. Lords of Limited says the mill deck hasn't impressed, and Limited Level-Ups calls the prepared mill weak.",
-    "sim": "Worst pair at 45.7% (4% of decks). Paradox Shaper (41.1%) and Theorix Charm (45.0%) back the skeptics, and the sim has the better case here."
+    "pair": "RG",
+    "experts": "Unanimously strong. Marc called it the early best pair, and Lords of Limited calls it one of the best decks thanks to Heartwood ramp, Kiora of Fire and Ashes and Craftwork Crusher.",
+    "sim": "Best in the sim at 53.2% on 12% of decks. Kiora of Fire and Ashes (61.9%) and Craftwork Crusher (58.7%) deliver. Verdant Kraken (47.5%) and Way of the Pyromancer (45.1%) do not."
    },
    {
     "pair": "BR",
-    "experts": "Stingerquill pings. It looked scary in previews, but Limited Level-Ups calls it dubious and Lords says it collapses when the engine dies. LSV still rates Voxmancer and Grim Repriser well.",
-    "sim": "51.0%, but on only 5% of decks. That suggests it works when the lane is open, not that it's a deck to force."
-   },
-   {
-    "pair": "RG",
-    "experts": "Heartwood ramp into Craftwork Crusher and Kiora of Fire and Ashes. Marc on Limited Level-Ups calls it the best pair, and Lords names it one of the best decks.",
-    "sim": "Best pair at 53.2% on 12% of decks. Experts and sim agree."
-   },
-   {
-    "pair": "WG",
-    "experts": "Lifegain and counters. It looks pushed, with Bloombrute and Vigorbloom Vanguard, but Limited Level-Ups warns the lifegain enablers are thinner than they look.",
-    "sim": "49.1%. Vigorbloom Vanguard and Titanbones both post 56.2%, but Vigorbloom Charm (46.5%) and Medic's Kitesail (47.2%) drag it down."
-   },
-   {
-    "pair": "WB",
-    "experts": "Attrition and sacrifice around Twisted Fates, which Ben calls broken in half. Edgar, Ancient Bloodlord is hyped as an incredible two-drop.",
-    "sim": "49.9% on 14% of decks. Twisted Fates confirms at 57.5%, while Edgar posts just 45.1%."
-   },
-   {
-    "pair": "UR",
-    "experts": "Spells and prowess. It is Ben's top archetype, and Limited Level-Ups advises committing to either red aggro or blue control. Clash of Elements and Saheeli, Jewel of Avishkar are the draws.",
-    "sim": "50.5% on 5% of decks, solid. Clash posts 55.9%. Tetsuko Umezawa, Pursuer posts a surprising 60.6%."
+    "experts": "The most contested pair. Limited Resources and LSV liked the Stingerquill ping plan, while Limited Level-Ups and Lords of Limited, after playing, found it fussy.",
+    "sim": "Second-best at 51.0% but only 5% of decks, so it rewards the few who end up there. Master of Barbs (54.1%) and Voxmancer (52.5%) are fine; Danitha, Spear of Agony (42.4%) is not. The sim leans toward the optimists, provided the lane is open."
    },
    {
     "pair": "BG",
-    "experts": "Everyone doubts the deathtouch-plus-trample theme but likes Hapatra and graveyard midrange. Ben ranks it bottom tier.",
-    "sim": "50.8% on 10% of decks, better than the experts expect. Carnivorous Cultivator runs 57.8%, while Hapatra (52.1%) is merely fine."
+    "experts": "Everyone doubts the advertised deathtouch-plus-trample theme. Limited Level-Ups and Martin see it as graveyard midrange built around Hapatra and Carnivorous Cultivator.",
+    "sim": "Solid at 50.8% on 10%. Carnivorous Cultivator (57.8%) shines, Hapatra, the Desert Fang is fine at 52.1%, and Tarmogoyf disappoints at 47.3%. Build it as a midrange deck of cards that are good on their own."
    },
    {
-    "pair": "WR",
-    "experts": "Counters aggro with Warrior's Blades and Mabel, Valley Hero. Ben rated it top tier early.",
-    "sim": "The most-drafted pair (15%) at 49.5%. Warrior's Blades (51.3%) and Mabel (49.7%) are average, and aggro seems to underperform in a grindy format."
+    "pair": "UR",
+    "experts": "Ben's top archetype. Limited Level-Ups warns to commit to either the aggressive or the controlling version rather than mixing payoffs.",
+    "sim": "Slightly above even at 50.5% on 5%. Clash of Elements (55.9%) and Tetsuko Umezawa, Pursuer (60.6%) carry it more than Saheeli, Jewel of Avishkar (52.4%)."
    },
    {
     "pair": "UG",
-    "experts": "The splash-the-Ways Jace deck. Ben calls it a sleeper, Marc calls Kiora's 8/8 plan a trap, and Lords later rated it slightly worse than hoped.",
-    "sim": "49.9% on 7% of decks, dead average. Mind Meanderer posts 52.9% and Kiora of Salt and Sand 48.3%."
+    "experts": "Ben's sleeper. Lords of Limited later said it was slightly worse than hoped, and Limited Level-Ups calls the Kiora 8/8 plan a trap.",
+    "sim": "Roughly even at 49.9% on 7%. Kiora of Salt and Sand is 48.3% and Mind Meanderer 52.9%. The sim sides with the skeptics on Kiora."
+   },
+   {
+    "pair": "WB",
+    "experts": "A well-regarded attrition and sacrifice deck. Twisted Fates is a near-bomb, and Edgar, Ancient Bloodlord was widely praised.",
+    "sim": "About even at 49.9% on 14%. Twisted Fates earns its hype at 57.5%, but Edgar is only 45.1%."
+   },
+   {
+    "pair": "WR",
+    "experts": "Aggressive counters deck built around Warrior's Blades and Mabel. Few hosts discuss it much.",
+    "sim": "49.5% as the most-drafted pair (15%). Warrior's Blades is at 51.3% and Mabel, Valley Hero at 49.7%, so the signposts are merely average."
+   },
+   {
+    "pair": "WG",
+    "experts": "Looks pushed. Limited Level-Ups warns that life-gain payoffs are thinner than they appear, while Lords of Limited says the Seed Suture life-gain plan is real.",
+    "sim": "49.1% on 14%. The bodies carry it (Vigorbloom Vanguard, Titanbones and Greenhouse Propagator are all 56.2%). Vigorbloom Charm (46.5%) and Medic's Kitesail (47.2%) lag."
+   },
+   {
+    "pair": "WU",
+    "experts": "Limited Level-Ups calls it possibly one of the strongest, and Ben has it top tier. Lords of Limited later said it is impressive but not premier.",
+    "sim": "Only 49.1% on 14%. Fatehold Chronologist is solid at 54.0%, but Fatehold Charm (47.5%) and Proctor of Potential (50.0%) underwhelm. Treat it as good but not a lane to force."
+   },
+   {
+    "pair": "UB",
+    "experts": "Limited Resources' Luis loves the Paradox Shaper loop. Lords of Limited says the mill deck hasn't impressed and looks under-supported.",
+    "sim": "Worst by far at 45.7% on 4%. Paradox Shaper is 41.1% and Theorix Charm 45.0%. Bots may misplay self-mill, but the gap is large enough that the skeptics have the better case."
    }
   ],
   "sim_vs_experts": [
    {
-    "card": "Sphinx of False Conclusions",
-    "note": "Marc on Limited Level-Ups calls it the best rare (A+), and LSV gives it 4.5. The sim has it at 48.3% over 3,315 games. Flash ambushes and loot-on-attack are exactly what bots misplay, so the experts have the better case. Still, a 4/2 body in a format full of pings and cheap removal is more fragile than an A+."
-   },
-   {
-    "card": "Thalia, the Survivor",
-    "note": "Limited Level-Ups graded it C and Limited Resources B, but it posts 60.7%. A lifelink 3/4 that taxes Ways and removal fits a slow, grindy format. The sim's case is strong, so treat it as a high pick."
-   },
-   {
     "card": "Blossom-Blessed Angel",
-    "note": "Both Limited Resources and Limited Level-Ups gave it a C, while Ben on Lords called it absurdly good. It runs 59.5% over nearly 19,000 games. Ben and the sim are right; take it early."
+    "note": "Limited Resources and Limited Level-Ups gave it a C and Martin a 2.5, but Ben called it absurdly good. The sim has it at 59.5% over 18,694 games, the best common after Bestial Incursion. With that sample in a slow format, Ben and the sim are right."
    },
    {
     "card": "Tetsuko Umezawa, Pursuer",
-    "note": "Alex on Limited Level-Ups graded it D and Marc C-. It posts 60.6%. A 2/4 double striker is a strong body when boards stall, and the reviewers likely undersold it."
+    "note": "Graded C+ by Limited Resources, C-/D by Limited Level-Ups and 2.5 by Martin, yet it wins 60.6% over 3,703 games. A 2/4 double-striker that is hard to block needs no subtle play, so trust the sim and take it higher."
    },
    {
     "card": "Wrecking Gecko",
-    "note": "The experts rate it D+ to C- as a fringe five-drop, and Lords called it garbage. It posts 56.9% over 18,854 games. Ward 2 on a 5/5 matters in a removal-heavy, slow format. Bots may overvalue fat bodies, but it's clearly a fine playable."
+    "note": "The experts had it at D+/C-, and Lords of Limited called it garbage but liked. The sim shows 56.9% over nearly 19,000 games. A ward-2 5/5 with a mana sink is exactly what a grindy format rewards, so the sim's case is strong."
    },
    {
-    "card": "Unsummon",
-    "note": "Limited Level-Ups calls it one of the best commons, while the sim shows 47.9%. Bots use bounce badly, so the experts win this one. But even the shows now say multiples are unnecessary in a slow format, so don't take it over real removal."
+    "card": "Sphinx of False Conclusions",
+    "note": "Rated A to A+ everywhere, and Marc called it the best rare, but it wins only 48.3% over 3,315 games. Flash ambushes and loot decisions are where bots are weakest, so the experts likely have the better case. Still, treat it as very good rather than a guaranteed bomb."
    },
    {
-    "card": "Way of the Pyromancer",
-    "note": "Ben on Lords calls it the best Way and Martin gives it 4.0, but it posts 45.1%. Way of the Healer, graded A- by Alex, is also only 50.3%. Bots don't manage Jace loyalty well, so the Ways are likely better than this. Alex's worry about Pyromancer's late-game floor is real, though."
+    "card": "Chandra, Torch of Defiance",
+    "note": "A/A+ from every show, but 48.9% in only 460 games, and bots passed it to pick 10.7. The sample is small and bots handle planeswalkers poorly, so side with the experts."
    },
    {
     "card": "Verdant Kraken",
-    "note": "Limited Level-Ups grades it A and Martin up to 5.0 in sealed. It posts 47.5% over 2,789 games. That is a large enough sample to temper the hype: take it, but treat it as a strong card rather than a guaranteed bomb."
+    "note": "Limited Level-Ups gave it an A and Martin a 4.5-5.0, yet it wins 47.5% over 2,789 games, even though red-green is the best pair. Luis's caveat that flyers and removal stop it ending games looks real. Expect a strong ramp payoff, not an auto-win."
    },
    {
     "card": "Edgar, Ancient Bloodlord",
-    "note": "Limited Resources grades it B, Lords calls it incredible and LSV gives it 3.5. The sim says 45.1%. Its value comes from well-timed sacrifices that bots miss, so the experts have the edge. Still, it isn't the auto-slam two-drop the previews suggested."
+    "note": "Limited Resources gave it a B/B-, LSV 3.5, and Lords of Limited called it an incredible rate, but it wins 45.1% over 2,522 games. The sacrifice lines are subtle, but the gap is large enough that it plays more like filler than a white-black pillar."
    },
    {
-    "card": "Greenhouse Propagator",
-    "note": "Lords called it garbage in first impressions, and Ben revised it to C+ after playing. The sim puts it at 56.2% over 20,538 games. That confirms the revision: mana plus life in a slow format is worth a card slot."
+    "card": "Way of the Pyromancer",
+    "note": "Ben calls it the best Way and Martin gives it 4.0, yet it wins 45.1% over 2,075 games. Its turn-two high roll is real, but a weak late draw drags the average down. Both have a point: it's excellent early and poor as a topdeck."
+   },
+   {
+    "card": "Rescue Girl, First Responder",
+    "note": "Lords of Limited called it broken and the best white uncommon, but it wins 46.5% over 5,808 games. Rebuying Ways needs careful sequencing that bots lack, so it may be better than this. Still, the sample says it's no auto-pick."
+   },
+   {
+    "card": "Way of the Mind Sculptor",
+    "note": "Limited Resources rated it a B build-around and LSV a 3.5. Ben called it the worst Way, and Limited Level-Ups had it at C-/D+. At 31.7% it is the lowest-performing card in the sim, which sides firmly with the skeptics."
    }
   ],
   "advice": [
-   "Lean green, and red-green above all. It's the pair both the experts and the sim like best, so take Craftwork Crusher, Kiora of Fire and Ashes and Bestial Incursion aggressively.",
-   "Draft two-drops and cheap evasive creatures that can attack Jace tokens. When attacking a Jace, send one hard-to-block creature at it and the rest at face, as Limited Level-Ups suggests.",
-   "Prioritize removal, especially Extended Absence, Multiply by Zero, No Admittance and Twisted Fates. Don't end up light on removal in a format full of strong three- to five-drops.",
-   "Don't sleep on sturdy bodies like Thalia, the Survivor, Blossom-Blessed Angel and Wrecking Gecko. The format goes long and the sim rewards them.",
-   "Avoid forcing UB self-mill or the BR ping deck. Take them only when the gold uncommons flow; Paradox Shaper and Voxmancer are weak without support.",
-   "Favor Empower Jace cards that also affect the board. Skip durdly Jace fuel like Way of the Mind Sculptor (31.7% in the sim), Way of the Cryomancer and Protege's Awakening unless you're deep in a Jace deck.",
-   "Keep color hosers in the sideboard. Flourishing Grapple wins 36.6% when drawn in the sim, which is what maindecking them looks like.",
-   "Pick up dual lands and count sources for heavy pips. Aim for 10-11 for double-blue three-drops and 12 or more for quadruple-pip cards, per Limited Level-Ups."
+   "Lean toward red-green ramp when it's open. It is the experts' favorite and the sim's best pair (53.2%), and Kiora of Fire and Ashes, Craftwork Crusher and Bestial Incursion are all high performers.",
+   "Take sturdy, expensive value cards over cute tempo. Blossom-Blessed Angel, Wrecking Gecko, Greenhouse Propagator, Ghalta the Unstoppable and Thalia, the Survivor all overperform their expert grades in a slow format.",
+   "Stay away from blue-black self-mill unless it falls into your lap. It is 45.7% in the sim, Lords of Limited says it hasn't impressed, and Paradox Shaper sits at 41.1%.",
+   "Prioritize cheap removal and early bodies that can attack a Jace. Send one hard-to-block creature at a Jace token and the rest at the opponent's face, as Limited Level-Ups suggests.",
+   "Don't take build-arounds without the support: Germinate Recruits and Loyal Tutor are 39.0%, Way of the Mind Sculptor 31.7%, and Paradox Shaper 41.1%.",
+   "Pick dual lands highly and count sources: about 10-11 for double-blue three-drops and at least 12 for quadruple-pip cards like Hexhaven Invigorator. Its double-colored cards are why Lords of Limited says splashing is hard in draft.",
+   "Keep color hosers in the sideboard in best-of-one. None beats the 51.8% average in the sim, and Flourishing Grapple is at 36.6%.",
+   "Treat black-red as a pair to move into only when it's clearly open. It wins 51.0%, but only 5% of decks end up there."
   ]
  },
  "cards": {
@@ -318,6 +327,18 @@
      "host": "LSV",
      "grade": "A+",
      "said": "5.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A+",
+     "said": "A+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A+",
+     "said": "A+"
     }
    ],
    "takes": [
@@ -330,6 +351,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A four-mana 5/4 flier that leaves value when it dies and pumps Heartwood tokens, cheap and removal-resistant."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A four-mana 5/4 flyer that leaves Heartwood tokens behind; A+ on raw power alone."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Incredibly pushed, though he'd still take Null Summoner."
     }
    ]
   },
@@ -403,6 +434,12 @@
      "host": "Martin",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "build around B"
     }
    ],
    "takes": [
@@ -415,6 +452,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A cheap walker that is slow to make a creature and can't protect itself early, but it is a free lifegain engine that could be very strong in the right White-Green deck."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It's unplayable outside life gain and only makes the best life gain decks better, so taking it to force life gain is a trap."
     }
    ]
   },
@@ -437,6 +479,18 @@
      "host": "Martin",
      "grade": "A",
      "said": "4.75"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -449,6 +503,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Expensive but makes Cadets whenever any planeswalker activates, defends himself, clears boards and draws cards to win stalls."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Minus three wipes the board except your Cadet, then keeps pumping out hasty tokens."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Probably one of the best cards in the set, and its refill mode is also useful."
     }
    ]
   },
@@ -471,6 +535,18 @@
      "host": "Martin",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -488,6 +564,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "An upgraded, easily splashable Fireball that handles creatures or walkers and closes games, especially good in slower Sealed."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A Fireball that can kill a creature or the opponent, with plenty of ramp to power it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Flexible removal whose lingering trample makes it feel like a good deal, though it's not a bomb."
     }
    ]
   },
@@ -866,6 +952,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+/A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -883,6 +981,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Empowering Jace by two per land drop draws lots of cards and can threaten a big finish."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 2/3 that empowers Jace for two on every land drop is extremely good value."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Great without the ultimate, but too slow for cube."
     }
    ]
   },
@@ -1169,6 +1277,18 @@
      "host": "LSV",
      "grade": "C+",
      "said": "2.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C",
+     "said": "C"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C",
+     "said": "C"
     }
    ],
    "takes": [
@@ -1186,6 +1306,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Hard to set up but powerful, best cast post-combat after trades alongside a removal spell."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A fine two-mana 2/2 whose three-deaths trigger is too hard to build around."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Playable, and a bonus if the trigger happens to occur."
     }
    ]
   },
@@ -1523,6 +1653,18 @@
      "host": "Martin",
      "grade": "B+",
      "said": "3.75"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -1535,6 +1677,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Good stats plus deathtouch, best in Green-Black graveyard recursion."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 2/3 deathtouch has a B floor, and the third power stops it being ignored, so attacks force a chump or hand you a land."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Great on offense and defense for two mana, with a little upside on top."
     }
    ]
   },
@@ -1669,6 +1821,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B/B+"
     }
    ],
    "takes": [
@@ -1681,6 +1845,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A cheap walker that protects herself with stun counters and provides extra cards and mana if you have enough noncreature spells."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Minus two to stun a creature is the usual play, but she needs plenty of noncreature spells for her plus abilities to work."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A slow-building source of value that isn't a big enough threat to demand an answer."
     }
    ]
   },
@@ -1703,6 +1877,18 @@
      "host": "Martin",
      "grade": "A+",
      "said": "5.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -1715,6 +1901,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Defends herself, gives card advantage and ramp, and has a game-winning ultimate, a true bomb."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "An all-time great planeswalker that kills a creature and then generates damage or cards every turn."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Brutal after killing their creature, and ramping into two-mana removal is also strong."
     }
    ]
   },
@@ -1864,6 +2060,12 @@
      "host": "LSV",
      "grade": "C",
      "said": "1.0 // 3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C+",
+     "said": "build around C+"
     }
    ],
    "takes": [
@@ -1881,6 +2083,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A great amplifier in Blue-White Peer Review decks but doesn't fix a medium deck."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Worth it only with a critical mass of prepared creatures that re-prepare themselves."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "You probably need to copy two or three spells before it feels worthwhile."
     }
    ]
   },
@@ -2177,6 +2389,12 @@
      "host": "Martin",
      "grade": "B+",
      "said": "2.5 - 4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "D",
+     "said": "D"
     }
    ],
    "takes": [
@@ -2189,6 +2407,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Needs only a couple of other artifacts to end the game, best in Red-Green with Heartwood tokens and possibly a bomb in slow Sealed."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Seven mana is a lot, and other ramp payoffs like Verdant Kraken are better."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Win-more unless you're making lots of Heartwood tokens, in which case it might be good enough."
     }
    ]
   },
@@ -2211,6 +2439,18 @@
      "host": "LSV",
      "grade": "F",
      "said": "0.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -2228,6 +2468,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Far too situational, usually drawing zero or one card."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A Divination that often draws nothing and is too finicky to set up."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "He'd rather just have Divination, though he jokes he'll draw seven with it someday."
     }
    ]
   },
@@ -2316,6 +2566,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.25"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -2333,6 +2595,16 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Obnoxiously powerful: a 4/4 flying trampler that tutors a card, with a fun risk that the random discard hits the card you fetched."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A four-mana 4/4 flying trampler whose Gamble slightly improves your hand, especially the more cards you hold."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Great stats; usually tutor for your best card."
     }
    ]
   },
@@ -2472,6 +2744,12 @@
      "host": "LSV",
      "grade": "C",
      "said": "1.0 // 3.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B-",
+     "said": "B-"
     }
    ],
    "takes": [
@@ -2489,6 +2767,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Solid in mill or threshold decks and garbage otherwise."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A one-drop that advances the self-mill plan and can become a 3/2, but it's fairly bad outside graveyard decks."
     }
    ]
   },
@@ -2511,6 +2794,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -2523,6 +2818,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Graded mostly for three power with haste, with occasional runaway value and synergy with Silence the Echo."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A 3/2 flying haste that returns for free; build around it with Silence the Echo and cheap removal to trigger it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Already a decent flyer, with strong recursion in the self-mill deck."
     }
    ]
   },
@@ -2562,6 +2867,18 @@
      "host": "LSV",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -2579,6 +2896,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Gigantic for its cost with a game-winning ability, great in any Blue-White deck."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A flash 3/4 flyer on its own, and a huge bomb with surveil and scry effects."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Flash it in and start spreading counters; an easy A."
     }
    ]
   },
@@ -2601,6 +2928,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C+",
+     "said": "C+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C+",
+     "said": "C+"
     }
    ],
    "takes": [
@@ -2613,6 +2952,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Rare slow lands are great fixing for multicolor decks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "A dual land that almost always enters untapped, slightly better than the common duals."
     }
    ]
   },
@@ -2691,6 +3035,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B-",
+     "said": "B-"
     }
    ],
    "takes": [
@@ -2708,6 +3064,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A one-mana prowess creature bundled with a momentum spell, best in assertive decks and fine to first-pick."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A one-mana 1/1 with pseudo-prowess that also comes with a flexible bounce spell."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "It does a lot in the early game for such a cheap card."
     }
    ]
   },
@@ -2786,6 +3152,18 @@
      "host": "Martin",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B/B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -2798,6 +3176,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A premium flier on stats alone, best in Red-Green turning Heartwood tokens into Dragons."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Mainly a five-mana 5/5 flyer, with upside if you make artifact tokens."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Already strong, and it gains value with any artifact token makers."
     }
    ]
   },
@@ -3069,6 +3457,18 @@
      "host": "LSV",
      "grade": "D",
      "said": "1.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -3086,6 +3486,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Too expensive for what it offers even with its colorless ramp."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "By ten mana you've no cards left, the ward is easily paid, and the mana-rock mode isn't worth a slot."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Too expensive no matter how you cut it."
     }
    ]
   },
@@ -3108,6 +3518,12 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C+",
+     "said": "C+"
     }
    ],
    "takes": [
@@ -3130,6 +3546,11 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "The card-advantage clause is hard to trigger, so he mostly ran it as a plain two-mana 2/1 lifelinker."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 2/1 lifelink is fine in life gain decks, but it won't survive combat and rarely gains enough life to draw real cards."
     }
    ]
   },
@@ -3152,6 +3573,18 @@
      "host": "LSV",
      "grade": "C",
      "said": "1.0 // 3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -3164,6 +3597,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A great payoff only if you have Garruk, Curse Breaker or Ajani Unrelenting and Jace makers."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "Swapping a Jace token for a planeswalker takes too much jumping through hoops."
     }
    ]
   },
@@ -3286,6 +3724,12 @@
      "host": "LSV",
      "grade": "C-",
      "said": "1.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -3308,6 +3752,11 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "A very fun sealed card; with a nearly five-color manabase he could pull almost his whole sideboard with it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A bad land-fetch because the opponent picks, and loading your sideboard with good cards for it isn't worth it."
     }
    ]
   },
@@ -3390,6 +3839,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "Draft 4.0, Sealed 4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "D",
+     "said": "D"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "D",
+     "said": "D"
     }
    ],
    "takes": [
@@ -3402,6 +3863,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Expensive but can win on the spot since Jace tokens make having a planeswalker easy, likely a haymaker in Sealed."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "Swingy and able to steal games, but it costs seven, is bad on small boards and is mostly a trap without a Jace."
     }
    ]
   },
@@ -3830,6 +4296,12 @@
      "host": "Martin",
      "grade": "C",
      "said": "1.0 - 3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C",
+     "said": "D, build around C"
     }
    ],
    "takes": [
@@ -3847,6 +4319,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A four-mana 2/2 that costs momentum, so it only shines in decks packed with prepared or enters-the-battlefield creatures and should not go in every white deck."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It's slow, but with good enter-the-battlefield creatures, blinking one with every creature cast adds real value."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A four-mana 2/2 that dies to two-mana removal needs to really sing to be worth it."
     }
    ]
   },
@@ -3925,6 +4407,12 @@
      "host": "LSV",
      "grade": "B",
      "said": "3.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "D",
+     "said": "D"
     }
    ],
    "takes": [
@@ -3942,6 +4430,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Fantastic in aggressive Blue-Red prowess builds."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Strong on turn three in aggressive blue-red with good mana, but it falls off sharply later and control decks don't want it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "More cool than good."
     }
    ]
   },
@@ -4132,6 +4630,18 @@
      "said": "0.0"
     },
     {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
+    },
+    {
      "show": "Limited Level-Ups",
      "host": "Marc",
      "grade": "F",
@@ -4148,6 +4658,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Does nothing on the turn played and takes too long to pay off."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "The dream of big mana needs far too much setup and a payoff to go with it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Cute, but the work needed to get several mana a turn isn't worth a card."
     }
    ]
   },
@@ -4170,6 +4690,18 @@
      "host": "Martin",
      "grade": "A+",
      "said": "5.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -4187,6 +4719,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Protects himself, adds a threat, wins long games and can ult for lethal."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Making a 4/4 trampler, drawing a card and keeping Garruk around is excellent value that repeats turn after turn."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Even the worst case, where they kill the 4/4 blocker, leaves you up a card, so you'll always be happy playing it."
     }
    ]
   },
@@ -4209,6 +4751,18 @@
      "host": "LSV",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -4221,6 +4775,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "High loyalty, removal options and turning weak creatures into 4/4s make him a fantastic start to a draft."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A textbook planeswalker bomb that shrinks creatures, forces edicts that make beasts, or strips cards."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "One of the best cards in the set, possibly even A+."
     }
    ]
   },
@@ -4355,6 +4919,12 @@
      "host": "Martin",
      "grade": "F",
      "said": "0.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "build around B"
     }
    ],
    "takes": [
@@ -4372,6 +4942,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A total blank without a same-turn way to gain lots of life while holding up three mana, which Limited rarely offers."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It needs you to gain three or four life fairly often to make up for the times it makes zero, so don't put it in your deck lightly."
     }
    ]
   },
@@ -4526,6 +5101,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -4538,6 +5125,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Punishes opponents whether or not they try to kill him, a lot for three mana."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A warded 3/3 whose pings mean it can't be ignored, and killing it costs them a two-for-one."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "You rarely get a bad exchange, though it does less when you're behind."
     }
    ]
   },
@@ -4560,6 +5157,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C",
+     "said": "C"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C",
+     "said": "C"
     }
    ],
    "takes": [
@@ -4572,6 +5181,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A cheap bit of combat interaction via its discard ability, with a static ability that matters thanks to Cadet tokens and token makers in the set."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Most of its value is as a four-damage removal spell for attacking or blocking creatures; the token anthem and planeswalker mana are minor."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Treat it as a common-level removal spell and look for niche upside elsewhere."
     }
    ]
   },
@@ -4778,6 +5397,18 @@
      "host": "Martin",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A-"
     }
    ],
    "takes": [
@@ -4790,6 +5421,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A repeatable board buff with a flexible cost that is also a big standalone threat, splashable and very strong."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It scales with the game and even the two-mana floor spreads counters around; at four mana alongside other creatures it's huge even if they kill it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Very strong and splashable, though it needs a board of other creatures and is vulnerable to instant-speed removal before combat."
     }
    ]
   },
@@ -4812,6 +5453,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B-",
+     "said": "B-"
     }
    ],
    "takes": [
@@ -4824,6 +5477,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Relevant in long games and playable as an extra land in most decks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Getting an instant-speed extra creature out of a land slot is huge."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Most two-color decks should play it, though the colorless land is a cost."
     }
    ]
   },
@@ -5039,6 +5702,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C+",
+     "said": "C+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C+",
+     "said": "C+"
     }
    ],
    "takes": [
@@ -5051,6 +5726,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Rare slow lands are great fixing for multicolor decks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "A dual land that almost always enters untapped, slightly better than the common duals."
     }
    ]
   },
@@ -5337,6 +6017,18 @@
      "host": "Martin",
      "grade": "C-",
      "said": "1.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B (heavy green), A- (mono green)"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+/A- (mono green)"
     }
    ],
    "takes": [
@@ -5354,6 +6046,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Great stats but the four-Forest requirement means it's often cast very late, so don't speculate on it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A four-mana 6/6 vigilance that ramps is great in mono green, but in a split two-color deck it effectively costs six or more and becomes merely okay."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Bonkers if it comes down on turn four; the whole question is how late the quadruple-green cost pushes it."
     }
    ]
   },
@@ -5376,6 +6078,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A-",
+     "said": "A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A- (after suggesting B/B+)"
     }
    ],
    "takes": [
@@ -5398,6 +6112,16 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Nuts because you can only kill it while the Heartwood trigger is on the stack; otherwise it sacrifices the token for hexproof and effectively needs two removal spells."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A five-mana 5/5 that brings its own Heartwood token to sacrifice for hexproof is very hard to remove, which is about the best you get from a five-drop."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "It was a beating when played against him in early access and is good in every scenario, mostly thanks to the hexproof protection."
     }
    ]
   },
@@ -5557,6 +6281,12 @@
      "host": "Martin",
      "grade": "F",
      "said": "0.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -5569,6 +6299,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Costs seven mana and a permanent for an unpredictable, often off-rate result."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Not worth a card."
     }
    ]
   },
@@ -5662,6 +6397,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -5679,6 +6426,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Deals tons of damage for three mana and must be answered."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A cheap three-drop that pings whenever creatures attack and pumps out hasty Cadets late game."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "It applies a lot of pressure for three mana."
     }
    ]
   },
@@ -5795,6 +6552,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -5807,6 +6576,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "An end-of-turn big Jace that draws immediately and again after untapping, strong value especially with other Jace payoffs."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "An instant-speed Divination-plus that leaves a Jace behind and combines well with Ways and other Jace payoffs."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A strong baseline of two cards plus spare loyalty, with fun combos like Kiora."
     }
    ]
   },
@@ -5829,6 +6608,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -5841,6 +6632,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Can't protect himself every turn, but his -3 effectively skips their combat and he draws cards."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Its minus shuts down attacks and its plus spawns a second Jace, which is strong but less impressive than The Theorist."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Splitting loyalty across two Jaces creates an interesting problem for the opponent."
     }
    ]
   },
@@ -5958,6 +6759,12 @@
      "host": "LSV",
      "grade": "B",
      "said": "3.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "D",
+     "said": "D"
     }
    ],
    "takes": [
@@ -5970,6 +6777,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Usually has a good effect since most decks have enters-the-battlefield creatures."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It shuts off the set's many ETBs, which is worth trying if it doesn't hurt you, but it's a replaceable body."
     }
    ]
   },
@@ -5992,6 +6804,12 @@
      "host": "LSV",
      "grade": "C",
      "said": "1.0 // 3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -6004,6 +6822,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A strong build-around for Red-Green Heartwood ramp."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "In a two-color deck you'd pay about eight for a 5/5 that draws two, which isn't worth it."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It could work as a build-around in five-color ramp if it costs six or seven, but usually it won't."
     }
    ]
   },
@@ -6087,6 +6915,18 @@
      "host": "Martin",
      "grade": "B",
      "said": "Limited 2.0-4.0 (Draft 1.5-3.0, Sealed 2.5-4.0)"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B (maybe C)"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+/A-"
     }
    ],
    "takes": [
@@ -6104,6 +6944,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A clunky seven-mana sweeper that needs setup around creature types, but it can win out of nowhere and should be better in slow Sealed and as a sideboard card."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Shared creature types like Human will often stop it being one-sided, so it will underperform a Dune Blast at a steep seven mana."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "He's starting high because a Dune Blast-style effect was a bomb in the past, though it's expensive."
     }
    ]
   },
@@ -6529,6 +7379,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A+",
+     "said": "A+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A+",
+     "said": "A+"
     }
    ],
    "takes": [
@@ -6546,6 +7408,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A massive six-mana haymaker with lifelink, ward and a Lotus token."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A six-mana 6/6 with flying, vigilance, lifelink and ward that wins if left unanswered."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "It fills the Baneslayer Angel slot."
     }
    ]
   },
@@ -6634,6 +7506,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A-",
+     "said": "A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A-"
     }
    ],
    "takes": [
@@ -6651,6 +7535,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Cheap removal for any creature that leaves behind solid equipment."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Effectively a removal spell that kills their best thing and then sticks around as a useful equipment."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Straight-up removal attached to an equipment is incredible."
     }
    ]
   },
@@ -6673,6 +7567,18 @@
      "host": "Martin",
      "grade": "B",
      "said": "2.5 - 4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -6690,6 +7596,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "An upgraded Soul Warden with weak stats that becomes quite good with a few lifegain cards like Unflinching Hortimancer and can protect creatures or walkers."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "The Soul Warden life gain alone is good for a one-drop, and her hexproof ability forces them to kill her first."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "An annoying card on multiple fronts, and especially valuable in the green-white life gain deck."
     }
    ]
   },
@@ -6712,6 +7628,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -6724,6 +7652,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A powerful ability that fuels synergies, playable anywhere but shining in Blue-Black."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "The forced mill fuels threshold, and her exhaust reanimation provides real value."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 2/2 that the opponent must kill, or it eventually reanimates something."
     }
    ]
   },
@@ -6907,6 +7845,18 @@
      "host": "Martin",
      "grade": "D-",
      "said": "0.0 - 1.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -6919,6 +7869,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Card disadvantage that only makes sense when you have a busted planeswalker or key synergy piece, since drawing the walker naturally leaves it dead."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "It's dead when you have no planeswalker, the Garruks aren't Ugin-level, and most removal in the set hits planeswalkers anyway."
     }
    ]
   },
@@ -6941,6 +7896,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+ baseline, build around A"
     }
    ],
    "takes": [
@@ -6953,6 +7920,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A 3/3 flier for three is ahead of rate regardless of lifegain or Angels, good early and late."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A three-mana 3/3 flyer that pressures the opponent to kill it quickly, even with no life gain."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Already threatening on its own, and it becomes a huge flyer in the life gain deck."
     }
    ]
   },
@@ -6975,6 +7952,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A-",
+     "said": "A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A-"
     }
    ],
    "takes": [
@@ -6987,6 +7976,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A massive self-fueling threat that can trigger off card draw and must be answered."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A three-mana 3/3 flyer that can make angels by paying five, but beware tapping out to attack into open removal."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A high-floor flyer with multiple ways to hit the three-card-draw trigger."
     }
    ]
   },
@@ -7304,6 +8303,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -7316,6 +8327,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A great aggressive two-drop for Red-Black and Red-Blue that pressures Jace tokens with menace."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 2/1 menace for aggressive black-red that doesn't need the synergy to be good."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "It fits the non-combat damage subtheme."
     }
    ]
   },
@@ -7792,6 +8813,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A-",
+     "said": "A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A-"
     }
    ],
    "takes": [
@@ -7804,6 +8837,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Permanently takes a card and later lets you cast it, a two-for-one at worst."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A four-mana 4/2 that strips their best card and threatens to cast it, though it's weaker as a late topdeck and not cube-level."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "He'd happily put it in the cube, since it effectively forces a two-for-one."
     }
    ]
   },
@@ -7826,6 +8869,18 @@
      "host": "Martin",
      "grade": "F",
      "said": "0.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -7838,6 +8893,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Eight mana for an effect you could just replicate by casting creatures with that mana."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "An eight-mana enchantment with no board impact; don't try it."
     }
    ]
   },
@@ -7860,6 +8920,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C+",
+     "said": "C+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C+",
+     "said": "C+"
     }
    ],
    "takes": [
@@ -7872,6 +8944,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Rare slow lands are great fixing for multicolor decks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "A dual land that almost always enters untapped, slightly better than the common duals."
     }
    ]
   },
@@ -7894,6 +8971,18 @@
      "host": "LSV",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -7906,6 +8995,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A permanent sweeper that leaves a potentially huge Jace token, one of the best sweepers in a while."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A six-mana one-sided exile wrath in effect, since it leaves you a big Jace to draw with."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "It has been excellent against him multiple times."
     }
    ]
   },
@@ -8227,6 +9326,18 @@
      "host": "Martin",
      "grade": "C+",
      "said": "UR 3.5, BR 3.0, elsewhere 2.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C",
+     "said": "C"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C",
+     "said": "C/C+"
     }
    ],
    "takes": [
@@ -8239,6 +9350,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Strong in Blue-Red prowess and decent in Red-Black, but not for decks that can't trigger prowess."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Does a little of everything for one mana, but nothing notable."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Not that great, just fine."
     }
    ]
   },
@@ -8427,6 +9548,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -8439,6 +9572,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Free surveil enabler that becomes a payoff when it dies."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 3/1 that surveils and easily returns, since those decks naturally surveil."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Getting to use it twice is nice."
     }
    ]
   },
@@ -8766,6 +9909,12 @@
      "host": "Martin",
      "grade": "D-",
      "said": "0.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "D",
+     "said": "build around D"
     }
    ],
    "takes": [
@@ -8778,6 +9927,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Only maybe playable in dedicated Heartwood decks, and too much mana leads to flooding."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Awkward because it can't enchant Jace tokens, so you're turning treasures or Ways into 5/5s; it's only occasionally okay."
     }
    ]
   },
@@ -8800,6 +9954,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B-",
+     "said": "B-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B-",
+     "said": "B-"
     }
    ],
    "takes": [
@@ -8817,6 +9983,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Solid prowess stats with mana generation for big spells, but wants nine or more Mountains."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A threatening three-mana 3/3 prowess whose prepared spell sets up an explosive turn."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A powerful prowess card, though he's skeptical of prowess decks in general."
     }
    ]
   },
@@ -9049,6 +10225,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -9061,6 +10249,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "An above-rate two-drop that creates a planeswalker token when it attacks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 3/2 with a ridiculously high floor that picks up surveils or cards whenever it attacks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Repeated attacks into awkward boards add up to a lot of Jace value for two mana."
     }
    ]
   },
@@ -9230,6 +10428,18 @@
      "host": "Martin",
      "grade": "D-",
      "said": "0.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "F",
+     "said": "F"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -9242,6 +10452,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Nine mana is too much to reliably reach and the payoff isn't guaranteed even with a stocked graveyard."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A nine-mana spell in the wrong color that might only return a few cheap creatures."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Splashing it into self-mill blue-black is a fun dream, but it's too narrow to rely on."
     }
    ]
   },
@@ -9320,6 +10540,12 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -9337,6 +10563,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A flexible sweeper or card draw that rewards big creatures, pushing toward Green-Black."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A flexible instant that either draws big or sweeps small creatures, but it's situational and occasionally uncastable."
     }
    ]
   },
@@ -9359,6 +10590,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C+",
+     "said": "C+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C+",
+     "said": "C+"
     }
    ],
    "takes": [
@@ -9371,6 +10614,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Rare slow lands are great fixing for multicolor decks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "A dual land that almost always enters untapped, slightly better than the common duals."
     }
    ]
   },
@@ -9393,6 +10641,12 @@
      "host": "LSV",
      "grade": "D",
      "said": "1.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "F",
+     "said": "F"
     }
    ],
    "takes": [
@@ -9410,6 +10664,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Barely functional outside mono-green."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A tapped Forest whose payoff isn't good even in near mono-green, so it will cost more games than it wins."
     }
    ]
   },
@@ -9727,6 +10986,18 @@
      "host": "Martin",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -9744,6 +11015,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A good red two-drop granting haste, best in proactive aggressive decks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "On turn two, giving everything haste makes the opponent feel dead, especially with big green creatures."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Scary enough that it will play out great."
     }
    ]
   },
@@ -9760,6 +11041,12 @@
      "host": "LSV",
      "grade": "C",
      "said": "2.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "D",
+     "said": "D"
     },
     {
      "show": "Limited Level-Ups",
@@ -9783,6 +11070,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Mostly a curve-filler since opponents rarely respond to your spells enough for the ability to matter."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A below-rate two-mana 2/1 whose split-second effect rarely matters, and when it does, you often won't even notice."
     }
    ]
   },
@@ -9805,6 +11097,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -9822,6 +11126,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Grows and pings with Jace tokens without needing to defend them, lots of value for little mana."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It must be killed or it drains and grows your Jace every turn, and even when answered it leaves a Jace behind."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Play it and plus the Jace, and you usually net a two-for-one."
     }
    ]
   },
@@ -9910,6 +11224,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A-",
+     "said": "A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A-"
     }
    ],
    "takes": [
@@ -9927,6 +11253,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Packed with unflashy value from looting, stun counters, a body and extra cards, and a very high pick."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A three-mana double loot is already good, and the stun effects and graveyard draw-two push it very high."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Card filtering adds up, making this really good."
     }
    ]
   },
@@ -10076,6 +11412,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C+",
+     "said": "C+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C+",
+     "said": "C+"
     }
    ],
    "takes": [
@@ -10088,6 +11436,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Rare slow lands are great fixing for multicolor decks."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "both",
+     "take": "A dual land that almost always enters untapped, slightly better than the common duals."
     }
    ]
   },
@@ -10166,6 +11519,18 @@
      "host": "Martin",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+, maybe A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B+",
+     "said": "B+/A-"
     }
    ],
    "takes": [
@@ -10178,6 +11543,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Three cards for one that ramps and fixes, incredible value for its cost."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A three-mana Solemn with no real downside: it ramps, trades off and draws a card, giving it a very high floor even if it's not cube quality."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Its floor starts extremely high even though its ceiling doesn't go much higher."
     }
    ]
   },
@@ -10261,6 +11636,12 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
     }
    ],
    "takes": [
@@ -10273,6 +11654,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Great stats and a free ability that sometimes triggers lifegain."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A two-mana 3/3 you'd play with zero triggers, but the opponent controls the life gain, so it's not a reliable payoff."
     }
    ]
   },
@@ -10295,6 +11681,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -10312,6 +11710,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Good on removal alone, fine once you're in Red-White but not a reason to move in."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Cheap Portable Hole-style removal; the looting ability is fringe."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "The removal part alone earns a B."
     }
    ]
   },
@@ -10456,6 +11864,18 @@
      "host": "LSV",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -10473,6 +11893,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A four-power flier with an attack trigger that returns once for free, nearly impossible to answer favorably except by countering."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A flash four-mana 4/2 flyer that loots on attack and comes back once as a token."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Flashing it in to trade and then getting another copy is already great value."
     }
    ]
   },
@@ -10546,6 +11976,18 @@
      "host": "Martin",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B+",
+     "said": "B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -10563,6 +12005,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A cheap two-for-one with removal like No Admittance that pairs well with surveil."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A hasty two-drop that recasts a cheap removal spell for a good two-for-one, and is easy to recur."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Worth playing if you have four or five good instants or sorceries."
     }
    ]
   },
@@ -10734,6 +12186,12 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B-",
+     "said": "B-"
     }
    ],
    "takes": [
@@ -10751,6 +12209,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A Thoughtseize where they pay the life, good if primarily Rakdos but not splashable."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Good in black-red because it triggers your non-combat damage payoffs and takes a card, but it isn't splashable."
     }
    ]
   },
@@ -11042,6 +12505,18 @@
      "host": "LSV",
      "grade": "D",
      "said": "1.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C",
+     "said": "C"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "C-",
+     "said": "C-"
     }
    ],
    "takes": [
@@ -11054,6 +12529,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A 2/4 for three that does little else."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Mostly just a three-mana 2/4, which you don't really want."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Its abilities are nearly useless text in Limited."
     }
    ]
   },
@@ -11076,6 +12561,18 @@
      "host": "Martin",
      "grade": "B+",
      "said": "GB 4.0, elsewhere 3.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B-",
+     "said": "B-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B-",
+     "said": "B-"
     }
    ],
    "takes": [
@@ -11088,6 +12585,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Small early but great in Green-Black where the graveyard fills quickly."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Often a two-mana 3/4 or 4/5 once lands hit graveyards, but planeswalkers rarely die and sometimes it's tiny, so it lands just under B."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A two-mana 3/4 is a B, but you have to factor in the times it's nearly a 0/1; still worth playing in green."
     }
    ]
   },
@@ -11110,6 +12617,12 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B/B+"
     }
    ],
    "takes": [
@@ -11127,6 +12640,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Ramps, provides card advantage and grows into a threat."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "It ramps and makes two Heartwood tokens to grow itself, enabling the red-green deck nicely."
     }
    ]
   },
@@ -11590,6 +13108,12 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C",
+     "said": "C"
     }
    ],
    "takes": [
@@ -11607,6 +13131,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Smooths draws and holds a visible reset button, making opponents commit little."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A telegraphed wrath that costs you a card, though opponents may misplay around it."
     }
    ]
   },
@@ -11629,6 +13158,18 @@
      "host": "LSV",
      "grade": "A",
      "said": "4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -11641,6 +13182,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Every mode is strong, giving steady cards and interaction, best with a developed battlefield."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "The classic framework of making creatures and protecting itself, plus a free card every opponent's turn."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Fantastic but not quite A+; its reachable ultimate ends games."
     }
    ]
   },
@@ -11724,6 +13275,12 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "C+",
+     "said": "C+"
     }
    ],
    "takes": [
@@ -11741,6 +13298,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "An 0/3 flash creature that replaces itself by empowering Jace for three is an easy inclusion."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A flash 0/3 that draws a card is a fine playable with a high floor but a low ceiling."
     }
    ]
   },
@@ -11763,6 +13325,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -11775,6 +13349,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A reasonable-cost card-draw backup plan that pressures opponents to be assertive."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "An almost-free Island that sometimes empowers Jace for two."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Low-cost upside in a land slot."
     }
    ]
   },
@@ -12441,6 +14025,18 @@
      "host": "LSV",
      "grade": "A+",
      "said": "5.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A",
+     "said": "A"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A",
+     "said": "A"
     }
    ],
    "takes": [
@@ -12458,6 +14054,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A massive threat fueled by a naturally full graveyard, his pick for the best card in the set."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A six-mana 5/5 flyer that recasts about two cards from your graveyard; you could argue for A+."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "One of the best cards in the set in the graveyard-filling pair."
     }
    ]
   },
@@ -12663,6 +14269,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -12675,6 +14293,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A 2/3 flying prowess worth playing anyway, with a somewhat win-more alternate mode."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A three-mana 2/3 flying prowess creature; the wheel spell is only occasionally useful."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A solid flyer you'd happily put in your deck."
     }
    ]
   },
@@ -12697,6 +14325,18 @@
      "host": "Martin",
      "grade": "A",
      "said": "Sealed 5.0, Draft 4.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "build around B, maybe B+"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A-"
     }
    ],
    "takes": [
@@ -12709,6 +14349,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "An easy way to win the long games expected in this format, castable with ramp."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "A strong ramp payoff that the average red-green deck can cast, though flyers and removal mean it doesn't always end the game."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "The perfect well-supported ramp payoff that dominates the board within a turn or two, since you get a 3/3 even if they kill it on their upkeep."
     }
    ]
   },
@@ -12865,6 +14515,18 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "B"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "B",
+     "said": "B"
     }
    ],
    "takes": [
@@ -12877,6 +14539,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A temporary steal that is still good with the right target and can be cast at their end step for an attack."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Instant-speed exile removal at a B+ power level, held back by its restrictive black-black-white cost."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "Kill-anything exile removal with upside."
     }
    ]
   },
@@ -13082,6 +14754,12 @@
      "host": "LSV",
      "grade": "B+",
      "said": "3.5"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B-",
+     "said": "B-"
     }
    ],
    "takes": [
@@ -13094,6 +14772,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Solid for two mana, usually used as removal though card draw is preferred when ahead."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "An unconditional, if double-black sorcery-speed, kill spell with a flexible card-draw mode."
     }
    ]
   },
@@ -13116,6 +14799,12 @@
      "host": "LSV",
      "grade": "B",
      "said": "3.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "B",
+     "said": "build around B"
     }
    ],
    "takes": [
@@ -13128,6 +14817,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Basically a worse three-color Saheeli, still solid if the mana works."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Decent in blue-red spells if you can afford the three-color cost, but worse than the uncommon Saheeli."
     }
    ]
   },
@@ -13150,6 +14844,18 @@
      "host": "LSV",
      "grade": "A-",
      "said": "4.0"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "grade": "A-",
+     "said": "A-"
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "grade": "A-",
+     "said": "A-"
     }
    ],
    "takes": [
@@ -13162,6 +14868,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Fantastic early and better late, never cut."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Marshall",
+     "take": "A three-mana 4/4 deathtouch early, or a two-for-one removal creature late."
+    },
+    {
+     "show": "Limited Resources",
+     "host": "Luis",
+     "take": "Play it on turn three if you can; waiting at four or five lands has a real cost."
     }
    ]
   },

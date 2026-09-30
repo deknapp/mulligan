@@ -163,7 +163,7 @@ def test_off_color_cards_lose_ground_once_you_are_in_a_lane():
     assert set(top) == {"R", "G"}
     ranked = advise(ratings, ["Good Blue", "Good Green"], picks)
     assert ranked[0].card.name == "Good Green"
-    assert any("In your final colors 0%" in w for w in ranked[1].why)
+    assert any("points to its colors 0%" in w for w in ranked[1].why)
 
 
 def test_live_once_shows_the_pack(tmp_path, monkeypatch):

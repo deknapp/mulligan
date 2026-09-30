@@ -137,7 +137,7 @@ def test_a_first_pick_bomb_pulls_the_next_picks_by_how_good_it_is():
     pull = {p: lanes(ratings, [p]).prob for p in ("Bomb", "Good")}
     red = [p for p in pull["Bomb"] if "R" in p]
     assert sum(pull["Bomb"][p] for p in red) > sum(pull["Good"][p] for p in red) > 0.4
-    assert ranked[0].why[1].startswith("In your final colors")
+    assert ranked[0].why[1].startswith("Taking it, your pool points")
 
 
 def test_first_pick_takes_the_bomb_over_a_flexible_good_card():
