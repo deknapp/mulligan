@@ -415,8 +415,10 @@ function drawGhost() {
 
 function leanText(lane, picks) {
   if (!picks) return {big: "Wide open", sub: "First pick: take the best card."};
-  if (lane.pair) return {big: lane.pair_name, sub: `${NAMES[lane.pair[0]]}–${NAMES[lane.pair[1]]} · colors ${Math.round(100 * lane.commit)}% settled`};
-  if (lane.top.length) return {big: NAMES[lane.top[0]], sub: `still one color · ${Math.round(100 * lane.commit)}% settled`};
+  const odds = Object.entries(lane.pairs || {}).sort((a, b) => b[1] - a[1]).slice(0, 3)
+    .map(([p, q]) => `${p} ${Math.round(100 * q)}%`).join(" · ");
+  if (lane.pair) return {big: lane.pair_name, sub: `likeliest decks: ${odds}`};
+  if (lane.top.length) return {big: NAMES[lane.top[0]], sub: `still one color · likeliest decks: ${odds}`};
   return {big: "Wide open", sub: "no colored picks yet"};
 }
 
