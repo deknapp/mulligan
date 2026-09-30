@@ -1,24 +1,28 @@
 """Which card to take: the simulator's card win rates and 17Lands' real ones,
 blended, then adjusted for the cards you already have.
 
-A pick's score, in win-rate points against the average card:
+A pick's score, in win-rate points, is how much it adds to the deck you'll
+likely end up with:
 
-* the card's own rating (below);
-* colors: a penalty per color outside your two, heavier for a card needing two
-  or more pips of it, halved when your pool already fixes for that color. How
-  much it bites grows with the picks you've made and how settled they are,
-  and into pack two an off-color card also loses most of its edge over the
-  average card, since you're unlikely to play it;
-* your pair: how much better or worse the card does in simulated decks of
-  your two colors than it does everywhere;
+* your pool as ten two-color decks: each pair is worth what its best 23
+  cards add over a card that wouldn't make the deck (a card outside the pair
+  counts only as a splash: one light off-color pip, and only for strong
+  cards). So quality counts, not how many cards share a color: a first-pick
+  bomb makes its pairs worth more at once;
+* which pair you'll end in is uncertain: a softmax over the pairs' values,
+  wide early (most picks are still to come) and narrow by pack three. The
+  pick's score is the gain in that soft maximum from adding it. Early, a card
+  that fits many pairs (mono-colored, colorless) keeps options open; a strong
+  card in your best pairs counts in full; a gold card pulls toward its pair
+  only as far as it's good;
+* your pair (with simulator data): how much better or worse the card does in
+  simulated decks of each pair, weighted by how likely you end in it;
 * synergy with your whole pool: the card's pair interaction (``limited.synergy``)
   with every card you've taken, each weighted by how likely that card is to
   make your deck, times the chance the two are drawn in the same game, at half
   weight (simulated pair effects only loosely match real ones);
-* playables: when your colors are short of a deck's worth of playables for the
-  picks that are left, on-color playables gain;
-* lands: a dual land in your colors is worth a late pick, more when it lets you
-  splash a strong card you've taken.
+* lands: a land tapping for both colors of a pair is worth a late pick in
+  it, more when it lets you splash a strong card you've taken.
 
 The website's pick helper (``site/tools.js``) ports the pool adjustments
 above line for line (``tests/test_site_pick.py`` holds the two to the same
@@ -53,26 +57,25 @@ SITE_DATA = "https://deknapp.github.io/mulligan/data"
 REAL_PRIOR_GAMES = 500       # the simulator counts as this many real games
 REAL_MIN_SHARED = 20         # cards needed on both sides before real data is used at all
 REAL_MAX_AGE = 3 * 3600
-LANE_PENALTY = 0.035         # per off-color color, once fully committed
-COMMIT_PICKS = 14            # picks until color matters fully
+COMMIT_PICKS = 14            # picks until the compass calls your colors settled
 PAIR_MIN_GAMES = 150
 PAIR_PRIOR_GAMES = 300       # a card's record in one pair is shrunk toward its overall one
 PAIR_WEIGHT = 0.5            # how much of that difference counts
 DRAWN_TOGETHER = 0.4         # chance a deck card is drawn in a game you draw the pick
 SYNERGY_WEIGHT = 0.5         # simulated pair effects track real ones only loosely (HOB r=+0.24)
-LATE_PICKS = 28              # by here an off-color card rarely makes the deck ...
-LATE_DISCOUNT = 0.6          # ... so this much of its edge is gone (less if you can splash it)
-UNDECIDED_IN_DECK = 0.5      # chance a pool card makes the deck before you have a lane
-OFF_LANE_IN_DECK = 0.1       # ... once you're settled, for a card outside it
 PLAYABLE_Z = -1.0            # rated at least this (about a C-) counts as a playable
 UNPLAYABLE_IN_DECK = 0.3
-DECK_PLAYABLES = 23
 TOTAL_PICKS = 42             # three packs of 14
-ON_LANE_SHARE = 0.3          # of the picks left, the share that will be on-color playables
-NEED_BONUS = 0.03            # most a short pool adds to an on-color playable
-DUAL_LAND = -0.025           # a dual in your colors: about a late playable
-SPLASH_LAND = -0.012         # a dual that lets you splash a strong card you have
-SPLASH_Z = 1.0
+DECK_SPELLS = 23             # a pair's value counts its best this many cards
+FLOOR = -0.02                # a card that wouldn't make the deck, vs. the average card
+SPREAD_START = 0.025         # pool-value gap that makes one pair e (2.7) times likelier, pick 1
+SPREAD_END = 0.006           # ... and at the last pick
+SPLASH_BAR = 0.02            # only a card this much better than average is worth splashing ...
+SPLASH_SHARE = 0.5           # ... and counts this share of the rest
+SPLASH_FIXED = 0.8           # ... or this share with a dual for it in your pool
+TIEBREAK = 0.02              # of a card's own rating, so unplayables still rank
+DUAL_LAND = 0.008            # a dual in your final colors
+SPLASH_LAND = 0.015          # a dual that lets you splash a strong card you have
 COLORS = {"W": "White", "U": "Blue", "B": "Black", "R": "Red", "G": "Green"}
 PAIR_NAMES = {"WU": "Azorius", "UB": "Dimir", "BR": "Rakdos", "RG": "Gruul", "WG": "Selesnya",
               "WB": "Orzhov", "UR": "Izzet", "BG": "Golgari", "WR": "Boros", "UG": "Simic"}
@@ -192,7 +195,7 @@ def land_colors(oracle: str) -> str:
     made = set()
     for clause in re.findall(r"Add ([^.]*)", oracle or ""):
         made |= set(re.findall(r"\{([WUBRG])\}", clause))
-        if "any color" in clause:
+        if "any color" in clause or "chosen color" in clause:
             made |= set("WUBRG")
     return "".join(k for k in "WUBRG" if k in made)
 
@@ -326,25 +329,54 @@ def build_ratings(sim: dict | None, real: dict | None) -> Ratings:
                    synergy, pair_mean, sd or 1.0)
 
 
-EXPERT_SD = 0.03              # one expert standard deviation, in win-rate points
+# What a letter grade is worth, in win-rate points against a C+ card (F .. A+).
+# Grades are spaced evenly but win rates are not: real sets' 17Lands numbers
+# put an A+ bomb some ten points over a C+ card and a B+ under four, while C
+# and C- sit about a point apart.
+GRADE_POINTS = [-8.0, -6.5, -5.0, -3.5, -2.0, -1.0, 0.0, 1.0, 2.0, 3.5, 5.0, 7.0, 9.5]
+
+
+def grade_points(index: float) -> float:
+    """A (possibly fractional) index into LETTERS, in win-rate points."""
+    index = min(max(index, 0.0), len(LETTERS) - 1.0)
+    lo = min(int(index), len(LETTERS) - 2)
+    return GRADE_POINTS[lo] + (index - lo) * (GRADE_POINTS[lo + 1] - GRADE_POINTS[lo])
 
 
 def expert_ratings(sim: dict | None, experts: dict | None) -> Ratings:
     """Ratings from the podcast hosts' grades alone: the simulated draft file
     supplies only card facts (colors, cost, rarity, what lands make), never a
-    win rate, pair record or synergy. A card's score is its standardized
-    expert grade; ungraded cards go unrated."""
+    win rate, pair record or synergy. Each host's letters are shifted so every
+    host averages the same (Limited Resources grades higher than Limited
+    Level-Ups), averaged per card, and read off GRADE_POINTS, so a bomb stands
+    as far above a good uncommon as it does in real win rates. Ungraded cards
+    go unrated."""
     base = build_ratings(sim, None)
     for c in base.cards.values():
         c.sim, c.sim_games, c.est, c.z, c.grade = None, 0, None, None, None
         c.pairs, c.ata = {}, None
     add_experts(base, experts)
+    by_host: dict[str, list[int]] = {}
+    for name, x in ((experts or {}).get("cards") or {}).items():
+        for g in x.get("grades", []):
+            if g.get("grade") in LETTERS and name in base.cards:
+                by_host.setdefault(f"{g['show']}|{g['host']}", []).append(
+                    LETTERS.index(g["grade"]))
+    pooled = [i for xs in by_host.values() for i in xs]
+    center = sum(pooled) / len(pooled) if pooled else 0.0
+    offset = {h: center - sum(xs) / len(xs) for h, xs in by_host.items()}
+    names = {h.split("|", 1)[1]: h for h in by_host}
     for c in base.cards.values():
-        if c.ez is not None:
-            c.est = c.ez * EXPERT_SD
-            c.z, c.grade = c.ez, c.ex_grade
+        if c.ez is None:
+            continue
+        idx = [LETTERS.index(g) + offset[names[h]] for h, g in c.expert_grades
+               if g in LETTERS and h in names]
+        c.est = grade_points(sum(idx) / len(idx)) / 100
+        c.z, c.grade = c.ez, c.ex_grade
+    rated = [c.est for c in base.cards.values() if c.est is not None]
     base.synergy, base.pair_mean = {}, {}
-    base.mean, base.sd, base.shift, base.real_used, base.real_rows = 0.0, EXPERT_SD, 0.0, 0, 0
+    base.mean = sum(rated) / len(rated) if rated else 0.0
+    base.sd, base.shift, base.real_used, base.real_rows = 0.03, 0.0, 0, 0
     base.experts = False          # est already is the experts' rating; no blending
     return base
 
@@ -382,106 +414,180 @@ def commitment(weight: dict[str, float], picks: int) -> float:
     return min(1.0, picks / COMMIT_PICKS) * min(1.0, max(0.0, (share - 0.5) / 0.3))
 
 
-def _fits(c: Card, top: list[str]) -> bool:
-    return len(top) == 2 and all(k in top for k in c.colors)
+PAIRS = ["WU", "WB", "WR", "WG", "UB", "UR", "UG", "BR", "BG", "RG"]
 
 
-def in_deck(ratings: Ratings, c: Card, top: list[str], commit: float) -> float:
+def _value(ratings: Ratings, c: Card) -> float | None:
+    """A card's rating in win-rate points against the average card, or None."""
+    if c.makes and len(c.makes) >= 2:
+        return None
+    blend = ratings.experts and c.ez is not None
+    if c.est is None:
+        return c.ez * ratings.sd if blend else None
+    if blend:
+        # Half the card's own rating, half the experts' (on the same scale).
+        return ((c.est - ratings.mean) / ratings.sd + c.ez) / 2 * ratings.sd
+    return c.est - ratings.mean
+
+
+def _worth(c: Card, v: float, pair: str, fixes: set[str]) -> float:
+    """What a card adds to a deck of ``pair``: its edge over a card that
+    wouldn't make the deck if it's in the colors, part of what it has beyond
+    SPLASH_BAR if one light off-color pip lets you splash it, else nothing."""
+    off = [k for k in c.colors if k not in pair]
+    if not off:
+        return max(0.0, v - FLOOR)
+    if len(off) == 1 and c.pips.get(off[0], 1) <= 1:
+        return (SPLASH_FIXED if off[0] in fixes else SPLASH_SHARE) * max(0.0, v - SPLASH_BAR)
+    return 0.0
+
+
+def spread(picks: int) -> float:
+    """How far apart two pairs' pool values must be before the draft is
+    likely to end in the better one: wide early (most picks are still to
+    come), narrow by the last pack."""
+    left = max(0, TOTAL_PICKS - 1 - picks) / (TOTAL_PICKS - 1)
+    return SPREAD_END + (SPREAD_START - SPREAD_END) * math.sqrt(left)
+
+
+@dataclass
+class Lanes:
+    """Your pool as ten possible two-color decks. ``value`` per pair: the sum
+    of what your best DECK_SPELLS cards add to that deck (so quality counts,
+    not just how many cards share a color); ``prob``: the chance the draft
+    ends in each pair, a softmax over those values at the current spread."""
+    worths: dict[str, list[float]]
+    value: dict[str, float]
+    prob: dict[str, float]
+    temp: float
+    fixes: set[str]
+
+    def expected(self, value: dict[str, float] | None = None) -> float:
+        """The value of the deck you end up with, allowing for the picks still
+        to come (a soft maximum over pairs)."""
+        xs = [x / self.temp for x in (value or self.value).values()]
+        m = max(xs)
+        return self.temp * (m + math.log(sum(math.exp(x - m) for x in xs)))
+
+    def with_card(self, c: Card, v: float) -> tuple[dict[str, float], dict[str, float]]:
+        """Pair values and probabilities after taking a card."""
+        value = {p: _top(self.worths[p] + [_worth(c, v, p, self.fixes)]) for p in PAIRS}
+        return value, _softmax(value, self.temp)
+
+
+def _top(xs: list[float]) -> float:
+    return sum(sorted(xs, reverse=True)[:DECK_SPELLS])
+
+
+def _softmax(value: dict[str, float], temp: float) -> dict[str, float]:
+    m = max(value.values())
+    e = {p: math.exp((x - m) / temp) for p, x in value.items()}
+    total = sum(e.values())
+    return {p: x / total for p, x in e.items()}
+
+
+def lanes(ratings: Ratings, picks: list[str]) -> Lanes:
+    fixes = {k for p in picks for c in [ratings.get(p)] if c.makes and len(c.makes) >= 2
+             for k in c.makes}
+    worths: dict[str, list[float]] = {p: [] for p in PAIRS}
+    for name in picks:
+        c = ratings.get(name)
+        v = _value(ratings, c)
+        if v is None:
+            continue
+        for p in PAIRS:
+            w = _worth(c, v, p, fixes)
+            if w > 0:
+                worths[p].append(w)
+    value = {p: _top(worths[p]) for p in PAIRS}
+    temp = spread(len(picks))
+    return Lanes(worths, value, _softmax(value, temp), temp, fixes)
+
+
+def in_deck(ratings: Ratings, c: Card, prob: dict[str, float]) -> float:
     """Rough chance a card you've taken ends up in your deck."""
     if c.makes or c.unsupported == "land":
         return 0.0
-    fit = 1.0 if not c.colors or _fits(c, top) else OFF_LANE_IN_DECK
-    chance = commit * fit + (1 - commit) * UNDECIDED_IN_DECK
-    return chance * (1.0 if (c.z or 0) >= PLAYABLE_Z else UNPLAYABLE_IN_DECK)
+    fit = sum(q for p, q in prob.items() if all(k in p for k in c.colors))
+    return fit * (1.0 if (c.z or 0) >= PLAYABLE_Z else UNPLAYABLE_IN_DECK)
 
 
-def pool_synergy(ratings: Ratings, name: str, picks: list[str], top: list[str],
-                 commit: float) -> tuple[float, list[tuple[str, float]]]:
+def pool_synergy(ratings: Ratings, name: str, picks: list[str],
+                 prob: dict[str, float]) -> tuple[float, list[tuple[str, float]]]:
     """The pick's synergy with everything you've taken, on the win-rate scale,
-    and each pool card's share of it."""
+    and each pool card's share of it (before counting whether the pick itself
+    makes the deck)."""
     parts: dict[str, float] = {}
     for p in picks:
         e = ratings.syn(name, p)
         if e:
             parts[p] = parts.get(p, 0.0) + SYNERGY_WEIGHT * DRAWN_TOGETHER * e * in_deck(
-                ratings, ratings.get(p), top, commit)
+                ratings, ratings.get(p), prob)
     return sum(parts.values()), sorted(parts.items(), key=lambda kv: -abs(kv[1]))
 
 
-def _playables(ratings: Ratings, picks: list[str], top: list[str]) -> int:
-    return sum(1 for p in picks for c in [ratings.get(p)]
-               if not c.makes and c.unsupported != "land" and c.est is not None
-               and (c.z or 0) >= PLAYABLE_Z and (not c.colors or _fits(c, top)))
+def _pct(x: float) -> str:
+    return f"{100 * x:.0f}%"
 
 
 def advise(ratings: Ratings, pack: list[str], picks: list[str],
            pick_number: int = 0) -> list[Advice]:
-    """The pack, best pick first."""
-    weight, top = lane(ratings, picks)
-    commit = commitment(weight, len(picks))
-    pair = "".join(k for k in "WUBRG" if k in top) if len(top) == 2 else ""
-    fixes = {k for p in picks for c in [ratings.get(p)] if c.makes and len(c.makes) >= 2
-             for k in c.makes}
-    splash = {k: p for p in picks for c in [ratings.get(p)]
-              if (c.z or 0) >= SPLASH_Z and not c.makes for k in c.colors if k not in top}
-    have = _playables(ratings, picks, top)
-    left = max(0, TOTAL_PICKS - len(picks))
-    need = min(1.0, max(0.0, (DECK_PLAYABLES - have - ON_LANE_SHARE * left) / DECK_PLAYABLES))
+    """The pack, best pick first. A pick's score is how much it raises the
+    expected value of the deck you'll end up with (``Lanes.expected``): its
+    own rating counts in full in every pair it fits, and the pairs your best
+    cards already point at are the likeliest. A bomb early therefore pulls the
+    next picks toward its colors in proportion to how good it is."""
+    ln = lanes(ratings, picks)
+    now = ln.expected()
+    likely = max(ln.prob, key=ln.prob.get)
+    splash = {k: p for p in picks for c in [ratings.get(p)] for v in [_value(ratings, c)]
+              if v is not None and v >= SPLASH_BAR for k in c.colors}
     out = []
     for name in pack:
         c = ratings.get(name)
         why = []
         if c.makes and len(c.makes) >= 2:
-            out.append(_land(c, top, pair, commit, splash))
+            out.append(_land(c, ln, splash))
             continue
-        blend = ratings.experts and c.ez is not None
-        if c.est is None and not blend:
+        v = _value(ratings, c)
+        if v is None:
             why.append(f"Not simulated ({c.unsupported})." if c.unsupported else
                        "Not in the set data.")
             out.append(Advice(c, None, why))
             continue
-        if c.est is None:
-            base = c.ez * ratings.sd
-        elif blend:
-            # Half the card's own rating, half the experts' (on the same scale).
-            base = ((c.est - ratings.mean) / ratings.sd + c.ez) / 2 * ratings.sd
-        else:
-            base = c.est - ratings.mean
-        score = base
-        why.append(f"{_pts(base)} pts vs. the average card"
+        value, prob = ln.with_card(c, v)
+        fit = sum(q for p, q in prob.items() if all(k in p for k in c.colors))
+        # A card that wouldn't make any deck adds nothing; still take the best of those.
+        score = ln.expected(value) - now + TIEBREAK * v * fit
+        blend = ratings.experts and c.ez is not None
+        why.append(f"{_pts(v)} pts vs. the average card"
                    + (" (with the experts averaged in)." if blend else "."))
-
-        off = [k for k in c.colors if k not in top] if len(top) == 2 else []
-        if off and commit > 0:
-            # Late on, an off-color card is mostly a card you won't play.
-            late = LATE_DISCOUNT * min(1.0, len(picks) / LATE_PICKS) * commit
-            penalty = max(0.0, base) * late * (0.5 if all(k in fixes for k in off) else 1.0)
-            for k in off:
-                heavy = 1 + 0.5 * max(0.0, c.pips.get(k, 1) - 1)
-                penalty += LANE_PENALTY * commit * heavy * (0.5 if k in fixes else 1.0)
-            score -= penalty
-            note = (f"{'One color' if len(off) == 1 else 'Both colors'} outside your {pair} "
-                    f"lane: −{100 * penalty:.1f} pts this far in")
-            if any(c.pips.get(k, 1) >= 2 for k in off):
-                note += " (heavy on off-color mana)"
-            elif all(k in fixes for k in off):
-                note += " (your pool fixes for it)"
-            why.append(note + ".")
-        elif c.colors and top and all(k in top for k in c.colors) and picks:
-            why.append(f"Fits your {''.join(top)} picks.")
-        elif not c.colors:
+        splashed = sum(q for p, q in prob.items() if not all(k in p for k in c.colors)
+                       and _worth(c, v, p, ln.fixes) > 0)
+        if not c.colors:
             why.append("Colorless: fits any deck.")
+        elif picks:
+            note = f"In your final colors {_pct(fit)} of the time"
+            if splashed >= 0.05:
+                note += f", splashed {_pct(splashed)}"
+            why.append(note + f": adds {_pts(score)} pts to your likely deck.")
 
-        if pair and pair in c.pairs and c.pairs[pair][1] >= PAIR_MIN_GAMES and c.sim is not None:
-            w, g = c.pairs[pair]
-            in_pair = (w + PAIR_PRIOR_GAMES * c.sim) / (g + PAIR_PRIOR_GAMES)
-            delta = ((in_pair - ratings.pair_mean.get(pair, ratings.sim_mean))
-                     - (c.sim - ratings.sim_mean))
-            bonus = PAIR_WEIGHT * commit * delta
-            score += bonus
-            if abs(bonus) >= 0.001:
-                why.append(f"In simulated {pair} decks: {100 * w / g:.1f}% ({g:,} games), "
-                           f"{_pts(bonus)} pts for your pair.")
+        bonus, shown = 0.0, None
+        for pair, q in prob.items():
+            if pair in c.pairs and c.pairs[pair][1] >= PAIR_MIN_GAMES and c.sim is not None \
+                    and all(k in pair for k in c.colors):
+                w, g = c.pairs[pair]
+                in_pair = (w + PAIR_PRIOR_GAMES * c.sim) / (g + PAIR_PRIOR_GAMES)
+                delta = ((in_pair - ratings.pair_mean.get(pair, ratings.sim_mean))
+                         - (c.sim - ratings.sim_mean))
+                bonus += PAIR_WEIGHT * q * delta
+                if pair == likely:
+                    shown = (pair, w, g)
+        score += bonus
+        if shown and abs(bonus) >= 0.001:
+            pair, w, g = shown
+            why.append(f"In simulated {pair} decks: {100 * w / g:.1f}% ({g:,} games), "
+                       f"{_pts(bonus)} pts for your likely pairs.")
         elif len(c.colors) == 1 and c.pairs:
             best = max(((p, (r[0] + 100 * ratings.sim_mean) / (r[1] + 100))
                         for p, r in c.pairs.items() if r[1] >= PAIR_MIN_GAMES),
@@ -489,18 +595,12 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
             if best:
                 why.append(f"Best in {PAIR_NAMES.get(best[0], best[0])} ({best[0]}).")
 
-        syn, parts = pool_synergy(ratings, name, picks, top, commit)
+        syn, parts = pool_synergy(ratings, name, picks, ln.prob)
+        syn *= fit
         score += syn
         if abs(syn) >= 0.001:
-            names = ", ".join(p for p, v in parts[:3] if v * syn > 0)
+            names = ", ".join(p for p, x in parts[:3] if x * syn > 0)
             why.append(f"Synergy with your pool: {_pts(syn)} pts ({names}).")
-
-        if need and commit and (not c.colors or _fits(c, top)) and (c.z or 0) >= PLAYABLE_Z:
-            bonus = NEED_BONUS * need * commit
-            score += bonus
-            if bonus >= 0.0005:
-                why.append(f"You have {have} {pair} playables with {left} picks left: "
-                           f"{_pts(bonus)} pts.")
 
         if c.removal:
             why.append("Removal.")
@@ -513,17 +613,22 @@ def advise(ratings: Ratings, pack: list[str], picks: list[str],
     return sorted(out, key=lambda a: -math.inf if a.score is None else a.score, reverse=True)
 
 
-def _land(c: Card, top: list[str], pair: str, commit: float,
-          splash: dict[str, str]) -> Advice:
-    """A dual land: worth a late pick in your colors, more if it enables a splash."""
+def _land(c: Card, ln: Lanes, splash: dict[str, str]) -> Advice:
+    """A land that taps for two or more colors: worth a little in the pairs
+    it covers, more where it also lets you splash a strong card you've taken."""
     made = set(c.makes)
-    if len(top) < 2 or commit == 0:
-        return Advice(c, DUAL_LAND - LANE_PENALTY,
-                      [f"Dual land ({c.makes}): take it late once you know your colors."])
-    if made <= set(top):
-        return Advice(c, DUAL_LAND, [f"Dual land in your {pair} colors: smoother mana."])
-    extra = [k for k in made if k not in top]
-    if len(made & set(top)) == 1 and extra[0] in splash:
-        return Advice(c, SPLASH_LAND, [f"Taps for your colors and {extra[0]}: "
-                                       f"lets you splash {splash[extra[0]]}."])
-    return Advice(c, None, [f"Dual land ({c.makes}) outside your {pair} colors."])
+    score, splashes = 0.0, set()
+    for p, q in ln.prob.items():
+        extra = {k for k in made - set(p) if k in splash}
+        if set(p) <= made:
+            score += q * (DUAL_LAND + (SPLASH_LAND - DUAL_LAND if extra else 0.0))
+        elif made & set(p) and extra:
+            score += q * SPLASH_LAND
+        else:
+            continue
+        splashes |= extra
+    fit = sum(q for p, q in ln.prob.items() if set(p) <= made)
+    why = [f"Land ({c.makes}): taps for both your final colors {_pct(fit)} of the time."]
+    for k in sorted(splashes):
+        why.append(f"Lets you splash {splash[k]}.")
+    return Advice(c, score, why)

@@ -163,7 +163,7 @@ def test_off_color_cards_lose_ground_once_you_are_in_a_lane():
     assert set(top) == {"R", "G"}
     ranked = advise(ratings, ["Good Blue", "Good Green"], picks)
     assert ranked[0].card.name == "Good Green"
-    assert any("outside your RG lane" in w for w in ranked[1].why)
+    assert any("In your final colors 0%" in w for w in ranked[1].why)
 
 
 def test_live_once_shows_the_pack(tmp_path, monkeypatch):
@@ -180,7 +180,7 @@ def test_live_once_shows_the_pack(tmp_path, monkeypatch):
     assert result.exit_code == 0, result.output
     assert "Pack 1, pick 2" in result.output
     assert result.output.index("Good Green") < result.output.index("Filler")
-    assert "no simulator" in result.output         # expert grades only
+    assert "no simulator" in " ".join(result.output.split())   # expert grades only
 
 
 def test_live_ratings_are_the_experts_alone():

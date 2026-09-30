@@ -21,7 +21,7 @@ from pathlib import Path
 
 from .draft_log import DraftState
 from .paths import cache_dir
-from .pick_advice import PAIR_NAMES, Ratings, advise, commitment, lane
+from .pick_advice import PAIR_NAMES, Ratings, advise, commitment, lane, lanes
 
 PAGE = Path(__file__).with_name("live_web.html")
 IMAGE_VERSIONS = ("normal", "art_crop")
@@ -48,7 +48,8 @@ def _lane(ratings: Ratings, picks: list[str]) -> dict:
     pair = "".join(k for k in "WUBRG" if k in top) if len(top) == 2 else ""
     return {"weight": {k: round(v, 3) for k, v in weight.items()}, "top": top,
             "pair": pair, "pair_name": PAIR_NAMES.get(pair, ""),
-            "commit": round(commitment(weight, len(picks)), 3)}
+            "commit": round(commitment(weight, len(picks)), 3),
+            "pairs": {p: round(q, 3) for p, q in lanes(ratings, picks).prob.items()}}
 
 
 def deck_builds(pool: list[str], set_code: str, ratings: Ratings) -> list[dict]:

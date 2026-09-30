@@ -133,7 +133,7 @@ def _pick_view(state, names, ratings, note: str):
     from rich.console import Group
     from rich.table import Table
 
-    from .pick_advice import COLORS, advise, lane
+    from .pick_advice import COLORS, advise, lane, lanes
     picks = names(state.picked)
     pack = names(state.cards)
     head = [f"[bold]{state.event}[/bold]   Pack {state.pack}, pick {state.pick}   "
@@ -145,6 +145,10 @@ def _pick_view(state, names, ratings, note: str):
         lean = ", ".join(f"{k} {v:.1f}" for k, v in sorted(weight.items(), key=lambda kv: -kv[1])
                          if v > 0)
         head.append(f"Your picks lean {'-'.join(COLORS[k] for k in top)} ({lean}).")
+        prob = lanes(ratings, picks).prob
+        odds = ", ".join(f"{p} {100 * q:.0f}%" for p, q in
+                         sorted(prob.items(), key=lambda kv: -kv[1])[:4])
+        head.append(f"Where your pool's best cards point: {odds}.")
     if state.waiting:
         head.append("[dim]Picked; waiting for the next pack.[/dim]")
     table = Table(box=None, pad_edge=False, header_style="bold")
@@ -208,8 +212,9 @@ def live_cmd(
             sim = load_sim(code, fetch=not offline)      # card facts only
             ratings = expert_ratings(sim, load_experts(code, fetch=not offline))
             graded = sum(c.ez is not None for c in ratings.cards.values())
-            note = ("Score: the podcast hosts' grades (each host standardized, then averaged), "
-                    "minus an off-color penalty that grows through the draft. "
+            note = ("Score: what the card adds to the deck you'll likely end with. The hosts' "
+                    "grades (each host's scale aligned, then averaged) on a win-rate scale, "
+                    "weighed by how strongly your best picks so far point at its colors. "
                     f"{graded} cards graded; no simulator or 17Lands ratings.")
             loaded[(code, fmt)] = (ratings, note, {})
         return loaded[(code, fmt)]
