@@ -184,7 +184,8 @@ def _tools(blog: Path, site: Path) -> None:
         "cards": "Every card in the set, graded by how often its owner wins when it's drawn. "
                  "Filter by color, rarity or the color pair it was played in.",
         "pick": "Type the cards in your pack, and optionally what you've taken so far. "
-                "It ranks the pack by card quality and how well each card fits your colors. "
+                "It ranks the pack by the podcast hosts' grades and how well each card fits "
+                "the colors your best picks point to. "
                 'Drafting on Arena? The <a href="../live.html">live pick helper</a> reads '
                 "the pack for you.",
         "pairs": "How each two-color pair did in simulated drafts, what its decks looked "

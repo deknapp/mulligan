@@ -82,6 +82,38 @@ function addExperts(state, experts) {
   }
 }
 
+// The pick helper rates cards by the experts alone, like `mulligan live`
+// (pick_advice.expert_ratings): each host's letters shifted so every host
+// averages the same, averaged per card, and read off an uneven win-rate scale
+// (an A+ bomb is far above a B+; C and C- are close). No simulator or 17Lands
+// numbers. Returns a state for advise() whose cards are copies.
+const GRADE_POINTS = [-8.0, -6.5, -5.0, -3.5, -2.0, -1.0, 0.0, 1.0, 2.0, 3.5, 5.0, 7.0, 9.5];
+function gradePoints(index) {
+  index = Math.min(Math.max(index, 0), LETTERS.length - 1);
+  const lo = Math.min(Math.floor(index), LETTERS.length - 2);
+  return GRADE_POINTS[lo] + (index - lo) * (GRADE_POINTS[lo + 1] - GRADE_POINTS[lo]);
+}
+function expertState(state) {
+  const byHost = {};
+  for (const c of state.sim.cards) for (const g of c.grades || []) (byHost[`${g.show}|${g.host}`] ||= []).push(LETTERS.indexOf(g.grade));
+  const pooled = Object.values(byHost).flat();
+  const center = pooled.length ? pooled.reduce((a, b) => a + b, 0) / pooled.length : 0;
+  const offset = Object.fromEntries(Object.entries(byHost).map(([h, xs]) => [h, center - xs.reduce((a, b) => a + b, 0) / xs.length]));
+  const byName = new Map();
+  for (const c of state.sim.cards) {
+    let est = null;
+    if (c.grades && c.grades.length) {
+      const idx = c.grades.map((g) => LETTERS.indexOf(g.grade) + offset[`${g.show}|${g.host}`]);
+      est = gradePoints(idx.reduce((a, b) => a + b, 0) / idx.length) / 100;
+    }
+    byName.set(c.n, { ...c, est, z: est == null ? null : c.ez, grade: est == null ? null : c.exGrade,
+      shrunk: null, ata: null, realAta: null, src: "experts" });
+  }
+  const rated = [...byName.values()].filter((c) => c.est != null).map((c) => c.est);
+  const mean = rated.length ? rated.reduce((a, b) => a + b, 0) / rated.length : 0;
+  return { ...state, byName, mean, sd: 0.03, sim: { ...state.sim, pc: {} }, pairMean: {}, synergy: new Map(), live: false };
+}
+
 function expertBadge(c) {
   if (c.exGrade == null) return el("span", { class: "muted" }, "");
   const title = c.grades.map((t) => `${t.host} (${t.show}): ${t.said || t.grade}`).join("\n");
@@ -440,13 +472,14 @@ function advise(state, pack, picks, blend) {
       return { c, score, why: [`Land (${c.makes}): taps for both your final colors ${pc100(fit)} of the time.`, ...[...splashes].sort().map((k) => `Lets you splash ${splash[k]}.`)] };
     }
     const v = cardValue(state, c, blend);
-    if (v == null) return { c, score: null, why: [c.un ? `Not simulated (${c.un}).` : "No data."] };
+    if (v == null) return { c, score: null, why: [c.src === "experts" ? "No expert grade." : c.un ? `Not simulated (${c.un}).` : "No data."] };
     const value = {};
     for (const p of PAIRS) value[p] = topSum([...ln.worths[p], worth(c, v, p, ln.fixes)]);
     const prob = softmax(value, ln.temp);
     const fit = PAIRS.reduce((a, p) => a + (fitsPair(c, p) ? prob[p] : 0), 0);
     let score = expected(value, ln.temp) - now + TIEBREAK * v * fit;
-    why.push(`${c.src === "17lands" ? "Real" : "Simulated"} win rate when drawn ${pts(v)} pts vs. the average card${c.src === "sim" && c.g < 300 ? ` (only ${c.g} games)` : ""}.`);
+    if (c.src === "experts") why.push(`Experts' grade ${c.exGrade}: ${pts(v)} pts vs. the average card.`);
+    else why.push(`${c.src === "17lands" ? "Real" : "Simulated"} win rate when drawn ${pts(v)} pts vs. the average card${c.src === "sim" && c.g < 300 ? ` (only ${c.g} games)` : ""}.`);
     const splashed = PAIRS.reduce((a, p) => a + (!fitsPair(c, p) && worth(c, v, p, ln.fixes) > 0 ? prob[p] : 0), 0);
     if (!c.c) why.push("Colorless: fits any deck.");
     else if (picks.length) why.push(`Taking it, your pool points to its colors ${pc100(fit)}${splashed >= 0.05 ? `, splashed ${pc100(splashed)}` : ""}: adds ${pts(score)} pts to your likely deck.`);
@@ -485,6 +518,7 @@ function advise(state, pack, picks, blend) {
     }
     if (c.rm) why.push("Removal.");
     if (blend && c.exGrade) why.push(`Experts: ${c.exGrade} (${c.grades.map((t) => `${t.host} ${t.grade}`).join(", ")}); averaged in.`);
+    else if (c.src === "experts" && c.exGrade) why.push(`Experts: ${c.grades.map((t) => `${t.host} ${t.grade}`).join(", ")}.`);
     const ata = c.realAta || c.ata;
     if (ata && pack.length > 8 && ata >= pickNumber + 8.5) why.push(`Usually taken around pick ${Math.round(ata)}: may come back.`);
     return { c, score, why };
@@ -499,7 +533,11 @@ function pickTool(state) {
   const packList = el("div", { class: "tags" }), pickList = el("div", { class: "tags" });
   const tags = (arr, node) => node.replaceChildren(...arr.map((c, i) =>
     el("span", { class: "tag" }, pips(c.c), " ", c.n, el("button", { type: "button", "aria-label": `Remove ${c.n}`, onclick: () => { arr.splice(i, 1); draw(); } }, "×"))));
-  root.append(freshness(state),
+  const ex = expertState(state);
+  const graded = [...ex.byName.values()].filter((c) => c.est != null).length;
+  root.append(el("p", { class: "fresh" }, state.experts
+      ? `Ratings: the podcast hosts' grades only (${state.experts.episodes ? state.experts.episodes.length + " reviews, " : ""}${graded} cards graded), no simulator or 17Lands numbers, the same as the live helper.`
+      : "No expert grades for this set yet, so the pick helper has nothing to rank by."),
     el("div", { class: "pickcols" },
       el("section", {}, el("h2", {}, "The pack"), el("p", { class: "muted" }, "Add the cards you're choosing between."),
         nameInput(state, "Card in the pack", (c) => { pack.push(c); draw(); }), packList),
@@ -521,8 +559,7 @@ function pickTool(state) {
     if (picks.length) hash.set("picks", picks.map((c) => c.n).join("|"));
     history.replaceState(null, "", hash.toString() ? "#" + hash : location.pathname);
     if (!pack.length) { out.replaceChildren(el("p", { class: "muted" }, "Add at least two cards from the pack.")); return; }
-    const blend = !state.live && state.experts;
-    const { top, prob, scored } = advise(state, pack, picks, blend);
+    const { top, prob, scored } = advise(ex, pack.map((c) => ex.byName.get(c.n)), picks.map((c) => ex.byName.get(c.n)), false);
     const odds = Object.entries(prob).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([p, q]) => `${p} ${(100 * q).toFixed(0)}%`).join(", ");
     const laneText = picks.length ? (top.length ? `Your picks lean ${top.map((k) => COLORS[k]).join("-")}; where your best cards point: ${odds}.` : "Your picks are colorless so far.") : "Pack 1, pick 1: color doesn't matter yet, take the best card.";
     out.replaceChildren(el("p", { class: "lane" }, laneText),
@@ -530,7 +567,7 @@ function pickTool(state) {
         el("div", { class: "rhead" }, gradeBadge(s.c), " ", pips(s.c.c), " ", hoverCard(el("strong", {}, s.c.n), state, s.c),
           el("span", { class: "score" }, s.score == null ? "" : `${pts(s.score)} pts`)),
         el("div", { class: "why" }, s.why.join(" "))))),
-      el("p", { class: "caption" }, (blend ? "Until real 17Lands data arrives, the score averages the simulator's rating with the podcast hosts' grades. " : "") + "Score = how much the card adds to the deck you'll likely end with. Your picks are sorted into the ten two-color decks, each worth what its best 23 cards add, so a strong early pick makes its colors worth more straight away; which deck you end in stays open early and settles by pack three. A card counts in full in the decks it fits, as a splash (strong cards with one light off-color pip) in others. On top: how it does in simulated decks of your likely pairs, its simulated synergy with the cards you've taken, and lands that fit or enable a splash. It doesn't know your curve: if two picks are within a point or two, take the one your deck needs."));
+      el("p", { class: "caption" }, "Each card is rated by the podcast hosts' grades alone, averaged after lining up hosts who grade high or low, on an uneven scale (an A+ bomb is far above a B+; C and C- are close). Score = how much the card adds to the deck you'll likely end with. Your picks are sorted into the ten two-color decks, each worth what its best 23 cards add, so a strong early pick makes its colors worth more straight away; which deck you end in stays open early and settles by pack three. A card counts in full in the decks it fits, as a splash (strong cards with one light off-color pip) in others. Lands count when they fit your colors or enable a splash. It doesn't know your curve: if two picks are within a point or two, take the one your deck needs."));
   }
   draw();
 }

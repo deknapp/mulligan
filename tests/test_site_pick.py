@@ -1,6 +1,6 @@
 """The website's pick helper (site/tools.js) ranks a pack exactly as `mulligan
-live` does (pick_advice.advise), before real data comes in: with and without
-the podcast hosts' grades averaged in."""
+live` does (pick_advice.advise): on the podcast hosts' grades alone
+(expert_ratings), and, for the pool rules on their own, on simulated ratings."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from mulligan.pick_advice import add_experts, advise, build_ratings
+from mulligan.pick_advice import advise, build_ratings, expert_ratings
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "site" / "data" / "fra.json"
@@ -23,10 +23,10 @@ EXPERTS = ROOT / "site" / "data" / "fra-experts.json"
 @pytest.mark.parametrize("with_experts", [False, True])
 def test_web_pick_helper_matches_the_python_one(with_experts):
     sim = json.loads(DATA.read_text())
-    ratings = build_ratings(sim, None)
     if with_experts:
-        add_experts(ratings, json.loads(EXPERTS.read_text()))
-        assert ratings.experts
+        ratings = expert_ratings(sim, json.loads(EXPERTS.read_text()))
+    else:
+        ratings = build_ratings(sim, None)
     names = [c["n"] for c in sim["cards"]]
     rng = random.Random(7)
     for _ in range(12):
