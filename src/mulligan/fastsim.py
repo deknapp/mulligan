@@ -80,7 +80,9 @@ def load_values(set_code: str, fmt: str = "PremierDraft") -> CardValues:
         source = f"17Lands {set_code.upper()} {fmt} game data"
     except Exception:  # noqa: BLE001 - not published yet: fall back to the live endpoint
         gih = seventeen.fetch_ratings(set_code, fmt)
-        if fmt != "PremierDraft" and sum(n for _, n in gih.values()) < 20000:
+        # 17Lands' live view rates only well-sampled cards: a young Sealed
+        # format can cover a third of the set while Premier Draft covers it all.
+        if fmt != "PremierDraft" and len(gih) < 150:
             gih = seventeen.fetch_ratings(set_code, "PremierDraft")
             fmt = "PremierDraft"
         source = f"17Lands {set_code.upper()} {fmt} card ratings (live)"

@@ -149,6 +149,33 @@ website's pick helper. Card names come from Arena's local card database, so it
 works on release day. Install and use without cloning:
 [deknapp.github.io/mulligan/live.html](https://deknapp.github.io/mulligan/live.html).
 
+## Sealed guide
+
+```
+$ mulligan sealed-guide                     # the latest event in your Arena log with a pool
+$ mulligan sealed-guide generated:3 --set fra   # try a generated pool
+```
+
+Opens a page with the best builds of a sealed pool: every color pair, plus
+splashes of single-pip bombs, laid out by mana value with each card's 17Lands
+games-in-hand win rate and the podcast hosts' average grade. Card values come
+from real data only: 17Lands win rates, with expert grades (fitted onto the
+same scale) carrying the cards 17Lands has few games on. **No simulator
+ratings.** Builds are ranked by the shortcut simulator below, then Claude
+reviews the top five with full card text and the hosts' takes, picks one,
+suggests sideboard swaps and play tips, and says when it disagrees with the
+numbers (`--no-review` skips it; needs `ANTHROPIC_API_KEY`).
+
+## Shortcut simulator
+
+`mulligan versus A B --fast` skips play: each game shuffles both decks, looks
+at the ~15 cards each side sees, and scores them by their 17Lands GIH WR
+(log-odds over the set average, shrunk by sample size) with a small mana
+screw/flood cost. 20,000 games take about a second. On 1,500 held-out real HOB
+decks it ranks win rates at Spearman **+0.18**, close to the fitted deck model
+(+0.21) and well above bot play (≈0), with no fitting at all. It cannot see
+synergy, curve or matchups.
+
 ## Commands
 
 | command | what it does |

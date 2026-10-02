@@ -15,6 +15,7 @@
 
 from __future__ import annotations
 
+import re
 import time
 from pathlib import Path
 
@@ -66,6 +67,80 @@ def sealed_cmd(
     if out:
         out.write_text(deck.decklist())
         console.print(f"[dim]wrote {out}[/dim]")
+
+
+@app.command("sealed-guide")
+def sealed_guide_cmd(
+    pool: str = typer.Argument("log:latest", help="An event from your Arena log with a card "
+                                                  "pool (log:N), or generated:N with --set."),
+    set_code: str = typer.Option(None, "--set", help="Set code (needed for generated:N)."),
+    fmt: str = typer.Option("Sealed", "--format", help="17Lands format for card win rates "
+                                                       "(falls back to PremierDraft while "
+                                                       "Sealed has few games)."),
+    review: bool = typer.Option(True, help="Ask Claude for a final review of the top builds "
+                                           "(needs ANTHROPIC_API_KEY)."),
+    out: Path = typer.Option(None, help="Where to write the page (default: cache)."),
+    open_page: bool = typer.Option(True, "--open/--no-open", help="Open it in the browser."),
+):
+    """A visual guide to the best decks in a sealed pool, from real data only:
+    17Lands win rates and the podcast hosts' grades (never simulator ratings),
+    builds for every color pair and splash, ranked by the shortcut simulator,
+    then reviewed by Claude."""
+    import webbrowser
+
+    from . import sealed_guide as sg
+    from .paths import cache_dir
+    if pool.startswith("generated:"):
+        if not set_code:
+            console.print("[red]error:[/red] generated:N needs --set")
+            raise typer.Exit(1)
+        from .cards.sets import load_set
+        from .limited.pools import sealed_pool
+        names = sealed_pool(load_set(set_code), int(pool.split(":", 1)[1]))
+        event, code = f"{set_code.upper()} generated sealed pool #{pool.split(':', 1)[1]}", \
+            set_code
+    else:
+        from .arena_log import arena_names, read_decks
+        from .draft_log import arena_card_names
+        decks = [d for d in read_decks() if d.pool]
+        if not decks:
+            console.print("[red]error:[/red] no event with a card pool in your Arena log")
+            raise typer.Exit(1)
+        logged = decks[-1] if pool == "log:latest" else read_decks()[int(pool[4:])]
+        if not logged.pool:
+            console.print(f"[red]error:[/red] {logged.event} has no card pool in the log")
+            raise typer.Exit(1)
+        local = arena_card_names()
+        missing = [g for g in logged.pool if g not in local]
+        local.update(arena_names(missing))
+        names = [local[g] for g in logged.pool if g in local]
+        event, code = logged.event, (set_code or logged.set_code or "").lower()
+    names = [n.split(" // ")[0] for n in names]
+    console.print(f"[bold]{event}[/bold]: {len(names)} cards")
+    infos, notes = sg.card_infos(code, fmt, names)
+    console.print(f"  card values: {notes['values']}; experts on {notes['experts']} cards "
+                  f"({notes['expert_fit']})", highlight=False)
+    pairs, builds = sg.candidate_builds(names, infos)
+    for i, b in enumerate(builds):
+        console.print(f"  build {i}: {b.colors:7s} {b.win_rate:.1%} vs average  "
+                      f"{b.creatures} creatures" + (f"  ({', '.join(b.notes)})"
+                                                    if b.notes else ""), highlight=False)
+    verdict = None
+    if review and builds:
+        console.print("  asking Claude to review the top builds…")
+        try:
+            from .fastsim import load_values
+            verdict = sg.review(builds, names, infos, event, load_values(code, fmt).mean_gih)
+            console.print(f"  [bold]Claude:[/bold] build {verdict['recommended']} — "
+                          f"{verdict['headline']}", highlight=False)
+        except Exception as exc:  # noqa: BLE001 - the page is still useful without it
+            console.print(f"  [yellow]review failed:[/yellow] {exc}", highlight=False)
+    path = out or cache_dir("sealed") / (re.sub(r"[^A-Za-z0-9_-]+", "_", event) + ".html")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    sg.write_html(path, event, names, infos, pairs, builds, verdict, notes)
+    console.print(f"[dim]wrote {path}[/dim]")
+    if open_page:
+        webbrowser.open(path.resolve().as_uri())
 
 
 @app.command("compare")
