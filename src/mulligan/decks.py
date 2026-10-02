@@ -154,6 +154,12 @@ def load_ref(ref: str, set_code: str | None = None) -> DeckRef:
                if e.get("arena_id")}
         resolve(logged, ids)
         if logged.unresolved:
+            # A new set has no Arena ids on Scryfall yet; Arena's own database has them.
+            from .draft_log import arena_card_names
+            local = arena_card_names()
+            ids.update({g: local[g] for g in logged.unresolved if g in local})
+            resolve(logged, ids)
+        if logged.unresolved:
             ids.update(arena_names(list(logged.unresolved)))
             resolve(logged, ids)
         cards, warnings, replaced = _substitute(logged.names, data.playable, f"log:{index}")

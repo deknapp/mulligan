@@ -282,6 +282,9 @@ def versus_cmd(
                                              "builds of one deck."),
     seed: int = typer.Option(0),
     workers: int = typer.Option(0),
+    fast: bool = typer.Option(False, help="Shortcut simulator instead of bot play: games "
+                                          "decided by the 17Lands win rates of the cards "
+                                          "each side draws (about a second)."),
 ):
     """Which of two Arena decks would win? Decks from your Arena log or Export text.
 
@@ -336,6 +339,9 @@ def versus_cmd(
                     what = SHAPE_TEXT.get(what, what)
                     console.print(f"    {what} in {side}: {verb} {side} by "
                                   f"{abs(effect):.1f} pts", highlight=False)
+    if fast:
+        _fast_versus(a, b, fmt, games, seed)
+        return
     start = time.time()
     shared = sum(min(a.names.get(n, 0), b.names.get(n, 0)) for n in (a.names or {})) if (
         a.names and b.names) else 0
@@ -350,6 +356,33 @@ def versus_cmd(
                   "see README; useful for watching the matchup")
     console.print(result.summary(), markup=False)
     console.print(f"[dim]{result.games} games in {time.time() - start:.1f}s[/dim]")
+
+
+def _fast_versus(a, b, fmt: str, games: int, seed: int) -> None:
+    from . import fastsim
+    if not (a.names and b.names and a.set_code):
+        console.print("[red]error:[/red] --fast needs both decks' card names and a set")
+        raise typer.Exit(1)
+    start = time.time()
+    values = fastsim.load_values(a.set_code, fmt)
+    is_land = fastsim.land_test(a.set_code)
+    da = fastsim.Deck.from_names(a.names, values, is_land)
+    db = fastsim.Deck.from_names(b.names, values, is_land)
+    games = max(games, 20000)
+    p = fastsim.head_to_head(da, db, games, seed)
+    console.print(f"\n[bold]Shortcut simulation[/bold] ({values.source}; no play: each "
+                  f"game is decided by the win rates of the cards each side draws)")
+    console.print(f"  {a.label} beats {b.label}: {p:.1%}", highlight=False)
+    console.print(f"  vs an average deck: {a.label} {fastsim.vs_field(da, games, seed):.1%}, "
+                  f"{b.label} {fastsim.vs_field(db, games, seed):.1%}", highlight=False)
+    for deck in (a, b):
+        unrated = sorted(n for n in deck.names if not is_land(n) and not values.known(n))
+        if unrated:
+            console.print(f"  [yellow]no 17Lands rating (counted as average) in "
+                          f"{deck.label}:[/yellow] {', '.join(unrated)}", highlight=False)
+    console.print(f"[dim]{games} games in {time.time() - start:.1f}s. On real HOB decks "
+                  "this ranks win rates about as well as the fitted deck model "
+                  "(Spearman +0.19 vs +0.21); it cannot see synergies or curve.[/dim]")
 
 
 @app.command("build")
@@ -395,7 +428,10 @@ def build_cmd(
     data = load_set(logged.set_code)
     ids = {int(e["arena_id"]): n for n, e in data.entries.items() if e.get("arena_id")}
     missing = [g for g in set(logged.pool) | set(logged.cards) if g not in ids]
-    ids.update(arena_names(missing))
+    from .draft_log import arena_card_names
+    local = arena_card_names()
+    ids.update({g: local[g] for g in missing if g in local})
+    ids.update(arena_names([g for g in missing if g not in ids]))
     resolve(logged, ids)
     pool = [ids[g] for g in logged.pool if g in ids]
     fmt = fmt or ("Sealed" if "sealed" in logged.event.lower() else "PremierDraft")
