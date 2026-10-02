@@ -22,6 +22,7 @@ to register and why, with any swaps from the sideboard.
 
 from __future__ import annotations
 
+import json
 import re
 from collections import Counter
 from dataclasses import dataclass, field
@@ -36,6 +37,7 @@ EXPERT_PRIOR_GAMES = 500   # a card's expert grade weighs as much as this many 1
 SPLASH_KEEP = 0.7          # a splashed card is castable about this often when it matters
 SPLASH_MIN_EDGE = 0.25     # only splash cards at least this far above average (log-odds)
 MIN_CREATURES = 14
+UNRATED_EDGE = -0.15
 SPELLS = 23
 
 
@@ -130,6 +132,35 @@ def _land_makes(entry: dict) -> set[str]:
     return made
 
 
+def _scryfall(name: str) -> dict | None:
+    """Card facts for a pool card the compiled set lacks (bonus-sheet and
+    special-guest cards), from Scryfall, cached."""
+    import urllib.parse
+    import urllib.request
+
+    from .paths import cache_dir
+    path = cache_dir("scryfall", re.sub(r"[^A-Za-z0-9]+", "_", name) + ".json")
+    if path.exists():
+        return json.loads(path.read_text()) or None
+    url = "https://api.scryfall.com/cards/named?exact=" + urllib.parse.quote(name)
+    try:
+        request = urllib.request.Request(url, headers={"User-Agent": "mulligan/0.1",
+                                                       "Accept": "application/json"})
+        with urllib.request.urlopen(request, timeout=20) as response:
+            card = json.load(response)
+    except Exception:  # noqa: BLE001 - offline or unknown: the card is left out
+        return None
+    face = (card.get("card_faces") or [card])[0]
+    line = face.get("type_line", card.get("type_line", ""))
+    main, _, sub = line.partition(" — ")
+    entry = {"cost": face.get("mana_cost", ""), "types": main.split(),
+             "subtypes": sub.split(), "rarity": card.get("rarity", ""),
+             "oracle": face.get("oracle_text", "")}
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(entry))
+    return entry
+
+
 def _expert_grades(experts: dict | None) -> dict[str, tuple[float, str, list[str]]]:
     """card -> (host-aligned average grade index, letter, takes)."""
     from .pick_advice import LETTERS
@@ -172,7 +203,9 @@ def card_infos(set_code: str, fmt: str = "Sealed",
     experts = _expert_grades(load_experts(set_code))
     infos: dict[str, CardInfo] = {}
     for name in set(data.entries) | set(names or []):
-        e = data.entries.get(name, {})
+        e = data.entries.get(name) or _scryfall(name)
+        if e is None:
+            continue   # nothing known about the card: leave it out of every build
         info = CardInfo(name, cost=e.get("cost", ""), mv=_mana_value(e.get("cost", "")),
                         pips=_pips(e.get("cost", "")), types=list(e.get("types", [])),
                         rarity=e.get("rarity", ""), oracle=e.get("oracle", ""))
@@ -203,8 +236,12 @@ def card_infos(set_code: str, fmt: str = "Sealed",
         real = i.real_edge or 0.0
         if i.expert_edge is not None:
             i.edge = (n * real + EXPERT_PRIOR_GAMES * i.expert_edge) / (n + EXPERT_PRIOR_GAMES)
-        else:
+        elif i.real_edge is not None:
             i.edge = real
+        else:
+            # Neither 17Lands nor the hosts rate it: bonus-sheet and guest cards
+            # nobody drafts around. Count it as filler, not as an average card.
+            i.edge = UNRATED_EDGE
     notes = {"values": values.source, "expert_fit": f"edge = {a:+.3f} + {b:.4f} × grade points "
              f"({len(both)} cards)", "experts": sum(1 for i in infos.values() if i.grade),
              "rated": sum(1 for i in infos.values() if i.gih is not None)}
@@ -249,7 +286,9 @@ def _build(pool: list[CardInfo], pair: str, splash: list[CardInfo]) -> Build | N
             break
         weakest = min((c for c in chosen if not c.is_creature), key=lambda c: c.edge,
                       default=None)
-        if weakest is None or creature.edge < weakest.edge - 0.15:
+        # Only for a creature about as good: a 14th creature is not worth
+        # cutting real removal for a below-average body.
+        if weakest is None or creature.edge < weakest.edge - 0.08:
             break
         chosen.remove(weakest)
         chosen.append(creature)
@@ -258,8 +297,10 @@ def _build(pool: list[CardInfo], pair: str, splash: list[CardInfo]) -> Build | N
     lands_total = 40 - len(chosen)
     # Lands: on-color nonbasics first (duals, and fixers for the splash).
     all_colors = colors | {k for c in splash for k in c.off_color_pips(colors)}
-    nonbasic = [c for c in pool if c.is_land and c.makes and c.makes & all_colors
-                and (len(c.makes & all_colors) >= 2 or c.makes <= all_colors)]
+    # Nonbasics only when they fix: two of the deck's colors, or the splash
+    # color (a tapped one-color land is a worse basic).
+    nonbasic = [c for c in pool if c.is_land and (len(c.makes & all_colors) >= 2
+                                                  or c.makes & (all_colors - colors))]
     nonbasic.sort(key=lambda c: (-len(c.makes & all_colors), -c.edge))
     lands = [c.name for c in nonbasic[:4]]
     splash_colors = all_colors - colors
@@ -305,7 +346,7 @@ def _score(build: Build, games: int, seed: int) -> None:
 def candidate_builds(pool_names: list[str], infos: dict[str, CardInfo],
                      games: int = 3000, seed: int = 0) -> tuple[list[Build], list[Build]]:
     """(every color pair's build, the best builds overall including splashes)."""
-    pool = [infos[n] if n in infos else CardInfo(n) for n in pool_names]
+    pool = [infos[n] for n in pool_names if n in infos]   # unknown cards are left out
     pairs = []
     for p in combinations(COLORS, 2):
         b = _build(pool, "".join(p), [])
