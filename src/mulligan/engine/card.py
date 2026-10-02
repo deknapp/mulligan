@@ -48,6 +48,7 @@ TRIGGER_EVENTS = {
     "gain_life": "you gain life",
     "scry_or_surveil": "you scry or surveil",
     "loyalty_counters": "you put loyalty counters on a planeswalker",
+    "loyalty_minus_two": "you activate a loyalty ability, removing two or more counters",
     "opponent_noncombat_damaged": "an opponent is dealt noncombat damage",
     "any_discard": "a player discards a card",
     "discarded": "this card is discarded (it triggers from the graveyard)",

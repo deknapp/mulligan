@@ -60,7 +60,7 @@ SPELL_VALUE = {
     fx.DrawCards: 2.0, fx.Recruit: 2.0, fx.SearchLibrary: 1.5, fx.Impulse: 1.5,
     fx.LookAtTop: 1.5, fx.CreateToken: 2.5, fx.AddCounters: 1.5, fx.Pump: 1.0,
     fx.Sacrifice: 3.0, fx.Discard: 1.5, fx.GainLife: 0.5, fx.Scry: 0.4,
-    fx.Mill: 0.3, fx.Tap: 1.0, fx.Amass: 2.0, fx.Flicker: 1.0,
+    fx.Mill: 0.3, fx.Tap: 1.0, fx.Amass: 2.0, fx.Flicker: 1.0, fx.Stun: 1.0,
 }
 
 MANA_ABILITY_VALUE = 1.5
@@ -88,6 +88,10 @@ def effects_worth(effects) -> float:
         if isinstance(effect, fx.CreateToken):
             total += SPELL_VALUE[fx.CreateToken] + creature_value(
                 effect.token.power, effect.token.toughness, effect.token.keywords) * 0.5
+            continue
+        if isinstance(effect, fx.EmpowerJace):
+            # Loyalty on a Jace that draws at -3 and surveils at -1.
+            total += 0.8 * (effect.count if isinstance(effect.count, int) else 2)
             continue
         for cls, worth in SPELL_VALUE.items():
             if isinstance(effect, cls):
@@ -133,7 +137,13 @@ def spec_value(spec: CardSpec) -> float:
     # look better than a two-mana removal spell every time one had to be
     # discarded, kept through a mulligan, or chosen as a counterspell target.
     modal = max((effects_worth(m.effects) for m in spec.modes), default=0.0)
-    return 1.0 + max(effects_worth(spec.on_resolve), modal) + spec.cost.mana_value * 0.2
+    value = 1.0 + max(effects_worth(spec.on_resolve), modal) + spec.cost.mana_value * 0.2
+    # A noncreature permanent's enters trigger is most of what it does: without
+    # it a Way of the Mind Sculptor rated as a vanilla 2 and was looted away.
+    value += sum(effects_worth(t.effects) for t in spec.triggers if t.when == "etb")
+    if spec.loyalty:
+        value += 1.0 + 0.8 * spec.loyalty
+    return value
 
 
 # ------------------------------------------------------------------- combat

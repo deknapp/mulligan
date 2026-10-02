@@ -493,16 +493,18 @@ class ShuffleIntoLibrary(Effect):
 @dataclass(frozen=True)
 class Sacrifice(Effect):
     """``who`` sacrifices ``count`` permanents matching ``filter``, choosing
-    the least valuable (an automated choice)."""
+    the least valuable (an automated choice), or the one with the greatest
+    mana value when ``greatest`` ("...with the greatest mana value among...")."""
 
     filter: str = "creature"
     who: str = "each_opponent"
     count: int = 1
+    greatest: bool = False
 
     def resolve(self, game: Game, ctx: Context) -> None:
         for seat in ctx.players(game, self.who):
             for _ in range(self.count):
-                game.auto_sacrifice(seat, self.filter)
+                game.auto_sacrifice(seat, self.filter, greatest=self.greatest)
 
     def describe(self) -> str:
         return f"{self.who} sacrifices a {self.filter}"

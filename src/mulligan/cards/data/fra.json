@@ -1243,10 +1243,16 @@
        "discard": 1
       }
      ]
+    },
+    {
+     "when": "dies",
+     "effects": [
+      {
+       "op": "copy_self",
+       "nonlegendary": false
+      }
+     ]
     }
-   ],
-   "approximations": [
-    "the token-copy-on-death is omitted"
    ]
   },
   {
@@ -1658,15 +1664,13 @@
     {
      "op": "sacrifice",
      "filter": "creature|planeswalker",
-     "who": "each_opponent"
+     "who": "each_opponent",
+     "greatest": true
     },
     {
      "op": "gain_life",
      "amount": 2
     }
-   ],
-   "approximations": [
-    "the opponent sacrifices their least valuable, not greatest mana value"
    ]
   },
   {
@@ -7909,10 +7913,16 @@
        "count": 5
       }
      ]
+    },
+    {
+     "when": "loyalty_minus_two",
+     "effects": [
+      {
+       "op": "draw",
+       "count": 1
+      }
+     ]
     }
-   ],
-   "approximations": [
-    "the loyalty-removal draw is omitted"
    ]
   },
   {
@@ -10502,6 +10512,19 @@
        "op": "loot",
        "draw": 2,
        "discard": 2
+      },
+      {
+       "op": "tap"
+      },
+      {
+       "op": "stun",
+       "count": 1
+      }
+     ],
+     "targets": [
+      {
+       "sel": "creature:theirs",
+       "optional": true
       }
      ]
     }
@@ -10520,7 +10543,7 @@
     }
    ],
    "approximations": [
-    "the tap-and-stun rider is omitted"
+    "the tap-and-stun hits one creature whenever the ETB resolves, regardless of what was discarded"
    ]
   },
   {

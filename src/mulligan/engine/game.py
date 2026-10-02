@@ -1080,12 +1080,15 @@ class Game:
             player.library.extend(o.id for o in others)
         self.state.record(f"{player.name} looks at {count}, takes {len(chosen)}")
 
-    def auto_sacrifice(self, seat: int, filter_text: str,
-                       exclude: int | None = None) -> GameObject | None:
+    def auto_sacrifice(self, seat: int, filter_text: str, exclude: int | None = None,
+                       greatest: bool = False) -> GameObject | None:
         options = [o for o in self.find(filter_text, seat)
                    if o.controller == seat and o.id != exclude]
         if not options:
             return None
+        if greatest:  # the victim's controller still picks among the tied
+            top = max(o.spec.cost.mana_value for o in options)
+            options = [o for o in options if o.spec.cost.mana_value == top]
         choice = min(options, key=self._permanent_value)
         self.sacrifice(choice.id)
         return choice
@@ -1902,6 +1905,8 @@ class Game:
                 self.add_loyalty(obj.id, ability.loyalty)
             else:
                 obj.loyalty += ability.loyalty
+                if ability.loyalty <= -2:
+                    self._fire("loyalty_minus_two", subject=obj, controller=obj.controller)
         if ability.tap_cost:
             obj.tapped = True
         cost = ability.mana_cost
@@ -2062,6 +2067,7 @@ class Game:
                     "opp_draw_second", "opp_cast_noncreature", "draw",
                     "creature_leaves_graveyard", "gain_life", "scry_or_surveil",
                     "loyalty_counters", "opponent_noncombat_damaged", "cast_prepared",
+                    "loyalty_minus_two",
                     "opponent_combat_damaged"):
             return event == when and mine
         return False
