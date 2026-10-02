@@ -34,7 +34,7 @@ def test_removal_is_not_cut_for_a_worse_fourteenth_creature():
     pool += [_card(f"Sentry{i}", "{2}", -0.14) for i in range(3)]
     pool += [_card(f"Removal{i}", "{2}{U}", -0.02, creature=False) for i in range(2)]
     pool += [_card(f"Spell{i}", "{1}{U}", 0.05, creature=False) for i in range(8)]
-    build = sg._build(pool, "UG", [])
+    build = sg._build(pool, "UG")
     names = [c.name for c in build.spells]
     assert "Removal0" in names and "Removal1" in names
 
@@ -46,5 +46,32 @@ def test_one_color_tapped_land_is_not_fixing():
     dual.makes = {"U", "G"}
     pool = [_card(f"C{i}", "{1}{U}", 0.1) for i in range(12)]
     pool += [_card(f"D{i}", "{1}{G}", 0.1) for i in range(12)] + [canopy, dual]
-    build = sg._build(pool, "UG", [])
+    build = sg._build(pool, "UG")
     assert "Dual" in build.lands and "Canopy" not in build.lands
+
+
+def test_filler_cost_grows_with_each_filler_card():
+    good = [_card(f"G{i}", "{1}{U}", 0.05) for i in range(23)]
+    bad = [_card(f"B{i}", "{1}{U}", -0.14) for i in range(4)]
+    one = sg.score_deck(good[:22] + bad[:1], [])[1]["filler_cost"]
+    four = sg.score_deck(good[:19] + bad, [])[1]["filler_cost"]
+    assert four > 4 * one
+
+
+def test_deep_good_pool_can_beat_one_bomb_plus_filler():
+    deep = [_card(f"G{i}", "{1}{U}", 0.08) for i in range(23)]
+    bomb = [_card("Bomb", "{3}{U}", 0.40)] + [_card(f"F{i}", "{1}{U}", -0.14)
+                                              for i in range(6)]
+    bomb += [_card(f"M{i}", "{1}{U}", 0.0) for i in range(16)]
+    assert sg.score_deck(deep, [])[0] > sg.score_deck(bomb, [])[0]
+
+
+def test_roles_from_rules_text():
+    removal = sg.CardInfo("Zap", cost="{1}{R}", types=["Instant"],
+                          oracle="Zap deals 3 damage to target creature.")
+    bounce = sg.CardInfo("Bounce", cost="{U}", types=["Instant"],
+                         oracle="Return target creature to its owner's hand.")
+    flyer = sg.CardInfo("Drake", cost="{3}{U}", types=["Creature"], power=3,
+                        keywords={"flying"})
+    assert sg.is_removal(removal) == 1.0 and sg.is_removal(bounce) == 0.5
+    assert sg.win_condition(flyer) == "evasive threat"

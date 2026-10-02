@@ -118,20 +118,24 @@ def sealed_guide_cmd(
     names = [n.split(" // ")[0] for n in names]
     console.print(f"[bold]{event}[/bold]: {len(names)} cards")
     infos, notes = sg.card_infos(code, fmt, names)
+    bombs = sg.pool_bombs(names, infos)
+    console.print("  bombs: " + (", ".join(c.name for c in bombs) or "none"), highlight=False)
     console.print(f"  card values: {notes['values']}; experts on {notes['experts']} cards "
                   f"({notes['expert_fit']})", highlight=False)
     pairs, builds = sg.candidate_builds(names, infos)
     for i, b in enumerate(builds):
-        console.print(f"  build {i}: {b.colors:7s} {b.win_rate:.1%} vs average  "
-                      f"{b.creatures} creatures" + (f"  ({', '.join(b.notes)})"
-                                                    if b.notes else ""), highlight=False)
+        console.print(f"  build {i}: {b.colors:7s} score {b.score:+.2f}  {b.creatures} "
+                      f"creatures, {len(b.lands)} lands" + (f"  ({', '.join(b.notes)})"
+                                                            if b.notes else ""), highlight=False)
     verdict = None
     if review and builds:
         console.print("  asking Claude to review the top builds…")
         try:
             from .fastsim import load_values
             verdict = sg.review(builds, names, infos, event, load_values(code, fmt).mean_gih)
-            console.print(f"  [bold]Claude:[/bold] build {verdict['recommended']} — "
+            which = ("its own build" if verdict["recommended"] == -1
+                     else f"build {verdict['recommended']}")
+            console.print(f"  [bold]Claude:[/bold] {which} — "
                           f"{verdict['headline']}", highlight=False)
         except Exception as exc:  # noqa: BLE001 - the page is still useful without it
             console.print(f"  [yellow]review failed:[/yellow] {exc}", highlight=False)

@@ -34,11 +34,7 @@ COLORS = "WUBRG"
 COLOR_NAMES = {"W": "white", "U": "blue", "B": "black", "R": "red", "G": "green"}
 BASIC_FOR = {"W": "Plains", "U": "Island", "B": "Swamp", "R": "Mountain", "G": "Forest"}
 EXPERT_PRIOR_GAMES = 500   # a card's expert grade weighs as much as this many 17Lands games
-SPLASH_KEEP = 0.7          # a splashed card is castable about this often when it matters
-SPLASH_MIN_EDGE = 0.25     # only splash cards at least this far above average (log-odds)
-MIN_CREATURES = 14
 UNRATED_EDGE = -0.15
-SPELLS = 23
 
 
 @dataclass
@@ -48,6 +44,9 @@ class CardInfo:
     mv: int = 0
     pips: dict[str, float] = field(default_factory=dict)   # color -> pips (hybrid split)
     types: list[str] = field(default_factory=list)
+    subtypes: list[str] = field(default_factory=list)
+    power: int | None = None
+    keywords: set[str] = field(default_factory=set)
     rarity: str = ""
     oracle: str = ""
     makes: set[str] = field(default_factory=set)          # lands: colors produced
@@ -155,6 +154,8 @@ def _scryfall(name: str) -> dict | None:
     main, _, sub = line.partition(" — ")
     entry = {"cost": face.get("mana_cost", ""), "types": main.split(),
              "subtypes": sub.split(), "rarity": card.get("rarity", ""),
+             "power": int(face["power"]) if str(face.get("power", "")).isdigit() else None,
+             "keywords": card.get("keywords", []),
              "oracle": face.get("oracle_text", "")}
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(entry))
@@ -208,6 +209,9 @@ def card_infos(set_code: str, fmt: str = "Sealed",
             continue   # nothing known about the card: leave it out of every build
         info = CardInfo(name, cost=e.get("cost", ""), mv=_mana_value(e.get("cost", "")),
                         pips=_pips(e.get("cost", "")), types=list(e.get("types", [])),
+                        subtypes=list(e.get("subtypes", [])),
+                        power=e.get("power") if isinstance(e.get("power"), int) else None,
+                        keywords={k.lower() for k in e.get("keywords", [])},
                         rarity=e.get("rarity", ""), oracle=e.get("oracle", ""))
         if info.is_land:
             info.makes = _land_makes(e)
@@ -255,7 +259,10 @@ class Build:
     lands: list[str]            # land names, basics included
     splash: list[CardInfo] = field(default_factory=list)
     win_rate: float = 0.0       # shortcut simulator, vs an average deck
+    score: float = 0.0
+    parts: dict = field(default_factory=dict)   # the score, term by term
     notes: list[str] = field(default_factory=list)
+    label: str = ""             # e.g. "Claude's build"
 
     @property
     def creatures(self) -> int:
@@ -272,48 +279,219 @@ class Build:
         return "Deck\n" + "".join(f"{n} {name}\n" for name, n in counts.items())
 
 
-def _build(pool: list[CardInfo], pair: str, splash: list[CardInfo]) -> Build | None:
+# ------------------------------------------------------------------ roles
+#
+# What a card does in a deck, read from its rules text, so the score can ask
+# "does this deck have answers and a way to win" and not only "are its cards
+# good on average".
+
+REMOVAL = [
+    r"destroy target (creature|nonland permanent|permanent|artifact or creature"
+    r"|creature or planeswalker|attacking|blocking|tapped creature)",
+    r"exile target (creature|nonland permanent|permanent|creature or planeswalker"
+    r"|attacking|blocking|tapped creature)",
+    r"deals? (\d+|x|that much) damage to (target creature|any target|target attacking"
+    r"|target blocking|target creature or planeswalker|each creature)",
+    r"fights? (target|another target|up to one target)",
+    r"deals damage equal to its power to (target|another target|up to one target)",
+    r"(target|each) opponent sacrifices",
+    r"target creature (an opponent controls )?gets -\d+/-\d+",
+    r"gets -x/-x",
+    r"enchanted creature (can't attack or block|loses all abilities|doesn't untap)",
+    r"destroy (all|each) (creatures|creature)",
+    r"puts? (it|that permanent) on (their choice of )?the (top or bottom|bottom)",
+    r"on the bottom of its owner's library",
+]
+SOFT_REMOVAL = [
+    r"return target (creature|nonland permanent)[^.]{0,50}to its owner's hand",
+    r"counter target (spell|creature spell|noncreature spell)",
+    r"stun counter",
+]
+ENGINE = [
+    r"(whenever|at the beginning of)[^.]{0,80}(draw a card|draws? \w+ cards|create)",
+]
+JACE_ENGINE_CARDS = 4       # this many empower-Jace cards make a Jace that wins games
+EVASION = {"flying", "menace", "trample"}
+# Set mechanics that reward playing several of their cards. Generic words
+# ("graveyard", "+1/+1 counter") appear on too many unrelated cards to count.
+THEMES = {
+    "Jace engine": r"empower jace|behold a jace|\bjace\b you control",
+    "Prepare": r"\bprepare",
+    "Spells matter": r"whenever you cast (a|an|your) (noncreature|instant)",
+}
+
+# Thresholds, in log-odds over the set's average card. In FRA the top 5% of
+# cards sit above +0.21 (rares and mythics at 65%+ GIH WR), the bottom quarter
+# below -0.11.
+BOMB_EDGE = 0.20
+BOMB_GRADE = "A-"
+FILLER_EDGE = -0.08         # about two win-rate points below the average card
+FILLER_GRADE = "D+"
+
+# Score weights: judgment calls until there are real FRA sealed decks to fit
+# them to. Each is shown, term by term, on the page.
+BOMB_BONUS = 0.5            # extra per unit of edge above BOMB_EDGE - 0.05
+FILLER_COST = 0.04          # the k-th filler card costs k times this
+REMOVAL_EACH = 0.06         # per removal spell up to four...
+REMOVAL_MORE = 0.02         # ...then less, up to six
+NO_WINCON = 0.30
+ONE_WINCON = 0.10
+THEME_EACH = 0.04           # per theme card past four, best theme only
+THEME_CAP = 0.24
+SPLASH_COST = 0.06          # per splashed card, on top of its mana
+EXTRA_LAND_EDGE = -0.10     # an 18th land is worth about a -0.10 card
+SPLASH_CANDIDATE = 0.20     # splash only bombs...
+SPLASH_REMOVAL = 0.03       # ...or removal at least this good
+MAX_SPLASH = 2
+
+
+def _text(c: CardInfo) -> str:
+    return c.oracle.lower().replace(c.name.lower(), "this")
+
+
+def is_removal(c: CardInfo) -> float:
+    """1 for removal, 0.5 for soft interaction (bounce, counters, stun), else 0."""
+    text = _text(c)
+    if any(re.search(p, text) for p in REMOVAL):
+        return 1.0
+    if any(re.search(p, text) for p in SOFT_REMOVAL):
+        return 0.5
+    return 0.0
+
+
+def is_bomb(c: CardInfo) -> bool:
+    from .pick_advice import LETTERS
+    return c.edge >= BOMB_EDGE or (
+        c.grade in LETTERS and LETTERS.index(c.grade) >= LETTERS.index(BOMB_GRADE)
+        and (c.real_edge is None or c.games < 1000 or c.real_edge > 0.1))
+
+
+def is_filler(c: CardInfo) -> bool:
+    from .pick_advice import LETTERS
+    if c.edge < FILLER_EDGE:
+        return True
+    # The hosts' low grade stands unless plenty of real games say otherwise.
+    return (c.grade in LETTERS and LETTERS.index(c.grade) <= LETTERS.index(FILLER_GRADE)
+            and (c.real_edge is None or c.games < 1000 or c.real_edge < 0))
+
+
+def win_condition(c: CardInfo) -> str | None:
+    """Why this card wins games on its own, if it does."""
+    if is_bomb(c):
+        return "bomb"
+    if "Planeswalker" in c.types:
+        return "planeswalker"
+    if c.is_creature:
+        if (c.power or 0) >= 3 and (c.keywords & EVASION or "can't be blocked" in _text(c)):
+            return "evasive threat"
+        if (c.power or 0) >= 5:
+            return "big threat"
+    if (not {"Instant", "Sorcery"} & set(c.types)
+            and any(re.search(p, _text(c)) for p in ENGINE) and c.edge > -0.02):
+        return "engine"
+    return None
+
+
+def themes(c: CardInfo) -> list[str]:
+    text = _text(c) + " " + " ".join(c.subtypes).lower()
+    return [t for t, p in THEMES.items() if re.search(p, text)]
+
+
+def score_deck(spells: list[CardInfo], splash: list[CardInfo], lands: int = 17) -> tuple[float, dict]:
+    """The deck's score and its parts, all in log-odds-of-winning units."""
+    quality = sum(c.edge for c in spells) + EXTRA_LAND_EDGE * max(0, lands - 17)
+    bombs = [c for c in spells if is_bomb(c)]
+    bomb = BOMB_BONUS * sum(max(0.0, c.edge - (BOMB_EDGE - 0.05)) for c in bombs)
+    bomb += 0.05 * sum(1 for c in bombs if c.edge < BOMB_EDGE)   # expert-graded bombs
+    filler = [c for c in spells if is_filler(c)]
+    n = len(filler)
+    filler_cost = FILLER_COST * n * (n + 1) / 2
+    removal = sum(is_removal(c) for c in spells)
+    removal_bonus = REMOVAL_EACH * min(removal, 4) + REMOVAL_MORE * min(max(removal - 4, 0), 2)
+    wincons = [(c.name, why) for c in spells if (why := win_condition(c))]
+    jace = [c for c in spells if "empower jace" in _text(c)]
+    if len(jace) >= JACE_ENGINE_CARDS:
+        wincons.append((f"Jace engine ({len(jace)} empower cards)", "engine"))
+    distinct = len({n for n, _ in wincons}) + sum(1 for _ in wincons) / 100
+    wincon_cost = NO_WINCON if distinct < 1 else ONE_WINCON if distinct < 2 else 0.0
+    theme_counts = Counter(t for c in spells for t in themes(c))
+    theme, tn = theme_counts.most_common(1)[0] if theme_counts else ("", 0)
+    theme_bonus = min(THEME_CAP, THEME_EACH * max(0, tn - 4))
+    creatures = sum(1 for c in spells if c.is_creature)
+    twos = sum(1 for c in spells if c.mv <= 2)
+    tops = sum(1 for c in spells if c.mv >= 6)
+    shape = (0.05 * max(0, 4 - twos) + 0.05 * max(0, tops - 3)
+             + 0.05 * max(0, 12 - creatures))
+    splash_cost = SPLASH_COST * len(splash)
+    total = (quality + bomb - filler_cost + removal_bonus - wincon_cost + theme_bonus
+             - shape - splash_cost)
+    return total, {
+        "quality": quality, "bomb": bomb, "bombs": [c.name for c in bombs],
+        "filler_cost": filler_cost, "filler": [c.name for c in filler],
+        "removal": removal, "removal_bonus": removal_bonus,
+        "removal_cards": [c.name for c in spells if is_removal(c)],
+        "wincons": wincons, "wincon_cost": wincon_cost,
+        "theme": theme, "theme_n": tn, "theme_bonus": theme_bonus,
+        "shape": shape, "creatures": creatures, "twos": twos, "tops": tops,
+        "splash_cost": splash_cost, "lands": lands, "total": total,
+    }
+
+
+def _search(candidates: list[CardInfo], allowed_splash: set[str], colors: set[str],
+            n_spells: int, seed_order: list[CardInfo]) -> list[CardInfo]:
+    """Hill-climb: start from the best cards, then make the single swap that
+    most improves the score until none does."""
+    def splashed(deck):
+        return [c for c in deck if not c.castable(colors)]
+
+    def value(deck):
+        sp = splashed(deck)
+        if len(sp) > MAX_SPLASH:
+            return -1e9
+        return score_deck(deck, sp, 40 - n_spells)[0]
+
+    deck: list[CardInfo] = []
+    for c in seed_order:
+        if len(deck) == n_spells:
+            break
+        if c.castable(colors) or len(splashed(deck)) < MAX_SPLASH:
+            deck.append(c)
+    current = value(deck)
+    for _ in range(60):
+        best, move = current, None
+        for i, out in enumerate(deck):
+            for c in candidates:
+                if c is out or (sum(1 for d in deck if d is c)):
+                    continue
+                trial = deck[:i] + [c] + deck[i + 1:]
+                v = value(trial)
+                if v > best + 1e-9:
+                    best, move = v, trial
+        if move is None:
+            break
+        deck, current = move, best
+    return deck
+
+
+def _lands_for(pool: list[CardInfo], pair: str, spells: list[CardInfo],
+               splash: list[CardInfo], total: int) -> list[str]:
     colors = set(pair)
-    spells = [c for c in pool if not c.is_land and c.castable(colors)]
-    if len(spells) < 15:
-        return None
-    spells.sort(key=lambda c: c.edge, reverse=True)
-    chosen = spells[:SPELLS - len(splash)]
-    rest = spells[SPELLS - len(splash):]
-    creatures = sum(1 for c in chosen if c.is_creature)
-    for creature in [c for c in rest if c.is_creature]:
-        if creatures >= MIN_CREATURES:
-            break
-        weakest = min((c for c in chosen if not c.is_creature), key=lambda c: c.edge,
-                      default=None)
-        # Only for a creature about as good: a 14th creature is not worth
-        # cutting real removal for a below-average body.
-        if weakest is None or creature.edge < weakest.edge - 0.08:
-            break
-        chosen.remove(weakest)
-        chosen.append(creature)
-        creatures += 1
-    chosen += splash
-    lands_total = 40 - len(chosen)
-    # Lands: on-color nonbasics first (duals, and fixers for the splash).
     all_colors = colors | {k for c in splash for k in c.off_color_pips(colors)}
-    # Nonbasics only when they fix: two of the deck's colors, or the splash
-    # color (a tapped one-color land is a worse basic).
-    nonbasic = [c for c in pool if c.is_land and (len(c.makes & all_colors) >= 2
-                                                  or c.makes & (all_colors - colors))]
+    # Nonbasics only when they make two of the deck's colors (splash included):
+    # a land that is one useful color, often tapped, is a worse basic.
+    nonbasic = [c for c in pool if c.is_land and len(c.makes & all_colors) >= 2]
     nonbasic.sort(key=lambda c: (-len(c.makes & all_colors), -c.edge))
     lands = [c.name for c in nonbasic[:4]]
-    splash_colors = all_colors - colors
-    for s in splash_colors:   # three sources per splashed color, four for two+ cards
+    for s in all_colors - colors:   # three sources per splashed color, four for two+ cards
         want = 3 + (sum(1 for c in splash if s in c.off_color_pips(colors)) >= 2)
         have = sum(1 for n in lands for c in pool if c.name == n and s in c.makes)
         lands += [BASIC_FOR[s]] * max(0, want - have)
     pips = Counter()
-    for c in chosen:
+    for c in spells:
         for k, v in c.pips.items():
             if k in colors:
                 pips[k] += v
-    remaining = max(0, lands_total - len(lands))
+    remaining = max(0, total - len(lands))
     weight = sum(pips.values()) or 1.0
     counts = {k: round(remaining * pips[k] / weight) for k in pair}
     while sum(counts.values()) > remaining:
@@ -322,72 +500,146 @@ def _build(pool: list[CardInfo], pair: str, splash: list[CardInfo]) -> Build | N
         counts[max(pair, key=lambda k: pips[k] / max(1, counts[k]))] += 1
     for k in pair:
         lands += [BASIC_FOR[k]] * counts[k]
-    label = pair + ("+" + "".join(sorted(splash_colors)).lower() if splash_colors else "")
-    return Build(label, chosen, lands, list(splash))
+    return lands
 
 
-def _score(build: Build, games: int, seed: int) -> None:
-    cards = [(c.edge * (SPLASH_KEEP if c in build.splash else 1.0), False)
-             for c in build.spells] + [(0.0, True)] * len(build.lands)
-    deck = fastsim.Deck(cards)
-    edge = fastsim.deck_score(deck, games, seed)
-    # Deck-shape costs the card values cannot see.
-    short = max(0, 13 - build.creatures)
-    twos = sum(1 for c in build.spells if c.mv <= 2)
-    edge -= 0.04 * short + 0.03 * max(0, 4 - twos)
-    build.win_rate = fastsim._sigmoid(edge + fastsim.deck_score(
-        fastsim.Deck([(0.0, False)] * 23 + [(0.0, True)] * 17), games, seed) * -1)
-    if short:
-        build.notes.append(f"only {build.creatures} creatures")
-    if twos < 4:
-        build.notes.append(f"only {twos} plays at two mana or less")
+def _build(pool: list[CardInfo], pair: str, splash_color: str | None = None) -> Build | None:
+    """The best deck in ``pair`` (optionally splashing ``splash_color``), at 17
+    or 18 lands, whichever scores better."""
+    colors = set(pair)
+    spells = [c for c in pool if not c.is_land]
+    main = [c for c in spells if c.castable(colors)]
+    if len(main) < 16:
+        return None
+    candidates = list(main)
+    if splash_color:
+        extra = [c for c in spells if not c.castable(colors)
+                 and c.castable(colors | {splash_color})
+                 and sum(c.off_color_pips(colors).values()) == 1
+                 and (c.edge >= SPLASH_CANDIDATE
+                      or (is_removal(c) >= 1 and c.edge >= SPLASH_REMOVAL) or is_bomb(c))]
+        if not extra:
+            return None
+        candidates += extra
+    order = sorted(candidates, key=lambda c: -(c.edge + 0.05 * is_removal(c)
+                                               + (0.1 if is_bomb(c) else 0)))
+    best = None
+    for n_spells in (23, 22):
+        deck = _search(candidates, {splash_color} if splash_color else set(), colors,
+                       n_spells, order)
+        splash = [c for c in deck if not c.castable(colors)]
+        total, parts = score_deck(deck, splash, 40 - n_spells)
+        if best is None or total > best[0] + 1e-9:
+            best = (total, deck, splash, parts, n_spells)
+    total, deck, splash, parts, n_spells = best
+    if splash_color and not splash:
+        return None
+    lands = _lands_for(pool, pair, deck, splash, 40 - n_spells)
+    label = pair + ("+" + splash_color.lower() if splash else "")
+    b = Build(label, deck, lands, splash, score=total, parts=parts)
+    if parts["filler"]:
+        b.notes.append(f"{len(parts['filler'])} filler")
+    if parts["wincon_cost"] >= NO_WINCON:
+        b.notes.append("no win condition")
+    if parts["removal"] < 3:
+        b.notes.append(f"only {parts['removal']:g} removal")
+    return b
+
+
+def _simulate(build: Build, games: int, seed: int) -> None:
+    """The shortcut simulator's win rate vs an average deck, for reference."""
+    cards = [(c.edge, False) for c in build.spells] + [(0.0, True)] * len(build.lands)
+    edge = fastsim.deck_score(fastsim.Deck(cards), games, seed)
+    base = fastsim.deck_score(fastsim.Deck([(0.0, False)] * 23 + [(0.0, True)] * 17),
+                              games, seed)
+    build.win_rate = fastsim._sigmoid(edge - base)
+
+
+def pool_bombs(pool_names: list[str], infos: dict[str, CardInfo]) -> list[CardInfo]:
+    seen = {n: infos[n] for n in pool_names if n in infos and not infos[n].is_land}
+    return sorted((c for c in seen.values() if is_bomb(c)), key=lambda c: -c.edge)
 
 
 def candidate_builds(pool_names: list[str], infos: dict[str, CardInfo],
                      games: int = 3000, seed: int = 0) -> tuple[list[Build], list[Build]]:
-    """(every color pair's build, the best builds overall including splashes)."""
+    """(every color pair's best build, the best builds overall with splashes)."""
     pool = [infos[n] for n in pool_names if n in infos]   # unknown cards are left out
     pairs = []
     for p in combinations(COLORS, 2):
-        b = _build(pool, "".join(p), [])
+        b = _build(pool, "".join(p))
         if b:
-            _score(b, games, seed)
             pairs.append(b)
-    pairs.sort(key=lambda b: -b.win_rate)
+    pairs.sort(key=lambda b: -b.score)
     builds = list(pairs)
-    for base in pairs[:4]:
-        colors = set(base.colors[:2])
-        bombs = sorted((c for c in pool if not c.is_land and not c.castable(colors)
-                        and sum(c.off_color_pips(colors).values()) == 1
-                        and c.edge >= SPLASH_MIN_EDGE), key=lambda c: -c.edge)
-        by_color: dict[str, list[CardInfo]] = {}
-        for c in bombs:
-            by_color.setdefault(next(iter(c.off_color_pips(colors))), []).append(c)
-        for cards in by_color.values():
-            for k in (1, 2):
-                if len(cards) >= k:
-                    b = _build(pool, base.colors[:2], cards[:k])
-                    if b:
-                        _score(b, games, seed)
-                        builds.append(b)
-    builds.sort(key=lambda b: -b.win_rate)
+    for base in pairs[:5]:
+        for s in COLORS:
+            if s not in base.colors:
+                b = _build(pool, base.colors, s)
+                if b and b.score > base.score - 0.15:
+                    builds.append(b)
+    builds.sort(key=lambda b: -b.score)
     best, seen = [], set()
     for b in builds:
         key = frozenset(c.name for c in b.spells)
         if key not in seen:
             seen.add(key)
             best.append(b)
+    for b in pairs + best:
+        _simulate(b, games, seed)
     return pairs, best[:5]
+
+
+def parse_custom(spec: dict, pool_names: list[str], infos: dict[str, CardInfo]) -> Build | None:
+    """Claude's own build, if it gave one and every card is in the pool."""
+    if not spec or not spec.get("spells"):
+        return None
+    have = Counter(pool_names)
+    want = Counter(spec["spells"])
+    if any(n not in infos or want[n] > have[n] for n in want):
+        return None
+    spells = [infos[n] for n in spec["spells"]]
+    lands: list[str] = []
+    for item in spec.get("lands", []):
+        lands += [item["name"]] * int(item["count"])
+    if not 38 <= len(spells) + len(lands) <= 42:
+        return None
+    colors = {k for c in spells for k in c.colors}
+    main = {k for k, _ in Counter(k for c in spells for k in c.colors).most_common(2)}
+    splash = [c for c in spells if not c.castable(main)]
+    total, parts = score_deck(spells, splash, len(lands))
+    label = "".join(k for k in COLORS if k in main) + (
+        "+" + "".join(sorted(colors - main)).lower() if colors - main else "")
+    b = Build(label, spells, lands, splash, score=total, parts=parts,
+              label="Claude's build")
+    _simulate(b, 3000, 0)
+    return b
 
 
 # ------------------------------------------------------------------ review
 
+_BUILD_SPEC = {
+    "type": "object", "additionalProperties": False,
+    "required": ["use", "spells", "lands", "why"],
+    "properties": {
+        "use": {"type": "boolean", "description": "true only if you built a deck that is "
+                                                  "better than every candidate"},
+        "spells": {"type": "array", "items": {"type": "string"},
+                   "description": "exact card names from the pool, one entry per copy"},
+        "lands": {"type": "array", "items": {
+            "type": "object", "additionalProperties": False, "required": ["name", "count"],
+            "properties": {"name": {"type": "string"}, "count": {"type": "integer"}}}},
+        "why": {"type": "string"},
+    },
+}
+
 REVIEW_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["recommended", "headline", "why", "builds", "swaps", "play_tips"],
+    "required": ["recommended", "headline", "why", "builds", "swaps", "own_build",
+                 "play_tips"],
     "properties": {
-        "recommended": {"type": "integer", "description": "index of the build to register"},
+        "recommended": {"type": "integer",
+                        "description": "index of the build to register; -1 for own_build"},
         "headline": {"type": "string", "description": "one sentence"},
         "why": {"type": "string", "description": "3-6 sentences of reasoning"},
         "builds": {"type": "array", "items": {
@@ -401,20 +653,47 @@ REVIEW_SCHEMA = {
                             "required": ["out", "in", "why"],
                             "properties": {"out": {"type": "string"}, "in": {"type": "string"},
                                            "why": {"type": "string"}}}},
+        "own_build": _BUILD_SPEC,
         "play_tips": {"type": "array", "items": {"type": "string"}},
     },
 }
 
 REVIEW_SYSTEM = """You are an expert Magic: The Gathering Limited player reviewing sealed \
-deck builds for a friend before they register. You get candidate builds that a program made \
-from real data: each card's 17Lands games-in-hand win rate (GIH WR; the set's average card is \
-about {mean:.1%}) and the averaged grades of Limited podcast hosts, plus a shortcut-simulator \
-estimate of each build's win rate against an average deck. Those numbers know nothing about \
-synergy, curve, interaction density, or how the cards work together - that is your job. Read \
-the card text. Check: enough early plays and creatures, removal count, mana (pips vs sources, \
-splash cost), bombs, real synergies and anti-synergies. Recommend one build; propose swaps only \
-with cards that are in the pool's sideboard; keep tips short and specific to these cards. \
-Disagree with the numbers when the cards justify it, and say so plainly."""
+deck builds for a friend before they register. The goals, in the friend's words: play bombs \
+if possible, no bad cards in the deck, and a real way to win; a deck of many good cards that \
+work together is as good as a bomb deck. Candidate builds come from a program using real data \
+only: each card's 17Lands games-in-hand win rate (GIH WR; the set's average card is about \
+{mean:.1%}; Premier Draft data, not Sealed) and the averaged grades of Limited podcast hosts. \
+Each build has a score broken into parts: card quality, a bomb bonus, a cost for filler cards, \
+removal count, win conditions, a set-mechanic theme, curve and splash costs. Those parts come \
+from rules-text patterns and averages: check them against the actual cards. Read every card. \
+Check removal (real answers vs. soft ones), the curve and creature count, mana (pips vs. \
+sources, what a splash costs), the win conditions, and real synergies and anti-synergies. \
+Recommend one build. Propose swaps only with cards from the pool. If none of the candidates \
+is right, build your own from the pool (exact names, one entry per copy, 40 cards with \
+lands), set own_build.use = true and recommended = -1; otherwise own_build.use = false with \
+empty lists. If the pool has no bombs, say so plainly. Keep tips short and specific to these \
+cards. Disagree with the numbers when the cards justify it, and say so."""
+
+
+def _parts_line(b: Build) -> str:
+    p = b.parts
+    bits = [f"score {b.score:+.2f}", f"card quality {p['quality']:+.2f}"]
+    if p["bombs"]:
+        bits.append(f"bombs +{p['bomb']:.2f} ({', '.join(p['bombs'])})")
+    if p["filler"]:
+        bits.append(f"filler -{p['filler_cost']:.2f} ({', '.join(p['filler'])})")
+    bits.append(f"removal {p['removal']:g} (+{p['removal_bonus']:.2f})")
+    bits.append("win conditions: " + (", ".join(f"{n} [{w}]" for n, w in p["wincons"])
+                                      or "NONE") + (f" (-{p['wincon_cost']:.2f})"
+                                                    if p["wincon_cost"] else ""))
+    if p["theme_bonus"]:
+        bits.append(f"theme {p['theme']} x{p['theme_n']} (+{p['theme_bonus']:.2f})")
+    if p["shape"]:
+        bits.append(f"curve/creature cost -{p['shape']:.2f}")
+    if p["splash_cost"]:
+        bits.append(f"splash cost -{p['splash_cost']:.2f}")
+    return "; ".join(bits)
 
 
 def _card_line(c: CardInfo) -> str:
@@ -424,11 +703,13 @@ def _card_line(c: CardInfo) -> str:
 
 def review_prompt(builds: list[Build], pool_names: list[str], infos: dict[str, CardInfo],
                   event: str) -> str:
-    lines = [f"Event: {event}. Pool: {len(pool_names)} cards.", ""]
+    bombs = pool_bombs(pool_names, infos)
+    lines = [f"Event: {event}. Pool: {len(pool_names)} cards. Bombs in the pool: "
+             + (", ".join(c.name for c in bombs) or "none"), ""]
     for i, b in enumerate(builds):
-        lines.append(f"## Build {i}: {b.colors} - estimated {b.win_rate:.1%} vs an average "
-                     f"deck; {b.creatures} creatures; curve 1-7+: {b.curve()}"
-                     + (f"; flags: {', '.join(b.notes)}" if b.notes else ""))
+        lines.append(f"## Build {i}: {b.colors} - {b.creatures} creatures; {len(b.lands)} "
+                     f"lands; curve 1-7+: {b.curve()}")
+        lines.append("Score: " + _parts_line(b))
         for c in sorted(b.spells, key=lambda c: (c.mv, c.name)):
             lines.append(_card_line(c) + ("  [SPLASH]" if c in b.splash else ""))
         lands = Counter(b.lands)
@@ -439,6 +720,9 @@ def review_prompt(builds: list[Build], pool_names: list[str], infos: dict[str, C
                   key=lambda n: -infos[n].edge)
     lines.append("## Sideboard (pool cards in none of the builds, best first)")
     lines += [_card_line(infos[n]) for n in side[:40]]
+    counts = Counter(n for n in pool_names if n in infos)
+    lines += ["", "## The whole pool, with copies (for swaps or your own build)",
+              "; ".join(f"{k}x {n}" for n, k in sorted(counts.items()))]
     takes = []
     for name in sorted({c.name for b in builds for c in b.spells}):
         for t in infos[name].takes[:2] if name in infos else []:
@@ -471,7 +755,14 @@ def _esc(s: str) -> str:
 def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInfo],
                pairs: list[Build], builds: list[Build], verdict: dict | None,
                notes: dict) -> None:
+    builds = list(builds)
+    custom = parse_custom((verdict or {}).get("own_build") or {}, pool_names, infos) \
+        if (verdict or {}).get("own_build", {}).get("use") else None
+    if custom:
+        builds.append(custom)
     rec = verdict.get("recommended", 0) if verdict else 0
+    if rec == -1 and custom:
+        rec = len(builds) - 1
     rec = rec if 0 <= rec < len(builds) else 0
     by_index = {b.get("index"): b for b in (verdict or {}).get("builds", [])}
 
@@ -503,33 +794,71 @@ def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInf
         return (f'<div class="grid">{"".join(cols)}</div>'
                 f'<div class="lands"><b>{len(b.lands)} lands</b><ul>{land_html}</ul></div>')
 
+    def checklist(b: Build) -> str:
+        p = b.parts
+        if not p:
+            return ""
+        def row(ok, label, value, detail=""):
+            mark = "ok" if ok is True else "bad" if ok is False else "meh"
+            return (f'<li class="{mark}"><span class="k">{label}</span><span class="v">{value}'
+                    f'</span><span class="d">{_esc(detail)}</span></li>')
+        wins = ", ".join(f"{n} ({w})" for n, w in p["wincons"])
+        rows = [
+            row(None, "Card quality", f"{p['quality']:+.2f}", "sum of every card's edge over "
+                "an average card"),
+            row(bool(p["bombs"]) or None, "Bombs", f"+{p['bomb']:.2f}",
+                ", ".join(p["bombs"]) or "none"),
+            row(not p["filler"] if len(p["filler"]) <= 1 else False, "Filler",
+                f"−{p['filler_cost']:.2f}", ", ".join(p["filler"]) or "none"),
+            row(p["removal"] >= 4 if p["removal"] >= 3 else False, "Removal",
+                f"{p['removal']:g}", ", ".join(dict.fromkeys(p["removal_cards"]))),
+            row(not p["wincon_cost"] if p["wincons"] else False, "Win conditions",
+                str(len({n for n, _ in p['wincons']})), wins or "none"),
+        ]
+        if p["theme_bonus"]:
+            rows.append(row(True, "Theme", f"+{p['theme_bonus']:.2f}",
+                            f"{p['theme']} ({p['theme_n']} cards)"))
+        if p["shape"]:
+            rows.append(row(False, "Curve / creatures", f"−{p['shape']:.2f}",
+                            f"{p['creatures']} creatures, {p['twos']} plays ≤ 2 mana, "
+                            f"{p['tops']} at 6+"))
+        if p["splash_cost"]:
+            rows.append(row(None, "Splash", f"−{p['splash_cost']:.2f}",
+                            ", ".join(c.name for c in b.splash)))
+        return (f'<ul class="check">{"".join(rows)}<li class="tot"><span class="k">Score</span>'
+                f'<span class="v">{b.score:+.2f}</span><span class="d">higher is better; '
+                f'shortcut simulator: {b.win_rate:.1%} vs an average deck</span></li></ul>')
+
     def build_panel(i: int, b: Build) -> str:
-        v = by_index.get(i, {})
+        v = by_index.get(i, {}) if not b.label else {}
         pros = "".join(f"<li>{_esc(s)}</li>" for s in v.get("strengths", []))
         cons = "".join(f"<li>{_esc(s)}</li>" for s in v.get("weaknesses", []))
         flags = "".join(f'<span class="flag">{_esc(n)}</span>' for n in b.notes)
         review_html = (f'<p class="verdict">{_esc(v["verdict"])}</p>'
                        f'<div class="pc"><div><h4>Strengths</h4><ul>{pros}</ul></div>'
                        f'<div><h4>Weaknesses</h4><ul>{cons}</ul></div></div>') if v else ""
+        own = (f'<p class="verdict">Claude built this from the pool: '
+               f'{_esc(verdict["own_build"].get("why", ""))}</p>') if b.label else ""
         return (f'<section class="build" id="b{i}" {"" if i == rec else "hidden"}>'
-                f'<div class="stats"><div><b>{b.win_rate:.1%}</b><span>vs average deck</span>'
-                f'</div><div><b>{b.creatures}</b><span>creatures</span></div>'
+                f'<div class="stats"><div><b>{b.score:+.2f}</b><span>score</span></div>'
+                f'<div><b>{b.creatures}</b><span>creatures</span></div>'
                 f'<div><b>{sum(1 for c in b.spells if c.mv <= 2)}</b><span>plays ≤ 2 mana'
-                f'</span></div><div><b>{len(b.splash)}</b><span>splashed</span></div>'
-                f'{flags}</div>{review_html}{deck_grid(b)}'
+                f'</span></div><div><b>{len(b.lands)}</b><span>lands</span></div>'
+                f'{flags}</div>{own}{checklist(b)}{review_html}{deck_grid(b)}'
                 f'<details><summary>Arena import text</summary><pre>{_esc(b.decklist())}'
                 f'</pre></details></section>')
 
     tabs = "".join(
         f'<button class="tab{" on" if i == rec else ""}" data-i="{i}">'
-        f'{"★ " if i == rec else ""}{_esc(b.colors)} <small>{b.win_rate:.1%}</small></button>'
+        f'{"★ " if i == rec else ""}{_esc(b.label or b.colors)}'
+        f'{" " + _esc(b.colors) if b.label else ""} <small>{b.score:+.2f}</small></button>'
         for i, b in enumerate(builds))
-    top = max((b.win_rate for b in pairs), default=0.5)
-    low = min((b.win_rate for b in pairs), default=0.4)
+    top = max((b.score for b in pairs), default=1.0)
+    low = min((b.score for b in pairs), default=0.0)
     bars = "".join(
         f'<div class="bar"><span class="lbl">{_esc(b.colors)}</span><span class="track">'
-        f'<span class="fill" style="width:{8 + 92 * (b.win_rate - low) / max(1e-6, top - low):.0f}%">'
-        f'</span></span><span class="val">{b.win_rate:.1%}</span></div>' for b in pairs)
+        f'<span class="fill" style="width:{8 + 92 * (b.score - low) / max(1e-6, top - low):.0f}%">'
+        f'</span></span><span class="val">{b.score:+.2f}</span></div>' for b in pairs)
     used = {c.name for b in builds for c in b.spells}
     side = sorted({n for n in pool_names if n in infos and not infos[n].is_land and n not in
                    used}, key=lambda n: -infos[n].edge)[:16]
@@ -548,6 +877,15 @@ def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInf
     else:
         head = ('<section class="review"><div class="kicker">No AI review</div><p>Run without '
                 '<code>--no-review</code> (needs ANTHROPIC_API_KEY) for a final review.</p></section>')
+    bombs = pool_bombs(pool_names, infos)
+    best_cards = sorted({n for n in pool_names if n in infos and not infos[n].is_land},
+                        key=lambda n: -infos[n].edge)[:3]
+    banner = (f'<p class="banner bombs">Bombs in this pool: '
+              f'{", ".join(_esc(c.name) for c in bombs)}</p>' if bombs else
+              f'<p class="banner">No bombs in this pool. Best cards: '
+              f'{", ".join(f"{_esc(n)} ({infos[n].evidence()})" for n in best_cards)}. '
+              f'Win with card quality, removal and a theme.</p>')
+    head = banner + head
     page = PAGE.format(
         title=_esc(f"Sealed guide · {event}"), event=_esc(event), n=len(pool_names),
         head=head, tabs=tabs, panels="".join(build_panel(i, b) for i, b in enumerate(builds)),
@@ -605,6 +943,16 @@ pre{{background:var(--bg);padding:10px;border-radius:6px;overflow:auto}}
 .track{{background:var(--bg);border-radius:4px;height:14px}}.fill{{display:block;height:14px;
 border-radius:4px;background:var(--accent)}}.val{{font-variant-numeric:tabular-nums;text-align:right}}
 .side{{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}}.side .card{{margin:0}}
+.banner{{background:var(--chip);border-radius:8px;padding:10px 14px;margin:0 0 16px}}
+.banner.bombs{{border-left:4px solid var(--hi)}}
+.check{{list-style:none;padding:0;margin:10px 0;border:1px solid var(--line);border-radius:8px}}
+.check li{{display:grid;grid-template-columns:140px 70px 1fr;gap:10px;padding:6px 12px;
+border-top:1px solid var(--line);align-items:baseline}}.check li:first-child{{border-top:0}}
+.check .k{{font-weight:600}}.check .v{{font-variant-numeric:tabular-nums;text-align:right}}
+.check .d{{color:var(--muted);font-size:13px}}
+.check li.ok .k::before{{content:"✓ ";color:var(--hi)}}.check li.bad .k::before{{content:"✗ ";color:var(--lo)}}
+.check li.meh .k::before{{content:"· ";color:var(--mid)}}.check li.tot{{background:var(--bg)}}
+@media (max-width:760px){{.check li{{grid-template-columns:1fr auto}}.check .d{{grid-column:1/-1}}}}
 .foot{{color:var(--muted);font-size:13px;margin-top:20px}}
 @media (max-width:760px){{.grid{{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .two,.pc{{grid-template-columns:1fr}}.side{{grid-template-columns:repeat(4,minmax(0,1fr))}}}}
@@ -612,12 +960,14 @@ border-radius:4px;background:var(--accent)}}.val{{font-variant-numeric:tabular-n
 <h1>Sealed guide</h1><p class="sub">{event} · {n} cards in the pool</p>
 {head}
 <div class="tabs">{tabs}</div>{panels}
-<div class="two"><div class="box"><h3>Best build per color pair</h3>{bars}</div>
+<div class="two"><div class="box"><h3>Best build per color pair (score)</h3>{bars}</div>
 <div class="box"><h3>Best of the rest (not in any build above)</h3><div class="side">{side}</div></div></div>
 <p class="foot">Badges: 17Lands games-in-hand win rate · podcast hosts' average grade. Green = well above
 the average card, red = well below. Dashed outline = splash. Card values: {values}
-({rated} cards rated) blended with expert grades ({experts} cards; {fit}). Win rates are the shortcut
-simulator (draws scored by those values; no synergy or curve). No simulator ratings are used.</p>
+({rated} cards rated) blended with expert grades ({experts} cards; {fit}). Score = card quality
++ bomb bonus − a filler cost that grows with each filler card + removal (up to 4–6) − a cost for no
+win condition + set-theme bonus − curve and splash costs, all in log-odds of winning; the weights are
+judgment calls until real FRA sealed results exist to fit them. No simulator ratings are used.</p>
 </main><script>
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{{
 document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
