@@ -1,0 +1,50 @@
+name: 17lands-watch
+
+# 17Lands publishes its full per-game and per-draft files for a set weeks
+# after release. Those files (not the live card-ratings endpoint the site
+# reads) are what real color-pair win rates, `mulligan synergy` and the
+# validation refits need. Once a day this checks whether they exist yet and
+# opens one issue per newly published file, so the refit can start that day.
+on:
+  schedule:
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      SET: FRA
+    steps:
+      - run: |
+          base=https://17lands-public.s3.amazonaws.com/analysis_data
+          for kind in game draft; do
+            for fmt in PremierDraft TradDraft Sealed; do
+              file="${kind}_data_public.${SET}.${fmt}.csv.gz"
+              url="$base/${kind}_data/$file"
+              status=$(curl -s -o /dev/null -w '%{http_code}' -I "$url")
+              echo "$file: $status"
+              [ "$status" = 200 ] || continue
+              title="17Lands published $file"
+              # Closed issues count too: one notice per file, ever.
+              if [ -n "$(gh issue list --state all --search "\"$title\" in:title" --json number --jq '.[].number')" ]; then
+                continue
+              fi
+              size=$(curl -sI "$url" | awk 'tolower($1)=="content-length:"{printf "%.1f MB", $2/1e6}')
+              gh issue create --title "$title" --body "$(cat <<EOF
+          $url ($size) is live.
+
+          Refit checklist (local; see ~/claude-context/mulligan-TODO.md):
+          - [ ] Real $SET GIH WR from game_data in validation/seventeen.py; sim vs real correlation
+          - [ ] Calibrate expert_ratings GRADE_POINTS + SPREAD against real GIH WR
+          - [ ] \`mulligan synergy --set ${SET,,}\` and swap real pair WR into /tools/synergy.html
+          - [ ] Update the primer, \`mulligan site\`, commit site/
+          EOF
+          )"
+            done
+          done
