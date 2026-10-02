@@ -52,6 +52,10 @@ class CardInfo:
     makes: set[str] = field(default_factory=set)          # lands: colors produced
     gih: float | None = None
     games: int = 0
+    sealed_gih: float | None = None
+    sealed_games: int = 0
+    lens: int = 0               # Claude's Sealed shift, -2..+2
+    lens_why: str = ""
     real_edge: float | None = None
     grade: str | None = None
     expert_edge: float | None = None
@@ -92,6 +96,10 @@ class CardInfo:
         bits = []
         if self.gih is not None:
             bits.append(f"17Lands GIH {self.gih:.1%} over {self.games:,} games")
+        if self.sealed_gih is not None:
+            bits.append(f"Sealed {self.sealed_gih:.1%} over {self.sealed_games:,}")
+        if self.lens:
+            bits.append(f"Sealed lens {self.lens:+d}: {self.lens_why}")
         if self.grade:
             bits.append(f"experts {self.grade}")
         return "; ".join(bits) or "no data (counted as average)"
@@ -188,19 +196,34 @@ def _expert_grades(experts: dict | None) -> dict[str, tuple[float, str, list[str
     return out
 
 
-def card_infos(set_code: str, fmt: str = "Sealed",
-               names: list[str] | None = None) -> tuple[dict[str, CardInfo], dict]:
-    """Every card of the set with its real-data edge; plus notes on the sources."""
+def _ratings(set_code: str, fmt: str) -> dict[str, tuple[float, int]]:
+    """GIH WR per card: 17Lands' full game files when published, else live."""
+    from .validation import seventeen
+    try:
+        return seventeen.game_data_ratings(set_code, fmt)
+    except Exception:  # noqa: BLE001 - game files not out yet
+        try:
+            return seventeen.fetch_ratings(set_code, fmt)
+        except Exception:  # noqa: BLE001 - offline
+            return {}
+
+
+def card_infos(set_code: str, fmt: str = "Sealed", names: list[str] | None = None,
+               lens: bool = True) -> tuple[dict[str, CardInfo], dict]:
+    """Every card of the set with its real-data edge; plus notes on the sources.
+
+    For Sealed, Premier Draft numbers are the base (capped at
+    SEALED_PRIOR_GAMES games' worth of evidence) and real Sealed numbers pull
+    each card toward its Sealed result as they come in; the Sealed lens nudges
+    what neither has settled."""
     from .cards.sets import load_set
     from .pick_advice import grade_points, load_experts
-    from .validation import seventeen
     data = load_set(set_code)
-    values = fastsim.load_values(set_code, fmt)
-    try:
-        gih = seventeen.game_data_ratings(set_code, fmt)
-    except Exception:  # noqa: BLE001 - game files not out yet
-        gih = seventeen.fetch_ratings(set_code, "PremierDraft" if "PremierDraft"
-                                      in values.source else fmt)
+    draft = _ratings(set_code, "PremierDraft")
+    sealed = _ratings(set_code, "Sealed") if fmt == "Sealed" else {}
+    dv = fastsim.CardValues.from_gih(draft) if draft else None
+    sv = fastsim.CardValues.from_gih(sealed) if sealed else None
+    shifts = load_lens(set_code) if lens and fmt == "Sealed" else {}
     experts = _expert_grades(load_experts(set_code))
     infos: dict[str, CardInfo] = {}
     for name in set(data.entries) | set(names or []):
@@ -215,12 +238,25 @@ def card_infos(set_code: str, fmt: str = "Sealed",
                         rarity=e.get("rarity", ""), oracle=e.get("oracle", ""))
         if info.is_land:
             info.makes = _land_makes(e)
-        if name in gih:
-            info.gih, info.games = gih[name]
-            info.real_edge = values.values.get(name)
+        weight = 0.0
+        total = 0.0
+        if name in draft:
+            info.gih, info.games = draft[name]
+            w = min(info.games, SEALED_PRIOR_GAMES) if sealed else info.games
+            total += w * dv.values[name]
+            weight += w
+        if name in sealed:
+            info.sealed_gih, info.sealed_games = sealed[name]
+            total += info.sealed_games * sv.values[name]
+            weight += info.sealed_games
+        if weight:
+            info.real_edge = total / weight
+            info.games = int(weight)
         if name in experts:
             mean, info.grade, info.takes = experts[name]
             info.expert_edge = grade_points(mean)   # win-rate points for now
+        if name in shifts:
+            info.lens, info.lens_why = shifts[name]
         infos[name] = info
     # Put expert points on the log-odds scale: fit edge ≈ a + b·points on
     # well-measured cards.
@@ -246,9 +282,16 @@ def card_infos(set_code: str, fmt: str = "Sealed",
             # Neither 17Lands nor the hosts rate it: bonus-sheet and guest cards
             # nobody drafts around. Count it as filler, not as an average card.
             i.edge = UNRATED_EDGE
-    notes = {"values": values.source, "expert_fit": f"edge = {a:+.3f} + {b:.4f} × grade points "
-             f"({len(both)} cards)", "experts": sum(1 for i in infos.values() if i.grade),
-             "rated": sum(1 for i in infos.values() if i.gih is not None)}
+        if i.lens:
+            i.edge += LENS_STEP * i.lens * LENS_FADE_GAMES / (LENS_FADE_GAMES + i.sealed_games)
+    source = "17Lands FRA Premier Draft" + (
+        f" + Sealed ({len(sealed)} cards)" if sealed else "")
+    notes = {"values": source.replace("FRA", set_code.upper()),
+             "expert_fit": f"edge = {a:+.3f} + {b:.4f} × grade points ({len(both)} cards)",
+             "experts": sum(1 for i in infos.values() if i.grade),
+             "rated": sum(1 for i in infos.values() if i.gih is not None),
+             "lens": sum(1 for i in infos.values() if i.lens),
+             "mean_gih": dv.mean_gih if dv else 0.55}
     return infos, notes
 
 
@@ -318,7 +361,12 @@ THEMES = {
     "Jace engine": r"empower jace|behold a jace|\bjace\b you control",
     "Prepare": r"\bprepare",
     "Spells matter": r"whenever you cast (a|an|your) (noncreature|instant)",
+    "Burn": r"deals? (\d+|x) damage to (any target|each opponent|target opponent|each player)"
+            r"|damage to each opponent|noncombat damage",
 }
+# A theme counts only with a card that rewards it, not just cards that do it.
+THEME_PAYOFF = {"Burn": r"noncombat damage|was dealt damage this turn"}
+THEME_ACTIVE = 5            # cards needed before a theme's members stop counting as filler
 
 # Thresholds, in log-odds over the set's average card. In FRA the top 5% of
 # cards sit above +0.21 (rares and mythics at 65%+ GIH WR), the bottom quarter
@@ -332,12 +380,12 @@ FILLER_GRADE = "D+"
 # them to. Each is shown, term by term, on the page.
 BOMB_BONUS = 0.5            # extra per unit of edge above BOMB_EDGE - 0.05
 FILLER_COST = 0.04          # the k-th filler card costs k times this
-REMOVAL_EACH = 0.06         # per removal spell up to four...
-REMOVAL_MORE = 0.02         # ...then less, up to six
+REMOVAL_EACH = 0.08         # per removal spell up to six: Sealed is slow and
+REMOVAL_MORE = 0.04         # bomb-heavy, so answers matter; then less, up to ten
 NO_WINCON = 0.30
 ONE_WINCON = 0.10
-THEME_EACH = 0.04           # per theme card past four, best theme only
-THEME_CAP = 0.24
+THEME_EACH = 0.05           # per theme card past four, best theme only
+THEME_CAP = 0.40
 SPLASH_COST = 0.06          # per splashed card, on top of its mana
 EXTRA_LAND_EDGE = -0.10     # an 18th land is worth about a -0.10 card
 SPLASH_CANDIDATE = 0.20     # splash only bombs...
@@ -381,6 +429,8 @@ def win_condition(c: CardInfo) -> str | None:
         return "bomb"
     if "Planeswalker" in c.types:
         return "planeswalker"
+    if re.search(r"deals? x damage to (any target|target player|each opponent)", _text(c)):
+        return "finisher"   # a Fireball ends games
     if c.is_creature:
         if (c.power or 0) >= 3 and (c.keywords & EVASION or "can't be blocked" in _text(c)):
             return "evasive threat"
@@ -397,25 +447,40 @@ def themes(c: CardInfo) -> list[str]:
     return [t for t, p in THEMES.items() if re.search(p, text)]
 
 
+def deck_theme(spells: list[CardInfo]) -> tuple[str, int, set[str]]:
+    """The deck's strongest set theme: (name, cards, member names)."""
+    best = ("", 0, set())
+    for theme in THEMES:
+        members = [c for c in spells if theme in themes(c)]
+        payoff = THEME_PAYOFF.get(theme)
+        if payoff and not any(re.search(payoff, _text(c)) for c in members):
+            continue
+        if len(members) > best[1]:
+            best = (theme, len(members), {c.name for c in members})
+    return best
+
+
 def score_deck(spells: list[CardInfo], splash: list[CardInfo], lands: int = 17) -> tuple[float, dict]:
     """The deck's score and its parts, all in log-odds-of-winning units."""
     quality = sum(c.edge for c in spells) + EXTRA_LAND_EDGE * max(0, lands - 17)
     bombs = [c for c in spells if is_bomb(c)]
     bomb = BOMB_BONUS * sum(max(0.0, c.edge - (BOMB_EDGE - 0.05)) for c in bombs)
     bomb += 0.05 * sum(1 for c in bombs if c.edge < BOMB_EDGE)   # expert-graded bombs
-    filler = [c for c in spells if is_filler(c)]
+    theme, tn, members = deck_theme(spells)
+    active = members if tn >= THEME_ACTIVE else set()
+    # Removal is never filler, and neither is a working theme's card: its win
+    # rate was measured mostly in decks without the theme.
+    filler = [c for c in spells if is_filler(c) and not is_removal(c) and c.name not in active]
     n = len(filler)
     filler_cost = FILLER_COST * n * (n + 1) / 2
     removal = sum(is_removal(c) for c in spells)
-    removal_bonus = REMOVAL_EACH * min(removal, 4) + REMOVAL_MORE * min(max(removal - 4, 0), 2)
+    removal_bonus = REMOVAL_EACH * min(removal, 6) + REMOVAL_MORE * min(max(removal - 6, 0), 4)
     wincons = [(c.name, why) for c in spells if (why := win_condition(c))]
     jace = [c for c in spells if "empower jace" in _text(c)]
     if len(jace) >= JACE_ENGINE_CARDS:
         wincons.append((f"Jace engine ({len(jace)} empower cards)", "engine"))
     distinct = len({n for n, _ in wincons}) + sum(1 for _ in wincons) / 100
     wincon_cost = NO_WINCON if distinct < 1 else ONE_WINCON if distinct < 2 else 0.0
-    theme_counts = Counter(t for c in spells for t in themes(c))
-    theme, tn = theme_counts.most_common(1)[0] if theme_counts else ("", 0)
     theme_bonus = min(THEME_CAP, THEME_EACH * max(0, tn - 4))
     creatures = sum(1 for c in spells if c.is_creature)
     twos = sum(1 for c in spells if c.mv <= 2)
@@ -613,6 +678,86 @@ def parse_custom(spec: dict, pool_names: list[str], infos: dict[str, CardInfo]) 
               label="Claude's build")
     _simulate(b, 3000, 0)
     return b
+
+
+# ------------------------------------------------------------------ sealed lens
+#
+# 17Lands numbers for a new set come from Premier Draft long before Sealed has
+# enough games, and some cards are known to be better or worse in Sealed:
+# games are slower and decks stronger, so removal, bombs, card advantage and
+# fixing gain, while tempo, cheap aggression and draft-archetype payoffs
+# lose. One Claude pass per set reads every card with that in mind and gives
+# a shift from -2 to +2; it is saved in the repo, and it fades as real Sealed
+# games for the card come in.
+
+LENS_STEP = 0.04            # log-odds per step: +2 is about two win-rate points
+LENS_FADE_GAMES = 1000      # real Sealed games at which a shift counts half
+SEALED_PRIOR_GAMES = 1500   # draft data counts as this many Sealed games at most
+
+LENS_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["cards"],
+    "properties": {"cards": {"type": "array", "items": {
+        "type": "object", "additionalProperties": False,
+        "required": ["name", "shift", "why"],
+        "properties": {"name": {"type": "string"},
+                       "shift": {"type": "integer", "enum": [-2, -1, 0, 1, 2]},
+                       "why": {"type": "string", "description": "one short clause"}}}}},
+}
+
+LENS_SYSTEM = """You are an expert Magic: The Gathering Limited player. For each card of a \
+new set, judge how much better or worse it will be in SEALED than its Premier Draft numbers \
+suggest, on a scale of -2 to +2 (0 = same; most cards are 0 or +-1; +-2 only for clear cases). \
+Sealed: 6 random packs, no drafting, so decks are built from what you open. Games are slower \
+and decks have more bombs and rares; two-color archetypes rarely come together; splashing is \
+common. Usually better in Sealed: unconditional and flexible removal (especially answers to \
+bombs), X spells and scalable finishers, card advantage and grindy value, bombs, fixing and \
+dual lands, big late-game creatures, cards that are good on their own. Usually worse: cheap \
+aggressive creatures and tempo cards, combat tricks, narrow archetype payoffs that need many \
+specific cards, cards that need a dense synergy package a drafter would assemble. Use the card \
+text first; the numbers and host comments are evidence. Return every card listed, with the \
+exact name and one short clause of why."""
+
+
+def lens_path(set_code: str):
+    from .site.build import BLOG
+    return BLOG / "data" / f"{set_code.lower()}-sealed-lens.json"
+
+
+def load_lens(set_code: str) -> dict[str, tuple[int, str]]:
+    path = lens_path(set_code)
+    if not path.exists():
+        return {}
+    return {n: (v["shift"], v["why"]) for n, v in json.loads(path.read_text())["cards"].items()}
+
+
+def build_lens(set_code: str, client=None) -> dict[str, tuple[int, str]]:
+    """Ask Claude for every card's Sealed shift and save it (one call per set)."""
+    from .experts import _ask, _client
+    from .pick_advice import load_experts
+    infos, notes = card_infos(set_code, lens=False)
+    experts = (load_experts(set_code) or {}).get("cards") or {}
+    lines = []
+    for c in sorted(infos.values(), key=lambda c: c.name):
+        if c.name in fastsim.BASIC_LANDS or not (c.gih or c.grade):
+            continue
+        takes = [t["take"] for t in experts.get(c.name, {}).get("takes", [])
+                 if re.search("sealed", t["take"], re.I)]
+        lines.append(f"- {c.name} {c.cost} [{' '.join(c.types)}] ({c.evidence()})"
+                     f": {c.oracle.replace(chr(10), ' / ')}"
+                     + (f" HOSTS ON SEALED: {' | '.join(takes)}" if takes else ""))
+    user = (f"Set {set_code.upper()}, {len(lines)} cards. Premier Draft GIH WR average is "
+            f"about {notes['mean_gih']:.1%}.\n\n" + "\n".join(lines))
+    out = _ask(client or _client(), LENS_SYSTEM, user, LENS_SCHEMA)
+    known = {c.name for c in infos.values()}
+    cards = {x["name"]: {"shift": int(x["shift"]), "why": x["why"]}
+             for x in out["cards"] if x["name"] in known}
+    import datetime
+    lens_path(set_code).write_text(json.dumps({
+        "set": set_code, "made": datetime.date.today().isoformat(),
+        "made_by": "Claude (claude-opus-5-5), one pass over the card text, Premier Draft "
+                   "17Lands numbers and the hosts' Sealed comments",
+        "cards": cards}, indent=1, ensure_ascii=False) + "\n")
+    return {n: (v["shift"], v["why"]) for n, v in cards.items()}
 
 
 # ------------------------------------------------------------------ review

@@ -1,0 +1,1127 @@
+{
+ "set": "fra",
+ "made": "2026-10-02",
+ "made_by": "Claude (claude-opus-5-5), one pass over the card text, Premier Draft 17Lands numbers and the hosts' Sealed comments",
+ "cards": {
+  "Academic Ascent": {
+   "shift": -1,
+   "why": "combat trick"
+  },
+  "Aerid Konstrari": {
+   "shift": 0,
+   "why": "strong but demanding gold cost"
+  },
+  "Afterthought Sentry": {
+   "shift": 0,
+   "why": "colorless filler"
+  },
+  "Ajani Resolute": {
+   "shift": 0,
+   "why": "needs lifegain support"
+  },
+  "Ajani Unrelenting": {
+   "shift": 1,
+   "why": "bomb walker shines in slow games"
+  },
+  "Ajani's Anguish": {
+   "shift": 1,
+   "why": "splashable X removal and finisher"
+  },
+  "Apex Witchstalker": {
+   "shift": 1,
+   "why": "landcycling flexibility in slow format"
+  },
+  "Arcane Amphisbaena": {
+   "shift": 0,
+   "why": "solid either way"
+  },
+  "Archive Arbiter": {
+   "shift": 1,
+   "why": "colorless answer to bomb permanents"
+  },
+  "Arni, Humble Scribe": {
+   "shift": 0,
+   "why": "filtering is neutral"
+  },
+  "Arni, Renowned Champion": {
+   "shift": 0,
+   "why": "weak either way"
+  },
+  "Artifist Acumen": {
+   "shift": -1,
+   "why": "trick-like cantrip"
+  },
+  "Avatar of Burgeoning Echoes": {
+   "shift": 0,
+   "why": "gold value"
+  },
+  "Awaken the Inferno": {
+   "shift": 1,
+   "why": "splashable removal with landcycling"
+  },
+  "Bestial Incursion": {
+   "shift": 1,
+   "why": "two bodies of value"
+  },
+  "Blazing Crescendo": {
+   "shift": -1,
+   "why": "combat trick"
+  },
+  "Blessed Ghoul": {
+   "shift": 0,
+   "why": "recursive but small"
+  },
+  "Bloodline Recollector": {
+   "shift": 0,
+   "why": "conditional"
+  },
+  "Bloombrute": {
+   "shift": 0,
+   "why": "gold value engine"
+  },
+  "Blossom-Blessed Angel": {
+   "shift": 0,
+   "why": "solid flyer"
+  },
+  "Break Under Pressure": {
+   "shift": 1,
+   "why": "edict hits bombs"
+  },
+  "Budding Insurgent": {
+   "shift": 0,
+   "why": "sideboard utility"
+  },
+  "Campus Crier": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Carnivorous Cultivator": {
+   "shift": 0,
+   "why": "fine two-drop"
+  },
+  "Cast Away Doubt": {
+   "shift": 0,
+   "why": "card draw offset by damage"
+  },
+  "Chandra's Emberling": {
+   "shift": 0,
+   "why": "needs spells"
+  },
+  "Chandra, Chill of Compliance": {
+   "shift": 0,
+   "why": "decent walker"
+  },
+  "Chandra, Torch of Defiance": {
+   "shift": 1,
+   "why": "bomb value"
+  },
+  "Charge the Sanctum": {
+   "shift": -1,
+   "why": "combat trick"
+  },
+  "Clash of Elements": {
+   "shift": 0,
+   "why": "gold tempo removal"
+  },
+  "Codie, Ravenous Codex": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Command the Stage": {
+   "shift": 0,
+   "why": "needs noncombat damage"
+  },
+  "Compel Brutality": {
+   "shift": 0,
+   "why": "bite removal"
+  },
+  "Countersculpt": {
+   "shift": 0,
+   "why": "counterspell"
+  },
+  "Craftwork Crusher": {
+   "shift": 0,
+   "why": "heavy double-color cost"
+  },
+  "Craterclaw Colossus": {
+   "shift": 1,
+   "why": "finisher in slow games"
+  },
+  "Cruel Calculations": {
+   "shift": 0,
+   "why": "unplayable"
+  },
+  "Cryotheory Adept": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Curse-Marred Demon": {
+   "shift": 1,
+   "why": "tutors bombs or fixing"
+  },
+  "Danitha, Spear of Agony": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Danitha, Sword of Hope": {
+   "shift": 0,
+   "why": "needs targeting"
+  },
+  "Dark Matter Manipulator": {
+   "shift": 0,
+   "why": "needs graveyard"
+  },
+  "Darklight Phoenix": {
+   "shift": 0,
+   "why": "recursive flyer"
+  },
+  "Dedicated Commons": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Denzilore Fatehold": {
+   "shift": 0,
+   "why": "strong gold"
+  },
+  "Deserted Beach": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Desperate Futurescribe": {
+   "shift": 0,
+   "why": "gold flyer"
+  },
+  "Diviner of Victory": {
+   "shift": -1,
+   "why": "tempo one-drop"
+  },
+  "Divining Duelist": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Draconic Visitor": {
+   "shift": 0,
+   "why": "flyer with upside"
+  },
+  "Eardrum Rattler": {
+   "shift": -1,
+   "why": "aggro enabler"
+  },
+  "Edgar, Ancient Bloodlord": {
+   "shift": 0,
+   "why": "gold sac"
+  },
+  "Edgar, Moonlit Sovereign": {
+   "shift": 0,
+   "why": "mediocre"
+  },
+  "Emergency Phytomedic": {
+   "shift": 0,
+   "why": "cheap value"
+  },
+  "Emrakul, the Exigent Doom": {
+   "shift": 0,
+   "why": "novelty"
+  },
+  "Enlightened Confidant": {
+   "shift": 0,
+   "why": "lifegain dependent"
+  },
+  "Entrust the Spark": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Essence Burn": {
+   "shift": 1,
+   "why": "hoser more maindeckable"
+  },
+  "Extended Absence": {
+   "shift": 1,
+   "why": "unconditional removal"
+  },
+  "Extrapolate the Impossible": {
+   "shift": 1,
+   "why": "deep sealed sideboard"
+  },
+  "Eye of Jace": {
+   "shift": 0,
+   "why": "marginal"
+  },
+  "Face Yourself": {
+   "shift": 1,
+   "why": "haymaker in slow games"
+  },
+  "Fatehold Annex": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Fatehold Charm": {
+   "shift": 0,
+   "why": "flexible gold"
+  },
+  "Fatehold Chronologist": {
+   "shift": 1,
+   "why": "hybrid two-for-one"
+  },
+  "Fateshaper Aspirant": {
+   "shift": 1,
+   "why": "flexible value filler"
+  },
+  "Fblthp, Impossibly Lost": {
+   "shift": 0,
+   "why": "evasion dependent"
+  },
+  "Fblthp, Knows the Way": {
+   "shift": 1,
+   "why": "fixing and scaling"
+  },
+  "Ferocity of the Hunt": {
+   "shift": 0,
+   "why": "aura risk"
+  },
+  "Flickering Hound": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Flourishing Grapple": {
+   "shift": 0,
+   "why": "conditional"
+  },
+  "Formidable Commons": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Frostbite Pyromental": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Fulminous Forte": {
+   "shift": 0,
+   "why": "good removal either way"
+  },
+  "Gallia, Tragic Host": {
+   "shift": 0,
+   "why": "recursion"
+  },
+  "Gallia, the Merrymaker": {
+   "shift": -1,
+   "why": "aggro"
+  },
+  "Gardenize": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Garruk, Curse Breaker": {
+   "shift": 1,
+   "why": "bomb"
+  },
+  "Garruk, Veiled Butcher": {
+   "shift": 1,
+   "why": "bomb"
+  },
+  "Geist of Saint Thalia": {
+   "shift": 0,
+   "why": "flyer"
+  },
+  "Generous Revival": {
+   "shift": 0,
+   "why": "value"
+  },
+  "Germinate Recruits": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Ghalta the Immovable": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Ghalta the Unstoppable": {
+   "shift": 0,
+   "why": "late game"
+  },
+  "Gideon the Oathless": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Gideon's Memorial": {
+   "shift": 0,
+   "why": "utility"
+  },
+  "Graft Surgeon": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Greenhouse Propagator": {
+   "shift": 0,
+   "why": "ramp"
+  },
+  "Grim Repriser": {
+   "shift": -1,
+   "why": "aggressive gold"
+  },
+  "Guiding Hydra": {
+   "shift": 1,
+   "why": "scalable X"
+  },
+  "Hall of Echoes": {
+   "shift": 0,
+   "why": "utility land"
+  },
+  "Hallway Heckler": {
+   "shift": 0,
+   "why": "looter"
+  },
+  "Hapatra, the Desert Fang": {
+   "shift": 0,
+   "why": "gold removal"
+  },
+  "Hapatra, the Desert Frost": {
+   "shift": 0,
+   "why": "tempo"
+  },
+  "Haunted Ridge": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Heartstring Puller": {
+   "shift": 0,
+   "why": "two bodies"
+  },
+  "Heartwood Crafter": {
+   "shift": -1,
+   "why": "cheap synergy piece"
+  },
+  "Hexhaven Battalion": {
+   "shift": 1,
+   "why": "best landcycler"
+  },
+  "Hexhaven Dueling Arena": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Hexhaven Invigorator": {
+   "shift": 0,
+   "why": "heavy green"
+  },
+  "Hungering Puppetbeast": {
+   "shift": 0,
+   "why": "strong"
+  },
+  "Hunter's Axe": {
+   "shift": 0,
+   "why": "equipment"
+  },
+  "Icy Reception": {
+   "shift": 0,
+   "why": "flexible"
+  },
+  "Identity Echo": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Infinite Coursework": {
+   "shift": 0,
+   "why": "aura removal"
+  },
+  "Ingris Stingerquill": {
+   "shift": 0,
+   "why": "gold aggro"
+  },
+  "Innovative Commons": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Inspired Tethermage": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Jace's Machinations": {
+   "shift": 0,
+   "why": "jace value"
+  },
+  "Jace, Reality Sculptor": {
+   "shift": 0,
+   "why": "needs islands"
+  },
+  "Jiang Yanggu, Alone": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Jiang Yanggu, Never Alone": {
+   "shift": 0,
+   "why": "two bodies"
+  },
+  "Karn, Argent Defender": {
+   "shift": 0,
+   "why": "odd"
+  },
+  "Karn, Gilded Guardian": {
+   "shift": 0,
+   "why": "expensive"
+  },
+  "Keeper of the Quiet Hour": {
+   "shift": 1,
+   "why": "colorless value"
+  },
+  "Kindred Judgment": {
+   "shift": 1,
+   "why": "sweeper in slow games"
+  },
+  "Kiora of Fire and Ashes": {
+   "shift": 0,
+   "why": "strong top end"
+  },
+  "Kiora of Salt and Sand": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Konstrari Annex": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Konstrari Charm": {
+   "shift": 0,
+   "why": "flexible gold"
+  },
+  "Konstrari Improviser": {
+   "shift": 1,
+   "why": "hybrid with fixing"
+  },
+  "Koth of the Homestead": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Koth, the Geomancer": {
+   "shift": -1,
+   "why": "aggro"
+  },
+  "Kwia Vigorbloom": {
+   "shift": 0,
+   "why": "bomb but heavy gold"
+  },
+  "Last Gasp": {
+   "shift": 0,
+   "why": "cheap removal"
+  },
+  "Lich's Relic": {
+   "shift": 1,
+   "why": "premium removal"
+  },
+  "Liliana the Faultless": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Liliana the Repentant": {
+   "shift": 0,
+   "why": "value"
+  },
+  "Living Library": {
+   "shift": 1,
+   "why": "colorless slow answer"
+  },
+  "Loot, the Anomaly": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Loot, the Nexus": {
+   "shift": 1,
+   "why": "fixing ramp"
+  },
+  "Loyal Tutor": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Lyra, Archangel of Dawn": {
+   "shift": 0,
+   "why": "flyer"
+  },
+  "Lyra, Tolarian Archangel": {
+   "shift": 0,
+   "why": "strong"
+  },
+  "Mabel, Bitter Recluse": {
+   "shift": 0,
+   "why": "deathtouch"
+  },
+  "Mabel, Valley Hero": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Marwyn, the Clearcutter": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Marwyn, the Preserver": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Massacre Girl, Most Wanted": {
+   "shift": 0,
+   "why": "weak"
+  },
+  "Master of Barbs": {
+   "shift": -1,
+   "why": "aggro"
+  },
+  "Medic's Kitesail": {
+   "shift": 1,
+   "why": "evasion in board stalls"
+  },
+  "Memory Trap": {
+   "shift": 1,
+   "why": "flexible bomb answer"
+  },
+  "Meticulous Commons": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Mind Meanderer": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Mindseeker Oculus": {
+   "shift": 0,
+   "why": "strong"
+  },
+  "Multiply by Zero": {
+   "shift": 0,
+   "why": "removal"
+  },
+  "Murmuring Volume": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "No Admittance": {
+   "shift": 0,
+   "why": "removal"
+  },
+  "Null Summoner": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Omnipresence": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Overgrown Farmland": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Overwrite the Multiverse": {
+   "shift": 1,
+   "why": "sweeper"
+  },
+  "Paradox Shaper": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Perfected Theory": {
+   "shift": -1,
+   "why": "trick"
+  },
+  "Pia, Aether Ascetic": {
+   "shift": 0,
+   "why": "weak"
+  },
+  "Pia, Determined Rebuilder": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Plan for All Outcomes": {
+   "shift": 1,
+   "why": "flexible removal"
+  },
+  "Pompous Battlemage": {
+   "shift": -1,
+   "why": "cheap aggro"
+  },
+  "Precise Redaction": {
+   "shift": 0,
+   "why": "conditional"
+  },
+  "Predictive Preparations": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Primal Witchstalker": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Proctor of Potential": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Proft, Consulting Detective": {
+   "shift": 0,
+   "why": "synergy"
+  },
+  "Proft, Sinister Mastermind": {
+   "shift": 0,
+   "why": "threshold"
+  },
+  "Prophesied End": {
+   "shift": 1,
+   "why": "cheap unconditional removal"
+  },
+  "Protege's Awakening": {
+   "shift": 1,
+   "why": "card advantage"
+  },
+  "Prudent Fateseer": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Puppet Crafting": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Pyre Rhymer": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Rampart Hunter": {
+   "shift": 0,
+   "why": "weak"
+  },
+  "Rank Rat": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Recursive Recruitment": {
+   "shift": 0,
+   "why": "gold value"
+  },
+  "Refute Destiny": {
+   "shift": 1,
+   "why": "hoser maindeckable"
+  },
+  "Repurposed Enforcer": {
+   "shift": 0,
+   "why": "strong"
+  },
+  "Rescue Girl, First Responder": {
+   "shift": 0,
+   "why": "flyer"
+  },
+  "Restore with Empathy": {
+   "shift": 0,
+   "why": "value"
+  },
+  "Return to the Light Realms": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Rewrite Regrets": {
+   "shift": 0,
+   "why": "value"
+  },
+  "Rise of the Deathbringer": {
+   "shift": 1,
+   "why": "sweeper or card draw"
+  },
+  "Rockfall Vale": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Roiling Canopy": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Room of Refuge": {
+   "shift": 1,
+   "why": "splash enabler"
+  },
+  "Ruric Thar, Biomagus": {
+   "shift": 0,
+   "why": "top end"
+  },
+  "Ruric Thar, Magecrusher": {
+   "shift": 0,
+   "why": "top end"
+  },
+  "Saheeli, Consul of Oversight": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Saheeli, Jewel of Avishkar": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Samut, Hazoret's Champion": {
+   "shift": -1,
+   "why": "aggro"
+  },
+  "Samut, Tyrant of Naktamun": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Sanctum Lurker": {
+   "shift": 0,
+   "why": "strong"
+  },
+  "Screeching Soulbreaker": {
+   "shift": 0,
+   "why": "flyer"
+  },
+  "Seasoned Cryomancer": {
+   "shift": 0,
+   "why": "strong"
+  },
+  "Semester Foreseer": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Shatterwing Pegasus": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Shipwreck Marsh": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Silence the Echo": {
+   "shift": 1,
+   "why": "unconditional removal"
+  },
+  "Simulacrum Shaper": {
+   "shift": 1,
+   "why": "fixing value"
+  },
+  "Skilled Battlecarver": {
+   "shift": -1,
+   "why": "aggro"
+  },
+  "Solarium Sentry": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Solitary Cell": {
+   "shift": 0,
+   "why": "gold removal"
+  },
+  "Solve for Disappointment": {
+   "shift": 1,
+   "why": "answers bombs"
+  },
+  "Something Worth Saving": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Sphinx of False Conclusions": {
+   "shift": 0,
+   "why": "strong"
+  },
+  "Sphinx's Approach": {
+   "shift": 0,
+   "why": "draw two"
+  },
+  "Stingcaster Mage": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Stingerquill Annex": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Stingerquill Charm": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Stingerquill Voxmancer": {
+   "shift": -1,
+   "why": "aggro"
+  },
+  "Stinging Vitriol": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Sureshot Sower": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Surgical Precision": {
+   "shift": 1,
+   "why": "removal never dead"
+  },
+  "Surveillance Phantasm": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Tam's Resistance": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Tam, the Possibility": {
+   "shift": 0,
+   "why": "bad"
+  },
+  "Tarmogoyf": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Tenured Tethermage": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Terminal Criticism": {
+   "shift": 1,
+   "why": "hoser maindeckable"
+  },
+  "Tether Technician": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Tethermage's Advantage": {
+   "shift": -1,
+   "why": "trick"
+  },
+  "Tetsuko Umezawa, Fugitive": {
+   "shift": 0,
+   "why": "narrow"
+  },
+  "Tetsuko Umezawa, Pursuer": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Teyo, Diamondblade Mage": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Teyo, Lightshield Expert": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Thalia, the Survivor": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "The Echoverse Fulcrum": {
+   "shift": 1,
+   "why": "colorless sweeper"
+  },
+  "The Theorist, Jace Beleren": {
+   "shift": 1,
+   "why": "bomb card advantage"
+  },
+  "Theoretical Necromancer": {
+   "shift": 0,
+   "why": "value"
+  },
+  "Theorist's Proxy": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Theorist's Sanctum": {
+   "shift": 0,
+   "why": "mono-color land"
+  },
+  "Theorix Annex": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Theorix Charm": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Theorix Metamage": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Tinybones, Pocket Nuisance": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Titanbones, Towering Heart": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Tomik, Izzet Sparkmage": {
+   "shift": -1,
+   "why": "aggro synergy"
+  },
+  "Tomik, Orzhov Lawmage": {
+   "shift": 0,
+   "why": "flyer"
+  },
+  "Transformative Commons": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Traxos, Academy Guardian": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Traxos, Scourge Eternal": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Twinned Vision": {
+   "shift": 0,
+   "why": "card draw"
+  },
+  "Twisted Fates": {
+   "shift": 0,
+   "why": "heavy gold removal"
+  },
+  "Uldaros Theorix": {
+   "shift": 0,
+   "why": "bomb but gold"
+  },
+  "Undulating Witness": {
+   "shift": 1,
+   "why": "landcycling"
+  },
+  "Unflinching Hortimancer": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Unsummon": {
+   "shift": -1,
+   "why": "tempo"
+  },
+  "Variable Chaser": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Verdant Kraken": {
+   "shift": 1,
+   "why": "late-game bomb"
+  },
+  "Vigorbloom Annex": {
+   "shift": 1,
+   "why": "fixing"
+  },
+  "Vigorbloom Charm": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Vigorbloom Vanguard": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Vindictive Triumph": {
+   "shift": 0,
+   "why": "gold removal"
+  },
+  "Vinelasher Adept": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Violent Echoes": {
+   "shift": 1,
+   "why": "kills bombs"
+  },
+  "Void Extrapolator": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Vraska's Final Mercy": {
+   "shift": 1,
+   "why": "unconditional removal"
+  },
+  "Vraska, Soul of Stone": {
+   "shift": -1,
+   "why": "three-color narrow"
+  },
+  "Vraska, the Cutting Glare": {
+   "shift": 1,
+   "why": "slow games reach six lands"
+  },
+  "Warrior's Blades": {
+   "shift": 0,
+   "why": "gold"
+  },
+  "Way of the Cryomancer": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Way of the Deathbringer": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Way of the Healer": {
+   "shift": 0,
+   "why": "value"
+  },
+  "Way of the Mentor": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Way of the Mind Sculptor": {
+   "shift": 1,
+   "why": "card advantage"
+  },
+  "Way of the Necromancer": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Way of the Paradox": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Way of the Pyromancer": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Way of the Warlord": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Way of the Wildspeaker": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Whiplash Wordsmith": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Winter, Team Player": {
+   "shift": 0,
+   "why": "weak"
+  },
+  "Winter, Tormented Loner": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Woodwork Prodigy": {
+   "shift": 0,
+   "why": "hybrid value"
+  },
+  "Wrath of the Bloodmane": {
+   "shift": 0,
+   "why": "removal"
+  },
+  "Wrecking Gecko": {
+   "shift": 1,
+   "why": "late-game mana sink"
+  },
+  "Yargle, Glutton of Urborg": {
+   "shift": 0,
+   "why": "vanilla"
+  },
+  "Yargle, Goliath of Otaria": {
+   "shift": 0,
+   "why": "vanilla"
+  },
+  "Yoshimaru, Beloved Companion": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Yoshimaru, Scrappy Stray": {
+   "shift": 0,
+   "why": "fine"
+  },
+  "Your Fate Ends Here": {
+   "shift": 1,
+   "why": "kills bombs"
+  },
+  "Yuriko, Blade of the Mighty": {
+   "shift": 0,
+   "why": "filler"
+  },
+  "Yuriko, Hope from the Shadows": {
+   "shift": 0,
+   "why": "filler"
+  }
+ }
+}
