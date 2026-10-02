@@ -90,6 +90,7 @@ def sealed_guide_cmd(
 
     from . import sealed_guide as sg
     from .paths import cache_dir
+    registered = None
     if pool.startswith("generated:"):
         if not set_code:
             console.print("[red]error:[/red] generated:N needs --set")
@@ -115,6 +116,10 @@ def sealed_guide_cmd(
         local.update(arena_names(missing))
         names = [local[g] for g in logged.pool if g in local]
         event, code = logged.event, (set_code or logged.set_code or "").lower()
+        if logged.size >= 40:
+            local.update(arena_names([g for g in logged.cards if g not in local]))
+            registered = {local[g].split(" // ")[0]: n for g, n in logged.cards.items()
+                          if g in local}
     names = [n.split(" // ")[0] for n in names]
     console.print(f"[bold]{event}[/bold]: {len(names)} cards")
     infos, notes = sg.card_infos(code, fmt, names)
@@ -123,6 +128,7 @@ def sealed_guide_cmd(
     console.print(f"  card values: {notes['values']}; experts on {notes['experts']} cards "
                   f"({notes['expert_fit']})", highlight=False)
     pairs, builds = sg.candidate_builds(names, infos)
+    played = sg.deck_from_counts(registered, infos, "Your deck") if registered else None
     for i, b in enumerate(builds):
         console.print(f"  build {i}: {b.colors:7s} score {b.score:+.2f}  {b.creatures} "
                       f"creatures, {len(b.lands)} lands" + (f"  ({', '.join(b.notes)})"
@@ -131,17 +137,19 @@ def sealed_guide_cmd(
     if review and builds:
         console.print("  asking Claude to review the top builds…")
         try:
-            from .fastsim import load_values
-            verdict = sg.review(builds, names, infos, event, load_values(code, fmt).mean_gih)
-            which = ("its own build" if verdict["recommended"] == -1
-                     else f"build {verdict['recommended']}")
+            verdict = sg.review(builds, names, infos, event, notes["mean_gih"], played)
+            which = {-1: "its own build", -2: "your registered deck"}.get(
+                verdict["recommended"], f"build {verdict['recommended']}")
             console.print(f"  [bold]Claude:[/bold] {which} — "
                           f"{verdict['headline']}", highlight=False)
         except Exception as exc:  # noqa: BLE001 - the page is still useful without it
             console.print(f"  [yellow]review failed:[/yellow] {exc}", highlight=False)
     path = out or cache_dir("sealed") / (re.sub(r"[^A-Za-z0-9_-]+", "_", event) + ".html")
     path.parent.mkdir(parents=True, exist_ok=True)
-    sg.write_html(path, event, names, infos, pairs, builds, verdict, notes)
+    if played is not None:
+        console.print(f"  your registered deck: {played.colors} score {played.score:+.2f}",
+                      highlight=False)
+    sg.write_html(path, event, names, infos, pairs, builds, verdict, notes, played)
     console.print(f"[dim]wrote {path}[/dim]")
     if open_page:
         webbrowser.open(path.resolve().as_uri())

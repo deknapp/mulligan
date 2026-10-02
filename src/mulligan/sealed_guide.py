@@ -485,8 +485,9 @@ def score_deck(spells: list[CardInfo], splash: list[CardInfo], lands: int = 17) 
     creatures = sum(1 for c in spells if c.is_creature)
     twos = sum(1 for c in spells if c.mv <= 2)
     tops = sum(1 for c in spells if c.mv >= 6)
+    # Too few creatures loses to anything that attacks: steeper below ten.
     shape = (0.05 * max(0, 4 - twos) + 0.05 * max(0, tops - 3)
-             + 0.05 * max(0, 12 - creatures))
+             + 0.08 * max(0, 13 - creatures) + 0.12 * max(0, 10 - creatures))
     splash_cost = SPLASH_COST * len(splash)
     total = (quality + bomb - filler_cost + removal_bonus - wincon_cost + theme_bonus
              - shape - splash_cost)
@@ -662,20 +663,27 @@ def parse_custom(spec: dict, pool_names: list[str], infos: dict[str, CardInfo]) 
     want = Counter(spec["spells"])
     if any(n not in infos or want[n] > have[n] for n in want):
         return None
-    spells = [infos[n] for n in spec["spells"]]
-    lands: list[str] = []
+    counts = Counter(spec["spells"])
     for item in spec.get("lands", []):
-        lands += [item["name"]] * int(item["count"])
-    if not 38 <= len(spells) + len(lands) <= 42:
+        counts[item["name"]] += int(item["count"])
+    if not 38 <= sum(counts.values()) <= 42:
         return None
+    return deck_from_counts(counts, infos, "Claude's build")
+
+
+def deck_from_counts(counts: dict[str, int], infos: dict[str, CardInfo], label: str) -> Build:
+    """A finished decklist (name -> copies) scored like the builder's decks."""
+    spells = [infos[n] for n, k in counts.items() for _ in range(k)
+              if n in infos and not infos[n].is_land]
+    lands = [n for n, k in counts.items() for _ in range(k)
+             if not (n in infos and not infos[n].is_land)]
     colors = {k for c in spells for k in c.colors}
     main = {k for k, _ in Counter(k for c in spells for k in c.colors).most_common(2)}
     splash = [c for c in spells if not c.castable(main)]
     total, parts = score_deck(spells, splash, len(lands))
-    label = "".join(k for k in COLORS if k in main) + (
+    label_colors = "".join(k for k in COLORS if k in main) + (
         "+" + "".join(sorted(colors - main)).lower() if colors - main else "")
-    b = Build(label, spells, lands, splash, score=total, parts=parts,
-              label="Claude's build")
+    b = Build(label_colors, spells, lands, splash, score=total, parts=parts, label=label)
     _simulate(b, 3000, 0)
     return b
 
@@ -781,10 +789,11 @@ REVIEW_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
     "required": ["recommended", "headline", "why", "builds", "swaps", "own_build",
-                 "play_tips"],
+                 "registered_verdict", "play_tips"],
     "properties": {
         "recommended": {"type": "integer",
-                        "description": "index of the build to register; -1 for own_build"},
+                        "description": "index of the build to register; -1 for own_build; "
+                                       "-2 for the deck the player registered"},
         "headline": {"type": "string", "description": "one sentence"},
         "why": {"type": "string", "description": "3-6 sentences of reasoning"},
         "builds": {"type": "array", "items": {
@@ -799,6 +808,10 @@ REVIEW_SCHEMA = {
                             "properties": {"out": {"type": "string"}, "in": {"type": "string"},
                                            "why": {"type": "string"}}}},
         "own_build": _BUILD_SPEC,
+        "registered_verdict": {"type": "string", "description": "if the player's "
+                               "registered deck is given: 3-5 honest sentences on how it "
+                               "compares with the best build and what it does better or "
+                               "worse; else empty"},
         "play_tips": {"type": "array", "items": {"type": "string"}},
     },
 }
@@ -847,7 +860,7 @@ def _card_line(c: CardInfo) -> str:
 
 
 def review_prompt(builds: list[Build], pool_names: list[str], infos: dict[str, CardInfo],
-                  event: str) -> str:
+                  event: str, played: Build | None = None) -> str:
     bombs = pool_bombs(pool_names, infos)
     lines = [f"Event: {event}. Pool: {len(pool_names)} cards. Bombs in the pool: "
              + (", ".join(c.name for c in bombs) or "none"), ""]
@@ -859,6 +872,15 @@ def review_prompt(builds: list[Build], pool_names: list[str], infos: dict[str, C
             lines.append(_card_line(c) + ("  [SPLASH]" if c in b.splash else ""))
         lands = Counter(b.lands)
         lines.append("Lands: " + ", ".join(f"{n} {name}" for name, n in lands.items()))
+        lines.append("")
+    if played is not None:
+        lines.append(f"## The deck the player registered: {played.colors} - "
+                     f"{played.creatures} creatures; {len(played.lands)} lands")
+        lines.append("Score: " + _parts_line(played))
+        for c in sorted(played.spells, key=lambda c: (c.mv, c.name)):
+            lines.append(_card_line(c))
+        lines.append("Compare it with the builds honestly: say where it is better or worse "
+                     "and why. If it is the best deck, set recommended = -2.")
         lines.append("")
     used = {c.name for b in builds for c in b.spells}
     side = sorted({n for n in pool_names if n not in used and n in infos},
@@ -878,10 +900,10 @@ def review_prompt(builds: list[Build], pool_names: list[str], infos: dict[str, C
 
 
 def review(builds: list[Build], pool_names: list[str], infos: dict[str, CardInfo],
-           event: str, mean_gih: float) -> dict:
+           event: str, mean_gih: float, played: Build | None = None) -> dict:
     from .experts import _ask, _client
     return _ask(_client(), REVIEW_SYSTEM.format(mean=mean_gih),
-                review_prompt(builds, pool_names, infos, event), REVIEW_SCHEMA)
+                review_prompt(builds, pool_names, infos, event, played), REVIEW_SCHEMA)
 
 
 # ------------------------------------------------------------------ page
@@ -899,8 +921,10 @@ def _esc(s: str) -> str:
 
 def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInfo],
                pairs: list[Build], builds: list[Build], verdict: dict | None,
-               notes: dict) -> None:
+               notes: dict, played: Build | None = None) -> None:
     builds = list(builds)
+    if played is not None:
+        builds.append(played)
     custom = parse_custom((verdict or {}).get("own_build") or {}, pool_names, infos) \
         if (verdict or {}).get("own_build", {}).get("use") else None
     if custom:
@@ -908,6 +932,8 @@ def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInf
     rec = verdict.get("recommended", 0) if verdict else 0
     if rec == -1 and custom:
         rec = len(builds) - 1
+    elif rec == -2 and played is not None:
+        rec = builds.index(played)
     rec = rec if 0 <= rec < len(builds) else 0
     by_index = {b.get("index"): b for b in (verdict or {}).get("builds", [])}
 
@@ -974,6 +1000,9 @@ def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInf
                 f'<span class="v">{b.score:+.2f}</span><span class="d">higher is better; '
                 f'shortcut simulator: {b.win_rate:.1%} vs an average deck</span></li></ul>')
 
+    said = (verdict or {}).get("registered_verdict")
+    registered = f"<p>{_esc(said)}</p>" if said else ""
+
     def build_panel(i: int, b: Build) -> str:
         v = by_index.get(i, {}) if not b.label else {}
         pros = "".join(f"<li>{_esc(s)}</li>" for s in v.get("strengths", []))
@@ -983,7 +1012,9 @@ def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInf
                        f'<div class="pc"><div><h4>Strengths</h4><ul>{pros}</ul></div>'
                        f'<div><h4>Weaknesses</h4><ul>{cons}</ul></div></div>') if v else ""
         own = (f'<p class="verdict">Claude built this from the pool: '
-               f'{_esc(verdict["own_build"].get("why", ""))}</p>') if b.label else ""
+               f'{_esc(verdict["own_build"].get("why", ""))}</p>') if b.label == \
+            "Claude's build" else ('<p class="verdict">The deck you registered, scored the '
+                                   'same way.</p>' + registered if b.label else "")
         return (f'<section class="build" id="b{i}" {"" if i == rec else "hidden"}>'
                 f'<div class="stats"><div><b>{b.score:+.2f}</b><span>score</span></div>'
                 f'<div><b>{b.creatures}</b><span>creatures</span></div>'
