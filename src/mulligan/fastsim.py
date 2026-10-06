@@ -32,9 +32,9 @@ SHRINK_GAMES = 300         # a card with this many games keeps half its measured
 # decks piloted by good players, and summing 23 cards multiplies that. Fitted
 # by maximum likelihood on held-out real HOB decks' records (2,620 decks): at
 # 1.0 the worst fifth of decks was predicted 51% against an actual 60%, the
-# best 71% against 69%.
-VALUE_SCALE = 0.40
-SEEN_ON_PLAY = 15          # cards seen by about turn 9: 7 + 8 draws
+# best 71% against 69% (0.40 at 15 cards seen; 0.38 at 16).
+VALUE_SCALE = 0.38
+SEEN_ON_PLAY = 16          # cards seen in a real HOB game: 16.7 on the play, 17.2 on the draw
 EARLY = 10                 # cards seen by turn 3-4 on the play
 SCREW_PER_LAND = 0.18      # per land short of 3 among the early cards (scaled with VALUE_SCALE)
 FLOOD_PER_LAND = 0.05      # per land past 9 among the cards seen
