@@ -22,6 +22,7 @@ from ..engine.card import CardSpec
 from ..engine.effects import AddMana
 from ..engine.types import pip_options
 from .rating import static_rating
+from .sideboard import is_sideboard_card
 
 COLORS = "WUBRG"
 SPELLS = 23
@@ -75,7 +76,8 @@ def build_deck(pool: list[str], data: SetData, ratings: dict[str, float] | None 
     """Build the best 40-card deck the pool allows (``colors`` forces a pair)."""
     rate = (lambda s: ratings.get(s.name, static_rating(s))) if ratings else static_rating
     specs = [data.playable[n] for n in pool if n in data.playable]
-    spells = [s for s in specs if not s.is_land]
+    spells = [s for s in specs if not s.is_land
+              and not is_sideboard_card(data.entries.get(s.name, {}).get("oracle", ""))]
     nonbasic_lands = [s for s in specs if s.is_land and "Basic" not in s.supertypes]
     n_spells = 40 - lands
 

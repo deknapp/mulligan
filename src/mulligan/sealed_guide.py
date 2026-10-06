@@ -29,6 +29,7 @@ from dataclasses import dataclass, field
 from itertools import combinations
 
 from . import fastsim
+from .limited.sideboard import is_sideboard_card
 
 COLORS = "WUBRG"
 COLOR_NAMES = {"W": "white", "U": "blue", "B": "black", "R": "red", "G": "green"}
@@ -573,7 +574,7 @@ def _build(pool: list[CardInfo], pair: str, splash_color: str | None = None) -> 
     """The best deck in ``pair`` (optionally splashing ``splash_color``), at 17
     or 18 lands, whichever scores better."""
     colors = set(pair)
-    spells = [c for c in pool if not c.is_land]
+    spells = [c for c in pool if not c.is_land and not is_sideboard_card(c.oracle)]
     main = [c for c in spells if c.castable(colors)]
     if len(main) < 16:
         return None
