@@ -954,7 +954,7 @@ work together is as good as a bomb deck. Candidate builds come from a program us
 only: each card's 17Lands games-in-hand win rate (GIH WR; the set's average card is about \
 {mean:.1%}; Premier Draft data, not Sealed) and the averaged grades of Limited podcast hosts. \
 Each build has a score broken into parts: card quality, a bomb bonus, a cost for filler cards, \
-removal count, win conditions, a set-mechanic theme, curve and splash costs. Those parts come \
+removal count, win conditions, synergy packages (payoffs with enough enablers), curve and splash costs. Those parts come \
 from rules-text patterns and averages: check them against the actual cards. Read every card. \
 Check removal (real answers vs. soft ones), the curve and creature count, mana (pips vs. \
 sources, what a splash costs), the win conditions, and real synergies and anti-synergies. \
@@ -977,7 +977,7 @@ def _parts_line(b: Build) -> str:
                                       or "NONE") + (f" (-{p['wincon_cost']:.2f})"
                                                     if p["wincon_cost"] else ""))
     if p["theme_bonus"]:
-        bits.append(f"theme {p['theme']} x{p['theme_n']} (+{p['theme_bonus']:.2f})")
+        bits.append(f"synergy {p['theme']} (+{p['theme_bonus']:.2f})")
     if p["shape"]:
         bits.append(f"curve/creature cost -{p['shape']:.2f}")
     if p["splash_cost"]:
@@ -1118,8 +1118,8 @@ def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInf
                 str(len({n for n, _ in p['wincons']})), wins or "none"),
         ]
         if p["theme_bonus"]:
-            rows.append(row(True, "Theme", f"+{p['theme_bonus']:.2f}",
-                            f"{p['theme']} ({p['theme_n']} cards)"))
+            rows.append(row(True, "Synergy", f"+{p['theme_bonus']:.2f}",
+                            p['theme']))
         if p["shape"]:
             rows.append(row(False, "Curve / creatures", f"−{p['shape']:.2f}",
                             f"{p['creatures']} creatures, {p['twos']} plays ≤ 2 mana, "
@@ -1191,7 +1191,7 @@ def write_html(path, event: str, pool_names: list[str], infos: dict[str, CardInf
               f'{", ".join(_esc(c.name) for c in bombs)}</p>' if bombs else
               f'<p class="banner">No bombs in this pool. Best cards: '
               f'{", ".join(f"{_esc(n)} ({infos[n].evidence()})" for n in best_cards)}. '
-              f'Win with card quality, removal and a theme.</p>')
+              f'Win with card quality, removal and synergy.</p>')
     head = banner + head
     page = PAGE.format(
         title=_esc(f"Sealed guide · {event}"), event=_esc(event), n=len(pool_names),
@@ -1273,7 +1273,7 @@ border-top:1px solid var(--line);align-items:baseline}}.check li:first-child{{bo
 the average card, red = well below. Dashed outline = splash. Card values: {values}
 ({rated} cards rated) blended with expert grades ({experts} cards; {fit}). Score = card quality
 + bomb bonus − a filler cost that grows with each filler card + removal (up to 4–6) − a cost for no
-win condition + set-theme bonus − curve and splash costs, all in log-odds of winning; the weights are
+win condition + synergy bonus − curve and splash costs, all in log-odds of winning; the weights are
 judgment calls until real FRA sealed results exist to fit them. No simulator ratings are used.</p>
 </main><script>
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{{
