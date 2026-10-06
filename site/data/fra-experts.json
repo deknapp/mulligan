@@ -82,6 +82,26 @@
    ]
   },
   {
+   "show": "Limited Level-Ups",
+   "title": "#257: Reality Fracture State of the Format Address",
+   "date": "2026-10-04",
+   "url": "https://limitedlevelups.libsyn.com/",
+   "hosts": [
+    "Marc",
+    "Alex"
+   ]
+  },
+  {
+   "show": "Lords of Limited",
+   "title": "#499: How High Is Your Ceiling? Reality Fracture Drafts",
+   "date": "2026-10-05",
+   "url": "https://audioboom.com/posts/8960603",
+   "hosts": [
+    "Ethan",
+    "Ben"
+   ]
+  },
+  {
    "show": "TCGplayer",
    "title": "Reality Fracture Limited Set Reviews",
    "date": "2026-09-25",
@@ -93,150 +113,152 @@
   }
  ],
  "synthesis": {
-  "overview": "Reality Fracture is a ten-archetype set built around Empower Jace. Many cards create or add loyalty to a Jace token that can -1 to surveil or -3 to draw. Around that sit prepared creatures (each allied pair shares one hybrid prepared spell), Heartwood mana tokens in red-green, threshold self-mill in blue-black, basic landcyclers, and the Way enchantments, which give all your future Jaces new abilities. Every show calls it deep, synergistic and high-powered. Much of the power sits in rares and heavily pipped gold uncommons and charms.\n\nThe early read was aggressive, but it shifted once people played. By the rare reviews and Lords of Limited's post-prerelease episode, the consensus was a slow, grindy, mana-hungry format where games reach seven- and eight-drops. You still have to put creatures on the board early to fight over Jace tokens.\n\nThe simulation (800 bot decks, 100,000 games, average card 51.8% when drawn) broadly agrees. Red-green is the best deck at 53.2%. Sturdy, expensive value cards top the charts, and blue-black self-mill is the clear loser at 45.7%.",
-  "speed": "The experts started out split and converged on slow. Limited Resources' first review guessed games would be fast. Marc and Alex on Limited Level-Ups predicted midrange-to-grindy, then called it outright slow in their rare review. Ethan and Ben on Lords of Limited, after playing, describe long games with lots of trading, and Martin for TCGplayer expects Sealed to be slower still. The simulation doesn't measure turns, but its leaderboard supports the slow read. The top commons are big bodies and two-for-ones: Bestial Incursion 59.7%, Blossom-Blessed Angel 59.5%, Wrecking Gecko 56.9%. Six-drop Kiora of Fire and Ashes is at 61.9%. Draft for the long game, but still bring two-drops that can attack a Jace token.",
+  "overview": "Reality Fracture is a ten-pair, synergy-dense set built around Empower Jace. Dozens of cards create or load a Jace token that can -1 to surveil or -3 to draw, so every game has a side battle over planeswalkers. The five allied pairs are on-rails schools, each sharing a hybrid prepared spell: Peer Review in WU, Omit Variables in UB, Vicious Verse in BR, Soul Tether in RG and Seed Suture in WG. The enemy pairs are looser planeswalker themes. A cycle of Way enchantments grants your Jaces new abilities, and threshold, flashback, basic landcycling and RG's Heartwood mana tokens fill out the toolbox.\n\nThe power is concentrated in uncommons, rares and heavily pipped gold cards rather than commons. Every show that has actually drafted the format calls it deep and excellent, and Lords of Limited put it near all-time-great. The post-release consensus is to take strong cards early, let a lane and its build-arounds come to you, and make sure your deck still has things to do on turn eight.",
+  "speed": "The pre-release guesses leaned fast: Limited Resources cited strong bounce and turn-two Ways. Everyone who has since played it says slow and grindy. Limited Level-Ups and Lords of Limited both describe boards settling around turns five or six, games decided by seven- and eight-drops, and mana sinks overperforming. You still need early plays to pressure Jace tokens and protect your own, but the late game decides most matches. The simulation agrees: its leaders are top end and sticky bodies such as Kiora of Fire and Ashes (61.9%), Bestial Incursion (59.7%) and Wrecking Gecko (56.9%), and the ramp pair RG is the best deck.",
   "consensus": [
-   "Empower Jace defines the format. Kill opposing Jace tokens for most of the game, and value evasive, menace, trample and high-toughness vigilance creatures for attacking and defending them.",
-   "Cheap removal is premium: Last Gasp, Multiply by Zero, Extended Absence, No Admittance and Clash of Elements rate well everywhere.",
-   "Pushed gold uncommons and charms are the backbone. Twisted Fates, Craftwork Crusher, Warrior's Blades and Saheeli, Jewel of Avishkar are universally liked. Konstrari Charm is the one weak charm.",
-   "Red-green Heartwood ramp is a real, well-supported deck, and Craftwork Crusher and Kiora of Fire and Ashes are premium payoffs.",
-   "The top bombs are clear: Aerid Konstrari, Ajani Unrelenting, Garruk, Curse Breaker, Garruk, Veiled Butcher, Chandra, Torch of Defiance, The Theorist, Sphinx of False Conclusions and Uldaros Theorix.",
-   "The color-hoser cycle (Flourishing Grapple, Essence Burn, Terminal Criticism, Precise Redaction, Refute Destiny) is sideboard-only. Skip it in best-of-one.",
-   "Traps to avoid: Gardenize, Omnipresence, Return to the Light Realms, Emrakul, Loyal Tutor, Identity Echo and Cruel Calculations."
+   "Treat opposing Jace tokens as targets by default; an ignored Jace snowballs. Send one evasive, menace or trample creature at it and the rest at face, and cash your own Jace in for a card at three loyalty.",
+   "Removal is premium, especially cheap, instant-speed or planeswalker-hitting removal: Multiply by Zero, Extended Absence, No Admittance, Violent Echoes, Twisted Fates, Your Fate Ends Here.",
+   "The gold uncommons and charms are pushed, but most are triple-pipped and belong in their pair. Craftwork Crusher, Kiora of Fire and Ashes, Twisted Fates and Hapatra, the Desert Fang are the standouts.",
+   "Long games reward mana sinks, two-for-ones and repeatable card advantage; a pile of efficient two-drops runs out of gas.",
+   "The bombs are clear: Garruk, Curse Breaker; Garruk, Veiled Butcher; Ajani Unrelenting; Chandra, Torch of Defiance; The Theorist; Aerid Konstrari; Uldaros Theorix; Overwrite the Multiverse.",
+   "The color-hoser cycle (Essence Burn, Terminal Criticism, Refute Destiny, Precise Redaction, Flourishing Grapple) is sideboard-only.",
+   "The constructed-style rares are traps. Gardenize, Omnipresence, Loyal Tutor, Identity Echo and Return to the Light Realms get F's everywhere, and they also sit between 35% and 39% in the simulation.",
+   "Way of the Necromancer is unplayable. Lords issued a mea culpa for their early hype, and it simulates at 42.6%."
   ],
   "debates": [
-   "Best and worst colors: Ethan and Ben on Lords of Limited put red first and black last. Marc and Alex on Limited Level-Ups called blue possibly the best color and black the worst, but only narrowly. Ben later declared himself a green stan.",
-   "Black-red pings: Limited Resources and LSV (Stingerquill Voxmancer 3.5) found it scary. Limited Level-Ups called it the most dubious archetype, and Lords of Limited's post-play episode called it fussy and fragile.",
-   "Bloombrute: Limited Resources gave it an A- and LSV a 4.0, but Marc on Limited Level-Ups gave it a C, doubting there are enough life-gain enablers.",
-   "Best Way: Alex (A-) and Ethan argue for Way of the Healer, while Ben is confident it's Way of the Pyromancer. For worst, Ethan names Way of the Cryomancer and Ben names Way of the Mind Sculptor, which Limited Resources and LSV rated a B build-around.",
-   "Kiora of Salt and Sand: Lords of Limited bought into the 8/8 Leviathan plan, while Marc on Limited Level-Ups called it an upside trap.",
-   "Surveillance Phantasm and Inspired Tethermage: Lords of Limited moved Phantasm down after play because Jaces aren't activated as often as expected. Ben moved Tethermage up to B-, while Martin has it at 1.5."
+   "Way of the Pyromancer: Lords of Limited (Ethan and Ben) call it a Wrenn and Six-style ceiling card when paired with Way of the Paradox and Inspired Tethermage. Alex on Limited Level-Ups finds it unimpressive because the walker dies easily. The simulation sides with the skeptics on the average deck (45.1%).",
+   "Way of the Mind Sculptor: Alex now rates it a top-tier Way that buries grindy opponents in cards, and LSV gave it 3.5. Ben and Ethan on Lords call it the worst-rate Way. It is the simulation's single worst card (31.7%, small sample).",
+   "Color rankings: in its set review Limited Level-Ups had blue best and black worst. Lords had red first and black last. By October both shows say the power is spread across colors, and Ben has become a self-described green stan.",
+   "Black-red: LSV and Limited Resources expected the Stingerquill ping deck to be scary. After playing it, Lords call the Vicious Verse plan fussy because it collapses when Voxmancer-style engines die. Command the Stage went from Ben's top red uncommon to a mover down.",
+   "Rescue Girl, First Responder: Lords call it broken and an A+ when supported by enter-the-battlefield effects and Ways. Marc on Limited Level-Ups has it at C-.",
+   "Bloombrute: Limited Resources gave it an A- and LSV a 4.0, but Marc doubts there is enough life gain and graded it C. The simulation lands in between at 53.2%.",
+   "Heartstring Puller and Greenhouse Propagator: Lords moved Puller down as too small-ball, while Ben moved Propagator up from D to C+. The simulation likes both (55.9% and 56.2%)."
   ],
   "colors": [
    {
     "color": "W",
-    "take": "The experts are split. Limited Level-Ups ranked it second-worst, while Ben liked its depth and Ethan moved it up to third. The white pairs all land at 49-50% in the sim, yet several white cards are among its best: Thalia, the Survivor 60.7%, Blossom-Blessed Angel 59.5%, Lyra, Archangel of Dawn 58.5%. The hyped Rescue Girl (46.5%) and Prophesied End (46.6%, which Martin rated 4.0) disappoint."
+    "take": "The experts credit white with deep removal (Your Fate Ends Here, Memory Trap, Surgical Precision). Alex says its best plan is going wide with 2/2s and team pumps, and white was Ethan's biggest mover up. In the simulation, white's pairs are all mid-pack (about 49-50%), but its sturdy creatures top the charts: Thalia, the Survivor 60.7%, Blossom-Blessed Angel 59.5%, Lyra, Archangel of Dawn 58.5%. Prophesied End is a sim dud at 46.6% despite LSV's 4.0."
    },
    {
     "color": "U",
-    "take": "The biggest expert-sim gap. Limited Level-Ups calls blue possibly the best color, but it has the worst pair average in the sim (about 48.8%), dragged down by blue-black. Unsummon (47.9%), Icy Reception (48.5%) and Countersculpt (49.6%) all underperform, though Mindseeker Oculus holds at 53.5%. Bots are weakest with tempo and counterspell timing, so blue is probably better than this. Still, don't expect it to carry you."
+    "take": "The experts see deep card advantage, Countersculpt and Icy Reception as clean answers to expensive threats, and Mindseeker Oculus as perhaps the best common; WU leads the real-world early data. The simulation has blue as the weakest color, with blue pairs at 45.7-50.5% and Sphinx of False Conclusions (48.3%), Unsummon (47.9%) and Countersculpt (49.6%) all sub-par. Bots handle counterspells, bounce and flash poorly, so trust the experts on blue's interaction."
    },
    {
     "color": "B",
-    "take": "Everyone calls black a support color with excellent removal, and the sim agrees. Extended Absence is at 56.1% and Multiply by Zero at 54.2%, and its pairs other than blue-black are middling to solid. Screeching Soulbreaker (55.6%) outplays the skeptical grades from Ben and Marc. Break Under Pressure (47.0%) lags its B+ from Limited Resources."
+    "take": "Every show calls black's removal excellent and splashable but its threats thin, so it works best as a support color. The simulation largely agrees on the removal (Extended Absence 56.1%, Multiply by Zero 54.2%). It also loves black's rares: Sanctum Lurker is its top card at 62.6% and Curse-Marred Demon sits at 61.1%. Screeching Soulbreaker at 55.6% backs Ethan's defense of it over Ben's and Marc's doubts."
    },
    {
     "color": "R",
-    "take": "Lords of Limited's number one, and the sim agrees: red's pairs average about 51%, the best of any color. Standouts include Pia, Determined Rebuilder 56.2%, Heartstring Puller 55.9% (a Lords of Limited mover down), Fulminous Forte 55.0% and Tetsuko Umezawa, Pursuer at 60.6%. The Way of the Pyromancer hype (45.1%) and Violent Echoes (51.0%) look overstated."
+    "take": "Lords rank red first for its burn and pushed uncommons, and Limited Level-Ups says it is short on good aggressive two-drops. In the simulation, red's removal is solid but not dominant (Fulminous Forte 55.0%, No Admittance 53.8%). Violent Echoes, which both Lords hosts call effectively a mythic uncommon, sits at just 51.0%. Red's best simulated cards are two-for-one bodies like Pia, Determined Rebuilder (56.2%)."
    },
    {
     "color": "G",
-    "take": "Ben and Martin rate green very highly, and the sim backs them. Green anchors the best pair, red-green, and a solid green-black. Bestial Incursion (59.7%), Greenhouse Propagator (56.2%, Ben's big mover up) and Arcane Amphisbaena (55.7%) lead the commons. Ghalta the Unstoppable hits 59.5% despite a C-/D+ from Limited Level-Ups."
+    "take": "Green is the experts' fastest riser, thanks to Heartwood ramp, mana sinks and huge top end. It is also the simulation's best color: RG leads at 53.2% and BG is third. Green's strong simulated cards include Garruk, Curse Breaker (61.5%), Bestial Incursion (59.7%), Ghalta the Unstoppable (59.5%), Craftwork Crusher (58.7%), Greenhouse Propagator (56.2%) and Tether Technician (54.9%, backing Ben's sleeper call over Marc's D+)."
    }
   ],
   "pairs": [
    {
     "pair": "RG",
-    "experts": "Unanimously strong. Marc called it the early best pair, and Lords of Limited calls it one of the best decks thanks to Heartwood ramp, Kiora of Fire and Ashes and Craftwork Crusher.",
-    "sim": "Best in the sim at 53.2% on 12% of decks. Kiora of Fire and Ashes (61.9%) and Craftwork Crusher (58.7%) deliver. Verdant Kraken (47.5%) and Way of the Pyromancer (45.1%) do not."
+    "experts": "Marc on Limited Level-Ups called it his early pick for best pair, and Lords rate Heartwood ramp into Craftwork Crusher, Kiora of Fire and Ashes and big mana sinks as one of the top decks. Alex uses it as the base for splashing removal or card draw.",
+    "sim": "The simulation agrees: RG is the best pair at 53.2% on 12% of decks. Kiora of Fire and Ashes (61.9%) and Crusher (58.7%) are elite."
    },
    {
     "pair": "BR",
-    "experts": "The most contested pair. Limited Resources and LSV liked the Stingerquill ping plan, while Limited Level-Ups and Lords of Limited, after playing, found it fussy.",
-    "sim": "Second-best at 51.0% but only 5% of decks, so it rewards the few who end up there. Master of Barbs (54.1%) and Voxmancer (52.5%) are fine; Danitha, Spear of Agony (42.4%) is not. The sim leans toward the optimists, provided the lane is open."
+    "experts": "The preview hype cooled once the hosts played it. Lords call the Vicious Verse ping deck fussy, and Limited Level-Ups calls it the most dubious school, best built grindy or as near-mono-red aggro.",
+    "sim": "The simulation has BR second at 51.0%, but on only 5% of decks, so the few bots there get all the cards. Read it as fine when open, especially removal-heavy builds, but not worth forcing the ping synergy."
    },
    {
     "pair": "BG",
-    "experts": "Everyone doubts the advertised deathtouch-plus-trample theme. Limited Level-Ups and Martin see it as graveyard midrange built around Hapatra and Carnivorous Cultivator.",
-    "sim": "Solid at 50.8% on 10%. Carnivorous Cultivator (57.8%) shines, Hapatra, the Desert Fang is fine at 52.1%, and Tarmogoyf disappoints at 47.3%. Build it as a midrange deck of cards that are good on their own."
+    "experts": "It is Alex's favorite deck: mill flashback cards and recur Hapatra or Null Summoner with Rewrite Regrets. Lords are on the fence because the deck is torn between self-mill and the thin deathtouch-plus-trample theme.",
+    "sim": "BG is a solid third at 50.8%, although Primal Witchstalker (50.8%) and Hapatra (52.1%) are only average there."
    },
    {
     "pair": "UR",
-    "experts": "Ben's top archetype. Limited Level-Ups warns to commit to either the aggressive or the controlling version rather than mixing payoffs.",
-    "sim": "Slightly above even at 50.5% on 5%. Clash of Elements (55.9%) and Tetsuko Umezawa, Pursuer (60.6%) carry it more than Saheeli, Jewel of Avishkar (52.4%)."
+    "experts": "Ben's preview top deck became a strong good-cards pair once Lords played it. Limited Level-Ups warns you to commit to either red spells aggro or blue control, not mix the two kinds of payoff.",
+    "sim": "UR sits at 50.5% on 5% of decks, a quiet but viable lane. Saheeli, Jewel of Avishkar is middling at 52.4%."
    },
    {
     "pair": "UG",
-    "experts": "Ben's sleeper. Lords of Limited later said it was slightly worse than hoped, and Limited Level-Ups calls the Kiora 8/8 plan a trap.",
-    "sim": "Roughly even at 49.9% on 7%. Kiora of Salt and Sand is 48.3% and Mind Meanderer 52.9%. The sim sides with the skeptics on Kiora."
+    "experts": "Limited Level-Ups calls Kiora of Salt and Sand's 8/8 plan a trap. Lords say the pair is slightly worse than hoped and that the splash-the-Ways deck remains untested.",
+    "sim": "UG is middling at 49.9%, and Kiora of Salt and Sand underperforms at 48.3%."
    },
    {
     "pair": "WB",
-    "experts": "A well-regarded attrition and sacrifice deck. Twisted Fates is a near-bomb, and Edgar, Ancient Bloodlord was widely praised.",
-    "sim": "About even at 49.9% on 14%. Twisted Fates earns its hype at 57.5%, but Edgar is only 45.1%."
+    "experts": "Twisted Fates is a near-bomb, and Lords found good-cards-plus-sacrifice overperformed. Alex notes it has the lowest win rate on 17lands and suggests playing it as go-wide plus black removal.",
+    "sim": "WB sits at 49.9% on 14% of decks. Twisted Fates hits 57.5%, but Edgar, Ancient Bloodlord flops at 45.1%."
    },
    {
     "pair": "WR",
-    "experts": "Aggressive counters deck built around Warrior's Blades and Mabel. Few hosts discuss it much.",
-    "sim": "49.5% as the most-drafted pair (15%). Warrior's Blades is at 51.3% and Mabel, Valley Hero at 49.7%, so the signposts are merely average."
+    "experts": "WR is a counters-and-haste aggro deck, viable only if open according to Lords, with Warrior's Blades as LSV's premium uncommon. The format's slowness works against it.",
+    "sim": "WR is the most-drafted pair (15%) and wins 49.5%. Warrior's Blades (51.3%) and Mabel, Valley Hero (49.7%) are unremarkable."
    },
    {
     "pair": "WG",
-    "experts": "Looks pushed. Limited Level-Ups warns that life-gain payoffs are thinner than they appear, while Lords of Limited says the Seed Suture life-gain plan is real.",
-    "sim": "49.1% on 14%. The bodies carry it (Vigorbloom Vanguard, Titanbones and Greenhouse Propagator are all 56.2%). Vigorbloom Charm (46.5%) and Medic's Kitesail (47.2%) lag."
+    "experts": "Lords say Seed Suture life gain is real. Limited Level-Ups finds the payoffs thinner than they look and says the deck often ends up plain go-wide.",
+    "sim": "The pair sits at 49.1%, but its creatures shine: Vigorbloom Vanguard and Titanbones both hit 56.2%. Its spells drag it down, with Vigorbloom Charm at 46.5% and Medic's Kitesail at 47.2%."
    },
    {
     "pair": "WU",
-    "experts": "Limited Level-Ups calls it possibly one of the strongest, and Ben has it top tier. Lords of Limited later said it is impressive but not premier.",
-    "sim": "Only 49.1% on 14%. Fatehold Chronologist is solid at 54.0%, but Fatehold Charm (47.5%) and Proctor of Potential (50.0%) underwhelm. Treat it as good but not a lane to force."
+    "experts": "After playing, Limited Level-Ups calls it one of the best and easiest decks, and Lords say it tops the early real-world data. Surveil flyers, Peer Review Cadets and Desperate Futurescribe carry it.",
+    "sim": "The simulation has WU at only 49.1% on 14% of decks. This is a clear disagreement, and the experts' real-play evidence wins, since bots likely mishandle surveil sequencing and tempo. Futurescribe still hits 57.1%."
    },
    {
     "pair": "UB",
-    "experts": "Limited Resources' Luis loves the Paradox Shaper loop. Lords of Limited says the mill deck hasn't impressed and looks under-supported.",
-    "sim": "Worst by far at 45.7% on 4%. Paradox Shaper is 41.1% and Theorix Charm 45.0%. Bots may misplay self-mill, but the gap is large enough that the skeptics have the better case."
+    "experts": "The early self-mill loop hopes faded, and Lords found the mill deck unimpressive. Ethan did go 7-1 with a rareless UB deck of removal, discard and Theorix Metamage flyers, and LSV picked Uldaros Theorix as the best card in the set.",
+    "sim": "UB is the clear worst pair at 45.7% on 4% of decks; Paradox Shaper (41.1%) and Theorix Charm (45.0%) sink. Experts and simulation broadly agree: go UB for rares or a wide-open lane only."
    }
   ],
   "sim_vs_experts": [
    {
-    "card": "Blossom-Blessed Angel",
-    "note": "Limited Resources and Limited Level-Ups gave it a C and Martin a 2.5, but Ben called it absurdly good. The sim has it at 59.5% over 18,694 games, the best common after Bestial Incursion. With that sample in a slow format, Ben and the sim are right."
+    "card": "Thalia, the Survivor",
+    "note": "Graded B by Limited Resources and only C by Limited Level-Ups, yet it is the simulation's fifth-best card at 60.7%. A lifelinking 3/4 that taxes Ways and tricks is exactly what a slow format rewards, so the simulation's case is good: take it well above filler."
    },
    {
-    "card": "Tetsuko Umezawa, Pursuer",
-    "note": "Graded C+ by Limited Resources, C-/D by Limited Level-Ups and 2.5 by Martin, yet it wins 60.6% over 3,703 games. A 2/4 double-striker that is hard to block needs no subtle play, so trust the sim and take it higher."
+    "card": "Blossom-Blessed Angel",
+    "note": "Limited Resources and Limited Level-Ups both had it at C; Ben on Lords called it absurdly good and built his white ranking around it. At 59.5% across nearly 19,000 games, the simulation strongly backs Ben."
    },
    {
     "card": "Wrecking Gecko",
-    "note": "The experts had it at D+/C-, and Lords of Limited called it garbage but liked. The sim shows 56.9% over nearly 19,000 games. A ward-2 5/5 with a mana sink is exactly what a grindy format rewards, so the sim's case is strong."
+    "note": "Graded D+ to C- everywhere and called garbage-but-liked by Lords, it posts 56.9%. A ward 5/5 with a mana sink fits the grindy format the experts later described, so trust the simulation and play it as top end."
+   },
+   {
+    "card": "Ghalta the Immovable",
+    "note": "Set reviews ranged from D- to C-, but by late September Lords called it a real WU or WB high-toughness build-around. The simulation's 57.3% supports that later view, though it still needs four-toughness creatures to work."
    },
    {
     "card": "Sphinx of False Conclusions",
-    "note": "Rated A to A+ everywhere, and Marc called it the best rare, but it wins only 48.3% over 3,315 games. Flash ambushes and loot decisions are where bots are weakest, so the experts likely have the better case. Still, treat it as very good rather than a guaranteed bomb."
-   },
-   {
-    "card": "Chandra, Torch of Defiance",
-    "note": "A/A+ from every show, but 48.9% in only 460 games, and bots passed it to pick 10.7. The sample is small and bots handle planeswalkers poorly, so side with the experts."
+    "note": "An A or A+ from every show, yet only 48.3% in the simulation, and Chandra, Torch of Defiance shows the same pattern (48.9%). Flash ambushes and planeswalker play are where bots are weakest, so the experts have the better case: these remain first-picks."
    },
    {
     "card": "Verdant Kraken",
-    "note": "Limited Level-Ups gave it an A and Martin a 4.5-5.0, yet it wins 47.5% over 2,789 games, even though red-green is the best pair. Luis's caveat that flyers and removal stop it ending games looks real. Expect a strong ramp payoff, not an auto-win."
-   },
-   {
-    "card": "Edgar, Ancient Bloodlord",
-    "note": "Limited Resources gave it a B/B-, LSV 3.5, and Lords of Limited called it an incredible rate, but it wins 45.1% over 2,522 games. The sacrifice lines are subtle, but the gap is large enough that it plays more like filler than a white-black pillar."
+    "note": "Graded A by Limited Level-Ups after playing it and A- by Marshall, but just 47.5% in the simulation. The card rewards using its land creatures and mana well, which bots likely don't. Side with the experts, while noting that Luis also warned it doesn't always end the game."
    },
    {
     "card": "Way of the Pyromancer",
-    "note": "Ben calls it the best Way and Martin gives it 4.0, yet it wins 45.1% over 2,075 games. Its turn-two high roll is real, but a weak late draw drags the average down. Both have a point: it's excellent early and poor as a topdeck."
-   },
-   {
-    "card": "Rescue Girl, First Responder",
-    "note": "Lords of Limited called it broken and the best white uncommon, but it wins 46.5% over 5,808 games. Rebuying Ways needs careful sequencing that bots lack, so it may be better than this. Still, the sample says it's no auto-pick."
+    "note": "At 45.1% it matches Lords' own admission that its average win rate looks mediocre. Their argument is that the ceiling only appears with Way of the Paradox, Inspired Tethermage and protection. Plug-and-play, the simulation is right; in a dedicated loyalty-uptick deck, the experts are."
    },
    {
     "card": "Way of the Mind Sculptor",
-    "note": "Limited Resources rated it a B build-around and LSV a 3.5. Ben called it the worst Way, and Limited Level-Ups had it at C-/D+. At 31.7% it is the lowest-performing card in the sim, which sides firmly with the skeptics."
+    "note": "Alex's latest take calls it top-tier, but it is the simulation's worst card at 31.7% over a small 477-game sample, and Lords call it the least efficient Way. Five mana with no board impact needs real Jace protection, so leave it alone unless you are deep in Empower Jace."
+   },
+   {
+    "card": "Unsummon",
+    "note": "Rated B- to B as one of blue's best commons, yet it simulates at 47.9%, and Countersculpt (49.6%) and Icy Reception (48.5%) look similar. Bots misuse tempo and counter magic, so trust the experts here."
+   },
+   {
+    "card": "Rescue Girl, First Responder",
+    "note": "Lords call it broken when supported but a D/F without support; the simulation's 46.5% reflects that floor. Treat it as a payoff to pick up once you already have enter-the-battlefield cards and Ways, not an early pick."
    }
   ],
   "advice": [
-   "Lean toward red-green ramp when it's open. It is the experts' favorite and the sim's best pair (53.2%), and Kiora of Fire and Ashes, Craftwork Crusher and Bestial Incursion are all high performers.",
-   "Take sturdy, expensive value cards over cute tempo. Blossom-Blessed Angel, Wrecking Gecko, Greenhouse Propagator, Ghalta the Unstoppable and Thalia, the Survivor all overperform their expert grades in a slow format.",
-   "Stay away from blue-black self-mill unless it falls into your lap. It is 45.7% in the sim, Lords of Limited says it hasn't impressed, and Paradox Shaper sits at 41.1%.",
-   "Prioritize cheap removal and early bodies that can attack a Jace. Send one hard-to-block creature at a Jace token and the rest at the opponent's face, as Limited Level-Ups suggests.",
-   "Don't take build-arounds without the support: Germinate Recruits and Loyal Tutor are 39.0%, Way of the Mind Sculptor 31.7%, and Paradox Shaper 41.1%.",
-   "Pick dual lands highly and count sources: about 10-11 for double-blue three-drops and at least 12 for quadruple-pip cards like Hexhaven Invigorator. Its double-colored cards are why Lords of Limited says splashing is hard in draft.",
-   "Keep color hosers in the sideboard in best-of-one. None beats the 51.8% average in the sim, and Flourishing Grapple is at 36.6%.",
-   "Treat black-red as a pair to move into only when it's clearly open. It wins 51.0%, but only 5% of decks end up there."
+   "Spend your first four or five picks on raw power: bombs, playable gold uncommons, premium removal. Let the open lane reveal itself; RG and WU are the best homes, and UB is a last resort.",
+   "Build for long games: about six or seven removal spells, a few card-advantage sources, and mana sinks. Keep enough early plays to contest Jace tokens without stuffing the deck with two-drops that do nothing late.",
+   "Don't sleep on sturdy, well-statted cards. Blossom-Blessed Angel, Thalia, Bestial Incursion, Wrecking Gecko and Greenhouse Propagator are among the simulation's best performers.",
+   "Pick up build-arounds like Way of the Pyromancer, Rescue Girl, Ghalta the Immovable and Way of the Mind Sculptor only once their support shows up. Their floors are low.",
+   "Take dual lands and good landcyclers fairly highly, and splash single-pip removal or bombs freely. Marc splashed in four of five drafts, but heavy pips need 10-11 sources.",
+   "Cast spells before combat so you can attack the Jace an opponent's Countersculpt creates. Use Campus Crier's empower after they kill your Jace, not to protect it.",
+   "Skip the black Ways, Command the Stage and the Vicious Verse ping plan unless that lane is clearly flowing.",
+   "In best-of-one, leave the color hosers in the sideboard."
   ]
  },
  "cards": {
@@ -630,6 +652,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A high-impact body that can landcycle when you don't want to cast it, and he's happy to play multiples."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "He really likes it as a landcycler that is also a strong six-power menace body, and it is a great reanimation target."
     }
    ]
   },
@@ -718,6 +745,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Nearly draws a card and deathtouch combos with Compel Brutality, often trading up."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A great two-drop that blocks early with deathtouch and cheaply empowers Jace, which also lets your dual lands enter untapped."
     }
    ]
   },
@@ -1123,6 +1155,11 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Lower on it than Ben."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Keeps rising in his estimation: a 4/4 trampler with flashback that is great to mill in black-green, as long as the opponent has no Unsummon."
     }
    ]
   },
@@ -1255,6 +1292,16 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Not co-signing: he has faced it several times and never found a recurring 1/1 impressive."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Barely affects games because life totals rarely matter."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Concedes it's mostly a sideboard card, only a 23rd-card filler for Abzan lifegain or Way of the Necromancer."
     }
    ]
   },
@@ -1443,6 +1490,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Solid filler that guards your Jace token and pressures theirs, with Seed Suture adding flexibility and a cheap lifegain trigger."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Very good, especially when paired with Yoshimaru to grow into a large flyer."
     }
    ]
   },
@@ -2296,6 +2348,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A Cancel with upside through cost reduction and Empower Jace, which also encourages casting spells before attacking."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "One of the best uncommons and a clean answer to the format's expensive threats and planeswalkers; take it very highly."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Nuts when you have a Jace out, making a true draw-go control deck possible, and even as a Cancel it's fine because long games have critical spells to counter."
     }
    ]
   },
@@ -2367,6 +2429,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A hard-to-cast build-around for Heartwood decks that makes a huge impact, reachable in Red-Green."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "One of the best ramp payoffs, guaranteeing value and demanding a removal spell."
     }
    ]
   },
@@ -2722,6 +2789,21 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Better than expected because Seed Suture makes it a reward card, and turning it into a card-drawing first striker makes it must-answer."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Its D+ on 17lands undersells it; it becomes a real engine once you have around nine or ten ways to target your own creatures, rather than the four or five most people run."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Payoff for seed-suture and targeting decks that needs no mana investment, which he thinks makes it significantly better than Prof."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Only as good as your count of targeting spells like seed suture, and harder to turn on than Prof."
     }
    ]
   },
@@ -3702,6 +3784,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Unconditional instant removal with a little lifegain, a top black common."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Valuable because it can exile planeswalkers, which make up many of the format's must-answer cards."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Premium removal he took to pair with Multiply by Zero, but he'd take Way of the Pyromancer over it with an empty pool."
     }
    ]
   },
@@ -4091,6 +4183,11 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Also impressed; he nearly put it on his own movers-up list despite its clunkiness."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "An ideal Rescue Girl companion since you can bounce and replay it to keep recovering legendary cards in long games."
     }
    ]
   },
@@ -4147,6 +4244,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A payoff for connecting with the opponent that worked well in Blue-White fliers, though the alternate win isn't worth pursuing."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Not a meme: a solid two-mana source of card draw, better in blue-white than black-green."
     }
    ]
   },
@@ -4203,6 +4305,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "At worst a Civic Wayfinder, good for fixing and ensuring land drops in top-heavy decks."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Strong card that also fixes mana by fetching lands, supporting splashes."
     }
    ]
   },
@@ -4274,6 +4381,11 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "The threat of it makes every double block against green feel like it could lose you the game."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "A good trick that's especially scary with large green creatures."
     }
    ]
   },
@@ -4501,6 +4613,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Solid instant removal for most creatures, and its first mode combos with Tomik for a one-sided sweep."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Flexible red uncommon removal: deal five, or ping the opponent's whole board, which is great when copied."
     }
    ]
   },
@@ -4897,6 +5014,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A situational two-for-one that is awkward against bounce and exile, but it synergizes well with surveil and has flashback."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Worth splashing in black-green decks that have high-value three-drop targets."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Almost a WB gold card that matches Recursive Recruitment in power when it has targets like Rescue Girl."
     }
    ]
   },
@@ -5018,6 +5145,16 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "A real build-around in white-blue alongside high-toughness flyers, Traxos and Tetsuko, especially if you can protect it or have multiples."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "A classic high-toughness build-around for WU or WB defenders; it can often wheel, so note it and only commit if pieces like Tetsuko come."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Worth speculating on in low-power drafts, but its value swings from B+ to F depending on support, so don't chase support early."
     }
    ]
   },
@@ -5079,6 +5216,11 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Good because green decks get big, so it usually costs around four or five mana."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Very strong and worth pursuing aggressively, usually costing one to five mana in RG ramp or GW big-creature decks."
     }
    ]
   },
@@ -5624,6 +5766,21 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "An awesome five-drop that eats creatures, better in graveyard strategies."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Good enters-the-battlefield removal body that rewards being recurred in black-green."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Clearly the best card in the pack and correct to take for its ceiling even as a gold card."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Would take it over most cards, but regrets passing it for Way of the Warlord while chasing the Kraken plan."
     }
    ]
   },
@@ -5680,6 +5837,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A 4/3 for four that makes stun counters, great for assertive decks and weaker the more controlling you are."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Previously dismissed as unplayable, but it creates infinite mana with Loot, the Nexus given four distinct powers and a mana sink."
     }
    ]
   },
@@ -5858,6 +6020,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Ramps with a Heartwood token and its mana helps pay for landcycling, flashback and abilities."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Explosive turn-one ramp in RG with plenty of mana sinks like Inspired Tethermage, but it needs top end such as Craftwork Crusher to ramp into."
     }
    ]
   },
@@ -5939,6 +6106,11 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "The best of the land cyclers and good, but the cyclers are mostly filler in draft, where splashing is hard; they are much better in sealed."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A great landcycler that makes three 2/2s for go-wide, or four with Way of the Healer out."
     }
    ]
   },
@@ -6259,6 +6431,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "At least as good as Essence Scatter, trading late-game strength for hitting legendary noncreatures and combat-trick use."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A strong common counter that hits creatures, planeswalkers and the Way enchantments, so nearly everything except removal."
     }
    ]
   },
@@ -6375,6 +6552,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Blue's best removal, locking down nearly anything, vulnerable only to enchantment removal or bounce."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "The blue enchantment-removal spell is very bad, and if you find yourself playing it something has gone wrong in your draft."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Admits he has put it in a few decks, but doesn't defend it as a card worth chasing."
     }
    ]
   },
@@ -6480,7 +6667,7 @@
      "show": "Limited Level-Ups",
      "host": "Alex",
      "grade": "D+",
-     "said": "D+ (tier list)"
+     "said": "D+/C-"
     },
     {
      "show": "TCGplayer",
@@ -6530,6 +6717,16 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Not ready to co-sign it; the strong curves described sound more like evidence that Way of the Pyromancer is great."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Pure filler, but its six-mana empower ability gives mana-sink value to decks that lack late-game things to do."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Best friends with the Way of enchantments because each loyalty uptick grows it, and its six-mana Jace activation gives a great mana sink in long games."
     }
    ]
   },
@@ -6586,6 +6783,11 @@
      "show": "Limited Resources",
      "host": "Marshall",
      "take": "A strong baseline of two cards plus spare loyalty, with fun combos like Kiora."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "A cool card that empowers Jace eight, his preferred way to make Krakens."
     }
    ]
   },
@@ -7020,6 +7222,11 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Absurd and one of the best uncommons: you must answer the 5/5 flyer and then Kiora herself before the eight-mana dragon engine takes over, and eight mana is easy in red-green."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "An absurd card that would be strong even at seven mana; you need two removal spells to answer both halves."
     }
    ]
   },
@@ -7301,6 +7508,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A cheap creature that combines lifegain and a value engine, with even one Plains trigger making it worthwhile."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "A late pick that's good only in a deck caring about repeatable life gain, and bad otherwise."
     }
    ]
   },
@@ -7357,6 +7569,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Mana acceleration plus incremental damage and reach, best in Red-Black though it trades down with two toughness."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Free repeatable noncombat damage makes it good in red-black decks that care about it, but poor anywhere else."
     }
    ]
   },
@@ -7706,6 +7923,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Costs too much to use and rarely exchanges favorably."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Never worth a pick but a good 23rd card that protects planeswalkers, enables Ghalta, and shuffles away threats like the blue Sphinx."
     }
    ]
   },
@@ -7823,6 +8045,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Fixes mana on a fragile body; prioritize when splashing or top-heavy."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Combines with Hapatra, the Desert Frost for infinite mana that can feed sinks like Inspired Tethermage or Wrecking Gecko."
     }
    ]
   },
@@ -8618,6 +8845,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A top common giving a 2/1, a card and a Jace for three mana, with no real cap on how many to play."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Better than Countersculpt in Empower Jace decks because it plays to the board and goes unblockable with Tetsuko."
     }
    ]
   },
@@ -8669,6 +8901,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "One of the most efficient removal spells, only missing creatures with +1/+1 counters."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Cited as an example of the format's efficient removal that you are happy to cast."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Premium removal that kills almost everything despite expectations about +1/+1 counters, clearly the best card in a weak pack."
     }
    ]
   },
@@ -8720,6 +8962,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Looks too clunky for now despite five-color control dreams."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A good Manalith variant that glues together multicolor and ramp decks with acceleration, fixing, and late-game card filtering."
     }
    ]
   },
@@ -8791,6 +9038,11 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "A fine cheap burn spell that works as deal three plus surveil one, but it is worse than Violent Echoes; the host who took it over Echoes thinks he chose wrong."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Part of red's very strong and efficient removal suite."
     }
    ]
   },
@@ -8847,6 +9099,11 @@
      "show": "Limited Resources",
      "host": "Marshall",
      "take": "He'd happily put it in the cube, since it effectively forces a two-for-one."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A rare that black-green graveyard decks love to recur repeatedly."
     }
    ]
   },
@@ -9060,6 +9317,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A high-end build-around that enables threshold and can loop your best card after milling your deck."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Rarely loops your deck in practice, but it is a good way to fill the graveyard and find key cards."
     }
    ]
   },
@@ -9304,6 +9566,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A grindy engine giving free surveils every turn, and it rewards instants by empowering Jace on both turns."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "An incredible repeatable empower source in his Jeskai surveil deck that also removes threats and pairs with Rescue Girl and Way of the Pyromancer upticks."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Has the highest floor of the ceiling cards while still having a high ceiling; great in control and EJ-uptick decks, and a steal at pick seven."
     }
    ]
   },
@@ -9526,6 +9798,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "An easy two-for-one ramping a land and adding a menace body."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Such a strong enabler that it often feels like a three-for-one: it trades, ramps a land back, and mills flashback cards."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Wasn't on his radar, but its strong data makes sense: it ramps, fills the graveyard, and has menace to pressure planeswalkers, so it's rising in his pick order."
     }
    ]
   },
@@ -9633,6 +9915,21 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Too pricey to use to be a must-kill, but accumulates value, best in Blue-White."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Pretty nice source of card advantage and growth even in the more aggressive blue-white deck."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Fine in WU scry decks and should come to you there, but not powerful enough to take early due to the two-mana tax."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Prefers it over Danitha because it's a good two-drop easily turned on by Empower Jace and peer-review cadets."
     }
    ]
   },
@@ -9821,6 +10118,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A clunky but powerful card-draw engine netting at least two cards and three life, more if you defend Jace."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Effectively a slow draw three that also turns on the Way enchantments with its big empower, making it a strong card-advantage piece."
     }
    ]
   },
@@ -9887,6 +10189,16 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "A mover up that powers blue-white go-wide surveil, with the team pumps stacking across multiple copies."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A strong blue-white go-wide payoff that pumps the team whenever you scry or surveil."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Strong and more flexible than Way of the Healer; taking it first is perfectly defensible."
     }
    ]
   },
@@ -10135,8 +10447,8 @@
     {
      "show": "Limited Level-Ups",
      "host": "Alex",
-     "grade": "B-",
-     "said": "B- (tier list)"
+     "grade": "A-",
+     "said": "A- range (per data)"
     },
     {
      "show": "Limited Level-Ups",
@@ -10176,6 +10488,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A fantastic self-mill finisher that also provides early board presence."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "One of the top uncommons, with a huge flashback in graveyard decks; put it on your radar."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "A really good splashable gold card with higher floor and ceiling than Generous Revival."
     }
    ]
   },
@@ -10335,6 +10657,16 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "Broken and likely the best white uncommon, because rebuying Rank Rats, Way enchantments and enters effects is enormous value."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Not quite never-pass but well above Ghalta; bouncing Way of enchantments, planeswalkers, or Plan for All Outcomes creates lock-like loops, though it needs early board presence."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "An A+ when you hit its ceiling with ETB permanents like Fateshaper Aspirant, but a D/F without support; not giving yourself the chance to build around it leaves equity on the table."
     }
    ]
   },
@@ -10406,6 +10738,11 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Actually good this time: four life is a lot, there are many strong permanents to rebuy, and it pairs well with Something Worth Saving."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A playable but weaker stand-in for Rewrite Regrets in recursion decks."
     }
    ]
   },
@@ -10518,6 +10855,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Enough value to run with good targets, even with the mana value cap."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Awesome and a key black-green piece: it rebuys value creatures, planeswalkers, or a cycled landcycler early while empowering Jace."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "A card he likes for reanimating creatures or planeswalkers while empowering Jace."
     }
    ]
   },
@@ -10720,6 +11067,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "On par with the common duals with a little extra value."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "In a messy draft, take it to secure fixing, since you'll likely end up two colors plus a splash."
     }
    ]
   },
@@ -10842,6 +11194,11 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "A very castable, very powerful mana-sink top end and one of the better green uncommons."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Fine top end but nowhere near Crusher or Kiora, since it can be chump-blocked or absorbed and then killed without guaranteed value."
     }
    ]
   },
@@ -10903,6 +11260,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Good stats plus a Thopter-making engine that Jace token surveils consistently trigger."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Not that good a card, and even its blue-white data is unremarkable."
     }
    ]
   },
@@ -10964,6 +11326,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A must-kill Thopter engine that quickly wins and attacks Jace tokens."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Strong in his triple-Countersculpt deck when cast late, but tapping out for it on turn four is generally bad."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Doesn't love it and wouldn't take it early."
     }
    ]
   },
@@ -11202,6 +11574,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A vaguely aggressive flier with good stats that doesn't always find a home but helps lifegain decks."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Pushes back that the 1/4 drain flyer is a good card."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Not impressed by it yet."
     }
    ]
   },
@@ -11390,6 +11772,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "Medium filler with below-rate stats and a pricey mana sink, improved by go-wide decks and cheap fliers' value against planeswalkers."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A good payoff for white go-wide thanks to its team pump."
     }
    ]
   },
@@ -11614,6 +12001,16 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A very solid two-drop that attacks freely early and pressures Jace tokens."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A key red aggro two-drop, one of the few that attacks well early and can still trade up later."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Not worth a pick investment, but if RW is open you should expect to see it late and support it with seed sutures."
     }
    ]
   },
@@ -11842,6 +12239,11 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Green decks want to dig for their strong top end, and the one life matters with life gain synergies, so he's in."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Underrated: it fills the graveyard and digs for your best permanent, with a bit of life gain."
     }
    ]
   },
@@ -11954,6 +12356,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A double-blue Divination is much worse than single blue and the Sphinx text rarely matters."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "An instant-speed draw two that fills the card-draw role and comes late, but its double-blue cost needs 10-11 sources, and it is worse than Twinned Vision or Awakening."
     }
    ]
   },
@@ -12093,6 +12500,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Lightning Bolt alone makes it great, with bonus modes."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "A really good black-red gold card."
     }
    ]
   },
@@ -12417,6 +12829,11 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "A mover down: you do not surveil as often as expected because Jace tokens aren't always activated, so it is only for surveil-heavy blue-white decks."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Just great in blue-white: it blocks early in the air and usually attacks freely since the deck surveils constantly."
     }
    ]
   },
@@ -12867,6 +13284,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Applies more pressure than expected, especially with X/1s, a legit threat for blue aggro."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Took it in a weak pack because it has a real ceiling with small evasive creatures."
     }
    ]
   },
@@ -13488,6 +13910,16 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Fine in self-mill decks, avoid otherwise."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Fine filler that mills and becomes a flyer with threshold."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Seemed a nothing burger, but four copies as reliable 3/3 flyers powered his rareless 7-1 UB deck; still never a first pick."
     }
    ]
   },
@@ -13539,6 +13971,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Chips at their hand and deals recurring damage, a lot for three mana."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Excellent in his UB discard deck because it pings off discards from your own looting and cycling."
     }
    ]
   },
@@ -13600,6 +14037,11 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Not a great card on its own, but it grows quickly when curved into from Way of the Paradox's life gain."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Not a good card alone, but an outstanding 22nd-23rd card in lifegain or Way of the Paradox decks."
     }
    ]
   },
@@ -13717,6 +14159,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A flying two-drop that pressures Jace tokens while its restriction protects yours, and it enables big late-game swings."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "A 2/1 flyer alone falls short, but with +1/+1-counter creatures it shines by lifting big monsters into the air."
     }
    ]
   },
@@ -13800,6 +14247,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "A massive flying vigilance body that often costs two in a good spells deck."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Nuts if you can reliably cast it cheaply after another spell, like a two-drop with omit variables or Unsummon, and still fine at full four mana."
     }
    ]
   },
@@ -13932,6 +14384,21 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Great late-game filtering with flashback that kept his Boros deck from flooding, with bonus prowess upside."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "The best of the card-draw spells: real card advantage plus flashback that feeds graveyard synergies, and its hybrid cost lets red-green play it; worth a fourth or fifth pick."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "High on it as a safe mono-color pick that churns through his deck and triggers prowess in long games."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Would take Countersculpt over it since both are effectively double blue."
     }
    ]
   },
@@ -14676,6 +15143,11 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "Insane and effectively a mythic uncommon: four mana kills almost anything or kills something and Empowers Jace a lot with the excess damage."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "An excellent uncommon that handles big threats and planeswalkers, and often draws a card off small creatures through excess-damage empower."
     }
    ]
   },
@@ -14732,6 +15204,11 @@
      "show": "TCGplayer",
      "host": "LSV",
      "take": "Feast or famine: great in a dedicated self-mill deck and unwanted otherwise."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Totally fine filler for filling the graveyard."
     }
    ]
   },
@@ -15014,6 +15491,16 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "A rate monster at three mana for five loyalty and a blue-red gold card; copying No Admittance on turn five retops Jace."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Mediocre in an average deck but very good with eight or nine removal spells, especially value-generating ones like Violent Echoes or Fulminous Forte."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Very strong in Empower Jace decks that stay ahead, since copying a spell late is far better than drawing a card."
     }
    ]
   },
@@ -15090,6 +15577,16 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "A rate monster at three mana that pairs nicely with Way of the Necromancer."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Niche, because the small-creature sacrifice strategy it wants is under-supported and lines up badly against the format's abundant card draw."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Can be good as a self-contained sacrifice outlet when you have disposable bodies like Rank Rat to curve into it."
     }
    ]
   },
@@ -15176,6 +15673,16 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Very good and one of the pushed Way cards despite costing four."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Top-tier Way that turns every empower card into a 2/2 and fuels white go-wide, though it only approaches its set-review A- with five to seven other empower cards around it."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Slightly better than Prudent Fateseer in a weak pack because it has a higher ceiling."
     }
    ]
   },
@@ -15242,6 +15749,11 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Very niche with a low floor, but he can see a green-white life gain home where it uptics planeswalkers."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Essentially unplayable; too unreliable and does too little, more of a Commander card."
     }
    ]
   },
@@ -15308,6 +15820,11 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Only as good as your ability to protect Jace, since five mana to draw two is not a good rate."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "An under-the-radar top-tier Way that plays like a draw four to draw eight, one of the best non-rare ways to bury grindy opponents in card advantage."
     }
    ]
   },
@@ -15379,6 +15896,16 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "Combos with sacrifice effects like Deathbringer to cut the effective loyalty cost; leave Jace tokens at one loyalty so it can tick them up."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Essentially unplayable, since only adding loyalty when creatures die does too little."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "A mea culpa after early hype: it's unplayable and not worth chasing."
     }
    ]
   },
@@ -15445,6 +15972,21 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Sold on it after Ben's explanation of the ramp and life gain play patterns."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "His third-best Way: its baseline is modest, but with plenty of card draw it gives repeated extra land drops and can reach the level of the top two."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "An Uro-like engine that, with Way of the Pyromancer and Inspired Tethermage, lets you dump lands and generate huge amounts of mana and loyalty."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Paired with Way of the Pyromancer in an actual deck, it lived up to the hype."
     }
    ]
   },
@@ -15531,6 +16073,21 @@
      "show": "Lords of Limited",
      "host": "Ethan",
      "take": "Incredible and extremely fun play patterns; once a Jace token exists your opponent has to deal with it."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Unimpressive because the planeswalker dies easily and the mana ability eats Jace activations you would rather spend on cards; he is open to being proven wrong."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Mediocre win rate hides a Wrenn and Six-style ceiling; it's nuts on an uncontested turn two, but you must protect it and surround it with loyalty synergies rather than sad-playing it and downticking."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ben",
+     "take": "Finally played it alongside Way of the Paradox and found it as good as advertised, happily scooping up copies others undervalue because of the data."
     }
    ]
   },
@@ -15592,6 +16149,16 @@
      "show": "Lords of Limited",
      "host": "both",
      "take": "Weaker than the other three-mana Way cards because the minus-four ability burns nearly all the loyalty it gives you."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Only worth it in a focused red aggro deck that cares about face damage, and even there it is not a top card given red's better removal and its huge minus-four cost."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "Ethan",
+     "take": "Regrets taking it over Hapatra, admitting he was too Kraken-focused."
     }
    ]
   },
@@ -15668,6 +16235,11 @@
      "show": "Lords of Limited",
      "host": "Ben",
      "take": "High floor but low ceiling, because a 4/4 is small potatoes against big green decks and it costs five."
+    },
+    {
+     "show": "Limited Level-Ups",
+     "host": "Alex",
+     "take": "Solid but too small-ball for five mana since two 4/4s are easy to outscale here; a mid-to-late pick that is never bad."
     }
    ]
   },
@@ -16177,6 +16749,11 @@
      "show": "TCGplayer",
      "host": "Martin",
      "take": "A slow, expensive synergy piece that is great with Predictive Preparations in the right deck."
+    },
+    {
+     "show": "Lords of Limited",
+     "host": "both",
+     "take": "Weak body for three mana, but one counter trigger pays it off and it's a great onboard trick in seed-suture decks, especially with Blossom-Blessed Angel."
     }
    ]
   },
