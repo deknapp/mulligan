@@ -1,0 +1,16 @@
+{
+ "show": "Lords of Limited",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "pairs": [
+  {
+   "pair": "UB",
+   "host": "Ben",
+   "score": 1,
+   "reason": "Rareless UB grind deck with discard and removal went 7-1; commons and uncommons can hang"
+  }
+ ],
+ "colors": []
+}

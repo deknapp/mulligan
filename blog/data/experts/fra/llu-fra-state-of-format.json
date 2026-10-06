@@ -1,0 +1,435 @@
+{
+ "show": "Limited Level-Ups",
+ "title": "#257: Reality Fracture State of the Format Address",
+ "date": "2026-10-04",
+ "url": "https://limitedlevelups.libsyn.com/",
+ "hosts": [
+  "Marc",
+  "Alex"
+ ],
+ "scale": "Letter grades (A+ to F), the same scale as the show's set review and tier list",
+ "cards": [
+  {
+   "card": "Danitha, Sword of Hope",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Its D+ on 17lands undersells it; it becomes a real engine once you have around nine or ten ways to target your own creatures, rather than the four or five most people run."
+  },
+  {
+   "card": "Inspired Tethermage",
+   "host": "Alex",
+   "grade_said": "D+/C-",
+   "grade": "D+",
+   "take": "Pure filler, but its six-mana empower ability gives mana-sink value to decks that lack late-game things to do."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The best of the card-draw spells: real card advantage plus flashback that feeds graveyard synergies, and its hybrid cost lets red-green play it; worth a fourth or fifth pick."
+  },
+  {
+   "card": "Protege's Awakening",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Effectively a slow draw three that also turns on the Way enchantments with its big empower, making it a strong card-advantage piece."
+  },
+  {
+   "card": "Sphinx's Approach",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An instant-speed draw two that fills the card-draw role and comes late, but its double-blue cost needs 10-11 sources, and it is worse than Twinned Vision or Awakening."
+  },
+  {
+   "card": "Multiply by Zero",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Cited as an example of the format's efficient removal that you are happy to cast."
+  },
+  {
+   "card": "Violent Echoes",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An excellent uncommon that handles big threats and planeswalkers, and often draws a card off small creatures through excess-damage empower."
+  },
+  {
+   "card": "Extended Absence",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Valuable because it can exile planeswalkers, which make up many of the format's must-answer cards."
+  },
+  {
+   "card": "Countersculpt",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "One of the best uncommons and a clean answer to the format's expensive threats and planeswalkers; take it very highly."
+  },
+  {
+   "card": "Icy Reception",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A strong common counter that hits creatures, planeswalkers and the Way enchantments, so nearly everything except removal."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Top-tier Way that turns every empower card into a 2/2 and fuels white go-wide, though it only approaches its set-review A- with five to seven other empower cards around it."
+  },
+  {
+   "card": "Hexhaven Battalion",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A great landcycler that makes three 2/2s for go-wide, or four with Way of the Healer out."
+  },
+  {
+   "card": "Way of the Mind Sculptor",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An under-the-radar top-tier Way that plays like a draw four to draw eight, one of the best non-rare ways to bury grindy opponents in card advantage."
+  },
+  {
+   "card": "Way of the Paradox",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "His third-best Way: its baseline is modest, but with plenty of card draw it gives repeated extra land drops and can reach the level of the top two."
+  },
+  {
+   "card": "Way of the Wildspeaker",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Solid but too small-ball for five mana since two 4/4s are easy to outscale here; a mid-to-late pick that is never bad."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Mediocre in an average deck but very good with eight or nine removal spells, especially value-generating ones like Violent Echoes or Fulminous Forte."
+  },
+  {
+   "card": "Fulminous Forte",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Flexible red uncommon removal: deal five, or ping the opponent's whole board, which is great when copied."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Niche, because the small-creature sacrifice strategy it wants is under-supported and lines up badly against the format's abundant card draw."
+  },
+  {
+   "card": "Way of the Warlord",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Only worth it in a focused red aggro deck that cares about face damage, and even there it is not a top card given red's better removal and its huge minus-four cost."
+  },
+  {
+   "card": "No Admittance",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Part of red's very strong and efficient removal suite."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Unimpressive because the planeswalker dies easily and the mana ability eats Jace activations you would rather spend on cards; he is open to being proven wrong."
+  },
+  {
+   "card": "Way of the Mentor",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Essentially unplayable; too unreliable and does too little, more of a Commander card."
+  },
+  {
+   "card": "Way of the Necromancer",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Essentially unplayable, since only adding loyalty when creatures die does too little."
+  },
+  {
+   "card": "Arcane Amphisbaena",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A great two-drop that blocks early with deathtouch and cheaply empowers Jace, which also lets your dual lands enter untapped."
+  },
+  {
+   "card": "Murmuring Volume",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A good Manalith variant that glues together multicolor and ramp decks with acceleration, fixing, and late-game card filtering."
+  },
+  {
+   "card": "Apex Witchstalker",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "He really likes it as a landcycler that is also a strong six-power menace body, and it is a great reanimation target."
+  },
+  {
+   "card": "Fblthp, Knows the Way",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Strong card that also fixes mana by fetching lands, supporting splashes."
+  },
+  {
+   "card": "Surveillance Phantasm",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Just great in blue-white: it blocks early in the air and usually attacks freely since the deck surveils constantly."
+  },
+  {
+   "card": "Proft, Consulting Detective",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Pretty nice source of card advantage and growth even in the more aggressive blue-white deck."
+  },
+  {
+   "card": "Shatterwing Pegasus",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A good payoff for white go-wide thanks to its team pump."
+  },
+  {
+   "card": "Prudent Fateseer",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A strong blue-white go-wide payoff that pumps the team whenever you scry or surveil."
+  },
+  {
+   "card": "Bestial Incursion",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Keeps rising in his estimation: a 4/4 trampler with flashback that is great to mill in black-green, as long as the opponent has no Unsummon."
+  },
+  {
+   "card": "Recursive Recruitment",
+   "host": "Alex",
+   "grade_said": "A- range (per data)",
+   "grade": "A-",
+   "take": "One of the top uncommons, with a huge flashback in graveyard decks; put it on your radar."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Good enters-the-battlefield removal body that rewards being recurred in black-green."
+  },
+  {
+   "card": "Null Summoner",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A rare that black-green graveyard decks love to recur repeatedly."
+  },
+  {
+   "card": "Rewrite Regrets",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Awesome and a key black-green piece: it rebuys value creatures, planeswalkers, or a cycled landcycler early while empowering Jace."
+  },
+  {
+   "card": "Restore with Empathy",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A playable but weaker stand-in for Rewrite Regrets in recursion decks."
+  },
+  {
+   "card": "Primal Witchstalker",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Such a strong enabler that it often feels like a three-for-one: it trades, ramps a land back, and mills flashback cards."
+  },
+  {
+   "card": "Something Worth Saving",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Underrated: it fills the graveyard and digs for your best permanent, with a bit of life gain."
+  },
+  {
+   "card": "Void Extrapolator",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Totally fine filler for filling the graveyard."
+  },
+  {
+   "card": "Theorix Metamage",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Fine filler that mills and becomes a flyer with threshold."
+  },
+  {
+   "card": "Paradox Shaper",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Rarely loops your deck in practice, but it is a good way to fill the graveyard and find key cards."
+  },
+  {
+   "card": "Fblthp, Impossibly Lost",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not a meme: a solid two-mana source of card draw, better in blue-white than black-green."
+  },
+  {
+   "card": "Generous Revival",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Worth splashing in black-green decks that have high-value three-drop targets."
+  },
+  {
+   "card": "Craftwork Crusher",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "One of the best ramp payoffs, guaranteeing value and demanding a removal spell."
+  },
+  {
+   "card": "Kiora of Fire and Ashes",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An absurd card that would be strong even at seven mana; you need two removal spells to answer both halves."
+  },
+  {
+   "card": "Ruric Thar, Magecrusher",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Fine top end but nowhere near Crusher or Kiora, since it can be chump-blocked or absorbed and then killed without guaranteed value."
+  },
+  {
+   "card": "Stingerquill Charm",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A really good black-red gold card."
+  },
+  {
+   "card": "Skilled Battlecarver",
+   "host": "Alex",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A key red aggro two-drop, one of the few that attacks well early and can still trade up later."
+  }
+ ],
+ "format": {
+  "summary": "A highly balanced, powerful, and complex set where nearly every card has a home; you must draft decks rather than cards, and 17lands averages are less reliable for low-rated synergy cards. The Empower Jace mechanic is praised as superbly tuned.",
+  "speed": "Slow and grindy: early creatures attack poorly, boards stabilize around turn five or six, and the winner is usually whoever keeps spending mana well late. Aggro exists only in niches such as blue-white and heavy red.",
+  "colors": [
+   {
+    "color": "W",
+    "take": "Its best plan is going wide with 2/2 tokens plus team pumps rather than traditional beatdown."
+   },
+   {
+    "color": "U",
+    "take": "Excellent card draw and strong counterspells, which shine against expensive enters-the-battlefield threats and planeswalkers."
+   },
+   {
+    "color": "B",
+    "take": "Efficient removal and graveyard recursion; the sacrifice support is thin."
+   },
+   {
+    "color": "R",
+    "take": "Very strong removal throughout, plus a viable pinging aggro plan if you are nearly mono-red in an open seat."
+   },
+   {
+    "color": "G",
+    "take": "The base for ramp and graveyard decks; Heartwood tokens make splashing red especially easy."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "WU",
+    "take": "One of the best decks: aggressive surveil and go-wide with cheap flyers; easy to draft and good for learning the format."
+   },
+   {
+    "pair": "BG",
+    "take": "His favorite deck: mill flashback cards and recur high-value enters-the-battlefield creatures with Rewrite Regrets."
+   },
+   {
+    "pair": "RG",
+    "take": "The base for multicolor ramp, often splashing removal or card draw to reach Crusher and Kiora."
+   },
+   {
+    "pair": "WB",
+    "take": "Lowest win rate on 17lands because its sacrifice theme lacks pieces, but it works as go-wide plus black removal."
+   },
+   {
+    "pair": "BR",
+    "take": "The most aggressive pair on paper, though black adds little to red aggro beyond a few gold cards."
+   },
+   {
+    "pair": "WG",
+    "take": "Its life-gain theme often ends up as a go-wide deck instead."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace",
+    "take": "Brilliantly balanced. Attack an opposing Jace at three or more loyalty, protect your own at three, and usually cash in three loyalty for a card, surveilling instead only in specific spots."
+   },
+   {
+    "name": "Way enchantments",
+    "take": "Wildly uneven. Healer and Mind Sculptor are top tier, Paradox is close behind, Mentor and Necromancer are unplayable, and they stack poorly, so run about three at most."
+   },
+   {
+    "name": "Land cycling / fixing",
+    "take": "Excellent fixing, from duals that enter untapped with a planeswalker, Murmuring Volume, and strong landcyclers, makes splashing easy, even double-pip splashes with seven or eight sources."
+   },
+   {
+    "name": "Flashback / graveyard",
+    "take": "Well supported in black-green with mill enablers and recursion of value creatures."
+   }
+  ],
+  "advice": [
+   "Never run out of things to do with your mana; avoid too many two-drops and cards with no late-game role.",
+   "Play about six or seven removal spells in midrange decks, value removal that hits planeswalkers, and count counterspells as removal.",
+   "Include three or four cards that put you up a card, fewer if you have lots of Empower Jace.",
+   "Splash off-color removal or card draw freely, adding an extra tapped dual land or two.",
+   "Speculate on landcyclers and dual lands fairly highly, even fourth pick in a weak pack.",
+   "Save removal for the many must-answer threats rather than spending it on tokens.",
+   "Think in terms of synergy packages rather than strict color-pair archetypes, adding colors for synergy pieces."
+  ]
+ }
+}

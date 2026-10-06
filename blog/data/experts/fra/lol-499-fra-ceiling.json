@@ -1,0 +1,554 @@
+{
+ "show": "Lords of Limited",
+ "title": "#499: How High Is Your Ceiling? Reality Fracture Drafts",
+ "date": "2026-10-05",
+ "url": "https://audioboom.com/posts/8960603",
+ "hosts": [
+  "Ethan",
+  "Ben"
+ ],
+ "scale": "Letter grades (A+ to F), used sparingly; most cards discussed in terms of floor and ceiling rather than graded",
+ "cards": [
+  {
+   "card": "Infinite Coursework",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "The blue enchantment-removal spell is very bad, and if you find yourself playing it something has gone wrong in your draft."
+  },
+  {
+   "card": "Infinite Coursework",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Admits he has put it in a few decks, but doesn't defend it as a card worth chasing."
+  },
+  {
+   "card": "Primal Witchstalker",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Wasn't on his radar, but its strong data makes sense: it ramps, fills the graveyard, and has menace to pressure planeswalkers, so it's rising in his pick order."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Mediocre win rate hides a Wrenn and Six-style ceiling; it's nuts on an uncontested turn two, but you must protect it and surround it with loyalty synergies rather than sad-playing it and downticking."
+  },
+  {
+   "card": "Way of the Pyromancer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Finally played it alongside Way of the Paradox and found it as good as advertised, happily scooping up copies others undervalue because of the data."
+  },
+  {
+   "card": "Way of the Paradox",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An Uro-like engine that, with Way of the Pyromancer and Inspired Tethermage, lets you dump lands and generate huge amounts of mana and loyalty."
+  },
+  {
+   "card": "Way of the Paradox",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Paired with Way of the Pyromancer in an actual deck, it lived up to the hype."
+  },
+  {
+   "card": "Inspired Tethermage",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Best friends with the Way of enchantments because each loyalty uptick grows it, and its six-mana Jace activation gives a great mana sink in long games."
+  },
+  {
+   "card": "Ghalta the Immovable",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A classic high-toughness build-around for WU or WB defenders; it can often wheel, so note it and only commit if pieces like Tetsuko come."
+  },
+  {
+   "card": "Ghalta the Immovable",
+   "host": "Ben",
+   "grade_said": "B+ to F",
+   "grade": "none",
+   "take": "Worth speculating on in low-power drafts, but its value swings from B+ to F depending on support, so don't chase support early."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not quite never-pass but well above Ghalta; bouncing Way of enchantments, planeswalkers, or Plan for All Outcomes creates lock-like loops, though it needs early board presence."
+  },
+  {
+   "card": "Rescue Girl, First Responder",
+   "host": "Ben",
+   "grade_said": "A+ when supported, D/F otherwise",
+   "grade": "none",
+   "take": "An A+ when you hit its ceiling with ETB permanents like Fateshaper Aspirant, but a D/F without support; not giving yourself the chance to build around it leaves equity on the table."
+  },
+  {
+   "card": "Fateshaper Aspirant",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An ideal Rescue Girl companion since you can bounce and replay it to keep recovering legendary cards in long games."
+  },
+  {
+   "card": "Plan for All Outcomes",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "An incredible repeatable empower source in his Jeskai surveil deck that also removes threats and pairs with Rescue Girl and Way of the Pyromancer upticks."
+  },
+  {
+   "card": "Plan for All Outcomes",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Has the highest floor of the ceiling cards while still having a high ceiling; great in control and EJ-uptick decks, and a steal at pick seven."
+  },
+  {
+   "card": "Traxos, Academy Guardian",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Nuts if you can reliably cast it cheaply after another spell, like a two-drop with omit variables or Unsummon, and still fine at full four mana."
+  },
+  {
+   "card": "Ghalta the Unstoppable",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very strong and worth pursuing aggressively, usually costing one to five mana in RG ramp or GW big-creature decks."
+  },
+  {
+   "card": "Heartwood Crafter",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Explosive turn-one ramp in RG with plenty of mana sinks like Inspired Tethermage, but it needs top end such as Craftwork Crusher to ramp into."
+  },
+  {
+   "card": "Danitha, Sword of Hope",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Payoff for seed-suture and targeting decks that needs no mana investment, which he thinks makes it significantly better than Prof."
+  },
+  {
+   "card": "Danitha, Sword of Hope",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Only as good as your count of targeting spells like seed suture, and harder to turn on than Prof."
+  },
+  {
+   "card": "Koth of the Homestead",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A late pick that's good only in a deck caring about repeatable life gain, and bad otherwise."
+  },
+  {
+   "card": "Koth, the Geomancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Free repeatable noncombat damage makes it good in red-black decks that care about it, but poor anywhere else."
+  },
+  {
+   "card": "Tomik, Orzhov Lawmage",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A 2/1 flyer alone falls short, but with +1/+1-counter creatures it shines by lifting big monsters into the air."
+  },
+  {
+   "card": "Yoshimaru, Beloved Companion",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Weak body for three mana, but one counter trigger pays it off and it's a great onboard trick in seed-suture decks, especially with Blossom-Blessed Angel."
+  },
+  {
+   "card": "Blossom-Blessed Angel",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very good, especially when paired with Yoshimaru to grow into a large flyer."
+  },
+  {
+   "card": "Countersculpt",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Nuts when you have a Jace out, making a true draw-go control deck possible, and even as a Cancel it's fine because long games have critical spells to counter."
+  },
+  {
+   "card": "Hapatra, the Desert Frost",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Previously dismissed as unplayable, but it creates infinite mana with Loot, the Nexus given four distinct powers and a mana sink."
+  },
+  {
+   "card": "Loot, the Nexus",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Combines with Hapatra, the Desert Frost for infinite mana that can feed sinks like Inspired Tethermage or Wrecking Gecko."
+  },
+  {
+   "card": "Proft, Consulting Detective",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Fine in WU scry decks and should come to you there, but not powerful enough to take early due to the two-mana tax."
+  },
+  {
+   "card": "Proft, Consulting Detective",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Prefers it over Danitha because it's a good two-drop easily turned on by Empower Jace and peer-review cadets."
+  },
+  {
+   "card": "Way of the Cryomancer",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Very strong in Empower Jace decks that stay ahead, since copying a spell late is far better than drawing a card."
+  },
+  {
+   "card": "Way of the Necromancer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A mea culpa after early hype: it's unplayable and not worth chasing."
+  },
+  {
+   "card": "Way of the Deathbringer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Can be good as a self-contained sacrifice outlet when you have disposable bodies like Rank Rat to curve into it."
+  },
+  {
+   "card": "Titanbones, Towering Heart",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not a good card alone, but an outstanding 22nd-23rd card in lifegain or Way of the Paradox decks."
+  },
+  {
+   "card": "Theorix Metamage",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Seemed a nothing burger, but four copies as reliable 3/3 flyers powered his rareless 7-1 UB deck; still never a first pick."
+  },
+  {
+   "card": "Skilled Battlecarver",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not worth a pick investment, but if RW is open you should expect to see it late and support it with seed sutures."
+  },
+  {
+   "card": "Way of the Healer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Slightly better than Prudent Fateseer in a weak pack because it has a higher ceiling."
+  },
+  {
+   "card": "Prudent Fateseer",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Strong and more flexible than Way of the Healer; taking it first is perfectly defensible."
+  },
+  {
+   "card": "Screeching Soulbreaker",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Pushes back that the 1/4 drain flyer is a good card."
+  },
+  {
+   "card": "Screeching Soulbreaker",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not impressed by it yet."
+  },
+  {
+   "card": "Blessed Ghoul",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Barely affects games because life totals rarely matter."
+  },
+  {
+   "card": "Blessed Ghoul",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Concedes it's mostly a sideboard card, only a 23rd-card filler for Abzan lifegain or Way of the Necromancer."
+  },
+  {
+   "card": "Multiply by Zero",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Premium removal that kills almost everything despite expectations about +1/+1 counters, clearly the best card in a weak pack."
+  },
+  {
+   "card": "Extended Absence",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Premium removal he took to pair with Multiply by Zero, but he'd take Way of the Pyromancer over it with an empty pool."
+  },
+  {
+   "card": "Recursive Recruitment",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A really good splashable gold card with higher floor and ceiling than Generous Revival."
+  },
+  {
+   "card": "Generous Revival",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Almost a WB gold card that matches Recursive Recruitment in power when it has targets like Rescue Girl."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "High on it as a safe mono-color pick that churns through his deck and triggers prowess in long games."
+  },
+  {
+   "card": "Twinned Vision",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Would take Countersculpt over it since both are effectively double blue."
+  },
+  {
+   "card": "Tinybones, Pocket Nuisance",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Excellent in his UB discard deck because it pings off discards from your own looting and cycling."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Clearly the best card in the pack and correct to take for its ceiling even as a gold card."
+  },
+  {
+   "card": "Hapatra, the Desert Fang",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Would take it over most cards, but regrets passing it for Way of the Warlord while chasing the Kraken plan."
+  },
+  {
+   "card": "Saheeli, Consul of Oversight",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Not that good a card, and even its blue-white data is unremarkable."
+  },
+  {
+   "card": "Jace's Machinations",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A cool card that empowers Jace eight, his preferred way to make Krakens."
+  },
+  {
+   "card": "Way of the Warlord",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Regrets taking it over Hapatra, admitting he was too Kraken-focused."
+  },
+  {
+   "card": "Rewrite Regrets",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A card he likes for reanimating creatures or planeswalkers while empowering Jace."
+  },
+  {
+   "card": "Living Library",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Never worth a pick but a good 23rd card that protects planeswalkers, enables Ghalta, and shuffles away threats like the blue Sphinx."
+  },
+  {
+   "card": "Tetsuko Umezawa, Fugitive",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Took it in a weak pack because it has a real ceiling with small evasive creatures."
+  },
+  {
+   "card": "Room of Refuge",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "In a messy draft, take it to secure fixing, since you'll likely end up two colors plus a splash."
+  },
+  {
+   "card": "Mindseeker Oculus",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Better than Countersculpt in Empower Jace decks because it plays to the board and goes unblockable with Tetsuko."
+  },
+  {
+   "card": "Saheeli, Jewel of Avishkar",
+   "host": "Ben",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Strong in his triple-Countersculpt deck when cast late, but tapping out for it on turn four is generally bad."
+  },
+  {
+   "card": "Saheeli, Jewel of Avishkar",
+   "host": "Ethan",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "Doesn't love it and wouldn't take it early."
+  },
+  {
+   "card": "Ferocity of the Hunt",
+   "host": "both",
+   "grade_said": "none",
+   "grade": "none",
+   "take": "A good trick that's especially scary with large green creatures."
+  }
+ ],
+ "format": {
+  "summary": "Reality Fracture is near-GOAT tier: power is spread across all colors and pairs, so color rankings don't matter; the key is finding card ceilings by building around uncommons supported by the right commons, letting the open lane reveal itself, and drafting cards first then decks.",
+  "speed": "Games last long but aren't slow; you must still play to the board early, with two-for-ones and grinding trades common, long games rewarding mana sinks, and constructed decks outlasting piles of good cards.",
+  "colors": [
+   {
+    "color": "W",
+    "take": "Supports many builds like seed-suture counters, cadets, high-toughness Ghalta, and Rescue Girl ETBs."
+   },
+   {
+    "color": "U",
+    "take": "Blue-white leads the early data; Countersculpt can enable real draw-go control and blue has strong Empower Jace and prowess tools."
+   },
+   {
+    "color": "B",
+    "take": "Black commons and uncommons hold up: discard, cheap removal like Multiply by Zero, and grinding cards carried a rareless deck, though the black Way of enchantments disappointed."
+   },
+   {
+    "color": "R",
+    "take": "Way of the Pyromancer offers a big ceiling in loyalty decks, while cards like Koth, the Geomancer need a noncombat-damage shell."
+   },
+   {
+    "color": "G",
+    "take": "Green provides ramp, big bodies, and mana sinks, with Heartwood Crafter, Ghalta, and Inspired Tethermage among standouts."
+   }
+  ],
+  "pairs": [
+   {
+    "pair": "WU",
+    "take": "Top of early data and flexible, with cadets, high-toughness Ghalta and Tetsuko, Rescue Girl, or Empower Jace control builds possible."
+   },
+   {
+    "pair": "UB",
+    "take": "Ethan's rareless 7-1 deck won with discard, spot removal, and Theorix Metamage flyers; Recursive Recruitment is worth splashing."
+   },
+   {
+    "pair": "RG",
+    "take": "The ramp deck: Heartwood Crafter, Inspired Tethermage, Way of the Paradox/Pyromancer, and top end like Craftwork Crusher and Ghalta."
+   },
+   {
+    "pair": "WB",
+    "take": "Twisted Fates and Generous Revival are payoffs, and high-toughness Ghalta fits here too."
+   },
+   {
+    "pair": "RG",
+    "take": "Expanding into Temur with Kiora and Plan for All Outcomes gives a strong loyalty-uptick engine."
+   },
+   {
+    "pair": "WR",
+    "take": "Viable only if open, needing late Skilled Battlecarvers and seed sutures."
+   },
+   {
+    "pair": "WG",
+    "take": "Seed-suture counters with Danitha, Yoshimaru, Tomik, and Blossom-Blessed Angel, plus big green bodies for Ghalta the Unstoppable."
+   },
+   {
+    "pair": "BG",
+    "take": "Primal Witchstalker is putting up strong numbers, and Hapatra, the Desert Fang is a strong gold card."
+   },
+   {
+    "pair": "UR",
+    "take": "Prowess and noncreature spells pair with Traxos, while Saheeli, Jewel of Avishkar is underwhelming."
+   },
+   {
+    "pair": "BR",
+    "take": "Noncombat damage with Koth, the Geomancer and Tinybones; discard punishes greedy ramp decks."
+   }
+  ],
+  "mechanics": [
+   {
+    "name": "Empower Jace",
+    "take": "Central to the format: build to never fall behind, attack opponents' Jace tokens as a default, and remember that an ignored high-loyalty Jace runs away with games."
+   },
+   {
+    "name": "Prepared spells (seed suture, peer review, omit variables)",
+    "take": "Seed suture powers counter payoffs, peer review cadets enable surveil, and omit variables triggers prowess cheaply."
+   },
+   {
+    "name": "Way of enchantments",
+    "take": "High-ceiling, low-floor cards like Pyromancer, Paradox, Cryomancer, and Healer reward loyalty-centered builds that defend them, while black versions disappoint."
+   },
+   {
+    "name": "Scry/Surveil",
+    "take": "Prof, Prudent Fateseer, and Saheeli, Consul of Oversight reward repeatable scry or surveil from Jace or cadets."
+   },
+   {
+    "name": "Land cycling and fixing",
+    "take": "Land cyclers are good fillers for making land drops and late threats, and Room of Refuge enables three-color decks."
+   },
+   {
+    "name": "Mana sinks",
+    "take": "Repeatable lands like Theorist's Sanctum or activations are valuable in long games."
+   }
+  ],
+  "advice": [
+   "Don't soft-force colors; take the most powerful cards early and let the open lane emerge.",
+   "Gather about five strong cards, then high-ceiling uncommons, then commons supporting them.",
+   "In low-power drafts, keep speculating through picks four to seven to find an uncontested lane.",
+   "Avoid early commitment to build-arounds like Ghalta or Rescue Girl; let support come before investing.",
+   "Draft cards, then decks; build-arounds without support become dead cards.",
+   "Track which cards can wheel, like Ghalta the Immovable, to plan packages.",
+   "Treat win-rate data cautiously; it shows plug-and-play strength, not ceilings like Way of the Pyromancer.",
+   "Default to removing opponents' Jace tokens; ignoring them hands over value.",
+   "Expect long games and favor two-for-ones and mana sinks.",
+   "Prioritize removal, as many ceilings lie in on-board creatures and Jace tokens.",
+   "Use discard against ramp decks needing all their lands and top end."
+  ]
+ }
+}

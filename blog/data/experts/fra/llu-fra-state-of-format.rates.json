@@ -1,0 +1,47 @@
+{
+ "show": "Limited Level-Ups",
+ "hosts": [
+  "Marc",
+  "Alex"
+ ],
+ "pairs": [
+  {
+   "pair": "WU",
+   "host": "Alex",
+   "score": 1,
+   "reason": "One of the better decks; effective surveil go-wide aggro, easy to draft"
+  },
+  {
+   "pair": "BG",
+   "host": "Alex",
+   "score": 1,
+   "reason": "His favorite deck; strong graveyard value and recursion"
+  },
+  {
+   "pair": "RG",
+   "host": "Alex",
+   "score": 1,
+   "reason": "Base of strong ramp decks with great top end; a main deck he likes"
+  },
+  {
+   "pair": "WB",
+   "host": "Alex",
+   "score": -1,
+   "reason": "Lowest win rate, sacrifice theme unsupported, though doable going wide"
+  },
+  {
+   "pair": "BR",
+   "host": "Alex",
+   "score": -1,
+   "reason": "Black adds little to red aggro; better to be mono red"
+  }
+ ],
+ "colors": [
+  {
+   "color": "R",
+   "host": "Alex",
+   "score": 1,
+   "reason": "Good aggressive color with very strong removal, though aggro is niche"
+  }
+ ]
+}

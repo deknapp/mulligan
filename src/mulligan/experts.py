@@ -69,6 +69,15 @@ EPISODES = {
             "show": "Lords of Limited", "title": "#498: This is the Way! Reality Fracture "
             "Early Limited Guide", "date": "2026-09-28",
             "url": "https://audioboom.com/posts/8958057", "hosts": LOL_HOSTS},
+        # After release: the hosts have played the format, with 17Lands data in hand.
+        "llu-fra-state-of-format": {
+            "show": "Limited Level-Ups", "title": "#257: Reality Fracture State of the "
+            "Format Address", "date": "2026-10-04", "url": "https://limitedlevelups.libsyn.com/",
+            "hosts": ["Marc", "Alex"]},
+        "lol-499-fra-ceiling": {
+            "show": "Lords of Limited", "title": "#499: How High Is Your Ceiling? Reality "
+            "Fracture Drafts", "date": "2026-10-05",
+            "url": "https://audioboom.com/posts/8960603", "hosts": LOL_HOSTS},
         # Written, not audio: the six color articles fetched as one text file.
         "tcg-fra-set-review": {
             "show": "TCGplayer", "title": "Reality Fracture Limited Set Reviews",
@@ -125,7 +134,9 @@ by episode. Attribute opinions to the show and host ("Luis on Limited
 Resources rates..."). Paraphrase only. Be concrete: name cards, pairs, numbers.
 Where the experts and the simulation disagree, say so plainly and say which
 has the better case, remembering that the simulation's bots are decent but not
-expert players and that the experts haven't played the set yet either. Keep it
+expert players. Each episode is dated: set reviews come before the set's
+release, when the hosts hadn't played it; later episodes come from hosts who
+have drafted it, and where the two disagree, the later take wins. Keep it
 tight: each field a few sentences unless it says otherwise."""
 
 
@@ -356,14 +367,19 @@ def tier_lists(set_code: str, refresh: bool = False) -> dict[str, dict[str, str]
     return out
 
 
-def card_grades(episodes: list[dict], tiers: dict[str, dict[str, str]]) -> dict[str, dict]:
+def card_grades(episodes: list[dict], tiers: dict[str, dict[str, str]],
+                released: str = "") -> dict[str, dict]:
     """Card -> {"grades": one per show and host, "takes": every take, oldest
     first}. A grade given by "both" counts for each host of the show; a
-    published tier-list grade beats one heard in the audio."""
+    host's later grade replaces their earlier one. A published tier-list grade
+    (written for the set review) beats one heard in a review episode, but not
+    one from an episode after ``released``, when the host has played the set."""
     hosts = {ep["show"]: ep["hosts"] for ep in episodes}
     grades: dict[str, dict[tuple[str, str], dict]] = {}
     takes: dict[str, list[dict]] = {}
+    played: set[tuple[str, str, str]] = set()
     for ep in sorted(episodes, key=lambda e: e["date"]):
+        after = bool(released) and ep["date"] >= released
         for c in ep["cards"]:
             takes.setdefault(c["card"], []).append(
                 {"show": ep["show"], "host": c["host"], "take": c["take"]})
@@ -373,14 +389,23 @@ def card_grades(episodes: list[dict], tiers: dict[str, dict[str, str]]) -> dict[
                 grades.setdefault(c["card"], {})[ep["show"], host] = {
                     "show": ep["show"], "host": host, "grade": c["grade"],
                     "said": c["grade_said"]}
+                if after:
+                    played.add((c["card"], ep["show"], host))
     for key, graded in tiers.items():
         show, host = key.split("|")
         for card, grade in graded.items():
+            if (card, show, host) in played:
+                continue
             grades.setdefault(card, {})[show, host] = {
                 "show": show, "host": host, "grade": grade, "said": f"{grade} (tier list)"}
     return {card: {"grades": list(grades.get(card, {}).values()),
                    "takes": takes.get(card, [])}
             for card in sorted(set(grades) | set(takes))}
+
+
+def _released(set_code: str) -> str:
+    from .cards.sets import DATA_DIR
+    return json.loads((DATA_DIR / f"{set_code}.json").read_text()).get("released", "")
 
 
 def grade_points(grade: str) -> float | None:
@@ -421,6 +446,6 @@ def synthesize(set_code: str, client=None) -> Path:
         "episodes": [{k: e[k] for k in ("show", "title", "date", "url", "hosts")}
                      for e in episodes],
         "synthesis": synthesis,
-        "cards": card_grades(episodes, tier_lists(set_code)),
+        "cards": card_grades(episodes, tier_lists(set_code), _released(set_code)),
     }, indent=1, ensure_ascii=False))
     return out
