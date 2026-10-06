@@ -26,12 +26,18 @@ import math
 import random
 from dataclasses import dataclass, field
 
-PLAY_BONUS = 0.10          # log-odds edge of being on the play (≈52.5%)
+PLAY_BONUS = 0.19          # log-odds edge of being on the play (≈54.7%; HOB 17Lands games)
 SHRINK_GAMES = 300         # a card with this many games keeps half its measured edge
+# A card's GIH edge overstates what it does for a deck: good cards sit in good
+# decks piloted by good players, and summing 23 cards multiplies that. Fitted
+# by maximum likelihood on held-out real HOB decks' records (2,620 decks): at
+# 1.0 the worst fifth of decks was predicted 51% against an actual 60%, the
+# best 71% against 69%.
+VALUE_SCALE = 0.40
 SEEN_ON_PLAY = 15          # cards seen by about turn 9: 7 + 8 draws
 EARLY = 10                 # cards seen by turn 3-4 on the play
-SCREW_PER_LAND = 0.45      # per land short of 3 among the early cards
-FLOOD_PER_LAND = 0.12      # per land past 9 among the cards seen
+SCREW_PER_LAND = 0.18      # per land short of 3 among the early cards (scaled with VALUE_SCALE)
+FLOOD_PER_LAND = 0.05      # per land past 9 among the cards seen
 
 
 def _logit(p: float) -> float:
@@ -108,7 +114,7 @@ def _seen_score(cards: list[tuple[float, bool]], seen: int) -> float:
     top = cards[:seen]
     early_lands = sum(1 for _, land in cards[:EARLY] if land)
     lands = sum(1 for _, land in top if land)
-    score = sum(v for v, land in top if not land)
+    score = VALUE_SCALE * sum(v for v, land in top if not land)
     score -= SCREW_PER_LAND * max(0, 3 - early_lands)
     score -= FLOOD_PER_LAND * max(0, lands - 9)
     return score
