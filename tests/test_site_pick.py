@@ -40,8 +40,15 @@ def test_web_pick_helper_matches_the_python_one(with_experts):
              json.dumps({"pack": pack, "picks": picks})],
             capture_output=True, text=True, check=True).stdout
         js = json.loads(out)
-        assert [n for n, _ in py] == [n for n, _ in js]
-        for (_, a), (_, b) in zip(py, js, strict=True):
+        # Same scores card by card; the order may differ only between exact
+        # ties (equal scores that round differently in the last float digit).
+        assert sorted(n for n, _ in py) == sorted(n for n, _ in js)
+        theirs = dict(js)
+        for name, a in py:
+            b = theirs[name]
             assert (a is None) == (b is None)
             if a is not None:
                 assert abs(a - b) < 1e-9
+        scores = [theirs[n] for n, _ in py]
+        assert all(a is None or b is None or a >= b - 1e-9
+                   for a, b in zip(scores, scores[1:]))
