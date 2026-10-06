@@ -255,7 +255,6 @@ class HeuristicAgent(Agent):
         self.card_values = card_values or {}
 
     DOUBLE_BLOCKS = True
-    AGGRESSIVE = False
     # What a loyalty counter is worth when spending it: about a third of a
     # card, since Jace draws one for three. At 0.35 the agent cashed fresh
     # Jace tokens in for surveil 1 and only 35% of loyalty ever became cards.
@@ -900,10 +899,7 @@ class HeuristicAgent(Agent):
             if sum(by_power[len(blockers):]) >= opp_life:
                 return {c.id for c in mine}
 
-        beatdown = self.AGGRESSIVE and (
-            sum(c.power for c in mine) >= sum(c.power for c in blockers)
-            or opp_life <= 10)
-        plan = self._safe_attackers(mine, blockable_by, beatdown)
+        plan = self._safe_attackers(mine, blockable_by)
 
         # Keep back enough to survive the crack-back.
         threat = sum(c.power for c in view.creatures(opp))
@@ -918,10 +914,8 @@ class HeuristicAgent(Agent):
             defenders.append(att)
         return plan
 
-    def _safe_attackers(self, mine, blockable_by, beatdown: bool = False) -> set[int]:
-        """Attack with each creature no single blocker eats for free. When we
-        are the beatdown (more power on board, or they are low), any even
-        trade is welcome: pressure is the point."""
+    def _safe_attackers(self, mine, blockable_by) -> set[int]:
+        """Attack with each creature no single blocker eats for free."""
         plan: set[int] = set()
         for att in mine:
             options = blockable_by(att)
@@ -934,8 +928,7 @@ class HeuristicAgent(Agent):
                 if att_dies and not blk_dies:
                     safe = False
                     break
-                if (att_dies and blk_dies and not beatdown
-                        and self._pv(blk) < self._pv(att) - 1):
+                if att_dies and blk_dies and self._pv(blk) < self._pv(att) - 1:
                     safe = False
                     break
             if safe and self.DOUBLE_BLOCKS and self._best_double_block(att, options):
