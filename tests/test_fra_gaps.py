@@ -321,3 +321,13 @@ def test_the_stack_check_puts_the_card_back():
     assert castable(game, "Bestial Incursion")
     assert game.state.players[0].graveyard == before
     assert all(game.state.obj(i).zone == "graveyard" for i in before)
+
+
+def test_gideon_the_oathless_pings_when_an_opposing_creature_enters():
+    game = scene(Side(hand=["Blessed Ghoul"], lands={"B": 2}, library=["Swamp"] * 10),
+                 Side(battlefield=["Gideon the Oathless"], library=["Swamp"] * 10))
+    life = game.state.players[0].life
+    cast(game, "Blessed Ghoul")
+    resolve(game)
+    assert game.state.players[0].life == life - 1
+    assert game.state.players[1].life == 20, "his own creatures don't trigger it"

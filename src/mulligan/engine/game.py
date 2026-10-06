@@ -2039,6 +2039,10 @@ class Game:
             return (event == "other_etb" and subject is not obj and mine
                     and (not trigger.filter or filters.matches(self, trigger.filter, subject,
                                                                obj.controller, obj.id)))
+        if when == "opp_etb":
+            return (event == "other_etb" and controller is not None and not mine
+                    and (not trigger.filter or filters.matches(self, trigger.filter, subject,
+                                                               controller, obj.id)))
         if when == "landfall":
             return event == "landfall" and mine
         if when == "other_dies":

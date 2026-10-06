@@ -153,17 +153,40 @@ def _lethal_to(damage: int, victim: PermanentView, source_deathtouch: bool) -> b
     return damage > 0 and (source_deathtouch or damage >= victim.toughness - victim.damage)
 
 
+def _strikes(c) -> tuple[int, int]:
+    """(first-strike damage, regular damage) a creature deals in combat."""
+    fs = c.has(Keyword.FIRST_STRIKE) or c.has(Keyword.DOUBLE_STRIKE)
+    regular = c.has(Keyword.DOUBLE_STRIKE) or not fs
+    return (c.power if fs else 0), (c.power if regular else 0)
+
+
 def combat_outcome(attacker: PermanentView, blocker: PermanentView) -> tuple[bool, bool]:
-    """(attacker dies, blocker dies) if ``blocker`` alone blocks ``attacker``."""
-    a_fs = attacker.has(Keyword.FIRST_STRIKE) or attacker.has(Keyword.DOUBLE_STRIKE)
-    b_fs = blocker.has(Keyword.FIRST_STRIKE) or blocker.has(Keyword.DOUBLE_STRIKE)
-    a_kills = _lethal_to(attacker.power, blocker, attacker.has(Keyword.DEATHTOUCH))
-    b_kills = _lethal_to(blocker.power, attacker, blocker.has(Keyword.DEATHTOUCH))
-    if a_fs and not b_fs and a_kills:
-        return False, True
-    if b_fs and not a_fs and b_kills:
-        return True, False
-    return b_kills, a_kills
+    """(attacker dies, blocker dies) if ``blocker`` alone blocks ``attacker``.
+    A double striker deals its power in both damage steps."""
+    a_first, a_regular = _strikes(attacker)
+    b_first, b_regular = _strikes(blocker)
+    a_dt, b_dt = attacker.has(Keyword.DEATHTOUCH), blocker.has(Keyword.DEATHTOUCH)
+    a_dies = _lethal_to(b_first, attacker, b_dt)
+    b_dies = _lethal_to(a_first, blocker, a_dt)
+    if a_dies or b_dies:
+        return a_dies, b_dies
+    return (_lethal_to(b_first + b_regular, attacker, b_dt),
+            _lethal_to(a_first + a_regular, blocker, a_dt))
+
+
+def _hits_their_board(effects) -> bool:
+    """An untargeted spell that still removes something of theirs: an edict
+    ("target opponent sacrifices...", which targets no object) or a sweeper.
+    Holding one for their end step, like a draw spell, meant it almost never
+    got cast."""
+    for e in effects:
+        if isinstance(e, fx.Sacrifice) and e.who != "you":
+            return True
+        if getattr(e, "to", "").startswith("all:"):
+            return True
+        if isinstance(e, (fx.If, fx.MayPay)) and _hits_their_board(e.then):
+            return True
+    return False
 
 
 def can_block(view: PlayerView, blocker: PermanentView, attacker: PermanentView) -> bool:
@@ -197,6 +220,7 @@ class Combatant:
 REMOVAL = (fx.Destroy, fx.Exile, fx.ReturnToHand, fx.PutOnLibrary, fx.ShuffleIntoLibrary)
 HELPFUL_TO_OBJECT = (fx.AddCounters, fx.Attach)
 JACE_LOYALTY = 0.7  # a loyalty counter: a third of a card, plus the Ways' triggers
+DOUBLE_BLOCK_MARGIN = 1.0  # a gang block must win the trade by this much
 CARD_ADVANTAGE = {fx.Recruit: 2.0, fx.Scry: 0.4, fx.SearchLibrary: 1.2, fx.LookAtTop: 1.5,
                   fx.Impulse: 1.5, fx.AdditionalLand: 0.3}
 
@@ -230,6 +254,8 @@ class HeuristicAgent(Agent):
         self.name = name
         self.card_values = card_values or {}
 
+    DOUBLE_BLOCKS = True
+
     def _pv(self, perm: PermanentView) -> float:
         if isinstance(perm, Combatant):
             return perm.value
@@ -242,7 +268,13 @@ class HeuristicAgent(Agent):
         if view.pending == "attackers":
             self._plan = self._plan_attacks(view)
         elif view.pending == "blockers":
-            self._plan = self._plan_blocks(view)
+            # Plan once per combat: blocks are declared one at a time, and
+            # re-planning after the first half of a double block would see
+            # that attacker as handled and never add the second blocker.
+            key = (view.turn, len(view.attackers()))
+            if not view.blocks() or self._block_key != key:
+                self._plan = self._plan_blocks(view)
+                self._block_key = key
         return max(options, key=lambda a: self.score(view, a))
 
     # The whole policy. A learned agent adds a correction to this number.
@@ -349,7 +381,7 @@ class HeuristicAgent(Agent):
             return (10.0 + self._sv(spec) + etb + mv + bonus + 1.2 * action.x
                     - self._extra_cost(view, spec, action))
         untargeted = not any(t.kind in ("object", "player") for t in targets)
-        if (CardType.INSTANT in spec.types and untargeted
+        if (CardType.INSTANT in spec.types and untargeted and not _hits_their_board(effects)
                 and not (not view.is_my_turn and view.step == Step.END_STEP)):
             return -1.0  # card draw at instant speed: cast it with mana left at their end step
         value = self._effects_value(view, effects, targets, source_id=action.card_id)
@@ -631,6 +663,10 @@ class HeuristicAgent(Agent):
                 return 0.0
             return self._sv(card.spec) if card.owner == me else 0.5
         mine = perm.controller == me
+        if (isinstance(effect, fx.Pump) and isinstance(effect.power, int) and effect.power < 0
+                and not (isinstance(effect.toughness, int) and effect.toughness < 0)):
+            # -X/-0 (Icy Reception): a combat play against an attacker or blocker.
+            return -10.0 if mine else self._shrink_value(view, perm, -effect.power)
         harmful = isinstance(effect, REMOVAL) or isinstance(effect, fx.DealDamage) or (
             isinstance(effect, fx.Tap) and not effect.untap) or (
             isinstance(effect, fx.Pump) and isinstance(effect.toughness, int)
@@ -658,6 +694,33 @@ class HeuristicAgent(Agent):
         if isinstance(effect, fx.Tap):
             return 0.5 if perm.tapped else -0.5
         return 1.0
+
+    def _shrink_value(self, view: PlayerView, perm: PermanentView, n: int) -> float:
+        """Worth of giving an opposing creature -n/-0 now: only once blocks
+        are known, for the combat it changes."""
+        if view.step != Step.DECLARE_BLOCKERS:
+            return -1.0
+        me = view.seat
+        if perm.attacking:
+            blockers = [view.permanent(b) for b, a in view.blocks() if a == perm.id]
+            blockers = [b for b in blockers if b is not None]
+            if not blockers:
+                incoming = sum(a.power for a in view.attackers()
+                               if not any(x == a.id for _, x in view.blocks()))
+                if incoming >= view.life(me) > incoming - min(perm.power, n):
+                    return 100.0
+                return 0.4 * min(perm.power, n) - 1.0
+            saved = sum(self._pv(b) for b in blockers
+                        if perm.power >= b.toughness - b.damage
+                        and perm.power - n < b.toughness - b.damage)
+            return saved - 0.5 if saved else -1.0
+        if perm.blocking is not None:
+            att = view.permanent(perm.blocking)
+            if (att is not None and att.controller == me
+                    and perm.power >= att.toughness - att.damage
+                    and perm.power - n < att.toughness - att.damage):
+                return self._pv(att) - 0.5
+        return -1.0
 
     def _removes(self, effect, perm: PermanentView) -> bool:
         if isinstance(effect, REMOVAL):
@@ -864,9 +927,36 @@ class HeuristicAgent(Agent):
                 if att_dies and blk_dies and self._pv(blk) < self._pv(att) - 1:
                     safe = False
                     break
+            if safe and self.DOUBLE_BLOCKS and self._best_double_block(att, options):
+                safe = False  # two of them would gang up and kill it
             if safe:
                 plan.add(att.id)
         return plan
+
+    def _best_double_block(self, att, candidates):
+        """The two blockers that together kill ``att`` for the best trade,
+        if any trade is worth it: (gain, b1, b2). The attacker kills what its
+        damage reaches, most valuable first. Not tried against first strikers,
+        which kill a blocker before it can deal its share."""
+        if att.has(Keyword.FIRST_STRIKE) or att.has(Keyword.DOUBLE_STRIKE):
+            return None
+        dt = att.has(Keyword.DEATHTOUCH)
+        best = None
+        for i, b1 in enumerate(candidates):
+            for b2 in candidates[i + 1:]:
+                if not _lethal_to(b1.power + b2.power, att,
+                                  b1.has(Keyword.DEATHTOUCH) or b2.has(Keyword.DEATHTOUCH)):
+                    continue
+                left, lost = att.power, 0.0
+                for b in sorted((b1, b2), key=lambda b: -b.value):
+                    need = 1 if dt else max(1, b.toughness - b.damage)
+                    if left >= need:
+                        left -= need
+                        lost += b.value
+                gain = att.value - lost
+                if gain > DOUBLE_BLOCK_MARGIN and (best is None or gain > best[0]):
+                    best = (gain, b1, b2)
+        return best
 
     def _assign_targets(self, view: PlayerView, attackers: set[int]) -> dict[int, int]:
         """Everyone attacks the player, except that the smallest attacker able
@@ -937,6 +1027,18 @@ class HeuristicAgent(Agent):
                 blocked.add(att.id)
                 pool.remove(choice)
 
+        if self.DOUBLE_BLOCKS:
+            for att in attackers:
+                if att.id in blocked:
+                    continue
+                pair = self._best_double_block(
+                    att, [b for b in pool if self._can(view, b, att)])
+                if pair is not None:
+                    for b in pair[1:]:
+                        plan.add((b.id, att.id))
+                        pool.remove(b)
+                    blocked.add(att.id)
+
         def unblocked_damage() -> int:
             return sum(a.power for a in attackers if a.id not in blocked)
 
@@ -958,4 +1060,5 @@ class HeuristicAgent(Agent):
         return plan
 
     _plan: set = set()
+    _block_key: tuple = ()
     _legal: dict = {}

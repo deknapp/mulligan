@@ -25,6 +25,7 @@ from .types import CardType, Keyword, ManaCost, ManaPool, TargetSpec
 TRIGGER_EVENTS = {
     "etb": "this permanent enters",
     "other_etb": "another permanent matching ``filter`` enters under your control",
+    "opp_etb": "a permanent matching ``filter`` enters under an opponent's control",
     "landfall": "a land enters under your control",
     "dies": "this permanent is put into a graveyard from the battlefield",
     "other_dies": "another creature matching ``filter`` you control dies",
