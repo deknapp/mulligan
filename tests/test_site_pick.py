@@ -8,6 +8,7 @@ import json
 import random
 import shutil
 import subprocess
+from itertools import pairwise
 from pathlib import Path
 
 import pytest
@@ -51,4 +52,4 @@ def test_web_pick_helper_matches_the_python_one(with_experts):
                 assert abs(a - b) < 1e-9
         scores = [theirs[n] for n, _ in py]
         assert all(a is None or b is None or a >= b - 1e-9
-                   for a, b in zip(scores, scores[1:]))
+                   for a, b in pairwise(scores))

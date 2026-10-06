@@ -36,6 +36,7 @@ COLOR_NAMES = {"W": "white", "U": "blue", "B": "black", "R": "red", "G": "green"
 BASIC_FOR = {"W": "Plains", "U": "Island", "B": "Swamp", "R": "Mountain", "G": "Forest"}
 EXPERT_PRIOR_GAMES = 500   # a card's expert grade weighs as much as this many 17Lands games
 UNRATED_EDGE = -0.15
+COLORLESS_EXPERT_WEIGHT = 3
 
 
 @dataclass
@@ -62,6 +63,10 @@ class CardInfo:
     expert_edge: float | None = None
     takes: list[str] = field(default_factory=list)
     edge: float = 0.0
+
+    @property
+    def colorless(self) -> bool:
+        return not self.pips and not self.is_land
 
     @property
     def is_land(self) -> bool:
@@ -220,6 +225,7 @@ def card_infos(set_code: str, fmt: str = "Sealed", names: list[str] | None = Non
     from .cards.sets import load_set
     from .pick_advice import grade_points, load_experts
     data = load_set(set_code)
+    _ACTIVE[:] = load_synergies(set_code)
     draft = _ratings(set_code, "PremierDraft")
     sealed = _ratings(set_code, "Sealed") if fmt == "Sealed" else {}
     dv = fastsim.CardValues.from_gih(draft) if draft else None
@@ -276,7 +282,11 @@ def card_infos(set_code: str, fmt: str = "Sealed", names: list[str] | None = Non
         n = i.games if i.real_edge is not None else 0
         real = i.real_edge or 0.0
         if i.expert_edge is not None:
-            i.edge = (n * real + EXPERT_PRIOR_GAMES * i.expert_edge) / (n + EXPERT_PRIOR_GAMES)
+            # A colorless card is played in every color pair, so its 17Lands
+            # number blends decks that wanted it with decks that were short of
+            # playables; the hosts' read on it counts for more.
+            prior = EXPERT_PRIOR_GAMES * (COLORLESS_EXPERT_WEIGHT if i.colorless else 1)
+            i.edge = (n * real + prior * i.expert_edge) / (n + prior)
         elif i.real_edge is not None:
             i.edge = real
         else:
@@ -376,6 +386,7 @@ BOMB_EDGE = 0.20
 BOMB_GRADE = "A-"
 FILLER_EDGE = -0.08         # about two win-rate points below the average card
 FILLER_GRADE = "D+"
+COLORLESS_FILLER_GRADE = "C-"
 
 # Score weights: judgment calls until there are real FRA sealed decks to fit
 # them to. Each is shown, term by term, on the page.
@@ -419,6 +430,9 @@ def is_filler(c: CardInfo) -> bool:
     from .pick_advice import LETTERS
     if c.edge < FILLER_EDGE:
         return True
+    if c.colorless and c.grade in LETTERS and (
+            LETTERS.index(c.grade) <= LETTERS.index(COLORLESS_FILLER_GRADE)):
+        return True   # a C- artifact fits every deck, which is why it's in none
     # The hosts' low grade stands unless plenty of real games say otherwise.
     return (c.grade in LETTERS and LETTERS.index(c.grade) <= LETTERS.index(FILLER_GRADE)
             and (c.real_edge is None or c.games < 1000 or c.real_edge < 0))
@@ -461,14 +475,72 @@ def deck_theme(spells: list[CardInfo]) -> tuple[str, int, set[str]]:
     return best
 
 
-def score_deck(spells: list[CardInfo], splash: list[CardInfo], lands: int = 17) -> tuple[float, dict]:
+# Synergy packages (``build_synergies``): cards that get much better next to
+# enough of their enablers. A payoff's 17Lands number was measured mostly in
+# decks with an ordinary number of enablers, so the bonus is for enablers past
+# that. Weights are judgment calls, like the rest of the score.
+SYN_TYPICAL = 3             # enablers an ordinary deck has anyway
+SYN_EACH = 0.03             # per payoff, per enabler past SYN_TYPICAL
+SYN_PAYOFF_CAP = 0.15       # most a single payoff gains
+SYN_CAP = 0.50              # most the whole deck gains
+
+_SYNERGIES: dict[str, list[dict]] = {}
+_ACTIVE: list[dict] = []     # the packages of the set card_infos last loaded
+
+
+def synergy_path(set_code: str):
+    from .site.build import BLOG
+    return BLOG / "data" / f"{set_code.lower()}-synergies.json"
+
+
+def load_synergies(set_code: str) -> list[dict]:
+    if set_code not in _SYNERGIES:
+        path = synergy_path(set_code)
+        _SYNERGIES[set_code] = (json.loads(path.read_text())["packages"]
+                                if path.exists() else [])
+    return _SYNERGIES[set_code]
+
+
+def deck_synergy(spells: list[CardInfo], packages: list[dict]) -> tuple[float, list, set[str]]:
+    """(bonus, [(package, payoffs, enablers, bonus)], names in working packages)."""
+    names = [c.name for c in spells]
+    total, rows, active = 0.0, [], set()
+    for pk in packages:
+        enablers = sum(1 for n in names if n in pk["enablers"])
+        payoffs = [n for n in names if n in pk["payoffs"]]
+        if not payoffs:
+            continue
+        # Count only enablers past what the package needs to get going.
+        start = max(SYN_TYPICAL, pk.get("min_enablers", 4) - 2)
+        each = min(SYN_PAYOFF_CAP, SYN_EACH * max(0, enablers - start))
+        if each <= 0:
+            continue
+        bonus = each * len(payoffs)
+        total += bonus
+        rows.append((pk["name"], len(payoffs), enablers, bonus))
+        if enablers >= pk.get("min_enablers", 4):
+            active |= {n for n in names if n in pk["enablers"] or n in pk["payoffs"]}
+    rows.sort(key=lambda r: -r[3])
+    return min(SYN_CAP, total), rows, active
+
+
+def score_deck(spells: list[CardInfo], splash: list[CardInfo], lands: int = 17,
+               packages: list[dict] | None = None) -> tuple[float, dict]:
     """The deck's score and its parts, all in log-odds-of-winning units."""
     quality = sum(c.edge for c in spells) + EXTRA_LAND_EDGE * max(0, lands - 17)
     bombs = [c for c in spells if is_bomb(c)]
     bomb = BOMB_BONUS * sum(max(0.0, c.edge - (BOMB_EDGE - 0.05)) for c in bombs)
     bomb += 0.05 * sum(1 for c in bombs if c.edge < BOMB_EDGE)   # expert-graded bombs
-    theme, tn, members = deck_theme(spells)
-    active = members if tn >= THEME_ACTIVE else set()
+    packages = _ACTIVE if packages is None else packages
+    if packages:
+        theme_bonus, syn_rows, active = deck_synergy(spells, packages)
+        theme = ", ".join(f"{r[0]} ({r[1]} payoff{'s' if r[1] > 1 else ''}, {r[2]} enablers)"
+                          for r in syn_rows[:3])
+        tn = len(active)
+    else:
+        theme, tn, members = deck_theme(spells)
+        active = members if tn >= THEME_ACTIVE else set()
+        theme_bonus = min(THEME_CAP, THEME_EACH * max(0, tn - 4))
     # Removal is never filler, and neither is a working theme's card: its win
     # rate was measured mostly in decks without the theme.
     filler = [c for c in spells if is_filler(c) and not is_removal(c) and c.name not in active]
@@ -482,7 +554,6 @@ def score_deck(spells: list[CardInfo], splash: list[CardInfo], lands: int = 17) 
         wincons.append((f"Jace engine ({len(jace)} empower cards)", "engine"))
     distinct = len({n for n, _ in wincons}) + sum(1 for _ in wincons) / 100
     wincon_cost = NO_WINCON if distinct < 1 else ONE_WINCON if distinct < 2 else 0.0
-    theme_bonus = min(THEME_CAP, THEME_EACH * max(0, tn - 4))
     creatures = sum(1 for c in spells if c.is_creature)
     twos = sum(1 for c in spells if c.mv <= 2)
     tops = sum(1 for c in spells if c.mv >= 6)
@@ -767,6 +838,65 @@ def build_lens(set_code: str, client=None) -> dict[str, tuple[int, str]]:
                    "17Lands numbers and the hosts' Sealed comments",
         "cards": cards}, indent=1, ensure_ascii=False) + "\n")
     return {n: (v["shift"], v["why"]) for n, v in cards.items()}
+
+
+SYN_SYSTEM = """You are an expert Magic: The Gathering Limited player mapping the synergies \
+of a new set for a sealed deckbuilder. List the set's real synergy packages: groups where some \
+cards (payoffs) get much better when the deck also has enough of other cards (enablers), e.g. \
+"whenever you gain life" payoffs and the cards that gain life; a mechanic's rewards and the cards \
+that use the mechanic; tribal or token payoffs and what makes those tokens. Rules:
+- Only packages a good player would actually build around; 6 to 14 of them.
+- payoffs: cards whose power depends on the package. enablers: cards that turn the payoffs on \
+(a card can be both). Use exact names from the list; include every card of the set that fits.
+- Do not make a package out of generic things every deck has (creatures, lands, "attacking").
+- min_enablers: how many enablers a 23-card deck needs before the payoffs are reliably good.
+- why: one sentence on how the package wins, mentioning the best payoffs.
+Use the card text first; the hosts' comments are evidence about which packages are real."""
+
+
+def _syn_schema() -> dict:
+    card = {"type": "string"}
+    return {"type": "object", "additionalProperties": False, "required": ["packages"],
+            "properties": {"packages": {"type": "array", "items": {
+                "type": "object", "additionalProperties": False,
+                "required": ["name", "why", "payoffs", "enablers", "min_enablers"],
+                "properties": {"name": {"type": "string"}, "why": {"type": "string"},
+                               "payoffs": {"type": "array", "items": card},
+                               "enablers": {"type": "array", "items": card},
+                               "min_enablers": {"type": "integer"}}}}}}
+
+
+def build_synergies(set_code: str, client=None) -> list[dict]:
+    """Ask Claude for the set's synergy packages and save them (one call per set)."""
+    from .experts import _ask, _client
+    from .pick_advice import load_experts
+    infos, _ = card_infos(set_code, lens=False)
+    experts = (load_experts(set_code) or {}).get("cards") or {}
+    lines, names = [], []
+    for c in sorted(infos.values(), key=lambda c: c.name):
+        if c.name in fastsim.BASIC_LANDS or not c.oracle:
+            continue
+        names.append(c.name)
+        takes = [t["take"] for t in experts.get(c.name, {}).get("takes", [])][:4]
+        lines.append(f"- {c.name} {c.cost} [{' '.join(c.types + c.subtypes)}]: "
+                     f"{c.oracle.replace(chr(10), ' / ')}"
+                     + (f" HOSTS: {' | '.join(takes)}" if takes else ""))
+    user = f"Set {set_code.upper()}, {len(lines)} cards.\n\n" + "\n".join(lines)
+    out = _ask(client or _client(), SYN_SYSTEM, user, _syn_schema())
+    known = set(names)
+    packages = []
+    for p in out["packages"]:   # exact names only: drop anything misspelled
+        p["payoffs"] = [n for n in p["payoffs"] if n in known]
+        p["enablers"] = [n for n in p["enablers"] if n in known]
+        if p["payoffs"]:
+            packages.append(p)
+    import datetime
+    synergy_path(set_code).write_text(json.dumps({
+        "set": set_code, "made": datetime.date.today().isoformat(),
+        "made_by": "Claude (claude-opus-5-5), one pass over the card text and the hosts' takes",
+        "packages": packages}, indent=1, ensure_ascii=False) + "\n")
+    _SYNERGIES.pop(set_code, None)
+    return packages
 
 
 # ------------------------------------------------------------------ review

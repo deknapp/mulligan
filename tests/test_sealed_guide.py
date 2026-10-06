@@ -75,3 +75,21 @@ def test_roles_from_rules_text():
                         keywords={"flying"})
     assert sg.is_removal(removal) == 1.0 and sg.is_removal(bounce) == 0.5
     assert sg.win_condition(flyer) == "evasive threat"
+
+
+def test_synergy_payoffs_need_committed_enablers():
+    pk = [{"name": "Lifegain", "payoffs": ["P"], "enablers": [f"E{i}" for i in range(9)],
+           "min_enablers": 6}]
+    def deck(n_enablers):
+        return [sg.CardInfo("P")] + [sg.CardInfo(f"E{i}") for i in range(n_enablers)]
+    assert sg.deck_synergy(deck(3), pk)[0] == 0
+    few, many = sg.deck_synergy(deck(5), pk)[0], sg.deck_synergy(deck(9), pk)[0]
+    assert 0 < few < many
+    assert "P" in sg.deck_synergy(deck(6), pk)[2]      # a working package isn't filler
+
+
+def test_colorless_c_minus_is_filler():
+    card = sg.CardInfo("Junk", cost="{3}", types=["Artifact"], grade="C-", edge=0.02)
+    assert card.colorless and sg.is_filler(card)
+    assert not sg.is_filler(sg.CardInfo("Fine", cost="{3}", types=["Artifact"], grade="C",
+                                        edge=0.02))
