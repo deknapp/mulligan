@@ -255,6 +255,7 @@ class HeuristicAgent(Agent):
         self.card_values = card_values or {}
 
     DOUBLE_BLOCKS = True
+    REMOVAL_FLOOR = 0.0   # see _saving_removal; 0 turns it off
 
     def _pv(self, perm: PermanentView) -> float:
         if isinstance(perm, Combatant):
@@ -388,11 +389,35 @@ class HeuristicAgent(Agent):
         value -= self._extra_cost(view, spec, action)
         if value <= 0:
             return -1.0
+        if self._saving_removal(view, effects, targets):
+            return -1.0
         if self._is_trick(effects) and not self._trick_now(view, effects, targets):
             return -1.0
         if action.face == "adventure":
             value += 2.0  # the creature half stays available: casting the adventure is free value
         return 10.0 + value + 0.5 * mv + bonus
+
+    def _saving_removal(self, view: PlayerView, effects, targets) -> bool:
+        """Keep a removal spell for a real threat: while we aren't under
+        pressure and the opponent still has cards to play, don't spend it on a
+        creature worth less than REMOVAL_FLOOR. Bots that fired removal at the
+        first 2-drop left nothing for the 5-drop that followed, which made
+        cheap creatures look worse and expensive ones better than real play."""
+        if not self.REMOVAL_FLOOR or view.life(view.seat) <= 10 or view.hand_size(
+                view.opponent) < 2:
+            return False
+        for effect in effects:
+            if not (isinstance(effect, REMOVAL) or isinstance(effect, (fx.DealDamage, fx.SetBasePT))
+                    or (isinstance(effect, fx.Pump) and isinstance(effect.toughness, int)
+                        and effect.toughness < 0)):
+                continue
+            for index in _touched(getattr(effect, "to", ""), targets):
+                t = targets[index]
+                perm = view.permanent(t.id) if t.kind == "object" else None
+                if (perm is not None and perm.controller != view.seat and perm.is_creature
+                        and self._removes(effect, perm) and self._pv(perm) < self.REMOVAL_FLOOR):
+                    return True
+        return False
 
     def _extra_cost(self, view: PlayerView, spec: CardSpec, action: act.CastSpell) -> float:
         """What an additional cost gives up: a sacrifice costs the cheapest
