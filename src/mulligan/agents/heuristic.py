@@ -196,6 +196,7 @@ class Combatant:
 
 REMOVAL = (fx.Destroy, fx.Exile, fx.ReturnToHand, fx.PutOnLibrary, fx.ShuffleIntoLibrary)
 HELPFUL_TO_OBJECT = (fx.AddCounters, fx.Attach)
+JACE_LOYALTY = 0.7  # a loyalty counter: a third of a card, plus the Ways' triggers
 CARD_ADVANTAGE = {fx.Recruit: 2.0, fx.Scry: 0.4, fx.SearchLibrary: 1.2, fx.LookAtTop: 1.5,
                   fx.Impulse: 1.5, fx.AdditionalLand: 0.3}
 
@@ -521,6 +522,13 @@ class HeuristicAgent(Agent):
                     total += 2.0 * count if effect.who == "you" else -1.0 * count
             elif isinstance(effect, fx.Loot):
                 total += 0.8 * effect.draw
+            elif isinstance(effect, (fx.EmpowerJace, fx.AddLoyalty)):
+                # Loyalty on a Jace that draws a card for three of it. Was the
+                # unknown-effect 0.5 whatever the count, so Protege's Awakening
+                # (empower 6, draw) rotted in hand behind every creature.
+                total += JACE_LOYALTY * self._amount(effect.count, view)
+            elif isinstance(effect, fx.Surveil):
+                total += CARD_ADVANTAGE[fx.Scry] * self._amount(effect.count)
             elif type(effect) in CARD_ADVANTAGE:
                 total += CARD_ADVANTAGE[type(effect)]
             elif isinstance(effect, fx.GainLife):
