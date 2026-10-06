@@ -256,6 +256,10 @@ class HeuristicAgent(Agent):
 
     DOUBLE_BLOCKS = True
     AGGRESSIVE = False
+    # What a loyalty counter is worth when spending it: about a third of a
+    # card, since Jace draws one for three. At 0.35 the agent cashed fresh
+    # Jace tokens in for surveil 1 and only 35% of loyalty ever became cards.
+    LOYALTY = 0.35
 
     def _pv(self, perm: PermanentView) -> float:
         if isinstance(perm, Combatant):
@@ -833,7 +837,7 @@ class HeuristicAgent(Agent):
             # little, adding it is worth a little.
             value = self._effects_value(view, ability.effects, action.targets,
                                         source_id=action.source_id)
-            value += 0.35 * ability.loyalty
+            value += self.LOYALTY * ability.loyalty
             return value if value > 0 else -1.0
         if ability.crew:
             return self._score_crew(view, source)
